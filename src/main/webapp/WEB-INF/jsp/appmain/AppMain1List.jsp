@@ -96,7 +96,7 @@
                                     $("#loading").show();
                                     document.searchFrm.submit();
                                 }
-							</script>
+							</script> 
 						</form>
 					</div>
 				</div>
