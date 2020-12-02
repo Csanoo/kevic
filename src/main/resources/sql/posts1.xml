@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<delete id="posts1Delete"
+		parameterType="String"
+		>
+		delete from tposts
+		where sn=#{sn} 
+	</delete>
+
+
+	<select id="selectBarChart" resultType="main.java.admin.satelite.kr.Posts1VO">
+	select wdate1,wdate2,wcnt,lcnt from (
+	
+	select ifnull(wd1,wd2) wdate1,ifnull(wd2,wd1) wdate2,ifnull(wcnt,0) wcnt,ifnull(lcnt,0) lcnt
+	from (
+	select * from 
+		(select substring(wdate,1,10) wd1, count(*) wcnt from
+		(select * from tcontrack where lower(agent) like '%windows%') tcontrack
+		group by substring(wdate,1,10)
+		) z1 right outer join
+		( select substring(wdate,1,10) wd2, count(*) lcnt from
+			(select * from tcontrack where lower(agent) not like '%windows%') tcontrack
+			group by substring(wdate,1,10)
+			) z2 on z1.wd1 = z2.wd2
+	  ) z3 order by wdate1 desc limit 7
+	
+	) zz order by wdate1
+	</select>
+	
+
+<select id="selectLineChart" resultType="main.java.admin.satelite.kr.Posts1VO">
+select wdate,vcnt from (
+	select wdate,count(ipaddress) vcnt from (
+	  select date(wdate) wdate,ipaddress,count(*) from tcontrack group by date(wdate),ipaddress ) z
+	group by wdate limit 7 ) zz
+  order by wdate
+</select>
+	
+	<select id="selectPosts1One"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.Posts1VO">
+		SELECT sn,userid,wdate,title,post,memo,imgfile from tposts
+		where sn=#{sn} 
+	</select>
+	
+	
+	
+	
+
+	<insert id="insertPosts1One"
+		parameterType="main.java.admin.satelite.kr.Posts1VO">
+		insert into tposts (
+		userid,wdate,title,post,memo,imgfile )
+		values ( #{userid}
+		, current_timestamp() , #{title},#{post},#{memo},#{imgfile})
+	</insert>
+	
+	<insert id="updatePosts1One"
+		parameterType="main.java.admin.satelite.kr.Posts1VO">
+		update tposts set userid=#{userid},
+		imgfile=#{imgfile},title=#{title},post=#{post},memo=#{memo}
+		
+		where sn=#{sn}
+		
+	</insert>
+	
+	<insert id="updatePosts11One"
+		parameterType="main.java.admin.satelite.kr.Posts1VO">
+		update tposts set userid=#{userid},
+		title=#{title},post=#{post},memo=#{memo}
+		
+		where sn=#{sn}
+		
+	</insert>
+	
+	
+
+
+	<sql id="includeposts1">
+		WHERE sn != 0
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY wdate DESC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY wdate DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY wdate DESC
+		</if>
+	</sql>
+	
+	
+
+
+	<select id="selectPosts1Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tposts
+		<include refid="includeposts1" />
+	</select>
+
+	<select id="selectPosts1List"
+		resultType="main.java.admin.satelite.kr.Posts1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,userid,wdate,title,post,memo,imgfile from tposts
+		<include refid="includeposts1" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	
+	
+	
+
+	
+
+</mapper>
+

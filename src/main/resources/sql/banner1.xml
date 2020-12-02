@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<delete id="banner1Delete"
+		parameterType="String"
+		>
+		delete from tbanner
+		where sn=#{sn} 
+	</delete>
+
+	<select id="selectBanner1One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO"
+		resultType="main.java.admin.satelite.kr.Banner1VO">
+		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		where sn=#{sn} 
+	</select>
+	
+	<select id="selectContentsOne"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.Banner1VO">
+		SELECT sn,code2,userid,url,memo,title,category,imgfile,fucheck from tcontents
+		where sn=#{sn} 
+	</select>
+	
+	
+
+	<insert id="insertBanner1One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		insert into tbanner (
+		code2,imgfile,link,uname,umemo,type1,text1,text2 )
+		values ( #{code2}
+		, #{imgfile} , #{link},#{uname},#{umemo},#{type1},#{text1},#{text2} )
+	</insert>
+	
+	<insert id="updateBanner1One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		update tbanner set
+		code2=#{code2},imgfile=#{imgfile},link=#{link},uname=#{uname},umemo=#{umemo}
+		,text1=#{text1},text2=#{text2}
+		where sn=#{sn}
+		
+	</insert>
+	
+	<insert id="updateBanner11One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		update tbanner set
+		code2=#{code2},link=#{link},uname=#{uname},umemo=#{umemo}
+		,text1=#{text1},text2=#{text2}
+		where sn=#{sn}
+		
+	</insert>
+	
+	<select id="selectBanner2One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO"
+		resultType="main.java.admin.satelite.kr.Banner1VO">
+		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		where sn=#{sn} 
+	</select>
+
+	<insert id="insertBanner2One"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		insert into tbanner (
+		code2,imgfile,link,uname,umemo,type1,text1,text2 )
+		values ( #{code2}
+		, #{imgfile} , #{link},#{uname},#{umemo},#{type1},#{text1},#{text2} )
+	</insert>
+
+
+	<sql id="includeBanner1">
+		WHERE code2 not in ('4UCH','HOTN')
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY code2 ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY code2 DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY code2 ASC
+		</if>
+
+
+	</sql>
+	
+	<sql id="includeBanner2">
+		WHERE code2 in ('4UCH','HOTN')
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY code2 ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY code2 DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY code2 ASC
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectBanner1Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbanner
+		<include refid="includeBanner1" />
+	</select>
+
+	<select id="selectBanner1List"
+		resultType="main.java.admin.satelite.kr.Banner1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		<include refid="includeBanner1" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	<select id="selectBanner2Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbanner
+		<include refid="includeBanner2" />
+	</select>
+
+	<select id="selectBanner2List"
+		resultType="main.java.admin.satelite.kr.Banner1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		<include refid="includeBanner2" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	
+
+	
+
+</mapper>
+

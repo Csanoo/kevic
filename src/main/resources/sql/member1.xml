@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+<select id="selectMainStat"
+parameterType="String" resultType="main.java.admin.satelite.kr.Member1VO">
+select contcnt,concat(round(timecnt/60),'분')timecnt,concat(round(todaycnt/60),'분')todaycnt,usercnt from vwstat1
+</select>
+
+
+
+<select id="selectMainStat2"
+parameterType="String" resultType="main.java.admin.satelite.kr.Member1VO">
+select 
+ifnull((select count(*) from tcontents where userid=#{userid}),0) contcnt,
+ifnull((select sum(looktime) from tcontrack where contsn in (select sn from tcontents where userid=#{userid}) ),0) timecnt,
+ifnull((select sum(looktime) from tcontrack where contsn in (select sn from tcontents where userid=#{userid})
+and date(wdate) = date(now()) ),0) todaycnt,
+ifnull((select count(*) from tuser),0) usercnt
+from dual
+</select>
+
+	<select id="selectMember1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO"
+		resultType="main.java.admin.satelite.kr.Member1VO">
+		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile
+		from tuser
+		where userid=#{userid} and userpw=#{userpw}
+	</select>
+	
+	<select id="selectMember1Read"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.Member1VO">
+		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile
+		from tuser
+		where userid=#{userid} 
+	</select>
+
+	<insert id="insertMember1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		insert into tuser (
+		userid,userpw,username,usertype,mobile,email,wdate )
+		values ( #{userid}
+		, #{userpw} , #{username},'SA',#{mobile},#{email},current_timestamp)
+	</insert>
+	
+	<update id="updateMember1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		update tuser set
+		userpw=#{userpw},username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
+		,imgfile=#{imgfile}
+		where userid = #{userid}
+	</update>
+	
+	<update id="updateMember11One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		update tuser set
+		userpw=#{userpw},username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
+		
+		where userid = #{userid}
+	</update>
+
+
+	<sql id="includeMember1">
+		WHERE userpw != ''
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY usertype,username ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY usertype,username DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY usertype,username ASC
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectMember1Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tuser
+		<include refid="includeMember1" />
+	</select>
+
+	<select id="selectMember1List"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT tuser.userid,userpw,username,
+case usertype when 'SA' then '관리자' 
+when 'CP' then '크리에이터'
+when 'EU' then '일반회원'
+else '미정' end as usertype
+,mobile,email,wdate,ifnull(ccnt,0) ccnt 
+,ifnull(mxwdt,'-') mxwdt
+
+from tuser
+		left outer join 
+		(select userid , count(*) ccnt from tcontents group by userid) zz
+		on zz.userid = tuser.userid
+		
+		left outer join
+		(select userid,max(wdate) mxwdt from edumgtfunclist group by userid) efc
+		on efc.userid = tuser.userid
+		
+		<include refid="includeMember1" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	<select id="selectMember12Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tuser
+		<include refid="includeMember12" />
+	</select>
+
+	<select id="selectMember12List"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT tuser.userid,userpw,username,usertype,mobile,email,wdate,ifnull(ccnt,0) ccnt from tuser
+		left outer join 
+		(select userid , count(*) ccnt from tcontents group by userid) zz
+		on zz.userid = tuser.userid
+		<include refid="includeMember12" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	<sql id="includeMember12">
+		WHERE userid = #{userid}
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY usertype,username ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY usertype,username DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY usertype,username ASC
+		</if>
+	</sql>
+
+	<select id="selectMember1Excel"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT
+		userid,userpw,username,usertype,mobile,email,wdate from tuser
+
+
+		LIMIT
+		1000
+	</select>
+
+
+
+
+	<select id="selectCode1One"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.Member1VO">
+		SELECT sn,code1,code2,title,memo
+		from tcode
+		where sn=#{sn}
+	</select>
+
+	<insert id="insertCode1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		insert into tcode (
+		code1,code2,title,memo,code1memo )
+		values (
+		#{code1},#{code2},#{title},#{memo},#{code1memo} )
+	</insert>
+	
+	<update id="updateCode1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		update tcode set code1=#{code1} , code2=#{code2} ,title=#{title},memo=#{memo}
+		where sn = #{sn}
+		
+	</update>
+	
+	<delete id="deleteCode1One"
+		parameterType="String">
+		delete from tcode where sn = #{sn}
+	</delete>
+	
+	<delete id="ContentsDelete"
+		parameterType="String">
+		delete from tcontents where sn = #{sn}
+	</delete>
+
+
+	<sql id="includeCode1">
+		WHERE sn != 0
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			order by code1,code2,title
+		</if>
+		<if test="orderKeyword=='2'">
+			order by code1,code2,title
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			order by code1,code2,title
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectCode1Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tcode
+		<include refid="includeCode1" />
+	</select>
+
+	<select id="selectCode1List"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,code1,code2,title,memo from tcode
+		<include refid="includeCode1" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	
+	<select id="selectCode1SelList"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		>
+		SELECT distinct code1,code1memo from tcode
+		
+	</select>
+
+	<select id="selectCode1Excel"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT
+		sn,code1,code2,title,memo from tcode
+
+
+		LIMIT 1000
+	</select>
+
+
+
+	<select id="selectContents1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO"
+		resultType="main.java.admin.satelite.kr.Member1VO">
+		SELECT sn,url,code2,title,memo,userid,category,imgfile 
+		from tcontents
+		where
+		sn=#{sn}
+	</select>
+
+	
+	
+	<update id="updateContents"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		update tcontents set 
+		url=#{url} ,code2=#{code2},title=#{title},memo=#{memo},userid=#{userid}
+		,category=#{category}
+		,imgfile=#{imgfile}
+		,fucheck=#{fucheck}
+		where sn=#{sn}
+	</update>
+	
+	<update id="updateContents2"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		update tcontents set 
+		url=#{url} ,code2=#{code2},title=#{title},memo=#{memo},userid=#{userid}
+		,category=#{category},fucheck=#{fucheck}
+		
+		where sn=#{sn}
+	</update>
+	
+	<insert id="insertContents"
+		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		insert into tcontents (
+		url,code2,title,memo,userid,category,imgfile )
+		values ( #{url},#{code2},#{title},#{memo},#{userid},#{category},#{imgfile} )
+	</insert>
+	
+	<insert id="insertContents1One"
+		parameterType="main.java.admin.satelite.kr.Member1VO">
+		insert into tcontents (
+		url,code2,title,memo,userid,category,imgfile )
+		values ( #{url},#{code2},#{title},#{memo},#{userid},#{category},#{imgfile} )
+	</insert>
+
+
+	<sql id="includeContents1">
+		WHERE sn != 0
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			order by sn desc
+		</if>
+		<if test="orderKeyword=='2'">
+			order by sn desc
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			order by sn desc
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectContents1Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT count(*) 
+		from tcontents left outer join (select contsn,sum(looktime) looktime 
+		from tcontrack group by contsn) tc 
+		on tcontents.sn = tc.contsn
+		<include refid="includeContents1" />
+	</select>
+
+	<select id="selectContents1List"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,tcontents.url,code2,title,'' memo,fucheck, regdate,
+		
+case category when 'FOO' then 'Foods' 
+when 'BET' then 'Beauty'
+when 'CLF' then 'Culture Life'
+when 'FAS' then 'Fashion'
+when 'TVL' then 'Travel'
+when 'EVT' then 'Event'
+
+when 'GAM' then 'GAME'
+when 'POP' then 'Music video'
+
+when 'MUS' then 'Music'
+when 'MOV' then 'Movie'
+
+
+else '-' end as category,tcontents.imgfile,
+		
+		
+		tcontents.userid,
+		'' username,'' mobile,'' email,
+		
+		
+		ifnull(looktime,0) looktime 
+		from tcontents left outer join (select url,count(*) AS `looktime` 
+from tpevent group by url
+) `tc` 
+		on tcontents.url = tc.url
+		<include refid="includeContents1" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	<sql id="includeContents12">
+		WHERE userid = #{userid}
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY sn desc,title ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY sn desc,title DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY sn desc,title ASC
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectContents12Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tcontents
+		<include refid="includeContents12" />
+	</select>
+
+	<select id="selectContents12List"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,url,code2,title,memo,userid, regdate,
+		
+		case category when 'FOO' then 'Foods' 
+when 'BET' then 'Beauty'
+when 'CLF' then 'Culture Life'
+when 'FAS' then 'Fashion'
+else '-' end as category,imgfile,
+
+		ifnull(looktime,0) looktime 
+		from tcontents left outer join (select contsn,sum(looktime) looktime 
+		from tcontrack group by contsn) tc 
+		on tcontents.sn = tc.contsn
+		<include refid="includeContents12" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+
+	<select id="selectContents1Excel"
+		resultType="main.java.admin.satelite.kr.Member1VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT
+		sn,url,code2,title,memo,userid,category,imgfile from tcontents
+
+
+		LIMIT 1000
+	</select>
+
+</mapper>
+

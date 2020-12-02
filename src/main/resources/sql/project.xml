@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<delete id="projectDelete"
+		parameterType="String">
+		delete from tbl_contents
+		where sn=#{sn} 
+	</delete>
+
+	<select id="selectprojectOne"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
+		where sn=#{sn} 
+	</select>
+	
+
+
+	<insert id="insertprojectOne"
+		parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_contents (project,
+		category, type, imageUrl, videoUrl, ctSource, title )
+		values ( #{project}, #{category}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title} )
+	</insert>
+
+	<update id="updateproject"
+		parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_contents set
+		project = #{project}, category=#{category},type=#{type},imageUrl=#{imageUrl}
+		,videoUrl=#{videoUrl},ctSource=#{ctSource},title=#{title}
+		where sn=#{sn}
+		
+	</update>
+
+
+	<sql id="includeproject">
+		WHERE 1 = 1
+		<if	test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY sn ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY sn DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY sn ASC
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectprojectList"
+		resultType="main.java.admin.satelite.kr.ProjectVO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
+		<include refid="includeproject" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+
+
+
+	<select id="selectprojectCount" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbl_contents
+		<include refid="includeproject" />
+	</select>
+
+
+	<select id="selectCateSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		SELECT code2,title from tcode where code1 = 'CATE'
+	</select>
+
+	<select id="selectSourceSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		SELECT code2,title from tcode where code1 = 'CONT'
+	</select>
+
+
+
+	<delete id="chkProjectDelete"
+			parameterType="String">
+		delete from tbl_contents
+		where sn=#{sn}
+	</delete>
+
+	<update id="notProjectPublish" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_contents set
+		state = "1000"
+		where sn=#{sn}
+	</update>
+
+</mapper>
+

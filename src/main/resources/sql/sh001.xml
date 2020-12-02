@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<delete id="sh001Delete"
+		parameterType="String"
+		>
+		delete from tsh001
+		where sn=#{sn} 
+	</delete>
+
+
+	
+	
+	<select id="selectSh001One"
+		parameterType="String"
+		resultType="main.java.admin.satelite.kr.Sh001VO">
+		SELECT `sn` ,
+	`chname` ,`chuname` ,
+	`chcode` ,
+	`uid` ,
+	`uphone` ,
+	`uemail` ,
+	`ctitle` ,
+	`curl` ,
+	`style1` ,
+	`pos1` ,
+	`bigo1`  from tsh001
+		where sn=#{sn} 
+	</select>
+	
+	
+	
+	
+
+	<insert id="insertSh001One"
+		parameterType="main.java.admin.satelite.kr.Sh001VO">
+		insert into tsh001 (
+		`sn` ,
+	`chname` ,`chuname` ,
+	`chcode` ,
+	`uid` ,
+	`uphone` ,
+	`uemail` ,
+	`ctitle` ,
+	`curl` ,
+	`style1` ,
+	`pos1` ,
+	`bigo1`
+	 )
+		values ( #{sn} ,
+	#{chname} ,#{chuname} ,
+	#{chcode} ,
+	#{uid} ,
+	#{uphone} ,
+	#{uemail} ,
+	#{ctitle} ,
+	#{curl} ,
+	#{style1} ,
+	#{pos1} ,
+	#{bigo1}
+	)
+	</insert>
+	
+	<update id="updateSh001One"
+		parameterType="main.java.admin.satelite.kr.Sh001VO">
+		update tsh001 set 
+
+	chname = #{chname} ,
+	
+	chuname = #{chuname} ,
+	
+	chcode = #{chcode} ,
+	uid = #{uid} ,
+	uphone = #{uphone} ,
+	uemail= #{uemail} ,
+	ctitle= #{ctitle} ,
+	curl=#{curl} ,
+	style1=#{style1} ,
+	pos1=#{pos1} ,
+	bigo1=#{bigo1}
+		
+		where sn=#{sn}
+		
+	</update>
+	
+	
+	
+	
+
+
+	<sql id="includesh001">
+		WHERE sn != 0
+		<if
+			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+				separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY chname DESC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY chname DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY chname DESC
+		</if>
+
+
+	</sql>
+	
+	
+
+
+	<select id="selectSh001Count" resultType="Integer"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tsh001
+		<include refid="includesh001" />
+	</select>
+
+	<select id="selectSh001List"
+		resultType="main.java.admin.satelite.kr.Sh001VO"
+		parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT `sn` ,
+	`chname` ,chuname ,
+	`chcode` ,
+	`uid` ,
+	`uphone` ,
+	`uemail` ,
+	`ctitle` ,
+	`curl` ,
+	`style1` ,
+	`pos1` ,
+	`bigo1` from tsh001
+		<include refid="includesh001" />
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+	
+	
+	
+	
+
+	
+
+</mapper>
+
