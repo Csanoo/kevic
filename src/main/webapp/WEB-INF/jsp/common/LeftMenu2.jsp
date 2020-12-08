@@ -32,6 +32,7 @@
 
         <link href="/admin/design/assets/plugins/timepicker/css/timepicker.css" rel="stylesheet" type="text/css" />
         <link href="/admin/design/assets/plugins/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
+        <link href="/admin/design/assets/plugins/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css" />
         <!-- CORE CSS FRAMEWORK - END -->
 
         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 

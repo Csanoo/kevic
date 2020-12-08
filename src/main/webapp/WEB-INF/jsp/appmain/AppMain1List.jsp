@@ -25,31 +25,20 @@
     }
 </script>
 
-
-
-<form id="form1" name="form1" method="post">
-
-<input type="hidden" name="sn" id="sn"
-		value="" /> 
-		
-	<input type="hidden" name="orderKeyword" id="orderKeyword"
-		value="${searchVO.orderKeyword}" /> 
-		
-
 	<section id="main-content" class=" ">
 		<section class="wrapper"
 		style='margin-top: 60px; display: inline-block; width: 100%; padding: 15px 0 0 15px;'>
 			<div class="content-body">
 				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
-						<form name="searchFrm">
+						<form name="searchFrm" method="post">
 							<div class="row">
 								<div class="col-md-12 col-sm-12 col-xs-12">
 									<table id="customers">
 										<tr>
 											<td class="tdl" style="width: 25%">프로젝트</td>
 											<td style="width: 75%">
-												<select name="project">
+												<select name="sproject">
 													<option>프로젝트</option>
 													<option value="01">프로젝트01</option>
 													<option value="02">프로젝트02</option>
@@ -57,27 +46,46 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="tdl" style="width: 25%">컨텐츠 타입</td>
-											<td style="width: 75%">
-												<select name="type"  class="form-control" >
-													<c:forEach var="cateview" items="${cateview}"   varStatus="status">
-														<option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-													</c:forEach>
-
-												</select>
-											</td>
-										</tr>
-										<tr>
 											<td class="tdl" style="width: 25%">타이틀</td>
 											<td style="width: 75%">
-												<input name="title" type="text"	value="" class="form-control">
+												<input name="stitle" type="text"	value="${searchVO.stitle}" class="form-control">
 											</td>
 										</tr>
 										<tr>
 											<td class="tdl" style="width: 25%">등록</td>
 											<td style="width: 75%">
-												<input name="startDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
-												<input name="endDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
+												<div class="input-group js-datepicker">
+													<input type="text" class="form-control datepicker" name="startDate" value="${searchVO.startDate}" data-format="yyyy-mm-dd">
+													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
+												</div>
+												<div class="input-group js-datepicker">
+													<input type="text" class="form-control datepicker" name="endDate" value="${searchVO.endDate}" data-format="yyyy-mm-dd">
+													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
+												</div>
+												<!--
+												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
+												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
+												-->
+												<div class="btn-group js-dateperiod" data-toggle="buttons" data-target-name="searchDate">
+													<label class="btn btn-white btn-sm hand">
+														<input type="radio" name="searchPeriod" value="0">오늘
+													</label>
+													<label class="btn btn-white btn-sm hand">
+														<input type="radio" name="searchPeriod" value="6">7일
+													</label>
+													<label class="btn btn-white btn-sm hand">
+														<input type="radio" name="searchPeriod" value="14">15일
+													</label>
+													<label class="btn btn-white btn-sm hand">
+														<input type="radio" name="searchPeriod" value="29">1개월
+													</label>
+													<label class="btn btn-white btn-sm hand">
+														<input type="radio" name="searchPeriod" value="89">3개월
+													</label>
+													<label class="btn btn-white btn-sm hand  active">
+														<input type="radio" name="searchPeriod" value="364">1년
+													</label>
+												</div>
 											</td>
 										</tr>
 									</table>
@@ -86,17 +94,7 @@
 									</div>
 								</div>
 							</div>
-							<script>
-                                function fn_formSv() {
-                                    if ( document.searchFrm.title.value == ""){
-                                        alert("검색어를 입력해주세요.");
-                                        document.form.title.focus();
-                                        return false;
-                                    }
-                                    $("#loading").show();
-                                    document.searchFrm.submit();
-                                }
-							</script> 
+
 						</form>
 					</div>
 				</div>
@@ -112,9 +110,16 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
+			<form id="form1" name="form1" method="post">
+
+				<input type="hidden" name="sn" id="sn"
+					   value="" />
+
+				<input type="hidden" name="orderKeyword" id="orderKeyword"
+					   value="${searchVO.orderKeyword}" />
 
 
-			<div class="col-lg-12">
+				<div class="col-lg-12">
 				<section class="box ">
 
 					<div class="content-body">
@@ -222,5 +227,17 @@
                 error: function(data){location.href = "/admin/project";}
             });
         }
+    }
+
+    function fn_formSv() {
+
+        var frm = document.searchFrm;
+
+        if ( frm.title.value == ""){
+            alert("검색어를 입력해주세요.");
+            frm.title.focus();
+            return false;
+        }
+        frm.submit();
     }
 </script>

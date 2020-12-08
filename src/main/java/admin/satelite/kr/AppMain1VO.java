@@ -363,7 +363,6 @@ public class AppMain1VO {
 
 	public void setState(String state) {this.state = state;}
 
-
 	private int positionX = 0;
 
 	public int getPositionX() {

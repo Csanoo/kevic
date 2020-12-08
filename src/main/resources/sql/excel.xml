@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<insert id="insertExcel" parameterType="Map" >
+
+		insert into tbl_contents(
+		type, imageUrl, videoUrl, ctSource, title, keyword
+		)values
+		<foreach collection="excelContent" item="item" separator=",">
+			(
+			#{item.A},
+			#{item.B},
+			#{item.C},
+			#{item.D},
+			#{item.E},
+			#{item.F}
+			)
+		</foreach>
+	</insert>
+
+</mapper>
+

@@ -12,11 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileUtil {
 
 	
-	
-	
-	
 	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles) {
-		String filePath = "C:\\t8\\webapps\\ROOT\\images"; 
+		String filePath = "/upload/images";
 		
 		List<FileVO> filelist = new ArrayList<FileVO>();
 

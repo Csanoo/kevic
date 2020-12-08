@@ -27,11 +27,11 @@ public class AppMain1Ctr {
 	@RequestMapping(value = "/AppMain1")
 	public String AppMain1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
-				
-		
 		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
 
 		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
+
+
 
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
@@ -242,11 +242,11 @@ public class AppMain1Ctr {
 	}
 	
 	@RequestMapping(value = "/appmain1Delete")
-	public String appmain1Delete(HttpServletRequest request, SearchVO searchVO , AppMain1VO appmain1Info, 
-			ModelMap modelMap) {
+	public String appmain1Delete(HttpServletRequest request, SearchVO searchVO , AppMain1VO appmain1Info, ModelMap modelMap) {
 		
 		
 		String sn = request.getParameter("sn");
+
 		appmain1Svc.appmain1Delete(sn);
 
 		
@@ -256,7 +256,7 @@ public class AppMain1Ctr {
 
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-		
+
 		return "appmain/AppMain1List";
 	}
 	

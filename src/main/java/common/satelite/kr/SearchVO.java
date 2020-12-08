@@ -2,8 +2,18 @@ package main.java.common.satelite.kr;
 
 
 public class SearchVO extends  PageVO  {
-private String action = "";
-	
+
+	private String action = "";
+	private String startDate;
+	private String endDate;
+
+	private String pwd2dec;
+	private String mbid;
+	private String bgno;
+	private String mbno;
+
+
+
 	public String getAction() {
 		return action;
 	}
@@ -21,6 +31,7 @@ private String action = "";
 		this.pwd2dec = pwd2dec;
 	}
 
+
 	public String getMbid() {
 		return mbid;
 	}
@@ -28,6 +39,7 @@ private String action = "";
 	public void setMbid(String mbid) {
 		this.mbid = mbid;
 	}
+
 
 	public String getMbno() {
 		return mbno;
@@ -37,24 +49,54 @@ private String action = "";
 		this.mbno = mbno;
 	}
 
-	
-	public String getSdate() {
-		return sdate;
+
+	public String getStartDate() {
+		return startDate;
 	}
 
-	public void setSdate(String sdate) {
-		this.sdate = sdate;
+	public void setStartDate(String startDate) {
+		this.startDate = startDate;
 	}
 
-	public String getEdate() {
-		return edate;
+	public String getEndDate() {
+		return endDate;
 	}
 
-	public void setEdate(String edate) {
-		this.edate = edate;
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
 	}
 
-	
+
+	private String stitle = "";
+
+	public String getStitle() {	return stitle;}
+
+	public void setStitle(String stitle) {
+		this.stitle = stitle;
+	}
+
+
+	private String sproject = "";
+
+	public String getSproject() {return sproject;}
+
+	public void setSproject(String sproject) {
+		this.sproject = sproject;
+	}
+
+
+	private String stype = "";
+
+	public String getStype() {
+		return stype;
+	}
+
+	public void setStype(String stype) {
+		this.stype = stype;
+	}
+
+
+
 	private String userid;
 
 	public String getUserid() {
@@ -66,16 +108,8 @@ private String action = "";
 	}
 
 
-	private String sdate;
-	private String edate;
-	
-	private String pwd2dec;
-	private String mbid;
-	private String bgno;                       
-    private String mbno;
-    
     private String schCode;
-    
+
     private String orderKeyword = "";
 
     private String schSubCode = "";
@@ -88,9 +122,10 @@ private String action = "";
 		this.orderKeyword = orderKeyword;
 	}
 
-	private String searchKeyword = "";         
-    private String searchType = "";            
-    private String[] searchTypeArr;            
+	private String searchKeyword = "";
+	private String searchTitle = "";
+    private String searchType = "";
+    private String[] searchTypeArr;
 
     public String getBgno() {
         return bgno;
@@ -100,22 +135,28 @@ private String action = "";
         this.bgno = bgno;
     }
 
-    public String getSearchKeyword() {
-        return searchKeyword;
+    public String getSearchTitle() {
+        return searchTitle;
     }
-    
-    public void setSearchKeyword(String searchKeyword) {
-        this.searchKeyword = searchKeyword;
+
+    public void setSearchTitle(String searchTitle) {
+        this.searchTitle = searchTitle;
     }
-    
+
+	public String getSearchKeyword() {return searchKeyword;}
+
+	public void setSearchKeyword(String searchKeyword) {
+		this.searchKeyword = searchKeyword;
+	}
+
     public String getSearchType() {
         return searchType;
     }
-    
+
     public void setSearchType(String searchType) {
         this.searchType = searchType;
     }
-    
+
     public String[] getSearchTypeArr() {
         return searchType.split(",");
     }

@@ -41,7 +41,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 				</a>
 			</li>
 			<li>
-				<a href="/admin/RegExcel" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
+				<a href="/admin/excelForm" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
 					<span class="title">컨텐츠 엑셀 등록 </span>
 				</a>
 			</li>

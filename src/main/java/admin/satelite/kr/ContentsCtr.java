@@ -1,9 +1,16 @@
 package main.java.admin.satelite.kr;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.poi.hssf.usermodel.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +106,7 @@ public class ContentsCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "contents/List";
+        return "redirect:contents/List";
     }
 
     @RequestMapping(value = "/contentsUp")
@@ -127,7 +134,7 @@ public class ContentsCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "contents/List";
+        return "redirect:contents/List";
     }
 
     @RequestMapping(value = "/contentsDelete")
@@ -146,7 +153,7 @@ public class ContentsCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "contents/List";
+        return "redirect:contents/List";
     }
 
     @ResponseBody
@@ -173,24 +180,138 @@ public class ContentsCtr {
 
     @ResponseBody
     @RequestMapping(value = "/contentsChkPublish")
-    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo,
-                                   ModelMap modelMap) throws Exception{
+    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo, ModelMap modelMap) throws Exception{
         String result = "TRUE";
         try {
             int cnt = Integer.parseInt(request.getParameter("CNT"));
             //System.out.println(cnt);
             String rprtOdr = request.getParameter("RPRT_ODR");
+            String project = request.getParameter("project");
+            String category = request.getParameter("category");
             String [] strArray = rprtOdr.split(",");
+
+
+
             for(int i=0; i<cnt; i++) {
                 //System.out.println(i);
-                String sn = (String)strArray[i];
-                contentsSvc.notContentsPublish(sn);
+                Integer sn = Integer.valueOf((String)strArray[i]);
+
+                contentsInfo.setProject(project);
+                contentsInfo.setCategory(category);
+                contentsInfo.setSn(sn);
+
+                contentsSvc.ContentsPublish(contentsInfo);
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());
             result = "FALSE";
         }
         return "TRUE";
+    }
+
+    @RequestMapping(value="/ExcelDownload")
+    public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model) throws Exception {
+
+        HSSFWorkbook objWorkBook = new HSSFWorkbook();
+        HSSFSheet objSheet = null;
+        HSSFRow objRow = null;
+        HSSFCell objCell = null;       //셀 생성
+
+        //제목 폰트
+        HSSFFont font = objWorkBook.createFont();
+        font.setFontHeightInPoints((short)9);
+        font.setBoldweight((short)font.BOLDWEIGHT_BOLD);
+        font.setFontName("맑은고딕");
+
+        //제목 스타일에 폰트 적용, 정렬
+        HSSFCellStyle styleHd = objWorkBook.createCellStyle();    //제목 스타일
+        styleHd.setFont(font);
+        styleHd.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleHd.setVerticalAlignment (HSSFCellStyle.VERTICAL_CENTER);
+
+        objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
+
+        // 1행
+        objRow = objSheet.createRow(0);
+        objRow.setHeight ((short) 0x150);
+
+        objCell = objRow.createCell(0);
+        objCell.setCellValue("No");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(1);
+        objCell.setCellValue("이미지URL");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(2);
+        objCell.setCellValue("비디URL");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(3);
+        objCell.setCellValue("출처");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(4);
+        objCell.setCellValue("타이틀");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(5);
+        objCell.setCellValue("키워드");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(6);
+        objCell.setCellValue("등록일");
+        objCell.setCellStyle(styleHd);
+
+        List<?> listview  = contentsSvc.selectContentsList(searchVO);
+        for(int i=0; i<listview.size(); i++) {
+            int s = i + 1;
+            objRow = objSheet.createRow(s);
+            objRow.setHeight ((short) 0x150);
+
+            objCell = objRow.createCell(0);
+            objCell.setCellValue(listview.size() - i);
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(1);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(2);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(3);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(4);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(5);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(6);
+            objCell.setCellValue(listview.get(i).toString());
+            objCell.setCellStyle(styleHd);
+
+        }
+
+        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd");
+        Date currentTime = new Date ();
+        String mTime = mSimpleDateFormat.format ( currentTime );
+
+        response.setContentType("Application/Msexcel");
+        response.setHeader("Content-Disposition", "ATTachment; Filename=Contents_Bulk_upload_"+mTime+".xls");
+
+        OutputStream fileOut  = response.getOutputStream();
+        objWorkBook.write(fileOut);
+        fileOut.close();
+
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
     }
 
 }

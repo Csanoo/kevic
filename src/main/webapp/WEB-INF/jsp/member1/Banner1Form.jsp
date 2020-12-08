@@ -84,8 +84,8 @@
 
 
 
-												<div class="form-group" style="display: none">
-													<label class="form-label" for="field-1">배너 이미</label>
+												<div class="form-group" style="">
+													<label class="form-label" for="field-1">배너 이미지</label>
 													<div class="controls">
 														<c:forEach var="listview" items="${listview}"
 															varStatus="status">

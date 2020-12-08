@@ -12,10 +12,6 @@
     <input type="hidden" name="sn" id="sn"
            value="" />
 
-    <input type="hidden" name="orderKeyword" id="orderKeyword"
-           value="${searchVO.orderKeyword}" />
-
-
     <section id="main-content" class=" ">
         <div class="col-lg-12">
             <section class="box ">
@@ -37,51 +33,51 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">프로젝트</td>
                                             <td style="width: 75%">
-                                                <select >
-                                                    <option>프로젝트</option>
-                                                    <option value="01">프로젝트01</option>
-                                                    <option value="02">프로젝트02</option>
+                                                <select name="sproject">
+                                                    <option value="">프로젝트</option>
+                                                    <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
+                                                    <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
                                                 </select>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="tdl" style="width: 25%">컨텐츠 타입</td>
                                             <td style="width: 75%">
-                                                <select name="type"  class="form-control" >
+                                                <select name="stype"  class="form-control" >
+                                                    <option value="">컨텐츠타입</option>
                                                     <c:forEach var="cateview" items="${cateview}"   varStatus="status">
-                                                        <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+                                                        <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
                                                     </c:forEach>
-
                                                 </select>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td class="tdl" style="width: 25%">타이틀</td>
                                             <td style="width: 75%">
-                                                <input name="title" type="text"	value="" class="form-control">
+                                                <input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="tdl" style="width: 25%">등록</td>
+                                            <td class="tdl" style="width: 25%">키워드</td>
                                             <td style="width: 75%">
-                                                <input name="startDate" type="text"	value="" class="form-control"> ~
-                                                <input name="endDate" type="text"	value="" class="form-control">
+                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="tdl" style="width: 25%">등록 기간</td>
+                                            <td style="width: 75%">
+                                                <input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
+                                                <input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
                                             </td>
                                         </tr>
                                     </table>
-                                    <div class="form-group" style="margin-top: 20px">
+                                    <div class="form-group" style="margin-top: 20px;float:right">
                                         <button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
                                     </div>
                                 </div>
                             </div>
                             <script>
                                 function fn_formSv() {
-
-                                    if ( document.form1.title.value == ""){
-                                        alert("검색어를 입력해주세요.");
-                                        document.form.title.focus();
-                                        return false;
-                                    }
                                     $("#loading").show();
                                     document.form1.submit();
                                 }
@@ -111,11 +107,18 @@
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
-                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal"> 전시하기</button>
-                                    <button type="button" class="btn btn-orange" onclick="deletePost()">선택 삭제</button>
+                                    <button type="button" class="btn btn-orange" >선택수정</button>
+                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">  컨텐츠 전시</button>
+                                    <button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
+                                    <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
                                 </li>
-                                <li style="float: left;">&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">신규</button>
+                                <li style="float: left;">
+                                    <select name="orderKeyword" id="orderKeyword"  >
+                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+                                    </select>
                                 </li>
                             </ul>
                         </div>
@@ -125,12 +128,13 @@
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <table class="table">
+
                                     <thead>
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
                                         <th>이미지</th>
-                                        <th>출처이미지URL</th>
+                                        <th >출처이미지URL</th>
                                         <th>영상URL</th>
                                         <th>타이틀</th>
                                         <th>등록일</th>
@@ -138,16 +142,20 @@
                                     </tr>
                                     </thead>
                                     <tbody>
+
                                     <c:forEach var="listview" items="${listview}" varStatus="status">
                                         <tr>
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td>${listview.imageUrl}</td>
-                                            <td>${listview.videoUrl}</td>
+                                            <td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
+                                            <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
                                             <td>${listview.title}</td>
-                                            <td>${listview.regDate}</td>
-                                            <td><button type="button" class="btn btn-gray" onclick="fn_formGo()">노출</button>
+                                            <td>
+                                                    ${listview.regDate}<br>
+                                                   등록자
+                                            </td>
+                                            <td>
                                                 <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/projectDelete?sn=${listview.sn}'">삭제</button>
                                             </td>
                                         </tr>
@@ -168,17 +176,13 @@
         </section>
     </section>
 
-
+    #packageCourse_slide > div
 </form>
 <script>
     function fn_formSubmit() {
         document.form1.submit();
     }
 
-    function fn_orderKey(_a) {
-        document.form1.orderKeyword.value = _a;
-        document.form1.submit();
-    }
 
     function fn_formGo() {
         location.href = "/admin/contentsForm";
@@ -204,7 +208,7 @@
         else{
             $.ajax({
                 type: "POST",
-                url: "/admin/prtChkDelete",
+                url: "/admin/contentsChkPublish",
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
                 dataType:"http",
                 success: function(jdata){
@@ -222,9 +226,10 @@
     }
 
     function publishPost(){
-        if(confirm('컨텐츠를 선택하세요'){
             var cnt = $("input[name='chkSn']:checked").length;
             var arr = new Array();
+            var pubcate = $("#pubcate").val();
+            var pubproject = $("#pubproject").val();
             $("input[name='chkSn']:checked").each(function () {
                 arr.push($(this).attr('value'));
             });
@@ -234,8 +239,8 @@
             else {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/prtChkPublish",
-                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                    url: "/admin/contentsChkPublish",
+                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&cate="+pubcate+"&project"+pubproject,
                     dataType: "http",
                     success: function (jdata) {
                         alert(jdata);
@@ -247,14 +252,11 @@
                         }
                     },
                     error: function (data) {
-                        alert(data);
                         location.href = "/admin/project";
                     }
                 });
             }
-        }else{
-           return false;
-        }
+
     }
 </script>
 
@@ -264,15 +266,15 @@
 <script>
 
     $(function(){
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
-
                 $("input[name='chkSn']").prop('checked', true);
-
             } else {
-
                 $("input[name='chkSn']").prop('checked', false);
-
             }
         });
     });
@@ -292,7 +294,7 @@
                     <tr>
                         <td class="tdl" style="width: 25%">프로젝트</td>
                         <td style="width: 75%">
-                            <select name="project" >
+                            <select name="project" id="pubproject">
                                 <option>프로젝트</option>
                                 <option value="01">프로젝트01</option>
                                 <option value="02">프로젝트02</option>
@@ -302,7 +304,7 @@
                     <tr>
                         <td class="tdl" style="width: 25%">카테고리</td>
                         <td style="width: 75%">
-                            <select name="type"  class="form-control" >
+                            <select name="category" id="pubcate" class="form-control" >
                                 <c:forEach var="cateview" items="${cateview}"   varStatus="status">
                                     <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
                                 </c:forEach>
@@ -313,7 +315,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">닫기</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">등록</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>

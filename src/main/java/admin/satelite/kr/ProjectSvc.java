@@ -115,7 +115,7 @@ public class ProjectSvc {
 
     public void notProjectPublish(String param) {
 
-        sqlSession.delete("notProjectPublish", param);
+        sqlSession.update("notProjectPublish", param);
     }
 
 

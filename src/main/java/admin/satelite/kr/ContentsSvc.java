@@ -113,10 +113,20 @@ public class ContentsSvc {
 
 
 
-    public void notContentsPublish(String param) {
+    public void ContentsPublish(ContentsVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
 
-        sqlSession.delete("notContentsPublish", param);
+        try {
+            sqlSession.update("ContentsPublish", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+
+
     }
-
 
 }

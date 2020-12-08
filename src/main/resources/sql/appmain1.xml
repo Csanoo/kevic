@@ -77,14 +77,9 @@
 
 	<sql id="includeAppMain1">
 		WHERE appkind = '1'
-		<if
-			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
-			<foreach item="item" index="index" collection="searchTypeArr"
-				separator=" OR " open="AND (" close=")">
-				${item} LIKE CONCAT('%',
-				#{searchKeyword},'%' )
-			</foreach>
-		</if>
+		<if test='stitle != null and stitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{stitle}, '%') ]]></if>
+		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
+		<if test='(sdate != null and edate != null ) or (sdate != "" and edate != "" ) '><![CDATA[  AND sdate LIKE CONCAT('%', #{sdate}, '%') ]]></if>
 
 		<if test="orderKeyword=='1'">
 			ORDER BY sn ASC
@@ -111,13 +106,13 @@
 		</if>
 
 		<if test="orderKeyword=='1'">
-			ORDER BY sn ASC
+			ORDER BY sn DESC
 		</if>
 		<if test="orderKeyword=='2'">
 			ORDER BY sn DESC
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sn ASC
+			ORDER BY sn DESC
 		</if>
 
 
@@ -131,8 +126,7 @@
 	</select>
 
 	<select id="selectAppMain1List"
-		resultType="main.java.admin.satelite.kr.AppMain1VO"
-		parameterType="main.java.common.satelite.kr.SearchVO">
+		resultType="main.java.admin.satelite.kr.AppMain1VO"	parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn, project, code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType,regDate from tbanner2
 		<include refid="includeAppMain1" />
 

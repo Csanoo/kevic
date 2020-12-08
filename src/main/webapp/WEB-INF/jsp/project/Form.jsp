@@ -52,7 +52,7 @@
 
 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
 
-												<td style="width: 35%">
+												<td style="width: 35%" colspan="3">
 													<select name="project"  class="form-control">
 														<option>프로젝트</option>
 														<option value="001">프로젝트01</option>
@@ -60,51 +60,65 @@
 													</select>
 												</td>
 											
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">컨텐츠 타입</td>
+												<td style="width: 35%" colspan="3">
+													<select name="type"  class="form-control" >
+														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
+															<option value="${cateview.code2}" <c:if test="${projectInfo.type eq cateview.code2}">selected</c:if>>${cateview.type}</option>
+														</c:forEach>
 
-
+													</select>
+												</td>
+											</tr>
+											<tr>
 												<td class="tdl" style="width: 15%">전시 카테고리</td>
-
-												<td style="width: 35%">
+												<td style="width: 35%" colspan="3">
 													<select name="category"  class="form-control" >
 														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
 															<option value="${cateview.code2}" <c:if test="${projectInfo.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
 														</c:forEach>
 
 													</select>
-
-													</td>
-
+												</td>
 											</tr>
 											<tr>
 
 												<td class="tdl" style="width: 15%">출처 이미지 URL</td>
 
-												<td style="width: 35%"><input name="imageUrl" type="text"  class="form-control"></td>
-
+												<td style="width: 35%" colspan="3"><input name="imageUrl" type="text"  class="form-control"></td>
+											</tr>
+											<tr>
 												<td class="tdl" style="width: 15%">영상 URL</td>
 
-												<td style="width: 35%"><input name="videoUrl" type="text"  class="form-control"></td>
+												<td style="width: 35%" colspan="3"><input name="videoUrl" type="text"  class="form-control"></td>
 											</tr>
 											<tr>
 												<td class="tdl" style="width: 15%">출처</td>
 
-												<td style="width: 35%">
+												<td style="width: 35%" colspan="3">
 													<select name="ctSource"  class="form-control" >
 														<c:forEach var="sourceview" items="${sourceview}"   varStatus="status">
 															<option value="${sourceview.code2}" <c:if test="${projectInfo.ctSource eq sourceview.code2}">selected</c:if>>${sourceview.title}</option>
 														</c:forEach>
 													</select>
 												</td>
+											</tr>
+											<tr>
 												<td class="tdl" style="width: 15%">타이틀</td>
-												<td style="width: 35%"><input name="title" type="text"	class="form-control"></td>
+												<td style="width: 35%"  colspan="3"><input name="title" type="text"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">키워드</td>
+												<td style="width: 35%"  colspan="3"><input name="keyword" type="text"	class="form-control"></td>
 											</tr>
 										</table>
 
 										<div class="form-group" style="margin-top: 10px">
-											<button type="button" class="btn btn-gray"
-												onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-orange"
-												onclick="fn_formSv()">저장</button>
+											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
+											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">미리보기</button>
+											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
 										</div>
 
 									</div>
