@@ -16,6 +16,14 @@ public class ContentsVO {
         this.sn = sn;
     }
 
+    private String project="";
+    public String getProject() {
+        return project;
+    }
+    public void setProject(String project) {
+        this.project = project;
+    }
+
 
     private String category="";
     public String category() {return category;}
