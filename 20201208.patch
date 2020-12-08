@@ -1,0 +1,2987 @@
+Index: src/main/java/admin/satelite/kr/ExcelCtr.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ExcelCtr.java	(date 1607404400000)
++++ src/main/java/admin/satelite/kr/ExcelCtr.java	(date 1607404400000)
+@@ -0,0 +1,139 @@
++package main.java.admin.satelite.kr;
++
++
++
++import org.springframework.ui.ModelMap;
++import org.springframework.ui.Model;
++import org.springframework.web.bind.annotation.*;
++import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpSession;
++import javax.servlet.http.HttpServletResponse;
++
++import org.springframework.web.multipart.MultipartFile;
++import org.springframework.web.servlet.ModelAndView;
++
++import java.io.File;
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Controller;
++import org.springframework.web.bind.annotation.RequestMapping;
++import java.util.Date;
++import java.text.SimpleDateFormat;
++
++
++import java.io.IOException;
++
++import org.springframework.web.bind.annotation.ResponseBody;
++import java.io.OutputStream;
++import org.springframework.web.multipart.MultipartHttpServletRequest;
++import main.java.common.satelite.kr.SearchVO;
++
++import org.apache.poi.hssf.usermodel.HSSFCell;
++import org.apache.poi.hssf.usermodel.HSSFCellStyle;
++import org.apache.poi.hssf.usermodel.HSSFFont;
++import org.apache.poi.hssf.usermodel.HSSFRow;
++import org.apache.poi.hssf.usermodel.HSSFSheet;
++import org.apache.poi.hssf.usermodel.HSSFWorkbook;
++
++@Controller
++public class ExcelCtr {
++
++    @Autowired
++    private ExcelSvc excelSvc;
++
++
++    @RequestMapping(value = "/excelForm")
++    public String excelForm(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
++        return "excel/Form";
++    }
++
++   // @ResponseBody
++    @RequestMapping(value = "/excelUploadAjax", method = RequestMethod.POST)
++    public String excelUploadAjax(MultipartHttpServletRequest request)  throws Exception{
++        MultipartFile excelFile =request.getFile("excelFile");
++        System.out.println("엑셀 파일 업로드 컨트롤러");
++        if(excelFile==null || excelFile.isEmpty()){
++            throw new RuntimeException("엑셀파일을 선택 해 주세요.");
++        }
++        String realPath = request.getSession().getServletContext().getRealPath("/upload/");
++        File destFile = new File(""+excelFile.getOriginalFilename());
++        try{
++            excelFile.transferTo(destFile);
++        }catch(IllegalStateException | IOException e){
++            throw new RuntimeException(e.getMessage(),e);
++        }
++
++        excelSvc.excelUpload(destFile);
++
++        //FileUtils.delete(destFile.getAbsolutePath());
++
++    //  ModelAndView view = new ModelAndView();
++      //  view.setViewName("");
++        return "redirect:contents";
++    }
++    @RequestMapping(value="/ExcelSample")
++    public void ExcelPoi(HttpServletResponse response, Model model) throws Exception {
++
++        HSSFWorkbook objWorkBook = new HSSFWorkbook();
++        HSSFSheet objSheet = null;
++        HSSFRow objRow = null;
++        HSSFCell objCell = null;       //셀 생성
++
++        //제목 폰트
++        HSSFFont font = objWorkBook.createFont();
++        font.setFontHeightInPoints((short)9);
++        font.setBoldweight((short)font.BOLDWEIGHT_BOLD);
++        font.setFontName("맑은고딕");
++
++        //제목 스타일에 폰트 적용, 정렬
++        HSSFCellStyle styleHd = objWorkBook.createCellStyle();    //제목 스타일
++        styleHd.setFont(font);
++        styleHd.setAlignment(HSSFCellStyle.ALIGN_CENTER);
++        styleHd.setVerticalAlignment (HSSFCellStyle.VERTICAL_CENTER);
++
++        objSheet = objWorkBook.createSheet("첫번째 시트");     //워크시트 생성
++
++        // 1행
++        objRow = objSheet.createRow(0);
++        objRow.setHeight ((short) 0x150);
++
++        objCell = objRow.createCell(0);
++        objCell.setCellValue("컨텐츠타입");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(1);
++        objCell.setCellValue("이미지URL");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(2);
++        objCell.setCellValue("비디URL");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(3);
++        objCell.setCellValue("출처");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(4);
++        objCell.setCellValue("타이틀");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(5);
++        objCell.setCellValue("키워드");
++        objCell.setCellStyle(styleHd);
++
++        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd");
++        Date currentTime = new Date ();
++        String mTime = mSimpleDateFormat.format ( currentTime );
++
++        response.setContentType("Application/Msexcel");
++        response.setHeader("Content-Disposition", "ATTachment; Filename=Contents_Bulk_upload_"+mTime+".xls");
++
++        OutputStream fileOut  = response.getOutputStream();
++        objWorkBook.write(fileOut);
++        fileOut.close();
++
++        response.getOutputStream().flush();
++        response.getOutputStream().close();
++    }
++}
++
+Index: src/main/java/common/satelite/kr/ExcelCellRef.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/ExcelCellRef.java	(date 1607404400000)
++++ src/main/java/common/satelite/kr/ExcelCellRef.java	(date 1607404400000)
+@@ -0,0 +1,63 @@
++package main.java.common.satelite.kr;
++
++import org.apache.poi.ss.usermodel.Cell;
++import org.apache.poi.ss.util.CellReference;
++
++
++public class ExcelCellRef {
++        /**
++         * Cell에 해당하는 Column Name을 가젼온다(A,B,C..)
++         * 만약 Cell이 Null이라면 int cellIndex의 값으로
++         * Column Name을 가져온다.
++         * @param cell
++         * @param cellIndex
++         * @return
++         */
++        public static String getName(Cell cell, int cellIndex) {
++            int cellNum = 0;
++            if(cell != null) {
++                cellNum = cell.getColumnIndex();
++            }
++            else {
++                cellNum = cellIndex;
++            }
++
++            return CellReference.convertNumToColString(cellNum);
++        }
++
++        public static String getValue(Cell cell) {
++            String value = "";
++
++            if(cell == null) {
++                value = "";
++            }
++            else {
++                if( cell.getCellType() == Cell.CELL_TYPE_FORMULA ) {
++                    value = cell.getCellFormula();
++                }
++                else if( cell.getCellType() == Cell.CELL_TYPE_NUMERIC ) {
++                    value = cell.getNumericCellValue() + "";
++                }
++                else if( cell.getCellType() == Cell.CELL_TYPE_STRING ) {
++                    value = cell.getStringCellValue();
++                }
++                else if( cell.getCellType() == Cell.CELL_TYPE_BOOLEAN ) {
++                    value = cell.getBooleanCellValue() + "";
++                }
++                else if( cell.getCellType() == Cell.CELL_TYPE_ERROR ) {
++                    value = cell.getErrorCellValue() + "";
++                }
++                else if( cell.getCellType() == Cell.CELL_TYPE_BLANK ) {
++                    value = "";
++                }
++                else {
++                    value = cell.getStringCellValue();
++                }
++            }
++
++            return value;
++        }
++
++
++
++}
+Index: src/main/java/common/satelite/kr/ExcelRead.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/ExcelRead.java	(date 1607404400000)
++++ src/main/java/common/satelite/kr/ExcelRead.java	(date 1607404400000)
+@@ -0,0 +1,129 @@
++package main.java.common.satelite.kr;
++
++import java.util.ArrayList;
++import java.util.HashMap;
++import java.util.List;
++import java.util.Map;
++
++
++
++import org.apache.poi.ss.usermodel.Cell;
++import org.apache.poi.ss.usermodel.Row;
++import org.apache.poi.ss.usermodel.Sheet;
++import org.apache.poi.ss.usermodel.Workbook;
++
++
++
++public class ExcelRead {
++    public static List<Map<String, String>> read(ExcelReadOption excelReadOption) {
++        //엑셀 파일 자체
++        //엑셀파일을 읽어 들인다.
++        //FileType.getWorkbook() <-- 파일의 확장자에 따라서 적절하게 가져온다.
++        Workbook wb = ExcelFileType.getWorkbook(excelReadOption.getFilePath());
++        /**
++         * 엑셀 파일에서 첫번째 시트를 가지고 온다.
++         */
++        Sheet sheet = wb.getSheetAt(0);
++
++        System.out.println("Sheet 이름: "+ wb.getSheetName(0));
++        System.out.println("데이터가 있는 Sheet의 수 :" + wb.getNumberOfSheets());
++        /**
++         * sheet에서 유효한(데이터가 있는) 행의 개수를 가져온다.
++         */
++        int numOfRows = sheet.getPhysicalNumberOfRows();
++        int numOfCells = 0;
++
++        Row row = null;
++        Cell cell = null;
++
++        String cellName = "";
++        /**
++         * 각 row마다의 값을 저장할 맵 객체
++         * 저장되는 형식은 다음과 같다.
++         * put("A", "이름");
++         * put("B", "게임명");
++         */
++        Map<String, String> map = null;
++        /*
++         * 각 Row를 리스트에 담는다.
++         * 하나의 Row를 하나의 Map으로 표현되며
++         * List에는 모든 Row가 포함될 것이다.
++         */
++        List<Map<String, String>> result = new ArrayList<Map<String, String>>();
++        /**
++         * 각 Row만큼 반복을 한다.
++         */
++        for(int rowIndex = excelReadOption.getStartRow() - 1; rowIndex < numOfRows; rowIndex++) {
++            /*
++             * 워크북에서 가져온 시트에서 rowIndex에 해당하는 Row를 가져온다.
++             * 하나의 Row는 여러개의 Cell을 가진다.
++             */
++            row = sheet.getRow(rowIndex);
++
++            if(row != null) {
++                /*
++                 * 가져온 Row의 Cell의 개수를 구한다.
++                 */
++                numOfCells = row.getPhysicalNumberOfCells();
++                /*
++                 * 데이터를 담을 맵 객체 초기화
++                 */
++                map = new HashMap<String, String>();
++                /*
++                 * cell의 수 만큼 반복한다.
++                 */
++                for(int cellIndex = 0; cellIndex < numOfCells; cellIndex++) {
++                    /*
++                     * Row에서 CellIndex에 해당하는 Cell을 가져온다.
++                     */
++                    cell = row.getCell(cellIndex);
++                    /*
++                     * 현재 Cell의 이름을 가져온다
++                     * 이름의 예 : A,B,C,D,......
++                     */
++                    cellName = ExcelCellRef.getName(cell, cellIndex);
++                    /*
++                     * 추출 대상 컬럼인지 확인한다
++                     * 추출 대상 컬럼이 아니라면,
++                     * for로 다시 올라간다
++                     */
++                    if( !excelReadOption.getOutputColumns().contains(cellName) ) {
++                        continue;
++                    }
++                    /*
++                     * map객체의 Cell의 이름을 키(Key)로 데이터를 담는다.
++                     */
++                    map.put(cellName, ExcelCellRef.getValue(cell));
++                }
++                /*
++                 * 만들어진 Map객체를 List로 넣는다.
++                 */
++                result.add(map);
++
++            }
++
++        }
++
++        return result;
++
++    }
++
++
++
++//        public static void main(String[] args) {
++//
++//            ExcelReadOption ro = new ExcelReadOption();
++//            ro.setFilePath("D:/game.xlsx");
++//            ro.setOutputColumns("A", "B");
++//            ro.setStartRow(1);
++//
++//            List<Map<String, String>> result = ExcelRead.read(ro);
++//
++//            for(Map<String, String> map : result) {
++//                System.out.println(map.get("A"));
++//            }
++//        }
++
++
++}
++
+Index: .idea/uiDesigner.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/uiDesigner.xml	(date 1607404400000)
++++ .idea/uiDesigner.xml	(date 1607404400000)
+@@ -0,0 +1,124 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="Palette2">
++    <group name="Swing">
++      <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="1" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="com.intellij.uiDesigner.VSpacer" tooltip-text="Vertical Spacer" icon="/com/intellij/uiDesigner/icons/vspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="1" anchor="0" fill="2" />
++      </item>
++      <item class="javax.swing.JPanel" icon="/com/intellij/uiDesigner/icons/panel.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JScrollPane" icon="/com/intellij/uiDesigner/icons/scrollPane.png" removable="false" auto-create-binding="false" can-attach-label="true">
++        <default-constraints vsize-policy="7" hsize-policy="7" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JButton" icon="/com/intellij/uiDesigner/icons/button.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="0" fill="1" />
++        <initial-values>
++          <property name="text" value="Button" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JRadioButton" icon="/com/intellij/uiDesigner/icons/radioButton.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="RadioButton" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JCheckBox" icon="/com/intellij/uiDesigner/icons/checkBox.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="3" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="CheckBox" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JLabel" icon="/com/intellij/uiDesigner/icons/label.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="8" fill="0" />
++        <initial-values>
++          <property name="text" value="Label" />
++        </initial-values>
++      </item>
++      <item class="javax.swing.JTextField" icon="/com/intellij/uiDesigner/icons/textField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JPasswordField" icon="/com/intellij/uiDesigner/icons/passwordField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JFormattedTextField" icon="/com/intellij/uiDesigner/icons/formattedTextField.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1">
++          <preferred-size width="150" height="-1" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextArea" icon="/com/intellij/uiDesigner/icons/textArea.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTextPane" icon="/com/intellij/uiDesigner/icons/textPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JEditorPane" icon="/com/intellij/uiDesigner/icons/editorPane.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JComboBox" icon="/com/intellij/uiDesigner/icons/comboBox.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="2" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JTable" icon="/com/intellij/uiDesigner/icons/table.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JList" icon="/com/intellij/uiDesigner/icons/list.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="2" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTree" icon="/com/intellij/uiDesigner/icons/tree.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3">
++          <preferred-size width="150" height="50" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JTabbedPane" icon="/com/intellij/uiDesigner/icons/tabbedPane.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSplitPane" icon="/com/intellij/uiDesigner/icons/splitPane.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="3" hsize-policy="3" anchor="0" fill="3">
++          <preferred-size width="200" height="200" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JSpinner" icon="/com/intellij/uiDesigner/icons/spinner.png" removable="false" auto-create-binding="true" can-attach-label="true">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSlider" icon="/com/intellij/uiDesigner/icons/slider.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="8" fill="1" />
++      </item>
++      <item class="javax.swing.JSeparator" icon="/com/intellij/uiDesigner/icons/separator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="6" anchor="0" fill="3" />
++      </item>
++      <item class="javax.swing.JProgressBar" icon="/com/intellij/uiDesigner/icons/progressbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JToolBar" icon="/com/intellij/uiDesigner/icons/toolbar.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="6" anchor="0" fill="1">
++          <preferred-size width="-1" height="20" />
++        </default-constraints>
++      </item>
++      <item class="javax.swing.JToolBar$Separator" icon="/com/intellij/uiDesigner/icons/toolbarSeparator.png" removable="false" auto-create-binding="false" can-attach-label="false">
++        <default-constraints vsize-policy="0" hsize-policy="0" anchor="0" fill="1" />
++      </item>
++      <item class="javax.swing.JScrollBar" icon="/com/intellij/uiDesigner/icons/scrollbar.png" removable="false" auto-create-binding="true" can-attach-label="false">
++        <default-constraints vsize-policy="6" hsize-policy="0" anchor="0" fill="2" />
++      </item>
++    </group>
++  </component>
++</project>
+\ No newline at end of file
+Index: src/main/java/common/satelite/kr/ExcelReadOption.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/ExcelReadOption.java	(date 1607404400000)
++++ src/main/java/common/satelite/kr/ExcelReadOption.java	(date 1607404400000)
+@@ -0,0 +1,62 @@
++package main.java.common.satelite.kr;
++
++import java.util.ArrayList;
++import java.util.List;
++
++public class ExcelReadOption {
++    /**
++     * 엑셀파일의 경로
++     */
++    private String filePath;
++
++    /**
++     * 추출할 컬럼 명
++     */
++    private List<String> outputColumns;
++
++    /**
++     * 추출을 시작할 행 번호
++     */
++    private int startRow;
++
++    public String getFilePath() {
++        return filePath;
++    }
++    public void setFilePath(String filePath) {
++        this.filePath = filePath;
++    }
++    public List<String> getOutputColumns() {
++
++        List<String> temp = new ArrayList<String>();
++        temp.addAll(outputColumns);
++
++        return temp;
++    }
++    public void setOutputColumns(List<String> outputColumns) {
++
++        List<String> temp = new ArrayList<String>();
++        temp.addAll(outputColumns);
++
++        this.outputColumns = temp;
++    }
++
++    public void setOutputColumns(String ... outputColumns) {
++
++        if(this.outputColumns == null) {
++            this.outputColumns = new ArrayList<String>();
++        }
++
++        for(String ouputColumn : outputColumns) {
++            this.outputColumns.add(ouputColumn);
++        }
++    }
++
++    public int getStartRow() {
++        return startRow;
++    }
++    public void setStartRow(int startRow) {
++        this.startRow = startRow;
++    }
++}
++
++
+Index: src/main/java/admin/satelite/kr/ExcelVO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ExcelVO.java	(date 1607404400000)
++++ src/main/java/admin/satelite/kr/ExcelVO.java	(date 1607404400000)
+@@ -0,0 +1,164 @@
++package main.java.admin.satelite.kr;
++
++
++public class ExcelVO {
++
++    private Integer sn;
++    public Integer getSn() {
++        return sn;
++    }
++    public void setSn(Integer sn) {
++        this.sn = sn;
++    }
++
++
++    private String category="";
++    public String category() {return category;}
++    public void setCategory(String category) {
++        this.category = category;
++    }
++    public String getCategory() {
++        return category;
++    }
++
++    private String type="";
++    public String type() {
++        return type;
++    }
++    public void setType(String type) {
++        this.type = type;
++    }
++    public String getType() {
++        return type;
++    }
++
++    private String imageUrl="";
++    public String imageUrl() {
++        return imageUrl;
++    }
++    public void setImageUrl(String imageUrl) {
++        this.imageUrl = imageUrl;
++    }
++    public String getImageUrl() {
++        return imageUrl;
++    }
++
++
++    private String videoUrl="";
++    public String videoUrl() {
++        return videoUrl;
++    }
++    public void setVideoUrl(String videoUrl) {
++        this.videoUrl = videoUrl;
++    }
++    public String getVideoUrl() {
++        return videoUrl;
++    }
++
++
++    private String title="";
++    public String title() {
++        return title;
++    }
++    public void setTitle(String title) {
++        this.title = title;
++    }
++    public String getTitle() {
++        return title;
++    }
++
++    private String ctSource="";
++    public String ctSource() {
++        return ctSource;
++    }
++    public void setCtSource(String ctSource) {
++        this.ctSource = ctSource;
++    }
++    public String getCtSource() {
++        return ctSource;
++    }
++
++    private String regDate="";
++    public String getRegDate() {
++        return regDate;
++    }
++    public void setRegdate(String regDate) {
++        this.regDate = regDate;
++    }
++
++
++    private String code1="";
++    public String getCode1() {
++        return code1;
++    }
++    public void setCode1(String code1) {
++        this.code1 = code1;
++    }
++    private String code2="";
++    public String getCode2() {
++        return code2;
++    }
++    public void setCode2(String code2) {
++        this.code2 = code2;
++    }
++
++    private String code1memo="";
++    public String getCode1memo() {
++        return code1memo;
++    }
++    public void setCode1memo(String code1memo) {
++        this.code1memo = code1memo;
++    }
++
++    public String getMemo() {
++        return memo;
++    }
++    public void setMemo(String memo) {
++        this.memo = memo;
++    }
++
++    private String url="";
++
++    public String getUrl() {
++        return url;
++    }
++    public void setUrl(String url) {
++        this.url = url;
++    }
++
++
++    private String memo="";
++
++
++    private String mobile="";
++    public String getMobile() {
++        return mobile;
++    }
++    public void setMobile(String mobile) {
++        this.mobile = mobile;
++    }
++    public String getEmail() {
++        return email;
++    }
++    public void setEmail(String email) {
++        this.email = email;
++    }
++    public String getWdate() {
++        return wdate;
++    }
++    public void setWdate(String wdate) {
++        this.wdate = wdate;
++    }
++    private String email="";
++    private String wdate="";
++
++
++    private String state="";
++    public String getState() {
++        return state;
++    }
++    public void setState(String state) {
++        this.state = state;
++    }
++
++}
+Index: src/main/java/admin/satelite/kr/ExcelSvc.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ExcelSvc.java	(date 1607404400000)
++++ src/main/java/admin/satelite/kr/ExcelSvc.java	(date 1607404400000)
+@@ -0,0 +1,57 @@
++package main.java.admin.satelite.kr;
++
++import java.io.IOException;
++import java.util.Map;
++
++import org.mybatis.spring.SqlSessionTemplate;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.jdbc.datasource.DataSourceTransactionManager;
++
++import java.io.File;
++import java.util.HashMap;
++import java.util.List;
++
++import main.java.common.satelite.kr.ExcelReadOption;
++import main.java.common.satelite.kr.ExcelRead;
++import org.springframework.stereotype.Service;
++import org.springframework.transaction.TransactionDefinition;
++import org.springframework.transaction.TransactionException;
++import org.springframework.transaction.TransactionStatus;
++import org.springframework.transaction.support.DefaultTransactionDefinition;
++
++import javax.annotation.Resource;
++
++@Service
++public class ExcelSvc {
++
++
++    @Autowired
++    private SqlSessionTemplate sqlSession;
++    @Autowired
++    private DataSourceTransactionManager txManager;
++
++    public void excelUpload(File destFile) {
++        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
++        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
++        TransactionStatus status = txManager.getTransaction(def);
++        ExcelReadOption excelReadOption = new ExcelReadOption();
++        //		파일경로 추가
++        excelReadOption.setFilePath(destFile.getAbsolutePath());
++        //      추출할 컬럼 명 추가
++        excelReadOption.setOutputColumns("A","B","C","D","E","F");
++        // 시작 행
++        excelReadOption.setStartRow(2);
++
++        List<Map<String, String>>excelContent = ExcelRead.read(excelReadOption);
++
++        Map<String, Object> paramMap = new HashMap<String, Object>();
++        paramMap.put("excelContent", excelContent);
++
++        try {
++            sqlSession.insert("insertExcel", paramMap);
++            txManager.commit(status);
++        } catch (TransactionException ex) {
++            txManager.rollback(status);
++        }
++    }
++}
+Index: src/main/resources/sql/excel.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/sql/excel.xml	(date 1607404400000)
++++ src/main/resources/sql/excel.xml	(date 1607404400000)
+@@ -0,0 +1,24 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
++
++<mapper namespace="satelite.kr">
++
++	<insert id="insertExcel" parameterType="Map" >
++
++		insert into tbl_contents(
++		type, imageUrl, videoUrl, ctSource, title, keyword
++		)values
++		<foreach collection="excelContent" item="item" separator=",">
++			(
++			#{item.A},
++			#{item.B},
++			#{item.C},
++			#{item.D},
++			#{item.E},
++			#{item.F}
++			)
++		</foreach>
++	</insert>
++
++</mapper>
++
+Index: src/main/webapp/WEB-INF/jsp/common/LeftMenu2.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/common/LeftMenu2.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/common/LeftMenu2.jsp	(date 1607404400000)
+@@ -32,6 +32,7 @@
+ 
+         <link href="/admin/design/assets/plugins/timepicker/css/timepicker.css" rel="stylesheet" type="text/css" />
+         <link href="/admin/design/assets/plugins/datepicker/css/datepicker.css" rel="stylesheet" type="text/css" />
++        <link href="/admin/design/assets/plugins/datetimepicker/css/datetimepicker.css" rel="stylesheet" type="text/css" />
+         <!-- CORE CSS FRAMEWORK - END -->
+ 
+         <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
+Index: src/main/java/admin/satelite/kr/AppMain1Ctr.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/AppMain1Ctr.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/AppMain1Ctr.java	(date 1607404400000)
+@@ -27,12 +27,12 @@
+ 	@RequestMapping(value = "/AppMain1")
+ 	public String AppMain1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+ 
+-				
+-		
+ 		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
+ 
+ 		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
+ 
++
++
+ 		modelMap.addAttribute("listview", listview);
+ 		modelMap.addAttribute("searchVO", searchVO);
+ 
+@@ -242,11 +242,11 @@
+ 	}
+ 	
+ 	@RequestMapping(value = "/appmain1Delete")
+-	public String appmain1Delete(HttpServletRequest request, SearchVO searchVO , AppMain1VO appmain1Info, 
+-			ModelMap modelMap) {
++	public String appmain1Delete(HttpServletRequest request, SearchVO searchVO , AppMain1VO appmain1Info, ModelMap modelMap) {
+ 		
+ 		
+ 		String sn = request.getParameter("sn");
++
+ 		appmain1Svc.appmain1Delete(sn);
+ 
+ 		
+@@ -256,7 +256,7 @@
+ 
+ 		modelMap.addAttribute("listview", listview);
+ 		modelMap.addAttribute("searchVO", searchVO);
+-		
++
+ 		return "appmain/AppMain1List";
+ 	}
+ 	
+Index: src/main/webapp/WEB-INF/jsp/common/Footer2.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/common/Footer2.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/common/Footer2.jsp	(date 1607404400000)
+@@ -220,7 +220,7 @@
+         <script src="/admin/design/assets/plugins/viewport/viewportchecker.js" type="text/javascript"></script>
+         <script src="/admin/design/assets/plugins/timepicker/js/timepicker.js" type="text/javascript"></script>
+         <script src="/admin/design/assets/plugins/datepicker/js/datepicker.js" type="text/javascript"></script>
+-
++        <script src="/admin/design/assets/plugins/datetimepicker/js/datetimepicker.js" type="text/javascript"></script>
+ <!-- CORE JS FRAMEWORK - END -->
+ 
+ <script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
+Index: src/main/webapp/WEB-INF/jsp/common/MenuList.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/common/MenuList.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/common/MenuList.jsp	(date 1607404400000)
+@@ -41,7 +41,7 @@
+ 				</a>
+ 			</li>
+ 			<li>
+-				<a href="/admin/RegExcel" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
++				<a href="/admin/excelForm" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
+ 					<span class="title">컨텐츠 엑셀 등록 </span>
+ 				</a>
+ 			</li>
+Index: src/main/java/admin/satelite/kr/ContentsVO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ContentsVO.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/ContentsVO.java	(date 1607404400000)
+@@ -16,6 +16,14 @@
+         this.sn = sn;
+     }
+ 
++    private String project="";
++    public String getProject() {
++        return project;
++    }
++    public void setProject(String project) {
++        this.project = project;
++    }
++
+ 
+     private String category="";
+     public String category() {return category;}
+Index: src/main/java/admin/satelite/kr/Banner1Ctr.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/Banner1Ctr.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/Banner1Ctr.java	(date 1607404400000)
+@@ -8,6 +8,7 @@
+ import org.springframework.beans.factory.annotation.Autowired;
+ import org.springframework.stereotype.Controller;
+ import org.springframework.ui.ModelMap;
++import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.RequestMapping;
+ 
+ import main.java.common.satelite.kr.SearchVO;
+Index: src/main/webapp/WEB-INF/jsp/appmain/AppMain1Form.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/appmain/AppMain1Form.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/appmain/AppMain1Form.jsp	(date 1607404400000)
+@@ -1,24 +1,24 @@
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+-	pageEncoding="UTF-8"%>
++		 pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+ 
+ <jsp:include page="/WEB-INF/jsp/common/LeftMenu2.jsp" />
+ 
+-            <section id="main-content" class=" ">
+-                <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
++<section id="main-content" class=" ">
++	<section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
+ 
+-                    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+-                        <div class="page-title">
++		<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
++			<div class="page-title">
+ 
+-                            <div class="pull-left">
+-                                <h1 class="title">팝업 </h1>
+-                            </div>
++				<div class="pull-left">
++					<h1 class="title">팝업 </h1>
++				</div>
+ 
+ 
+-                        </div>
+-                    </div>
+-                    <div class="clearfix"></div>
++			</div>
++		</div>
++		<div class="clearfix"></div>
+ 
+ 		<div class="col-lg-12">
+ 			<section class="box ">
+@@ -44,7 +44,19 @@
+ 
+ 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
+ 
+-												<td style="width: 35%"><input name="project" type="text" class="form-control"></td>
++												<td style="width: 35%">
++													<select name="project">
++														<option value="001">
++															프로젝트01
++														</option>
++														<option value="002">
++															프로젝트02
++														</option>
++														<option value="003">
++															프로젝트03
++														</option>
++													</select>
++												</td>
+ 
+ 												<td class="tdl" style="width: 15%">사용 여부</td>
+ 
+@@ -58,7 +70,7 @@
+ 
+ 												<td class="tdl" style="width: 15%">팝업 타이틀</td>
+ 
+-												<td style="width: 35%" colspan="3"><input name="title" type="text" class="form-control"></td>
++												<td style="width: 35%" colspan="3"><input name="title" type="text" value="" class="form-control"></td>
+ 
+ 											</tr>
+ 											<tr>
+@@ -77,10 +89,10 @@
+ 
+ 												<td style="width: 35%" colspan="3">
+ 													<div class="input-group bootstrap-timepicker timepicker">
+-													<input name="stime" type="text" class="form-control" placeholder="24:00:00" >
++														<input name="stime" type="text" class="form-control" placeholder="24:00:00" >
+ 													</div>
+ 													<div class="input-group bootstrap-timepicker timepicker">
+-													<input name="etime" type="text" class="form-control" placeholder="01:00:00">
++														<input name="etime" type="text" class="form-control" placeholder="01:00:00">
+ 													</div>
+ 												</td>
+ 
+@@ -117,7 +129,7 @@
+ 												<td class="tdl" style="width: 15%">상세 디자인</td>
+ 
+ 												<td style="width: 35%" colspan="3">
+-													<textarea name="umemo" id="editor"></textarea>
++													<textarea name="umemo" id="umemo"></textarea>
+ 												</td>
+ 											</tr>
+ 											<tr>
+@@ -133,21 +145,20 @@
+ 												</td>
+ 											</tr>
+ 											<tr>
+-											<td class="tdl" style="width: 15%">URL</td>
++												<td class="tdl" style="width: 15%">URL</td>
+ 
+-											<td style="width: 35%" colspan="3">
+-												<input type="text" value="" name="link" >
+-
+-											</td>
+-										</tr>
++												<td style="width: 35%" colspan="3">
++													<input type="text" value="" name="link" >
++												</td>
++											</tr>
+ 										</table>
+ 
+ 
+ 										<div class="form-group" style="margin-top: 10px">
+ 											<button type="button" class="btn btn-gray"
+-												onclick="fn_formRtn()">목록</button>
++													onclick="fn_formRtn()">목록</button>
+ 											<button type="button" class="btn btn-orange"
+-												onclick="fn_formSv()">저장</button>
++													onclick="fn_formSv()">저장</button>
+ 										</div>
+ 
+ 									</div>
+@@ -162,25 +173,26 @@
+ 			</section>
+ 		</div>
+ 
+-	<form name="formList" action="AppMain1List" method="post">
+-		<input type="hidden" name="searchType" value="<c:out value="${searchVO.searchType}"/>">
+-		<input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
+-		<input type="hidden" name="orderKeyword" value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>">
+-		 <input	type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
+-	</form>
++		<form name="formList" action="AppMain1List" method="post">
++			<input type="hidden" name="searchType" value="<c:out value="${searchVO.searchType}"/>">
++			<input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
++			<input type="hidden" name="orderKeyword" value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>">
++			<input	type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
++		</form>
+ 
+ 
+ 
+ 	</section>
+-											</section>
+-											<!-- END CONTENT -->
++</section>
++<!-- END CONTENT -->
+ 
+ 
+-											<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
++<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
++<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
+ <script type="text/javascript">
+     nhn.husky.EZCreator.createInIFrame({
+         oAppRef: oEditors,
+-        elPlaceHolder: "editor",
++        elPlaceHolder: "umemo",
+         sSkinURI: "/admin/design/assets/plugins/smart/SmartEditor2Skin.html",
+         htParams: {
+             bUseToolbar: true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+@@ -195,12 +207,12 @@
+             //예제 코드
+             //oEditors.getById["editor"].exec("PASTE_HTML", ["로딩이 완료된 후에 본문에 삽입되는 text입니다."]);
+         },
+-        fCreator: "createSEditor2"
++        fCreator: "createSEditor"
+     });
+ </script>
+ <script>
+     function fn_formSv() {
+-        oEditors.getById["editor"].exec("UPDATE_CONTENTS_FIELD", []);
++        oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+         document.form1.submit();
+ 
+     }
+Index: src/main/webapp/WEB-INF/jsp/appmain/AppMain1List.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/appmain/AppMain1List.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/appmain/AppMain1List.jsp	(date 1607404400000)
+@@ -25,59 +25,67 @@
+     }
+ </script>
+ 
+-
+-
+-<form id="form1" name="form1" method="post">
+-
+-<input type="hidden" name="sn" id="sn"
+-		value="" /> 
+-		
+-	<input type="hidden" name="orderKeyword" id="orderKeyword"
+-		value="${searchVO.orderKeyword}" /> 
+-		
+-
+ 	<section id="main-content" class=" ">
+ 		<section class="wrapper"
+ 		style='margin-top: 60px; display: inline-block; width: 100%; padding: 15px 0 0 15px;'>
+ 			<div class="content-body">
+ 				<div class="row">
+ 					<div class="col-md-12 col-sm-12 col-xs-12">
+-						<form name="searchFrm">
++						<form name="searchFrm" method="post">
+ 							<div class="row">
+ 								<div class="col-md-12 col-sm-12 col-xs-12">
+ 									<table id="customers">
+ 										<tr>
+ 											<td class="tdl" style="width: 25%">프로젝트</td>
+ 											<td style="width: 75%">
+-												<select name="project">
++												<select name="sproject">
+ 													<option>프로젝트</option>
+ 													<option value="01">프로젝트01</option>
+ 													<option value="02">프로젝트02</option>
+-												</select>
+-											</td>
+-										</tr>
+-										<tr>
+-											<td class="tdl" style="width: 25%">컨텐츠 타입</td>
+-											<td style="width: 75%">
+-												<select name="type"  class="form-control" >
+-													<c:forEach var="cateview" items="${cateview}"   varStatus="status">
+-														<option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+-													</c:forEach>
+-
+ 												</select>
+ 											</td>
+ 										</tr>
+ 										<tr>
+ 											<td class="tdl" style="width: 25%">타이틀</td>
+ 											<td style="width: 75%">
+-												<input name="title" type="text"	value="" class="form-control">
++												<input name="stitle" type="text"	value="${searchVO.stitle}" class="form-control">
+ 											</td>
+ 										</tr>
+ 										<tr>
+ 											<td class="tdl" style="width: 25%">등록</td>
+ 											<td style="width: 75%">
+-												<input name="startDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
+-												<input name="endDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
++												<div class="input-group js-datepicker">
++													<input type="text" class="form-control datepicker" name="startDate" value="${searchVO.startDate}" data-format="yyyy-mm-dd">
++													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
++												</div>
++												<div class="input-group js-datepicker">
++													<input type="text" class="form-control datepicker" name="endDate" value="${searchVO.endDate}" data-format="yyyy-mm-dd">
++													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
++												</div>
++												<!--
++												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
++												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
++												-->
++												<div class="btn-group js-dateperiod" data-toggle="buttons" data-target-name="searchDate">
++													<label class="btn btn-white btn-sm hand">
++														<input type="radio" name="searchPeriod" value="0">오늘
++													</label>
++													<label class="btn btn-white btn-sm hand">
++														<input type="radio" name="searchPeriod" value="6">7일
++													</label>
++													<label class="btn btn-white btn-sm hand">
++														<input type="radio" name="searchPeriod" value="14">15일
++													</label>
++													<label class="btn btn-white btn-sm hand">
++														<input type="radio" name="searchPeriod" value="29">1개월
++													</label>
++													<label class="btn btn-white btn-sm hand">
++														<input type="radio" name="searchPeriod" value="89">3개월
++													</label>
++													<label class="btn btn-white btn-sm hand  active">
++														<input type="radio" name="searchPeriod" value="364">1년
++													</label>
++												</div>
+ 											</td>
+ 										</tr>
+ 									</table>
+@@ -86,17 +94,7 @@
+ 									</div>
+ 								</div>
+ 							</div>
+-							<script>
+-                                function fn_formSv() {
+-                                    if ( document.searchFrm.title.value == ""){
+-                                        alert("검색어를 입력해주세요.");
+-                                        document.form.title.focus();
+-                                        return false;
+-                                    }
+-                                    $("#loading").show();
+-                                    document.searchFrm.submit();
+-                                }
+-							</script> 
++
+ 						</form>
+ 					</div>
+ 				</div>
+@@ -112,9 +110,16 @@
+ 			</div>
+ 		</div>
+ 		<div class="clearfix"></div>
++			<form id="form1" name="form1" method="post">
++
++				<input type="hidden" name="sn" id="sn"
++					   value="" />
++
++				<input type="hidden" name="orderKeyword" id="orderKeyword"
++					   value="${searchVO.orderKeyword}" />
+ 
+ 
+-			<div class="col-lg-12">
++				<div class="col-lg-12">
+ 				<section class="box ">
+ 
+ 					<div class="content-body">
+@@ -223,4 +228,16 @@
+             });
+         }
+     }
+-</script>
++
++    function fn_formSv() {
++
++        var frm = document.searchFrm;
++
++        if ( frm.title.value == ""){
++            alert("검색어를 입력해주세요.");
++            frm.title.focus();
++            return false;
++        }
++        frm.submit();
++    }
++</script>
+\ No newline at end of file
+Index: src/main/webapp/WEB-INF/jsp/appmain/AppMain1Read.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/appmain/AppMain1Read.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/appmain/AppMain1Read.jsp	(date 1607404400000)
+@@ -1,25 +1,25 @@
+ <%@ page language="java" contentType="text/html; charset=UTF-8"
+-	pageEncoding="UTF-8"%>
++		 pageEncoding="UTF-8"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+ <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+ 
+ <jsp:include page="/WEB-INF/jsp/common/LeftMenu2.jsp" />
+ 
+-            <section id="main-content" class=" ">
+-                <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;
++<section id="main-content" class=" ">
++	<section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;
+                 padding:15px 0 0 15px;'>
+ 
+-                    <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+-                        <div class="page-title">
++		<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
++			<div class="page-title">
+ 
+-                            <div class="pull-left">
+-                                <h1 class="title">광고 영상 Update</h1>                            
+-                            </div>
++				<div class="pull-left">
++					<h1 class="title">팝업 수정페이지</h1>
++				</div>
+ 
+ 
+-                        </div>
+-                    </div>
+-                    <div class="clearfix"></div>
++			</div>
++		</div>
++		<div class="clearfix"></div>
+ 
+ 		<div class="col-lg-12">
+ 			<section class="box ">
+@@ -36,10 +36,10 @@
+ 						<div class="col-md-12 col-sm-12 col-xs-12">
+ 
+ 							<form name="form1" action="appmain1Up" method="post"
+-								enctype="multipart/form-data">
+-								
++								  enctype="multipart/form-data">
++
+ 								<input name="sn" type="hidden"
+-													value="${appmain1Info.sn}">
++									   value="${appmain1Info.sn}">
+ 
+ 
+ 
+@@ -50,74 +50,128 @@
+ 										<table id="customers">
+ 											<tr>
+ 
+-
+-												<td class="tdl" style="width: 15%">YTB 콘텐츠</td>
+-
+-												<td style="width: 35%"><input name="link" type="text"
+-													value="${appmain1Info.link}" class="form-control"></td>
+-
++												<input value="1" name="appkind" type="hidden" class="form-control">
++
++												<td class="tdl" style="width: 15%">프로트젝트명 </td>
++
++												<td style="width: 35%">
++													<select name="project">
++														<option value="001" >
++															프로젝트01
++														</option>
++														<option value="002">
++															프로젝트02
++														</option>
++														<option value="003">
++															프로젝트03
++														</option>
++													</select>
++												</td>
++
++												<td class="tdl" style="width: 15%">사용 여부</td>
++
++												<td style="width: 35%">
++													<input type="radio" value="100" name="state" checked><label>사용</label>
++													<input type="radio" value="000" name="state"><label>사용안함</label>
++												</td>
++
++											</tr>
++											<tr>
++
++												<td class="tdl" style="width: 15%">팝업 타이틀</td>
++
++												<td style="width: 35%" colspan="3"><input name="title" type="text" value="${appmain1Info.title}" class="form-control"></td>
++
++											</tr>
++											<tr>
++
++												<td class="tdl" style="width: 15%">노출 기간</td>
+ 
++												<td style="width: 35%" colspan="3">
++													<input name="sdate" type="text" class="form-control datepicker" value="${appmain1Info.sdate}" data-format="yyyy-mm-dd">
++													<input name="edate" type="text" class="form-control datepicker" value="${appmain1Info.edate}" data-format="yyyy-mm-dd">
++												</td>
+ 
+-												<td class="tdl" style="width: 15%">Creator명</td>
+-
+-												<td style="width: 35%"><input name="uname" type="text"
+-													value="${appmain1Info.uname}" class="form-control"></td>
+ 											</tr>
+-
+ 											<tr>
+ 
+-												<td class="tdl" style="width: 15%">영상타이틀</td>
++												<td class="tdl" style="width: 15%">노출 시간</td>
+ 
+-												<td style="width: 35%"><input name="umemo" type="text"
+-													value="${appmain1Info.umemo}"
+-													class="form-control"></td>
+-													
+-												<td class="tdl" style="width: 15%">부타이틀</td>
++												<td style="width: 35%" colspan="3">
++													<div class="input-group bootstrap-timepicker timepicker">
++														<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" >
++													</div>
++													<div class="input-group bootstrap-timepicker timepicker">
++														<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00">
++													</div>
++												</td>
+ 
+-												<td style="width: 35%"><input name="text1" type="text"
+-													value="${appmain1Info.text1}"
+-													class="form-control"></td>
+ 											</tr>
+-											
+-											
+-											
++											<tr>
++
++												<td class="tdl" style="width: 15%">노출 위치</td>
++
++												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control" value="${appmain1Info.positionY}">
++													좌측<input name="positionX" type="text" class="form-control" value="${appmain1Info.positionX}">
++												</td>
++
++											</tr>
++											<tr>
++
++												<td class="tdl" style="width: 15%">팝업 크기</td>
++
++												<td style="width: 35%" colspan="3">
++													가로(pixel)<input name="sWidth" type="text" class="form-control" value="${appmain1Info.SWidth}">
++													세로(pixel)<input name="sHeight" type="text" class="form-control" value="${appmain1Info.SHeight}">
++												</td>
++
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">팝업 닫기</td>
++
++												<td style="width: 35%" colspan="3">
++													<input type="radio" value="100" name="closeType" checked><label>오늘 이창을 열지 않음</label>
++													<input type="radio" value="200" name="closeType"><label>이 창을 7일간 열지 않음</label>
++													<input type="radio" value="300" name="closeType"><label>이 창을 다시 열지 않음</label>
++												</td>
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">상세 디자인</td>
++
++												<td style="width: 35%" colspan="3">
++													<textarea name="umemo" id="umemo"></textarea>
++												</td>
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">링크설정 닫기</td>
++
++												<td style="width: 35%" colspan="3">
++													<input type="radio" value="200" name="linkState" checked><label>사용안함</label>
++													<input type="radio" value="100" name="linkState"><label>사용</label>
++													<select name="linkTarget">
++														<option value="100">부모창</option>
++														<option value="200">새창열기</option>
++													</select>
++												</td>
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">URL</td>
++
++												<td style="width: 35%" colspan="3">
++													<input type="text" value="" name="link" >
++												</td>
++											</tr>
+ 										</table>
+ 
+-<br>
+-<c:if test="${fn:indexOf(appmain1Info.creatorimg, 'http://') != -1}"><img src="${appmain1Info.creatorimg}" width="110"></c:if>
+-<c:if test="${fn:indexOf(appmain1Info.creatorimg, 'http://') == -1}"><img src="/images/${appmain1Info.creatorimg}" width="110"></c:if>
+-												
+-<br>
+-
+-
+-										<div class="form-group" style="display:block">
+-											<label class="form-label" for="field-1">첨부파일</label>
+-											<div class="controls">
+-												<c:forEach var="listview" items="${listview}"
+-													varStatus="status">
+-													<input type="checkbox" name="fileno"
+-														value="<c:out value="${listview.fileno}"/>">
+-													<a
+-														href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
+-														<c:out value="${listview.filename}" />
+-													</a>
+-													<c:out value="${listview.size2String()}" />
+-													<br />
+-												</c:forEach>
+-
+-
+-												<input type="file" name="uploadfile" multiple="" />
+-											</div>
+-										</div>
+-
++										<br>
+ 										<div class="form-group" style="margin-top: 10px">
+ 
+ 											<button type="button" class="btn btn-gray"
+-												onclick="fn_formRtn()">목록</button>
++													onclick="fn_formRtn()">목록</button>
+ 											<button type="button" class="btn btn-orange"
+-												onclick="fn_formSv()">저장</button>
++													onclick="fn_formSv()">저장</button>
+ 											<button type="button" class="btn btn-purple"
+-												onclick="fn_formDel()">삭제</button>
++													onclick="fn_formDel()">삭제</button>
+ 
+ 										</div>
+ 
+@@ -126,19 +180,19 @@
+ 								</div>
+ 							</form>
+ 							<script>
+-								function fn_formSv() {
+-									document.form1.submit();
++                                function fn_formSv() {
++                                    document.form1.submit();
+ 
+-								}
+-								function fn_formRtn() {
+-									document.formList.submit();
++                                }
++                                function fn_formRtn() {
++                                    document.formList.submit();
+ 
+-								}
+-								function fn_formDel() {
+-									document.form1.action="appmain1Delete";
+-									document.form1.submit();
++                                }
++                                function fn_formDel() {
++                                    document.form1.action="appmain1Delete";
++                                    document.form1.submit();
+ 
+-								}
++                                }
+ 
+ 							</script>
+ 
+@@ -148,21 +202,21 @@
+ 			</section>
+ 		</div>
+ 
+-	<form name="formList" action="AppMain1" method="post">
+-		<input type="hidden" name="searchType"
+-			value="<c:out value="${searchVO.searchType}"/>"> <input
+-			type="hidden" name="searchKeyword"
+-			value="<c:out value="${searchVO.searchKeyword}"/>"> <input
+-			type="hidden" name="orderKeyword"
+-			value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
+-			type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
+-	</form>
++		<form name="formList" action="AppMain1" method="post">
++			<input type="hidden" name="searchType"
++				   value="<c:out value="${searchVO.searchType}"/>"> <input
++				type="hidden" name="searchKeyword"
++				value="<c:out value="${searchVO.searchKeyword}"/>"> <input
++				type="hidden" name="orderKeyword"
++				value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
++				type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
++		</form>
+ 
+ 
+ 
+ 	</section>
+-											</section>
+-											<!-- END CONTENT -->
++</section>
++<!-- END CONTENT -->
+ 
+ 
+-											<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+\ No newline at end of file
++<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+\ No newline at end of file
+Index: src/main/java/admin/satelite/kr/ProjectSvc.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ProjectSvc.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/ProjectSvc.java	(date 1607404400000)
+@@ -115,7 +115,7 @@
+ 
+     public void notProjectPublish(String param) {
+ 
+-        sqlSession.delete("notProjectPublish", param);
++        sqlSession.update("notProjectPublish", param);
+     }
+ 
+ 
+Index: src/main/webapp/WEB-INF/jsp/member1/Banner1Form.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/member1/Banner1Form.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/member1/Banner1Form.jsp	(date 1607404400000)
+@@ -84,8 +84,8 @@
+ 
+ 
+ 
+-												<div class="form-group" style="display: none">
+-													<label class="form-label" for="field-1">배너 이미</label>
++												<div class="form-group" style="">
++													<label class="form-label" for="field-1">배너 이미지</label>
+ 													<div class="controls">
+ 														<c:forEach var="listview" items="${listview}"
+ 															varStatus="status">
+Index: src/main/java/admin/satelite/kr/AppMain1VO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/AppMain1VO.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/AppMain1VO.java	(date 1607404400000)
+@@ -363,7 +363,6 @@
+ 
+ 	public void setState(String state) {this.state = state;}
+ 
+-
+ 	private int positionX = 0;
+ 
+ 	public int getPositionX() {
+Index: pom.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- pom.xml	(date 1606935932000)
++++ pom.xml	(date 1607404400000)
+@@ -145,6 +145,28 @@
+ 			<artifactId>gson</artifactId>
+ 			<version>2.8.0</version>
+ 		</dependency>
++		<!-- apache poi -->
++		<dependency>
++			<groupId>org.apache.poi</groupId>
++			<artifactId>poi</artifactId>
++			<version>3.10-FINAL</version>
++		</dependency>
++		<dependency>
++			<groupId>org.apache.poi</groupId>
++			<artifactId>poi-ooxml</artifactId>
++			<version>3.10-FINAL</version>
++		</dependency>
++		<dependency>
++			<groupId>org.apache.poi</groupId>
++			<artifactId>poi-ooxml-schemas</artifactId>
++			<version>3.10-FINAL</version>
++		</dependency>
++		<dependency>
++			<groupId>org.apache.poi</groupId>
++			<artifactId>poi-contrib</artifactId>
++			<version>3.10-FINAL</version>
++		</dependency>
++
+ 
+ 
+ 		<dependency>
+@@ -223,6 +245,7 @@
+ 			<artifactId>jackson-databind</artifactId>
+ 			<version>2.9.3</version>
+ 		</dependency>
++
+ 	</dependencies>
+ 
+ 
+Index: src/main/java/admin/satelite/kr/ContentsSvc.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ContentsSvc.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/ContentsSvc.java	(date 1607404400000)
+@@ -113,10 +113,20 @@
+ 
+ 
+ 
+-    public void notContentsPublish(String param) {
++    public void ContentsPublish(ContentsVO param) {
++        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
++        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
++        TransactionStatus status = txManager.getTransaction(def);
++
++        try {
++            sqlSession.update("ContentsPublish", param);
++            txManager.commit(status);
++        } catch (TransactionException ex) {
++            txManager.rollback(status);
+ 
+-        sqlSession.delete("notContentsPublish", param);
+-    }
++        }
+ 
++
++    }
+ 
+ }
+Index: README.md
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- README.md	(date 1607404400000)
++++ README.md	(date 1607404400000)
+@@ -0,0 +1,1 @@
++Crawling
+\ No newline at end of file
+Index: crawling.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- crawling.iml	(date 1607404400000)
++++ crawling.iml	(date 1607404400000)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="WEB_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: src/main/java/admin/satelite/kr/ContentsCtr.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/admin/satelite/kr/ContentsCtr.java	(date 1606935932000)
++++ src/main/java/admin/satelite/kr/ContentsCtr.java	(date 1607404400000)
+@@ -1,9 +1,16 @@
+ package main.java.admin.satelite.kr;
+ 
++import java.io.OutputStream;
++import java.text.SimpleDateFormat;
++import java.util.Date;
+ import java.util.List;
+ import java.util.Map;
++
++import org.apache.poi.hssf.usermodel.*;
++import org.springframework.ui.Model;
+ import org.springframework.web.bind.annotation.*;
+ import javax.servlet.http.HttpServletRequest;
++import javax.servlet.http.HttpServletResponse;
+ import javax.servlet.http.HttpSession;
+ 
+ import org.springframework.beans.factory.annotation.Autowired;
+@@ -99,7 +106,7 @@
+         modelMap.addAttribute("listview", listview);
+         modelMap.addAttribute("searchVO", searchVO);
+ 
+-        return "contents/List";
++        return "redirect:contents/List";
+     }
+ 
+     @RequestMapping(value = "/contentsUp")
+@@ -127,7 +134,7 @@
+         modelMap.addAttribute("listview", listview);
+         modelMap.addAttribute("searchVO", searchVO);
+ 
+-        return "contents/List";
++        return "redirect:contents/List";
+     }
+ 
+     @RequestMapping(value = "/contentsDelete")
+@@ -146,7 +153,7 @@
+         modelMap.addAttribute("listview", listview);
+         modelMap.addAttribute("searchVO", searchVO);
+ 
+-        return "contents/List";
++        return "redirect:contents/List";
+     }
+ 
+     @ResponseBody
+@@ -173,18 +180,27 @@
+ 
+     @ResponseBody
+     @RequestMapping(value = "/contentsChkPublish")
+-    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo,
+-                                   ModelMap modelMap) throws Exception{
++    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo, ModelMap modelMap) throws Exception{
+         String result = "TRUE";
+         try {
+             int cnt = Integer.parseInt(request.getParameter("CNT"));
+             //System.out.println(cnt);
+             String rprtOdr = request.getParameter("RPRT_ODR");
++            String project = request.getParameter("project");
++            String category = request.getParameter("category");
+             String [] strArray = rprtOdr.split(",");
++
++
++
+             for(int i=0; i<cnt; i++) {
+                 //System.out.println(i);
+-                String sn = (String)strArray[i];
+-                contentsSvc.notContentsPublish(sn);
++                Integer sn = Integer.valueOf((String)strArray[i]);
++
++                contentsInfo.setProject(project);
++                contentsInfo.setCategory(category);
++                contentsInfo.setSn(sn);
++
++                contentsSvc.ContentsPublish(contentsInfo);
+             }
+         } catch (Exception e) {
+             //System.out.println(e.getMessage());
+@@ -193,4 +209,109 @@
+         return "TRUE";
+     }
+ 
++    @RequestMapping(value="/ExcelDownload")
++    public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model) throws Exception {
++
++        HSSFWorkbook objWorkBook = new HSSFWorkbook();
++        HSSFSheet objSheet = null;
++        HSSFRow objRow = null;
++        HSSFCell objCell = null;       //셀 생성
++
++        //제목 폰트
++        HSSFFont font = objWorkBook.createFont();
++        font.setFontHeightInPoints((short)9);
++        font.setBoldweight((short)font.BOLDWEIGHT_BOLD);
++        font.setFontName("맑은고딕");
++
++        //제목 스타일에 폰트 적용, 정렬
++        HSSFCellStyle styleHd = objWorkBook.createCellStyle();    //제목 스타일
++        styleHd.setFont(font);
++        styleHd.setAlignment(HSSFCellStyle.ALIGN_CENTER);
++        styleHd.setVerticalAlignment (HSSFCellStyle.VERTICAL_CENTER);
++
++        objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
++
++        // 1행
++        objRow = objSheet.createRow(0);
++        objRow.setHeight ((short) 0x150);
++
++        objCell = objRow.createCell(0);
++        objCell.setCellValue("No");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(1);
++        objCell.setCellValue("이미지URL");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(2);
++        objCell.setCellValue("비디URL");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(3);
++        objCell.setCellValue("출처");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(4);
++        objCell.setCellValue("타이틀");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(5);
++        objCell.setCellValue("키워드");
++        objCell.setCellStyle(styleHd);
++
++        objCell = objRow.createCell(6);
++        objCell.setCellValue("등록일");
++        objCell.setCellStyle(styleHd);
++
++        List<?> listview  = contentsSvc.selectContentsList(searchVO);
++        for(int i=0; i<listview.size(); i++) {
++            int s = i + 1;
++            objRow = objSheet.createRow(s);
++            objRow.setHeight ((short) 0x150);
++
++            objCell = objRow.createCell(0);
++            objCell.setCellValue(listview.size() - i);
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(1);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(2);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(3);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(4);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(5);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++            objCell = objRow.createCell(6);
++            objCell.setCellValue(listview.get(i).toString());
++            objCell.setCellStyle(styleHd);
++
++        }
++
++        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd");
++        Date currentTime = new Date ();
++        String mTime = mSimpleDateFormat.format ( currentTime );
++
++        response.setContentType("Application/Msexcel");
++        response.setHeader("Content-Disposition", "ATTachment; Filename=Contents_Bulk_upload_"+mTime+".xls");
++
++        OutputStream fileOut  = response.getOutputStream();
++        objWorkBook.write(fileOut);
++        fileOut.close();
++
++        response.getOutputStream().flush();
++        response.getOutputStream().close();
++    }
++
+ }
+Index: src/main/java/common/satelite/kr/PageVO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/PageVO.java	(date 1606935932000)
++++ src/main/java/common/satelite/kr/PageVO.java	(date 1607404400000)
+@@ -103,6 +103,7 @@
+     }
+ 
+ 
++
+     
+ }
+ 
+Index: src/main/webapp/WEB-INF/jsp/project/Form.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/project/Form.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/project/Form.jsp	(date 1607404400000)
+@@ -52,7 +52,7 @@
+ 
+ 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
+ 
+-												<td style="width: 35%">
++												<td style="width: 35%" colspan="3">
+ 													<select name="project"  class="form-control">
+ 														<option>프로젝트</option>
+ 														<option value="001">프로젝트01</option>
+@@ -60,51 +60,65 @@
+ 													</select>
+ 												</td>
+ 											
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">컨텐츠 타입</td>
++												<td style="width: 35%" colspan="3">
++													<select name="type"  class="form-control" >
++														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
++															<option value="${cateview.code2}" <c:if test="${projectInfo.type eq cateview.code2}">selected</c:if>>${cateview.type}</option>
++														</c:forEach>
+ 
+-
++													</select>
++												</td>
++											</tr>
++											<tr>
+ 												<td class="tdl" style="width: 15%">전시 카테고리</td>
+-
+-												<td style="width: 35%">
++												<td style="width: 35%" colspan="3">
+ 													<select name="category"  class="form-control" >
+ 														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
+ 															<option value="${cateview.code2}" <c:if test="${projectInfo.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+ 														</c:forEach>
+ 
+ 													</select>
+-
+-													</td>
+-
++												</td>
+ 											</tr>
+ 											<tr>
+ 
+ 												<td class="tdl" style="width: 15%">출처 이미지 URL</td>
+ 
+-												<td style="width: 35%"><input name="imageUrl" type="text"  class="form-control"></td>
+-
++												<td style="width: 35%" colspan="3"><input name="imageUrl" type="text"  class="form-control"></td>
++											</tr>
++											<tr>
+ 												<td class="tdl" style="width: 15%">영상 URL</td>
+ 
+-												<td style="width: 35%"><input name="videoUrl" type="text"  class="form-control"></td>
++												<td style="width: 35%" colspan="3"><input name="videoUrl" type="text"  class="form-control"></td>
+ 											</tr>
+ 											<tr>
+ 												<td class="tdl" style="width: 15%">출처</td>
+ 
+-												<td style="width: 35%">
++												<td style="width: 35%" colspan="3">
+ 													<select name="ctSource"  class="form-control" >
+ 														<c:forEach var="sourceview" items="${sourceview}"   varStatus="status">
+ 															<option value="${sourceview.code2}" <c:if test="${projectInfo.ctSource eq sourceview.code2}">selected</c:if>>${sourceview.title}</option>
+ 														</c:forEach>
+ 													</select>
+ 												</td>
++											</tr>
++											<tr>
+ 												<td class="tdl" style="width: 15%">타이틀</td>
+-												<td style="width: 35%"><input name="title" type="text"	class="form-control"></td>
++												<td style="width: 35%"  colspan="3"><input name="title" type="text"	class="form-control"></td>
++											</tr>
++											<tr>
++												<td class="tdl" style="width: 15%">키워드</td>
++												<td style="width: 35%"  colspan="3"><input name="keyword" type="text"	class="form-control"></td>
+ 											</tr>
+ 										</table>
+ 
+ 										<div class="form-group" style="margin-top: 10px">
+-											<button type="button" class="btn btn-gray"
+-												onclick="fn_formRtn()">목록</button>
+-											<button type="button" class="btn btn-orange"
+-												onclick="fn_formSv()">저장</button>
++											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
++											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">미리보기</button>
++											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
+ 										</div>
+ 
+ 									</div>
+Index: src/main/webapp/WEB-INF/jsp/contents/List.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/contents/List.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/contents/List.jsp	(date 1607404400000)
+@@ -12,10 +12,6 @@
+     <input type="hidden" name="sn" id="sn"
+            value="" />
+ 
+-    <input type="hidden" name="orderKeyword" id="orderKeyword"
+-           value="${searchVO.orderKeyword}" />
+-
+-
+     <section id="main-content" class=" ">
+         <div class="col-lg-12">
+             <section class="box ">
+@@ -37,51 +33,51 @@
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">프로젝트</td>
+                                             <td style="width: 75%">
+-                                                <select >
+-                                                    <option>프로젝트</option>
+-                                                    <option value="01">프로젝트01</option>
+-                                                    <option value="02">프로젝트02</option>
++                                                <select name="sproject">
++                                                    <option value="">프로젝트</option>
++                                                    <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
++                                                    <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+                                                 </select>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">컨텐츠 타입</td>
+                                             <td style="width: 75%">
+-                                                <select name="type"  class="form-control" >
++                                                <select name="stype"  class="form-control" >
++                                                    <option value="">컨텐츠타입</option>
+                                                     <c:forEach var="cateview" items="${cateview}"   varStatus="status">
+-                                                        <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
++                                                        <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+                                                     </c:forEach>
+-
+                                                 </select>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">타이틀</td>
+                                             <td style="width: 75%">
+-                                                <input name="title" type="text"	value="" class="form-control">
++                                                <input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
++                                            </td>
++                                        </tr>
++                                        <tr>
++                                            <td class="tdl" style="width: 25%">키워드</td>
++                                            <td style="width: 75%">
++                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
+                                             </td>
+                                         </tr>
+                                         <tr>
+-                                            <td class="tdl" style="width: 25%">등록</td>
++                                            <td class="tdl" style="width: 25%">등록 기간</td>
+                                             <td style="width: 75%">
+-                                                <input name="startDate" type="text"	value="" class="form-control"> ~
+-                                                <input name="endDate" type="text"	value="" class="form-control">
++                                                <input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
++                                                <input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+                                             </td>
+                                         </tr>
+                                     </table>
+-                                    <div class="form-group" style="margin-top: 20px">
++                                    <div class="form-group" style="margin-top: 20px;float:right">
+                                         <button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
+                                     </div>
+                                 </div>
+                             </div>
+                             <script>
+                                 function fn_formSv() {
+-
+-                                    if ( document.form1.title.value == ""){
+-                                        alert("검색어를 입력해주세요.");
+-                                        document.form.title.focus();
+-                                        return false;
+-                                    }
+                                     $("#loading").show();
+                                     document.form1.submit();
+                                 }
+@@ -111,11 +107,18 @@
+                         <div class="pull-right" style="padding-top: 10px">
+                             <ul class="list-unstyled">
+                                 <li style="float: left;">
+-                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal"> 전시하기</button>
+-                                    <button type="button" class="btn btn-orange" onclick="deletePost()">선택 삭제</button>
++                                    <button type="button" class="btn btn-orange" >선택수정</button>
++                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">  컨텐츠 전시</button>
++                                    <button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
++                                    <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
+                                 </li>
+-                                <li style="float: left;">&nbsp;&nbsp;
+-                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">신규</button>
++                                <li style="float: left;">
++                                    <select name="orderKeyword" id="orderKeyword"  >
++                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
++                                    </select>
+                                 </li>
+                             </ul>
+                         </div>
+@@ -125,12 +128,13 @@
+                         <div class="row">
+                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                 <table class="table">
++
+                                     <thead>
+                                     <tr>
+                                         <th><input type="checkbox" id="allChk" ></th>
+                                         <th>No</th>
+                                         <th>이미지</th>
+-                                        <th>출처이미지URL</th>
++                                        <th >출처이미지URL</th>
+                                         <th>영상URL</th>
+                                         <th>타이틀</th>
+                                         <th>등록일</th>
+@@ -138,16 +142,20 @@
+                                     </tr>
+                                     </thead>
+                                     <tbody>
++
+                                     <c:forEach var="listview" items="${listview}" varStatus="status">
+                                         <tr>
+                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
+                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+                                             <td><img src="${listview.imageUrl}" width="110"></td>
+-                                            <td>${listview.imageUrl}</td>
+-                                            <td>${listview.videoUrl}</td>
++                                            <td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
++                                            <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+                                             <td>${listview.title}</td>
+-                                            <td>${listview.regDate}</td>
+-                                            <td><button type="button" class="btn btn-gray" onclick="fn_formGo()">노출</button>
++                                            <td>
++                                                    ${listview.regDate}<br>
++                                                   등록자
++                                            </td>
++                                            <td>
+                                                 <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/projectDelete?sn=${listview.sn}'">삭제</button>
+                                             </td>
+                                         </tr>
+@@ -168,17 +176,13 @@
+         </section>
+     </section>
+ 
+-
++    #packageCourse_slide > div
+ </form>
+ <script>
+     function fn_formSubmit() {
+         document.form1.submit();
+     }
+ 
+-    function fn_orderKey(_a) {
+-        document.form1.orderKeyword.value = _a;
+-        document.form1.submit();
+-    }
+ 
+     function fn_formGo() {
+         location.href = "/admin/contentsForm";
+@@ -204,7 +208,7 @@
+         else{
+             $.ajax({
+                 type: "POST",
+-                url: "/admin/prtChkDelete",
++                url: "/admin/contentsChkPublish",
+                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                 dataType:"http",
+                 success: function(jdata){
+@@ -222,9 +226,10 @@
+     }
+ 
+     function publishPost(){
+-        if(confirm('컨텐츠를 선택하세요'){
+             var cnt = $("input[name='chkSn']:checked").length;
+             var arr = new Array();
++            var pubcate = $("#pubcate").val();
++            var pubproject = $("#pubproject").val();
+             $("input[name='chkSn']:checked").each(function () {
+                 arr.push($(this).attr('value'));
+             });
+@@ -234,8 +239,8 @@
+             else {
+                 $.ajax({
+                     type: "POST",
+-                    url: "/admin/prtChkPublish",
+-                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
++                    url: "/admin/contentsChkPublish",
++                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&cate="+pubcate+"&project"+pubproject,
+                     dataType: "http",
+                     success: function (jdata) {
+                         alert(jdata);
+@@ -247,14 +252,11 @@
+                         }
+                     },
+                     error: function (data) {
+-                        alert(data);
+                         location.href = "/admin/project";
+                     }
+                 });
+             }
+-        }else{
+-           return false;
+-        }
++
+     }
+ </script>
+ 
+@@ -264,15 +266,15 @@
+ <script>
+ 
+     $(function(){
++        $("#orderKeyword").on("change",function(){
++            document.form1.submit();
++        });
++
+         $("#allChk").on("click",function(){
+             if ($(this).is(':checked')) {
+-
+                 $("input[name='chkSn']").prop('checked', true);
+-
+             } else {
+-
+                 $("input[name='chkSn']").prop('checked', false);
+-
+             }
+         });
+     });
+@@ -292,7 +294,7 @@
+                     <tr>
+                         <td class="tdl" style="width: 25%">프로젝트</td>
+                         <td style="width: 75%">
+-                            <select name="project" >
++                            <select name="project" id="pubproject">
+                                 <option>프로젝트</option>
+                                 <option value="01">프로젝트01</option>
+                                 <option value="02">프로젝트02</option>
+@@ -302,7 +304,7 @@
+                     <tr>
+                         <td class="tdl" style="width: 25%">카테고리</td>
+                         <td style="width: 75%">
+-                            <select name="type"  class="form-control" >
++                            <select name="category" id="pubcate" class="form-control" >
+                                 <c:forEach var="cateview" items="${cateview}"   varStatus="status">
+                                     <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+                                 </c:forEach>
+@@ -313,7 +315,8 @@
+                 </form>
+             </div>
+             <div class="modal-footer">
+-                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">닫기</button>
++                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">등록</button>
++                <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+             </div>
+         </div>
+     </div>
+Index: src/main/java/common/satelite/kr/FileUtil.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/FileUtil.java	(date 1606935932000)
++++ src/main/java/common/satelite/kr/FileUtil.java	(date 1607404400000)
+@@ -12,11 +12,8 @@
+ public class FileUtil {
+ 
+ 	
+-	
+-	
+-	
+ 	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles) {
+-		String filePath = "C:\\t8\\webapps\\ROOT\\images"; 
++		String filePath = "/upload/images";
+ 		
+ 		List<FileVO> filelist = new ArrayList<FileVO>();
+ 
+Index: src/main/webapp/WEB-INF/jsp/project/List.jsp
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/jsp/project/List.jsp	(date 1606935932000)
++++ src/main/webapp/WEB-INF/jsp/project/List.jsp	(date 1607404400000)
+@@ -6,14 +6,8 @@
+ <jsp:include page="/WEB-INF/jsp/common/LeftMenu2.jsp" />
+ 
+ 
+-
+ <form id="form1" name="form1" method="post">
+-
+-    <input type="hidden" name="sn" id="sn"
+-           value="" />
+-
+-    <input type="hidden" name="orderKeyword" id="orderKeyword"
+-           value="${searchVO.orderKeyword}" />
++    <input type="hidden" name="sn" id="sn"   value="" />
+ 
+ 
+     <section id="main-content" class=" ">
+@@ -37,51 +31,51 @@
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">프로젝트</td>
+                                             <td style="width: 75%">
+-                                                <select >
+-                                                    <option>프로젝트</option>
+-                                                    <option value="01">프로젝트01</option>
+-                                                    <option value="02">프로젝트02</option>
++                                                <select name="sproject">
++                                                    <option value="">프로젝트</option>
++                                                    <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
++                                                    <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+                                                 </select>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">컨텐츠 타입</td>
+                                             <td style="width: 75%">
+-                                                <select name="type"  class="form-control" >
++                                                <select name="stype"  class="form-control" >
++                                                    <option value="">컨텐츠타입</option>
+                                                     <c:forEach var="cateview" items="${cateview}"   varStatus="status">
+-                                                        <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
++                                                        <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
+                                                     </c:forEach>
+-
+                                                 </select>
+                                             </td>
+                                         </tr>
+                                         <tr>
+                                             <td class="tdl" style="width: 25%">타이틀</td>
+                                             <td style="width: 75%">
+-                                                <input name="title" type="text"	value="" class="form-control">
++                                                <input name="searchtitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
++                                            </td>
++                                        </tr>
++                                        <tr>
++                                            <td class="tdl" style="width: 25%">키워드</td>
++                                            <td style="width: 75%">
++                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
+                                             </td>
+                                         </tr>
+                                         <tr>
+-                                            <td class="tdl" style="width: 25%">등록</td>
++                                            <td class="tdl" style="width: 25%">등록 기간</td>
+                                             <td style="width: 75%">
+-                                                <input name="startDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
+-                                                <input name="endDate" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
++                                                <input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
++                                                <input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+                                             </td>
+                                         </tr>
+                                     </table>
+                                     <div class="form-group" style="margin-top: 20px">
+-                                        <button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
++                                        <button type="button" class="btn btn-orange" onclick="fn_formSubmit()">검색</button>
+                                     </div>
+                                 </div>
+                             </div>
+                             <script>
+                                 function fn_formSv() {
+-
+-                                    if ( document.form1.title.value == ""){
+-                                        alert("검색어를 입력해주세요.");
+-                                        document.form.title.focus();
+-                                        return false;
+-                                    }
+                                     $("#loading").show();
+                                     document.form1.submit();
+                                 }
+@@ -109,14 +103,24 @@
+                     <header class="panel_header">
+                         <h2 class="title pull-left">목록 </h2>
+                         <div class="pull-right" style="padding-top: 10px">
+-                            <ul class="list-unstyled">
++                            <li class="list-unstyled">
+                                 <li style="float: left;">
+-                                    <button type="button" class="btn btn-gray" data-toggle="modal"  onclick="publishNotPost()">노출 중지</button>
++                                    <button type="button" class="btn btn-gray"   onclick="modifyPost()">선택 수</button>
++                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">컨텐츠 전시</button>
++
+                                     <button type="button" class="btn btn-orange" onclick="deletePost()">선택 삭제</button>
+                                 </li>
+                                 <li style="float: left;">&nbsp;&nbsp;
+                                     <button type="button" class="btn btn-orange" onclick="fn_formGo()">신규</button>
+                                 </li>
++                                <li style="float: left;">
++                                    <select name="orderKeyword" id="orderKeyword"  >
++                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
++                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
++                                    </select>
++                                </li>
+                             </ul>
+                         </div>
+                     </header>
+@@ -126,6 +130,16 @@
+                             <div class="col-md-12 col-sm-12 col-xs-12">
+                                 <table class="table">
+                                     <thead>
++                                    <colgroup>
++                                        <col width="5%">
++                                        <col width="5%">
++                                        <col width="10%">
++                                        <col width="15%">
++                                        <col width="15%">
++                                        <col width="20%">
++                                        <col width="15%">
++                                        <col width="10%">
++                                    </colgroup>
+                                     <tr>
+                                         <th><input type="checkbox" id="allChk" ></th>
+                                         <th>No</th>
+@@ -143,8 +157,8 @@
+                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
+                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+                                             <td><img src="${listview.imageUrl}" width="110"></td>
+-                                            <td>${listview.imageUrl}</td>
+-                                            <td>${listview.videoUrl}</td>
++                                            <td><div style="width:100px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
++                                            <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+                                             <td>${listview.title}</td>
+                                             <td>${listview.regDate}</td>
+                                             <td><button type="button" class="btn btn-gray" onclick="fn_formGo()">노출</button>
+Index: src/main/java/common/satelite/kr/SearchVO.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/common/satelite/kr/SearchVO.java	(date 1606935932000)
++++ src/main/java/common/satelite/kr/SearchVO.java	(date 1607404400000)
+@@ -2,8 +2,18 @@
+ 
+ 
+ public class SearchVO extends  PageVO  {
+-private String action = "";
+-	
++
++	private String action = "";
++	private String startDate;
++	private String endDate;
++
++	private String pwd2dec;
++	private String mbid;
++	private String bgno;
++	private String mbno;
++
++
++
+ 	public String getAction() {
+ 		return action;
+ 	}
+@@ -21,6 +31,7 @@
+ 		this.pwd2dec = pwd2dec;
+ 	}
+ 
++
+ 	public String getMbid() {
+ 		return mbid;
+ 	}
+@@ -29,6 +40,7 @@
+ 		this.mbid = mbid;
+ 	}
+ 
++
+ 	public String getMbno() {
+ 		return mbno;
+ 	}
+@@ -37,24 +49,54 @@
+ 		this.mbno = mbno;
+ 	}
+ 
+-	
+-	public String getSdate() {
+-		return sdate;
++
++	public String getStartDate() {
++		return startDate;
+ 	}
+ 
+-	public void setSdate(String sdate) {
+-		this.sdate = sdate;
++	public void setStartDate(String startDate) {
++		this.startDate = startDate;
+ 	}
+ 
+-	public String getEdate() {
+-		return edate;
++	public String getEndDate() {
++		return endDate;
+ 	}
+ 
+-	public void setEdate(String edate) {
+-		this.edate = edate;
++	public void setEndDate(String endDate) {
++		this.endDate = endDate;
+ 	}
++
++
++	private String stitle = "";
++
++	public String getStitle() {	return stitle;}
++
++	public void setStitle(String stitle) {
++		this.stitle = stitle;
++	}
++
++
++	private String sproject = "";
++
++	public String getSproject() {return sproject;}
++
++	public void setSproject(String sproject) {
++		this.sproject = sproject;
++	}
++
++
++	private String stype = "";
++
++	public String getStype() {
++		return stype;
++	}
++
++	public void setStype(String stype) {
++		this.stype = stype;
++	}
++
+ 
+-	
++
+ 	private String userid;
+ 
+ 	public String getUserid() {
+@@ -66,16 +108,8 @@
+ 	}
+ 
+ 
+-	private String sdate;
+-	private String edate;
+-	
+-	private String pwd2dec;
+-	private String mbid;
+-	private String bgno;                       
+-    private String mbno;
+-    
+     private String schCode;
+-    
++
+     private String orderKeyword = "";
+ 
+     private String schSubCode = "";
+@@ -88,9 +122,10 @@
+ 		this.orderKeyword = orderKeyword;
+ 	}
+ 
+-	private String searchKeyword = "";         
+-    private String searchType = "";            
+-    private String[] searchTypeArr;            
++	private String searchKeyword = "";
++	private String searchTitle = "";
++    private String searchType = "";
++    private String[] searchTypeArr;
+ 
+     public String getBgno() {
+         return bgno;
+@@ -100,22 +135,28 @@
+         this.bgno = bgno;
+     }
+ 
+-    public String getSearchKeyword() {
+-        return searchKeyword;
++    public String getSearchTitle() {
++        return searchTitle;
+     }
+-    
+-    public void setSearchKeyword(String searchKeyword) {
+-        this.searchKeyword = searchKeyword;
+-    }
+-    
++
++    public void setSearchTitle(String searchTitle) {
++        this.searchTitle = searchTitle;
++    }
++
++	public String getSearchKeyword() {return searchKeyword;}
++
++	public void setSearchKeyword(String searchKeyword) {
++		this.searchKeyword = searchKeyword;
++	}
++
+     public String getSearchType() {
+         return searchType;
+     }
+-    
++
+     public void setSearchType(String searchType) {
+         this.searchType = searchType;
+     }
+-    
++
+     public String[] getSearchTypeArr() {
+         return searchType.split(",");
+     }
+Index: src/main/resources/sql/appmain1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/sql/appmain1.xml	(date 1606935932000)
++++ src/main/resources/sql/appmain1.xml	(date 1607404400000)
+@@ -77,14 +77,9 @@
+ 
+ 	<sql id="includeAppMain1">
+ 		WHERE appkind = '1'
+-		<if
+-			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+-			<foreach item="item" index="index" collection="searchTypeArr"
+-				separator=" OR " open="AND (" close=")">
+-				${item} LIKE CONCAT('%',
+-				#{searchKeyword},'%' )
+-			</foreach>
+-		</if>
++		<if test='stitle != null and stitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{stitle}, '%') ]]></if>
++		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
++		<if test='(sdate != null and edate != null ) or (sdate != "" and edate != "" ) '><![CDATA[  AND sdate LIKE CONCAT('%', #{sdate}, '%') ]]></if>
+ 
+ 		<if test="orderKeyword=='1'">
+ 			ORDER BY sn ASC
+@@ -111,13 +106,13 @@
+ 		</if>
+ 
+ 		<if test="orderKeyword=='1'">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='2'">
+ 			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='' or orderKeyword==' '">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+ 
+ 
+@@ -131,8 +126,7 @@
+ 	</select>
+ 
+ 	<select id="selectAppMain1List"
+-		resultType="main.java.admin.satelite.kr.AppMain1VO"
+-		parameterType="main.java.common.satelite.kr.SearchVO">
++		resultType="main.java.admin.satelite.kr.AppMain1VO"	parameterType="main.java.common.satelite.kr.SearchVO">
+ 		SELECT sn, project, code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType,regDate from tbanner2
+ 		<include refid="includeAppMain1" />
+ 
+Index: src/main/webapp/WEB-INF/dispatcher-servlet.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/webapp/WEB-INF/dispatcher-servlet.xml	(date 1606935932000)
++++ src/main/webapp/WEB-INF/dispatcher-servlet.xml	(date 1607404400000)
+@@ -28,5 +28,5 @@
+         <property name="maxUploadSize" value="10000000" />
+         <property name="maxInMemorySize" value="100000000" />
+     </bean>
+-    	    
++	<mvc:resources mapping="/upload/**" location="/upload/" />
+ </beans>
+Index: src/main/resources/sql/contents.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/sql/contents.xml	(date 1606935932000)
++++ src/main/resources/sql/contents.xml	(date 1607404400000)
+@@ -33,23 +33,21 @@
+ 	</update>
+ 
+ 	<sql id="includecontents">
+-		WHERE 1 = 1
+-		<if	test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+-			<foreach item="item" index="index" collection="searchTypeArr"
+-				separator=" OR " open="AND (" close=")">
+-				${item} LIKE CONCAT('%',
+-				#{searchKeyword},'%' )
+-			</foreach>
+-		</if>
++		WHERE state = '100'
++		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
++		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
++		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
++		<if test='stype != null and stype != "" '><![CDATA[  AND type = #{stype} ]]></if>
++		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
+ 
+ 		<if test="orderKeyword=='1'">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='2'">
+ 			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='' or orderKeyword==' '">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+ 	</sql>
+ 
+@@ -76,9 +74,11 @@
+ 		where sn=#{sn}
+ 	</delete>
+ 
+-	<update id="notContentsPublish" parameterType="main.java.admin.satelite.kr.ContentsVO">
++	<update id="ContentsPublish" parameterType="main.java.admin.satelite.kr.ContentsVO">
+ 		update tbl_contents set
+-		state = "1000"
++		state = "200",
++		project = #{project},
++		category = #{category}
+ 		where sn=#{sn}
+ 	</update>
+ 
+Index: src/main/resources/sql/project.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/resources/sql/project.xml	(date 1606935932000)
++++ src/main/resources/sql/project.xml	(date 1607404400000)
+@@ -36,26 +36,22 @@
+ 
+ 
+ 	<sql id="includeproject">
+-		WHERE 1 = 1
+-		<if	test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+-			<foreach item="item" index="index" collection="searchTypeArr"
+-				separator=" OR " open="AND (" close=")">
+-				${item} LIKE CONCAT('%',
+-				#{searchKeyword},'%' )
+-			</foreach>
+-		</if>
++		WHERE state = '200'
++		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
++		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
++		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
++		<if test='stype != null and stype != "" '><![CDATA[  AND type = #{stype} ]]></if>
++		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
+ 
+ 		<if test="orderKeyword=='1'">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='2'">
+ 			ORDER BY sn DESC
+ 		</if>
+ 		<if test="orderKeyword=='' or orderKeyword==' '">
+-			ORDER BY sn ASC
++			ORDER BY sn DESC
+ 		</if>
+-
+-
+ 	</sql>
+ 
+ 
+@@ -95,7 +91,7 @@
+ 
+ 	<update id="notProjectPublish" parameterType="main.java.admin.satelite.kr.ProjectVO">
+ 		update tbl_contents set
+-		state = "1000"
++		state = "100"
+ 		where sn=#{sn}
+ 	</update>
+ 
+diff --git src/main/java.zip src/main/java.zip
+deleted file mode 100644
+index e1307f4185149877469c95a04a904c93b982ab1c..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+Hc$@<O00001
+
+diff --git src/main/webapp/upload/excel/test01.xlsx src/main/webapp/upload/excel/test01.xlsx
+new file mode 100644
+index 0000000000000000000000000000000000000000..9bb4edf69d17a82ca2aaa3fce107f2bf7f3b654e
+GIT binary patch
+literal 9757
+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
+VYN?@P{P7QOKBG4#qJP}U{{p`B*C_x1
+
