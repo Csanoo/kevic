@@ -107,7 +107,7 @@
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
-                                    <button type="button" class="btn btn-orange" >선택수정</button>
+                                    <button type="button" class="btn btn-orange" id="updatemPost">선택수정</button>
                                     <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">  컨텐츠 전시</button>
                                     <button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
                                     <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
@@ -150,13 +150,13 @@
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
                                             <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
-                                            <td>${listview.title}</td>
+                                            <td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
                                             <td>
                                                     ${listview.regDate}<br>
                                                    등록자
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/projectDelete?sn=${listview.sn}'">삭제</button>
+                                                <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete?sn=${listview.sn}'">삭제</button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -208,55 +208,55 @@
         else{
             $.ajax({
                 type: "POST",
-                url: "/admin/contentsChkPublish",
+                url: "/admin/contentsChkDelete",
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                dataType:"http",
                 success: function(jdata){
-                    alert(jdata);
                     if(jdata != 'TRUE') {
                         alert("삭제 오류");
                     }else{
                         alert("삭제 성공");
-                        location.href = "/admin/project";
+                        location.href = "/admin/contents";
                     }
                 },
-                error: function(data){alert(data);location.href = "/admin/project";}
+                error: function(data){alert(data);location.href = "/admin/contents";}
             });
         }
     }
 
+
+
+
+
     function publishPost(){
-            var cnt = $("input[name='chkSn']:checked").length;
-            var arr = new Array();
-            var pubcate = $("#pubcate").val();
-            var pubproject = $("#pubproject").val();
-            $("input[name='chkSn']:checked").each(function () {
-                arr.push($(this).attr('value'));
-            });
-            if (cnt == 0) {
-                alert("컨텐츠를 선택해주세요.");
-            }
-            else {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/contentsChkPublish",
-                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&cate="+pubcate+"&project"+pubproject,
-                    dataType: "http",
-                    success: function (jdata) {
-                        alert(jdata);
-                        if (jdata != 'TRUE') {
-                            alert("삭제 오류");
-                        } else {
-                            alert("노출 성공");
-                            location.href = "/admin/project";
-                        }
-                    },
-                    error: function (data) {
+        var cnt = $("input[name='chkSn']:checked").length;
+        var arr = new Array();
+        var pubcate = $("#pubcate").val();
+        var pubproject = $("#pubproject").val();
+        $("input[name='chkSn']:checked").each(function () {
+            arr.push($(this).attr('value'));
+        });
+        if (cnt == 0) {
+            alert("컨텐츠를 선택해주세요.");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/admin/contentsChkPublish",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&cate="+pubcate+"&project"+pubproject,
+
+                success: function (jdata) {
+                    if (jdata != 'TRUE') {
+                        alert("삭제 오류");
+                    } else {
+                        alert("노출 성공");
                         location.href = "/admin/project";
                     }
-                });
-            }
-
+                },
+                error: function (data) {
+                    location.href = "/admin/project";
+                }
+            });
+        }
     }
 </script>
 
@@ -273,8 +273,75 @@
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
                 $("input[name='chkSn']").prop('checked', true);
+                $("input[name='chkSn']").parent().parent().children(".title").children("button").show();
+                $("input[name='chkSn']").parent().parent().children(".title").children("input").attr('readonly', false);
             } else {
                 $("input[name='chkSn']").prop('checked', false);
+                $("input[name='chkSn']").parent().parent().children(".title").children("button").hide();
+                $("input[name='chkSn']").parent().parent().children(".title").children("input").attr('readonly', true);
+            }
+        });
+
+        $("input[name='chkSn']").on("change",function(){
+            if ($(this).is(':checked')) {
+                $("input[name='chkSn']").parent().parent().children(".title").children("button").show();
+                $("input[name='chkSn']").parent().parent().children(".title").children("input").attr('readonly', false);
+            } else {
+                $("input[name='chkSn']").parent().parent().children(".title").children("input").attr('readonly', true);
+                $("input[name='chkSn']").parent().parent().children(".title").children("button").hide();
+            }
+        });
+
+        $(document).on("click",".btn-modify",function(){
+            var _title = $(this).prev("input").val();
+            alert(_title);
+            var _sn = $(this).attr("data");
+            $.ajax({
+                type: "POST",
+                url: "/admin/contentsUpdate",
+                data: "sn="+_sn+"&title="+_title,
+                success: function(data){
+                    if(data != 'TRUE') {
+                        alert("수정 오류");
+                    }else{
+                        alert("수정 완료");
+                        location.href = "/admin/contents";
+                    }
+                },
+                error: function(data){alert(data);location.href = "/admin/contents";}
+            });
+        });
+        $(document).on("click","#updatemPost",function(){
+            var cnt = $("input[name='chkSn']:checked").length;
+            var arr = new Array();
+            var arrtitle = new Array();
+            var title = "";
+            var idx;
+            $("input[name='chkSn']:checked").each(function() {
+                idx = $("input[name='chkSn']").index(this);
+                arr.push($(this).attr('value'));
+                title = $("input[name='title']").eq(idx).val();
+                arrtitle.push(title);
+            });
+
+            if(cnt == 0){
+                alert("선택된 글이 없습니다.");
+            }
+            else{
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/contentsChkUpdate",
+                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt+ "&STITLE=" + arrtitle,
+                    success: function(data){
+                        if(data != 'TRUE') {
+                            alert("수정 실");
+                        }else{
+                            alert("수정 완료");
+                            location.href = "/admin/contents";
+                        }
+                    },
+                    error: function(data){alert(data);location.href = "/admin/contents";}
+                });
             }
         });
     });

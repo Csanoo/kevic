@@ -82,5 +82,11 @@
 		where sn=#{sn}
 	</update>
 
+	<update id="ContentsUpdate" parameterType="main.java.admin.satelite.kr.ContentsVO">
+		update tbl_contents set
+		title = #{title}
+		where sn=#{sn}
+	</update>
+
 </mapper>
 

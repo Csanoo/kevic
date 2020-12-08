@@ -180,7 +180,7 @@ public class ContentsCtr {
 
     @ResponseBody
     @RequestMapping(value = "/contentsChkPublish")
-    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo, ModelMap modelMap) throws Exception{
+    public String contentsChkPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo, ModelMap modelMap) throws Exception{
         String result = "TRUE";
         try {
             int cnt = Integer.parseInt(request.getParameter("CNT"));
@@ -207,6 +207,54 @@ public class ContentsCtr {
             result = "FALSE";
         }
         return "TRUE";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/contentsChkUpdate")
+    public String contentsChkUpdate(HttpServletRequest request, ContentsVO contentsInfo) throws Exception{
+        String result = "TRUE";
+        try {
+            int cnt = Integer.parseInt(request.getParameter("CNT"));
+            //System.out.println(cnt);
+            String rprtOdr = request.getParameter("RPRT_ODR");
+            String stitle = request.getParameter("STITLE");
+            String [] strArray = rprtOdr.split(",");
+            String [] strArrayTit = stitle.split(",");
+
+
+            for(int i=0; i<cnt; i++) {
+
+                Integer sn = Integer.valueOf((String)strArray[i]);
+                String title = (String)strArrayTit[i];
+
+                contentsInfo.setTitle(title);
+                contentsInfo.setSn(sn);
+
+                contentsSvc.ContentsUpdate(contentsInfo);
+            }
+        } catch (Exception e) {
+           // System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+       // System.out.println(result);
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/contentsUpdate")
+    public String contentsUpdate(HttpServletRequest request,  ContentsVO contentsInfo) throws Exception{
+        String result = "TRUE";
+        try {
+            Integer sn = Integer.valueOf(request.getParameter("sn"));
+            String title = request.getParameter("title");
+            contentsInfo.setSn(sn);
+            contentsInfo.setTitle(title);
+            contentsSvc.ContentsUpdate(contentsInfo);
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return result;
     }
 
     @RequestMapping(value="/ExcelDownload")

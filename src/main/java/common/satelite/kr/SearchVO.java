@@ -188,7 +188,6 @@ public class SearchVO extends  PageVO  {
 	}
 
 	private String seq_no;
-
 	private String subj_id;
 	private String time_seq;
 

@@ -129,4 +129,20 @@ public class ContentsSvc {
 
     }
 
+    public void ContentsUpdate(ContentsVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        try {
+            sqlSession.update("ContentsUpdate", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+            System.out.println(ex.getMessage());
+
+        }
+    }
+
+
 }
