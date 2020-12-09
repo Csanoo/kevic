@@ -103,15 +103,13 @@
                     <header class="panel_header">
                         <h2 class="title pull-left">목록 </h2>
                         <div class="pull-right" style="padding-top: 10px">
-                            <li class="list-unstyled">
+                            <ul class="list-unstyled">
                                 <li style="float: left;">
-                                    <button type="button" class="btn btn-gray"   onclick="modifyPost()">선택 수</button>
-                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">컨텐츠 전시</button>
+                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">직접저장</button>
+                                    <button type="button" class="btn btn-gray"   onclick="publishNotPost()">노출중지</button>
+                                    <button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
+                                    <button type="button" class="btn btn-orange" onclick="deletePost()">순서 저장</button>
 
-                                    <button type="button" class="btn btn-orange" onclick="deletePost()">선택 삭제</button>
-                                </li>
-                                <li style="float: left;">&nbsp;&nbsp;
-                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">신규</button>
                                 </li>
                                 <li style="float: left;">
                                     <select name="orderKeyword" id="orderKeyword"  >

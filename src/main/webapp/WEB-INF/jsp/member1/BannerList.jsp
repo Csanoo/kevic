@@ -34,43 +34,78 @@
 
 			<div class="col-lg-12">
 				<section class="box ">
+					<div class="content-body">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
 
+								<div class="row">
+									<div class="col-md-12 col-sm-12 col-xs-12">
+										<table id="customers">
+											<tr>
+												<td class="tdl" style="width: 25%">프로젝트</td>
+												<td style="width: 25%">
+													<select name="sproject">
+														<option value="">프로젝트</option>
+														<option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
+														<option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+													</select>
+												</td>
+												<td class="tdl" style="width: 25%">사용 여부</td>
+												<td style="width: 25%">
+													<input type="radio" name="state" value=""><label>전체</label>
+													<input type="radio" name="state" value="100"><label>사용</label>
+													<input type="radio" name="state" value="200"><label>사용안함</label>
+												</td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 25%">배너 타이틀</td>
+												<td style="width: 75%" colspan="3">
+													<input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
+												</td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 25%">검색 기간</td>
+												<td style="width: 75%" colspan="3">
+													<input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
+													<input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+												</td>
+											</tr>
+										</table>
+										<div class="form-group" style="margin-top: 20px;float:right">
+											<button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
+										</div>
+									</div>
+								</div>
+								<script>
+                                    function fn_formSv() {
+                                        $("#loading").show();
+                                        document.form1.submit();
+                                    }
+								</script>
 
-
-
-					<header class="panel_header">
-						<h2 class="title pull-left">배너목록 </h2>
-						<div class="pull-right" style="padding-top: 10px">
-							<ul class="list-unstyled">
-								<li style="float: left;"><input type="checkbox"
-									name="searchType" value="code2"
-									<c:if test="${fn:indexOf(searchVO.searchType, 'code2')!= -1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType1">종류</label>&nbsp;&nbsp;
-
-									<input type="checkbox" name="searchType" value="imgfile"
-									<c:if test="${fn:indexOf(searchVO.searchType, 'imgfile')!=-1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType2">이미지명</label>&nbsp;&nbsp;
-								</li>
-								<li style="float: left;"><input type="text"
-									style="width: 150px; height: 28px" name="searchKeyword"
-									value='<c:out value="${searchVO.searchKeyword}"/>'
-									onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
-								</li>
-								<li style="float: left;">&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary "
-										onclick="fn_formSubmit()">검색</button> 
-									<button type="button" class="btn btn-orange" onclick="fn_formGo()">
-									신규</button>
-								</li>
-
-								
-
-
-							</ul>
+							</div>
 						</div>
-					</header>
+					</div>
 
 					<div class="content-body">
+						<header class="panel_header">
+							<h2 class="title pull-left">목록 </h2>
+							<div class="pull-right" style="padding-top: 10px">
+								<ul class="list-unstyled">
+									<li style="float: left;">
+										<button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
+									</li>
+									<li style="float: left;">
+										<select name="orderKeyword" id="orderKeyword"  >
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+										</select>
+									</li>
+								</ul>
+							</div>
+						</header>
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
 

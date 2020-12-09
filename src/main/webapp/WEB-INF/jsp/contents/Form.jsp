@@ -73,6 +73,13 @@
 												<td class="tdl" style="width: 15%">타이틀</td>
 												<td style="width: 35%"><input name="title" type="text"	class="form-control"></td>
 											</tr>
+											<tr>
+												<td class="tdl" style="width: 25%">사용 기간</td>
+												<td style="width: 75%" colspan="3">
+													<input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
+													<input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+												</td>
+											</tr>
 										</table>
 
 										<div class="form-group" style="margin-top: 10px">

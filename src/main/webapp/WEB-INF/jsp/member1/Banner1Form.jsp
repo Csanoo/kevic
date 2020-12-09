@@ -12,7 +12,7 @@
 					<div class="page-title">
 
 						<div class="pull-left">
-							<h1 class="title">배너등</h1>
+							<h1 class="title">프로젝트 배너등</h1>
 						</div>
 
 
@@ -23,7 +23,7 @@
 				<div class="col-lg-12">
 					<section class="box ">
 						<header class="panel_header">
-							<h2 class="title pull-left">배너 정보</h2>
+							<h2 class="title pull-left">기본 설정</h2>
 							<div class="actions panel_actions pull-right">
 								<i class="box_toggle fa fa-chevron-down"></i> <i
 									class="box_setting fa fa-cog" data-toggle="modal"
@@ -59,33 +59,26 @@
 
 
 
-														<td class="tdl" style="width: 15%">링크</td>
+														<td class="tdl" style="width: 15%">사용여부</td>
 
-														<td style="width: 35%"><input name="link" type="text"
-															class="form-control"></td>
+														<td style="width: 35%">
+															<input type="radio" name="state" value="100"><label>사용</label>
+															<input type="radio" name="state" value="200"><label>사용안함</label>
+														</td>
 													</tr>
 
 													<tr>
-
-
 														<td class="tdl" style="width: 15%">배너 타이틀</td>
-
-														<td style="width: 35%"><input name="uname" type="text"
-															class="form-control"></td>
-
-
-
+														<td style="width: 35%"><input name="title" type="text"	class="form-control"></td>
 														<td class="tdl" style="width: 15%">문구</td>
-
-														<td style="width: 35%"><input name="umemo" type="text"
-															class="form-control"></td>
+														<td style="width: 35%"><input name="title" type="comment"	class="form-control"></td>
 													</tr>
 												</table>
 
 
 
 												<div class="form-group" style="">
-													<label class="form-label" for="field-1">배너 이미지</label>
+													<label class="form-label" for="field-1">이미지</label>
 													<div class="controls">
 														<c:forEach var="listview" items="${listview}"
 															varStatus="status">
@@ -98,9 +91,19 @@
 															<c:out value="${listview.size2String()}" />
 															<br />
 														</c:forEach>
-
-
 														<input type="file" name="uploadfile" multiple="" />
+													</div>
+													<div class="link">
+														URL
+														<input type="link">
+														<input type="radio" name="target" value="100"><label>현재창</label>
+														<input type="radio" name="target" value="200"><label>새창</label>
+													</div>
+													<div class="move">
+														이동
+													</div>
+													<div class="delete">
+														X
 													</div>
 												</div>
 

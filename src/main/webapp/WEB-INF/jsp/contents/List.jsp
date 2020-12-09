@@ -9,8 +9,7 @@
 
 <form id="form1" name="form1" method="post">
 
-    <input type="hidden" name="sn" id="sn"
-           value="" />
+    <input type="hidden" name="sn" id="sn" value="" />
 
     <section id="main-content" class=" ">
         <div class="col-lg-12">
