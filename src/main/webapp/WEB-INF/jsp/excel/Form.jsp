@@ -91,7 +91,7 @@
     });
     function checkFileType(filePath) {
         var fileFormat = filePath.split(".");
-        if (fileFormat.indexOf("xlsx") > -1) {
+        if (fileFormat.indexOf("xlsx") > -1 || fileFormat.indexOf("xls") > -1) {
             return true;
         } else {
             return false;

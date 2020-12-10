@@ -66,7 +66,7 @@
 												<td style="width: 35%" colspan="3">
 													<select name="type"  class="form-control" >
 														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
-															<option value="${cateview.code2}" <c:if test="${projectInfo.type eq cateview.code2}">selected</c:if>>${cateview.type}</option>
+															<option value="${cateview.code2}" <c:if test="${projectInfo.type eq cateview.code2}">selected</c:if>>${cateview.title}</option>
 														</c:forEach>
 
 													</select>
@@ -76,10 +76,8 @@
 												<td class="tdl" style="width: 15%">전시 카테고리</td>
 												<td style="width: 35%" colspan="3">
 													<select name="category"  class="form-control" >
-														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
-															<option value="${cateview.code2}" <c:if test="${projectInfo.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-														</c:forEach>
-
+														<option value="">카테고리</option>
+														<option value="001">카테고리1*구현전</option>
 													</select>
 												</td>
 											</tr>
@@ -117,7 +115,7 @@
 
 										<div class="form-group" style="margin-top: 10px">
 											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">미리보기</button>
+											<button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal" id="preview">미리보기</button>
 											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
 										</div>
 
@@ -160,3 +158,36 @@
 
 
 											<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+
+<script>
+
+    $(function(){
+        $("#preview").on("click",function(){
+			$("#preview-img").attr("src",$("input[name='imageUrl']").val());
+            $("#preview-keyword").html('('+$("input[name='keyword']").val()+')');
+            $("#preview-title").html($("input[name='title']").val());
+
+        });
+
+    })
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			</div>
+			<div class="modal-body">
+				<img src="" id="preview-img">
+			</div>
+			<div class="modal-footer">
+				<p id="preview-keyword" style="text-align:left;font-size:12px">
+				</p>
+				<p id="preview-title" style="text-align:left;font-size:16px">
+				</p>
+			</div>
+		</div>
+	</div>
+</div>

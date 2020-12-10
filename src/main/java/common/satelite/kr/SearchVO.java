@@ -222,10 +222,7 @@ public class SearchVO extends  PageVO  {
 	public String x;
 	public String y;
 
-	public String getX() {
-
-		return x;
-	}
+	public String getX() {return x;}
 
 	public void setX(String x) {
 		this.x = x;
@@ -238,5 +235,16 @@ public class SearchVO extends  PageVO  {
 	public void setY(String y) {
 		this.y = y;
 	}
+
+	public String pageNo = "50";
+
+	public String getPageNo() {
+		return pageNo;
+	}
+
+	public void setPageNo(String pageNo) {
+		this.pageNo = pageNo;
+	}
+
 }
  

@@ -77,34 +77,18 @@ public class Banner1Ctr {
 	}
 	
 	@RequestMapping(value = "/banner1Read")
-	public String banner1Read(HttpServletRequest request, Banner1VO banner1Info, 
-			ModelMap modelMap) {
-		
-		
+	public String banner1Read(HttpServletRequest request, Banner1VO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
-		
-		
-
 		banner1Info = banner1Svc.selectBanner1One(sn);
-
 		modelMap.addAttribute("banner1Info", banner1Info);
-		
 		return "member1/Banner1Read";
 	}
 	
 	@RequestMapping(value = "/banner2Read")
-	public String banner2Read(HttpServletRequest request, Banner1VO banner1Info, 
-			ModelMap modelMap) {
-		
-		
+	public String banner2Read(HttpServletRequest request, Banner1VO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
-		
-		
-
 		banner1Info = banner1Svc.selectBanner2One(sn);
-
 		modelMap.addAttribute("banner1Info", banner1Info);
-		
 		return "member1/Banner2Read";
 	}
 	
@@ -118,51 +102,29 @@ public class Banner1Ctr {
 	}
 	
 	@RequestMapping(value = "/banner1Save")
-	public String banner1Save(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info, 
-			ModelMap modelMap) {
-		
-		
+	public String banner1Save(SearchVO searchVO, HttpServletRequest request, Banner1VO banner1Info,	ModelMap modelMap) {
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
 		banner1Svc.insertBanner1(banner1Info, filelist, fileno);
-
 		searchVO.pageCalculate( banner1Svc.selectBanner1Count(searchVO) ); // startRow, endRow
-
 		List<?> listview  = banner1Svc.selectBanner1List(searchVO);
-
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-		
 		return "member1/BannerList";
 	}
 	
 	@RequestMapping(value = "/ContentsRead")
-	public String ContentsRead(HttpServletRequest request, Banner1VO banner1Info, 
-			ModelMap modelMap) {
-		
-		
+	public String ContentsRead(HttpServletRequest request, Banner1VO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
-		
-		
-
 		banner1Info = banner1Svc.selectContentsOne(sn);
-
 		modelMap.addAttribute("banner1Info", banner1Info);
-		
 		return "member1/ContentsRead";
 	}
-	
-	
-	
-	
+
 	
 	@RequestMapping(value = "/banner1Up")
-	public String banner1Up(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info, 
-			ModelMap modelMap) {
-		
+	public String banner1Up(SearchVO searchVO, HttpServletRequest request, Banner1VO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
 		String code2 = request.getParameter("code2");
 		String link = request.getParameter("link");
@@ -215,23 +177,15 @@ public class Banner1Ctr {
 		banner1Info.setText2(text2);
 		
 		banner1Info.setSn(sn);
-		
-		
+
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
-		
 		banner1Svc.updateBanner1(banner1Info, filelist, fileno);
-		
 		searchVO.pageCalculate( banner1Svc.selectBanner2Count(searchVO) ); // startRow, endRow
-
 		List<?> listview  = banner1Svc.selectBanner2List(searchVO);
-
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-
-		
-		
 		return "member1/Banner2List";
 	}
 	
@@ -273,7 +227,5 @@ public class Banner1Ctr {
 		
 		return "member1/BannerList";
 	}
-
-	
 
 }

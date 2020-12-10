@@ -58,7 +58,7 @@
 		SELECT sn, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
 		<include refid="includecontents" />
 
-		LIMIT ${rowStart-1}, 10
+		LIMIT ${rowStart-1}, ${pageNo}
 	</select>
 
 

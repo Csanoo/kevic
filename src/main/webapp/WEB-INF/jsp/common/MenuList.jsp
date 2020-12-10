@@ -25,7 +25,10 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Contents2")%>">
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Contents2")%>
+<%=btr.CLASSOPEN(HEADERURL, "project")%>
+<%=btr.CLASSOPEN(HEADERURL, "excelForm")%>
+	">
 		<a href="javascript:;">
 			<i class="fa fa-folder-open"></i> <span class="title">컨텐츠 관리</span><span class="arrow "></span>
 		</a>
@@ -60,35 +63,34 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 					<span class="title">공지사항-알림</span>
 				</a>
 			</li>
-			<li><a href="/admin/AppMain1"
-				class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain1")%>"> <span
-					class="title">팝업 관리</span>
-			</a></li>
-			<li><a href="/admin/appmain1Form"
-				class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain2")%>"> <span
+			<li><a href="/admin/AppMain1" class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain1")%>"> <span class="title">팝업 관리</span></a></li>
+			<li><a href="/admin/appmain1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain1")%>"> <span
 					class="title">팝업 등록</span>
 			</a></li>
-			<li><a href="/admin/BannerList"
-				class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain3")%>"> <span
+			<li><a href="/admin/BannerList"	class="<%=btr.CLASSACTIVE(HEADERURL, "BannerList")%>"> <span
 					class="title">프로젝트 배너관리</span>
 			</a></li>
-			<li><a href="/admin/banner1Form"
-				class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain4")%>"> <span
+			<li><a href="/admin/banner1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "banner1Form")%>"> <span
 					class="title">프로젝트 배너등록</span>
 			</a></li>
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/Ytb")%> <%=btr.CLASSOPEN(HEADERURL, "Contents")%>">
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/Ytb")%>">
 		<a	href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">크롤링 관리</span> <span class="arrow "></span>
 		</a>
-		<ul class="sub-menu">
-			<li><a href="/admin/ytbForm"
-				class="<%=btr.CLASSACTIVE(HEADERURL, "posts/Ytb")%>"> <span
-					class="title">크롤링</span>
-			</a></li>
-
+		<ul class="sub-menu"><li><a href="/admin/ytbForm" class="<%=btr.CLASSACTIVE(HEADERURL, "posts/Ytb")%>"> <span class="title">크롤링</span></a></li>
 			<li><a href="/admin/codeList" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Code")%>"> <span class="title">코드목록</span></a></li>
+		</ul>
+	</li>
+
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "manage")%>">
+		<a	href="javascript:;"> <i class="fa fa-folder-open"></i>
+			<span class="title">프로젝트 관리</span> <span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			<li><a href="/project/projectList" class="<%=btr.CLASSACTIVE(HEADERURL, "/project/projectList")%>"> <span class="title">프로젝트 목록</span></a></li>
+			<li><a href="/project/projectForm" class="<%=btr.CLASSACTIVE(HEADERURL, "/project/projectForm")%>"> <span class="title">프로젝트 등록</span></a></li>
 		</ul>
 	</li>
 </ul>

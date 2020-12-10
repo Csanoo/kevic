@@ -24,7 +24,6 @@
                 <div class="content-body">
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
@@ -80,7 +79,6 @@
                                     document.form1.submit();
                                 }
                             </script>
-
                         </div>
                     </div>
                 </div>
@@ -126,7 +124,7 @@
                     <div class="content-body">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
-                                <table class="table">
+                                <table class="table" id="dTable">
                                     <thead>
                                     <colgroup>
                                         <col width="5%">
@@ -146,7 +144,10 @@
                                         <th>영상URL</th>
                                         <th>타이틀</th>
                                         <th>등록일</th>
-                                        <th>관리</th>
+                                        <th>메시지</th>
+                                        <th>좋아요</th>
+                                        <th>순서</th>
+                                        <th>노출</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -159,8 +160,14 @@
                                             <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.regDate}</td>
-                                            <td><button type="button" class="btn btn-gray" onclick="fn_formGo()">노출</button>
-                                                <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/projectDelete?sn=${listview.sn}'">삭제</button>
+                                            <td>0</td>
+                                            <td>0</td>
+                                            <td>
+                                                이동
+                                                <input type="hidden" value="${listview.sn}" name="rankSn">
+                                            </td>
+                                            <td>
+                                                <div onclick="fn_notPublish()">X</div>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -169,8 +176,7 @@
 
                             </div>
 
-                            <div class="col-md-12 col-sm-12 col-xs-12"
-                                 style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
+                            <div class="col-md-12 col-sm-12 col-xs-12" style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
                                 <jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
                             </div>
                         </div>
@@ -179,8 +185,6 @@
             </div>
         </section>
     </section>
-
-
 </form>
 <script>
     function fn_formSubmit() {
@@ -218,9 +222,8 @@
                 type: "POST",
                 url: "/admin/prtChkDelete",
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                dataType:"json",
                 success: function(jdata){
-                    alert(jdata);
+
                     if(jdata != 'TRUE') {
                         alert("삭제 오류");
                     }else{
@@ -234,7 +237,7 @@
     }
 
     function publishNotPost(){
-        if(confirm('컨텐츠를 선택하세요')){
+        if(confirm('선택한 컨텐츠의 노출을 중지하시겠습니까?')){
             var cnt = $("input[name='chkSn']:checked").length;
             var arr = new Array();
             $("input[name='chkSn']:checked").each(function () {
@@ -248,9 +251,9 @@
                     type: "POST",
                     url: "/admin/prtChkNotPublish",
                     data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                    dataType: "json",
+
                     success: function (jdata) {
-                        alert(jdata);
+
                         if (jdata != 'TRUE') {
                             alert("삭제 오류");
                         } else {
@@ -268,6 +271,34 @@
            return false;
         }
     }
+    function fn_notPublish(_sn){
+        if(confirm('컨텐츠의 노출을 중지하시겠습니까?')){
+            var arr = new Array();
+            arr.push(_sn);
+            var cnt = 1;
+            $.ajax({
+                type: "POST",
+                url: "/admin/prtChkNotPublish",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                success: function (jdata) {
+
+                    if (jdata != 'TRUE') {
+                        alert("노 오류");
+                    } else {
+                        alert("정상 처리되었니다.");
+                        location.href = "/admin/project";
+                    }
+                },
+                error: function (data) {
+                    alert(삭제완료);
+                    location.href = "/admin/project";
+                }
+            });
+        }else{
+            return false;
+        }
+    }
+
 </script>
 
 
@@ -284,9 +315,19 @@
                 $("input[name='chkSn']").prop('checked', false);
             }
         });
-    });
-</script>
 
+        $("#dTable").tableDnD({
+            onDragClass: "dragRow"
+        });
+    })
+
+
+</script>
+<style>
+    .dragRow{
+        border:2px solid #CCCCCC;
+    }
+</style>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -302,5 +343,6 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">닫기</button>
             </div>
         </div>
-    </div></div>
+    </div>
+</div>
 

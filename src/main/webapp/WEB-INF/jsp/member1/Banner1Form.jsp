@@ -78,35 +78,44 @@
 
 
 												<div class="form-group" style="">
-													<label class="form-label" for="field-1">이미지</label>
-													<div class="controls">
-														<c:forEach var="listview" items="${listview}"
-															varStatus="status">
-															<input type="checkbox" name="fileno"
-																value="<c:out value="${listview.fileno}"/>">
-															<a
-																href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
-																<c:out value="${listview.filename}" />
-															</a>
-															<c:out value="${listview.size2String()}" />
-															<br />
-														</c:forEach>
-														<input type="file" name="uploadfile" multiple="" />
-													</div>
-													<div class="link">
-														URL
-														<input type="link">
-														<input type="radio" name="target" value="100"><label>현재창</label>
-														<input type="radio" name="target" value="200"><label>새창</label>
-													</div>
-													<div class="move">
-														이동
-													</div>
-													<div class="delete">
-														X
-													</div>
-												</div>
+													<c:forEach var="listview" items="${listview}" varStatus="status">
+													<div style="display:flex">
+														<div>1</div>
+														<div class="controls">
 
+																<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">
+																<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
+																	<c:out value="${listview.filename}" />
+																</a>
+																<c:out value="${listview.size2String()}" />
+
+															<input type="file" name="uploadfile" multiple="" />
+														</div>
+														<div class="link">
+															URL
+															<input type="link">
+															<input type="radio" name="target" value="100"><label>현재창</label>
+															<input type="radio" name="target" value="200"><label>새창</label>
+														</div>
+														<div class="move">
+															이동
+														</div>
+														<div class="delete">
+															X
+														</div>
+													</div>
+													</c:forEach>
+													<ul id="sortable" class="list-group">
+														<li class="list-group-item active">Item 1</li>
+														<li class="list-group-item">Item 2</li>
+														<li class="list-group-item">Item 3</li>
+														<li class="list-group-item">Item 4</li>
+														<li class="list-group-item">Item 5</li>
+														<li class="list-group-item">Item 6</li>
+														<li class="list-group-item">Item 7</li>
+														<li class="list-group-item">Item 8</li>
+													</ul>
+												</div>
 												<div class="form-group" style="margin-top: 10px">
 
 													<button type="button" class="btn btn-gray"

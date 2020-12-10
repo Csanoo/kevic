@@ -11,8 +11,6 @@
 		SELECT sn,code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType  from tbanner2 where sn=#{sn}
 	</select>
 
-
-
 	<insert id="insertAppMain1One"	parameterType="main.java.admin.satelite.kr.AppMain1VO">
 		insert into tbanner2 (code2, imgfile,	link, title, umemo,	type1, text1, text2, appkind, creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType, project )
 		values ( #{code2}, #{imgfile} , #{link} ,#{title} ,#{umemo} ,#{type1} ,#{text1} ,#{text2} ,#{appkind} ,#{creatorimg}, #{sdate}, #{stime}, #{edate}, #{etime}, #{sWidth}, #{sHeight}, #{state}, #{positionX}, #{positionY}, #{closeType} ,#{project})
@@ -30,7 +28,6 @@
 		link=#{link},title=#{title},umemo=#{umemo}
 		,text1=#{text1},text2=#{text2},creatorimg=#{creatorimg}
 		where sn=#{sn}
-		
 	</update>
 	
 	<update id="updateAppMain11One"
@@ -80,7 +77,6 @@
 		<if test='stitle != null and stitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{stitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
 		<if test='(startDate != null and endDate != null ) or (startDate != "" and endDate != "" ) '><![CDATA[  AND sdate LIKE CONCAT('%', #{startDate}, '%') ]]></if>
-
 		<if test="orderKeyword=='1'">
 			ORDER BY sn ASC
 		</if>
@@ -90,8 +86,6 @@
 		<if test="orderKeyword=='' or orderKeyword==' '">
 			ORDER BY sn ASC
 		</if>
-
-
 	</sql>
 	
 	<sql id="includeAppBanner2">
