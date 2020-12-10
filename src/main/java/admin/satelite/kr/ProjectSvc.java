@@ -77,7 +77,16 @@ public class ProjectSvc {
 
     public List<?> selectProjectList(SearchVO param) {
 
-        return sqlSession.selectList("selectprojectList", param);
+        return sqlSession.selectList("selectprojectList2", param);
+    }
+
+    public Integer selectProjectCount2(SearchVO param) {
+        return sqlSession.selectOne("selectprojectCount", param);
+    }
+
+    public List<?> selectProjectList2(SearchVO param) {
+
+        return sqlSession.selectList("selectprojectList2", param);
     }
 
 

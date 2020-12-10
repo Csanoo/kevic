@@ -41,7 +41,21 @@ public class ProjectCtr {
 
     }
 
+    @RequestMapping(value = "/projectList")
+    public String projectList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
+        searchVO.pageCalculate( projectSvc.selectProjectCount2(searchVO) ); // startRow, endRow
+
+        List<?> listview  = projectSvc.selectProjectList2(searchVO);
+        //List<?> cateview  = projectSvc.selectCateSelList(searchVO);
+
+        modelMap.addAttribute("listview", listview);
+        modelMap.addAttribute("searchVO", searchVO);
+        //modelMap.addAttribute("cateview", cateview);
+
+        return "project/projectList";
+
+    }
 
     @RequestMapping(value = "/projectForm")
     public String projectForm(HttpServletRequest request, ProjectVO projectInfo,

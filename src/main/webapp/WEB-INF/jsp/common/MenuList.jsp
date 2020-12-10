@@ -89,8 +89,8 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			<span class="title">프로젝트 관리</span> <span class="arrow "></span>
 		</a>
 		<ul class="sub-menu">
-			<li><a href="/project/projectList" class="<%=btr.CLASSACTIVE(HEADERURL, "/project/projectList")%>"> <span class="title">프로젝트 목록</span></a></li>
-			<li><a href="/project/projectReg" class="<%=btr.CLASSACTIVE(HEADERURL, "/project/projectForm")%>"> <span class="title">프로젝트 등록</span></a></li>
+			<li><a href="/admin/projectList" class="<%=btr.CLASSACTIVE(HEADERURL, "/projectList")%>"> <span class="title">프로젝트 목록</span></a></li>
+			<li><a href="/admin/projectReg" class="<%=btr.CLASSACTIVE(HEADERURL, "/projectReg")%>"> <span class="title">프로젝트 등록</span></a></li>
 		</ul>
 	</li>
 </ul>

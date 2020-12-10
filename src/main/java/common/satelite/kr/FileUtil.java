@@ -6,16 +6,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.multipart.MultipartFile;
 
+
 public class FileUtil {
 
-	
 	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles) {
-		//String filePath = "/upload/images";
-		String filePath = request.getSession().getServletContext().getRealPath("/upload/");
+		String filePath = "/upload/images";
+		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
 		List<FileVO> filelist = new ArrayList<FileVO>();
 
 		for (MultipartFile uploadfile : upfiles ) {

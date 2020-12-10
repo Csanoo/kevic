@@ -58,6 +58,23 @@
 		</if>
 	</sql>
 
+	<sql id="includeproject2">
+		WHERE 1 = 1
+		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
+
+		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
+
+		<if test="orderKeyword=='1'">
+			ORDER BY title ASC
+		</if>
+		<if test="orderKeyword=='2'">
+			ORDER BY title DESC
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY sn DESC
+		</if>
+	</sql>
+
 
 	<select id="selectprojectList"
 		resultType="main.java.admin.satelite.kr.ProjectVO"
@@ -74,6 +91,24 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT COUNT(*) FROM tbl_contents
 		<include refid="includeproject" />
+	</select>
+
+
+
+	<select id="selectprojectList2"
+			resultType="main.java.admin.satelite.kr.ProjectVO"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate from tbl_project
+		<include refid="includeproject2" />
+		LIMIT ${rowStart-1}, 10
+	</select>
+
+
+
+	<select id="selectprojectCount2" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbl_project
+		<include refid="includeproject2" />
 	</select>
 
 
