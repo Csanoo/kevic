@@ -87,10 +87,8 @@
 											<div class="controls">
 												<c:forEach var="listview" items="${listview}"
 													varStatus="status">
-													<input type="checkbox" name="fileno"
-														value="<c:out value="${listview.fileno}"/>">
-													<a
-														href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
+													<input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">
+													<a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
 														<c:out value="${listview.filename}" />
 													</a>
 													<c:out value="${listview.size2String()}" />

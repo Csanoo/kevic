@@ -2,6 +2,9 @@ package main.java.admin.satelite.kr;
 
 import java.util.List;
 import java.util.Map;
+
+import main.java.common.satelite.kr.FileUtil;
+import main.java.common.satelite.kr.FileVO;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,9 +22,6 @@ public class ProjectCtr {
 
     @Autowired
     private ProjectSvc projectSvc;
-
-
-
 
     @RequestMapping(value = "/project")
     public String Project(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
@@ -55,6 +55,28 @@ public class ProjectCtr {
         return "project/Form";
     }
 
+    @RequestMapping(value = "/projectReg")
+    public String projectReg(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap, SearchVO searchVO) {
+
+        List<?> cateview  = projectSvc.selectCateSelList(searchVO);
+        modelMap.addAttribute("cateview", cateview);
+        List<?> sourceview  = projectSvc.selectSourceSelList(searchVO);
+        modelMap.addAttribute("sourceview", sourceview);
+
+        return "project/projectForm";
+    }
+
+    @RequestMapping(value = "/cateReg")
+    public String cateReg(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap, SearchVO searchVO) {
+
+        List<?> cateview  = projectSvc.selectCateSelList(searchVO);
+        modelMap.addAttribute("cateview", cateview);
+        List<?> sourceview  = projectSvc.selectSourceSelList(searchVO);
+        modelMap.addAttribute("sourceview", sourceview);
+
+        return "project/categoryForm";
+    }
+
     @RequestMapping(value = "/projectRead")
     public String projectRead(HttpServletRequest request, ProjectVO projectInfo,
                                ModelMap modelMap) {
@@ -76,7 +98,6 @@ public class ProjectCtr {
     public String projectSave(SearchVO searchVO,
                                HttpServletRequest request, ProjectVO projectInfo,
                                ModelMap modelMap) {
-        ;
         projectSvc.insertProjectOne(projectInfo);
 
         searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
@@ -101,6 +122,17 @@ public class ProjectCtr {
 
         return "project/List";
     }
+
+    @RequestMapping(value = "/projectRegSave")
+    public String projectRegSave(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        String[] fileno = request.getParameterValues("fileno");
+        FileUtil fs = new FileUtil();
+        List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
+
+        projectSvc.insertProject(projectInfo, filelist, fileno);
+        return "project/projectForm";
+    }
+
 
     @RequestMapping(value = "/projectUp")
     public String projectUp(SearchVO searchVO,
@@ -191,6 +223,36 @@ public class ProjectCtr {
             result = "FALSE";
         }
         return "TRUE";
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/selPrjTitCt")
+    public Integer selPrjTitCt(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+        try {
+            String title = request.getParameter("title");
+            return projectSvc.selPrjTitCt(title);
+
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return 0;
+        }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selPrjCd")
+    public Integer selPrjCd(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+        try {
+            String title = request.getParameter("title");
+            return projectSvc.selPrjCd(title);
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return 0;
+        }
+
     }
 
 }

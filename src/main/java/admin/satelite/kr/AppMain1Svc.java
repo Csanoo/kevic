@@ -47,13 +47,10 @@ public class AppMain1Svc {
 		TransactionStatus status = txManager.getTransaction(def);
 
 		try {
-
 			sqlSession.insert("insertAppMain1One", param);
-
 			txManager.commit(status);
 		} catch (TransactionException ex) {
 			txManager.rollback(status);
-
 		}
 	}
 	

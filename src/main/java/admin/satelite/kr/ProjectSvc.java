@@ -118,5 +118,33 @@ public class ProjectSvc {
         sqlSession.update("notProjectPublish", param);
     }
 
+    public void insertProject(ProjectVO param, List<FileVO> filelist, String[] fileno) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        for (FileVO f : filelist) {
+
+            param.setLogoimg(f.getFilename());
+        }
+
+        try {
+            sqlSession.insert("insertproject", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+    }
+
+
+    public Integer selPrjTitCt(String param) {
+        return sqlSession.selectOne("selPrjTitCt", param);
+    }
+
+
+    public Integer selPrjCd(String param) {
+        return sqlSession.selectOne("selPrjCd", param);
+    }
 
 }

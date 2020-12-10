@@ -15,8 +15,12 @@
 		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
 		where sn=#{sn} 
 	</select>
-	
 
+	<insert id="insertproject"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_project (title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser )
+		values ( #{title}, #{projectcd}, #{comment} , #{state},#{logoimg},#{basicTitle},#{userid},#{mnguser} )
+	</insert>
 
 	<insert id="insertprojectOne"
 		parameterType="main.java.admin.satelite.kr.ProjectVO">
@@ -70,6 +74,15 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT COUNT(*) FROM tbl_contents
 		<include refid="includeproject" />
+	</select>
+
+
+	<select id="selPrjTitCt" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM tbl_project where title = #{title}
+	</select>
+
+	<select id="selPrjCd" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM tbl_project where projectcd = #{title}
 	</select>
 
 

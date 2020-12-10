@@ -16,6 +16,13 @@ public class ProjectVO {
         this.sn = sn;
     }
 
+    private String userid ="";
+    public String getUserid() {
+        return userid;
+    }
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
     private String category="";
     public String category() {return category;}
@@ -87,7 +94,7 @@ public class ProjectVO {
     public String getRegDate() {
         return regDate;
     }
-    public void setRegdate(String regDate) {
+    public void setRegDate(String regDate) {
         this.regDate = regDate;
     }
 
@@ -167,11 +174,60 @@ public class ProjectVO {
     }
 
     private String project="";
-    public String getProject() {
-        return project;
-    }
-    public void setProject(String project) {
-        this.project = project;
+    public String getProject() { return project;}
+    public void setProject(String project) {this.project = project;}
+
+    private String projectcd="";
+    public String getProjectcd() {return projectcd; }
+    public void setProjectcd(String projectcd) {
+        this.projectcd = projectcd;
     }
 
+    private String comment="";
+    public String getComment() {
+        return comment;
+    }
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    private List<MultipartFile> uploadfile;
+
+    public List<MultipartFile> getUploadfile() {
+        return uploadfile;
+    }
+
+    public void setUploadfile(List<MultipartFile> uploadfile) {
+        this.uploadfile = uploadfile;
+    }
+
+    private String mnguser = "";
+
+    public String getMnguser() {
+        return mnguser;
+    }
+    public void setMnguser(String mnguser) {
+        this.mnguser = mnguser;
+    }
+
+    private String logoimg = "";
+
+    public String getLogoimg() {
+        return logoimg;
+    }
+
+    public void setLogoimg(String logoimg) {
+        this.logoimg = logoimg;
+    }
+
+
+    private String basicTitle ="";
+
+    public String getBasicTitle() {
+        return basicTitle;
+    }
+
+    public void setBasicTitle(String basicTitle) {
+        this.basicTitle = basicTitle;
+    }
 }
