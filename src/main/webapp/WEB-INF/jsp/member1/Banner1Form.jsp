@@ -12,7 +12,7 @@
 					<div class="page-title">
 
 						<div class="pull-left">
-							<h1 class="title">프로젝트 배너등</h1>
+							<h1 class="title">프로젝트 배너등록</h1>
 						</div>
 
 
@@ -24,11 +24,6 @@
 					<section class="box ">
 						<header class="panel_header">
 							<h2 class="title pull-left">기본 설정</h2>
-							<div class="actions panel_actions pull-right">
-								<i class="box_toggle fa fa-chevron-down"></i> <i
-									class="box_setting fa fa-cog" data-toggle="modal"
-									href="#section-settings"></i> <i class="box_close fa fa-times"></i>
-							</div>
 						</header>
 						<div class="content-body">
 							<div class="row">
@@ -105,16 +100,7 @@
 														</div>
 													</div>
 													</c:forEach>
-													<ul id="sortable" class="list-group">
-														<li class="list-group-item active">Item 1</li>
-														<li class="list-group-item">Item 2</li>
-														<li class="list-group-item">Item 3</li>
-														<li class="list-group-item">Item 4</li>
-														<li class="list-group-item">Item 5</li>
-														<li class="list-group-item">Item 6</li>
-														<li class="list-group-item">Item 7</li>
-														<li class="list-group-item">Item 8</li>
-													</ul>
+
 												</div>
 												<div class="form-group" style="margin-top: 10px">
 

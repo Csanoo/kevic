@@ -251,13 +251,12 @@
                     type: "POST",
                     url: "/admin/prtChkNotPublish",
                     data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-
                     success: function (jdata) {
 
                         if (jdata != 'TRUE') {
-                            alert("삭제 오류");
+                            alert(" 오류");
                         } else {
-                            alert("노출 성공");
+                            alert("정상 처리되었니다.");
                             location.href = "/admin/project";
                         }
                     },
@@ -268,7 +267,7 @@
                 });
             }
         }else{
-           return false;
+            return false;
         }
     }
     function fn_notPublish(_sn){
@@ -283,7 +282,7 @@
                 success: function (jdata) {
 
                     if (jdata != 'TRUE') {
-                        alert("노 오류");
+                        alert("오류");
                     } else {
                         alert("정상 처리되었니다.");
                         location.href = "/admin/project";

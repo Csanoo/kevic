@@ -75,10 +75,8 @@ public class AppMain1Svc {
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
 
-				try {
-
+		try {
 			sqlSession.insert("insertAppMain1One", param);
-
 			txManager.commit(status);
 		} catch (TransactionException ex) {
 			txManager.rollback(status);

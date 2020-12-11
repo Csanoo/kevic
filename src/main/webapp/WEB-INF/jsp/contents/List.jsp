@@ -340,7 +340,7 @@
                     data: "RPRT_ODR=" + arr + "&CNT=" + cnt+ "&STITLE=" + arrtitle,
                     success: function(data){
                         if(data != 'TRUE') {
-                            alert("수정 실");
+                            alert("수정 실패");
                         }else{
                             alert("수정 완료");
                             location.href = "/admin/contents";

@@ -34,7 +34,7 @@
                                                     <option value="">프로젝트</option>
                                                     <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
                                                     <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
-                                                </select>
+                                                </select> ?? 프로젝트 목록에서 프로젝트 항목을 셀렉트로 검색하는것 맞나요?
                                             </td>
                                         </tr>
                                         <tr>
@@ -66,8 +66,7 @@
                 </div>
             </section>
         </div>
-        <section class="wrapper"
-                 style='margin-top: 60px; display: inline-block; width: 100%; padding: 15px 0 0 15px;'>
+        <section class="wrapper"   style='margin-top: 60px; display: inline-block; width: 100%; padding: 15px 0 0 15px;'>
 
             <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
                 <div class="page-title">
@@ -152,7 +151,8 @@
 </form>
 <script>
     function fn_formSubmit() {
-        document.form1.submit();
+        var frm = document.form1;
+            frm.submit();
     }
 
     function fn_orderKey(_a) {
@@ -161,12 +161,13 @@
     }
 
     function fn_formGo() {
+
         location.href = "/admin/projectForm";
     }
 
-    function fn_readGo(_a) {
+    function readPost(_a) {
         document.form1.sn.value = _a;
-        document.form1.action = "projectRead";
+        document.form1.action = "/admin/projectDetail";
         document.form1.submit();
     }
 
@@ -219,9 +220,9 @@
                     success: function (jdata) {
 
                         if (jdata != 'TRUE') {
-                            alert("삭제 오류");
+                            alert(" 오류");
                         } else {
-                            alert("노출 성공");
+                            alert("정상 처리되었니다.");
                             location.href = "/admin/project";
                         }
                     },
@@ -247,7 +248,7 @@
                 success: function (jdata) {
 
                     if (jdata != 'TRUE') {
-                        alert("노 오류");
+                        alert("오류");
                     } else {
                         alert("정상 처리되었니다.");
                         location.href = "/admin/project";
@@ -280,9 +281,6 @@
             }
         });
 
-        $("#dTable").tableDnD({
-            onDragClass: "dragRow"
-        });
     })
 
 

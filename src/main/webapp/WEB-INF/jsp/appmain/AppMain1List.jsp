@@ -39,9 +39,9 @@
 											<td class="tdl" style="width: 25%">프로젝트</td>
 											<td style="width: 75%">
 												<select name="sproject">
-													<option>프로젝트</option>
-													<option value="01">프로젝트01</option>
-													<option value="02">프로젝트02</option>
+													<option value="">프로젝트</option>
+													<option value="001">프로젝트01</option>
+													<option value="002">프로젝트02</option>
 												</select>
 											</td>
 										</tr>
@@ -65,7 +65,7 @@
 												<!--
 												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
 												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
-												-->
+
 												<div class="btn-group js-dateperiod" data-toggle="buttons" data-target-name="searchDate">
 													<label class="btn btn-white btn-sm hand">
 														<input type="radio" name="searchPeriod" value="0">오늘
@@ -86,6 +86,7 @@
 														<input type="radio" name="searchPeriod" value="364">1년
 													</label>
 												</div>
+												-->
 											</td>
 										</tr>
 									</table>

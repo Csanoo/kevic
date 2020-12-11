@@ -107,6 +107,34 @@ public class ProjectCtr {
         return "project/Read";
     }
 
+    @RequestMapping(value = "/projectDetail")
+    public String projectDetail(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+
+        String sn = request.getParameter("sn");
+        projectInfo = projectSvc.selectProjectDetail(sn);
+
+        List<?> memolist  = projectSvc.selectMemoSelList(sn);
+        modelMap.addAttribute("memolist", memolist);
+
+        modelMap.addAttribute("projectInfo", projectInfo);
+
+        return "project/projectRead";
+    }
+
+    @RequestMapping(value = "/categoryDetail")
+    public String categoryDetail(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+
+
+        String sn = request.getParameter("sn");
+        projectInfo = projectSvc.selectCategoryDetail(sn);
+        List<?> catelistOne  = projectSvc.selectCategoryOne(sn);
+        List<?> catelistTwo  = projectSvc.selectCategoryTwo(sn);
+        modelMap.addAttribute("catelistOne", catelistOne);
+        modelMap.addAttribute("catelistTwo", catelistTwo);
+        modelMap.addAttribute("projectInfo", projectInfo);
+
+        return "project/categoryForm";
+    }
 
     @RequestMapping(value = "/projectSave")
     public String projectSave(SearchVO searchVO,
@@ -134,7 +162,7 @@ public class ProjectCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "project/List";
+        return "redirect:project";
     }
 
     @RequestMapping(value = "/projectRegSave")
@@ -147,11 +175,22 @@ public class ProjectCtr {
         return "project/projectForm";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/saveMemo")
+    public String saveMemo(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+
+        String title = request.getParameter("title");
+        String memo = request.getParameter("memo");
+
+        projectInfo.setTitle(title);
+        projectInfo.setMemo(memo);
+
+        projectSvc.insertProjectMemo(projectInfo);
+        return "True";
+    }
 
     @RequestMapping(value = "/projectUp")
-    public String projectUp(SearchVO searchVO,
-                             HttpServletRequest request, ProjectVO projectInfo,
-                             ModelMap modelMap) {
+    public String projectUp(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
 
         Integer sn = Integer.parseInt(request.getParameter("sn"));
         String title = request.getParameter("title");
@@ -167,13 +206,45 @@ public class ProjectCtr {
         projectInfo.setCategory(category);
         projectInfo.setSn(sn);
 
+        String[] fileno = request.getParameterValues("fileno");
+        FileUtil fs = new FileUtil();
+        List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
+
+        projectSvc.updateprojectDetail(projectInfo, filelist, fileno);
+
 
         searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
         List<?> listview  = projectSvc.selectProjectList(searchVO);
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "project/List";
+        return "redirect:project";
+    }
+
+    @RequestMapping(value = "/projectRegUp")
+    public String projectRegUp(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        String title = request.getParameter("title");
+        String projectcd = request.getParameter("projectcd");
+        String comment = request.getParameter("comment");
+        String state = request.getParameter("state");
+        String basictitle = request.getParameter("basictitle");
+
+        projectInfo.setTitle(title);
+        projectInfo.setComment(comment);
+        projectInfo.setProjectcd(projectcd);
+        projectInfo.setBasictitle(basictitle);
+        projectInfo.setState(state);
+        projectInfo.setSn(sn);
+
+
+        searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
+        List<?> listview  = projectSvc.selectProjectList(searchVO);
+        modelMap.addAttribute("listview", listview);
+        modelMap.addAttribute("searchVO", searchVO);
+
+        return "redirect:project";
     }
 
     @RequestMapping(value = "/projectDelete")
@@ -217,10 +288,11 @@ public class ProjectCtr {
         return "TRUE";
     }
 
+
+
     @ResponseBody
     @RequestMapping(value = "/prtChkNotPublish")
-    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo,
-                               ModelMap modelMap) throws Exception{
+    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
         String result = "TRUE";
         try {
             int cnt = Integer.parseInt(request.getParameter("CNT"));
@@ -228,15 +300,19 @@ public class ProjectCtr {
             String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
             for(int i=0; i<cnt; i++) {
-                //System.out.println(i);
-                String sn = (String)strArray[i];
-                projectSvc.notProjectPublish(sn);
+
+                Integer sn = Integer.valueOf((String)strArray[i]);
+
+
+                projectInfo.setSn(sn);
+
+                projectSvc.notProjectPublish(projectInfo);
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());
             result = "FALSE";
         }
-        return "TRUE";
+        return result;
     }
 
 

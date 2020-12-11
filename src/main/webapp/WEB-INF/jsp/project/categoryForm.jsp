@@ -121,8 +121,8 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-primary ">Sign in</button>
-                                    <button type="button" class="btn btn-purple  pull-right">Register now</button>
+                                    <button type="button" class="btn btn-primary  pull-right">목록</button>
+                                    <button type="button" class="btn btn-purple  pull-right">등록</button>
                                 </div>
 
                             </form>

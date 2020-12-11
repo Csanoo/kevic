@@ -134,12 +134,11 @@ public class ContentsCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "redirect:contents/List";
+        return "redirect:contents";
     }
 
     @RequestMapping(value = "/contentsDelete")
-    public String contentsDelete(HttpServletRequest request, SearchVO searchVO , ContentsVO contentsInfo,
-                                ModelMap modelMap) {
+    public String contentsDelete(HttpServletRequest request, SearchVO searchVO , ContentsVO contentsInfo, ModelMap modelMap) {
 
 
         String sn = request.getParameter("sn");
@@ -153,7 +152,7 @@ public class ContentsCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "redirect:contents/List";
+        return "redirect:contents";
     }
 
     @ResponseBody

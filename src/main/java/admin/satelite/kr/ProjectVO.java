@@ -221,13 +221,44 @@ public class ProjectVO {
     }
 
 
-    private String basicTitle ="";
+    private String basictitle ="";
 
-    public String getBasicTitle() {
-        return basicTitle;
+    public String getBasictitle() {
+        return basictitle;
     }
 
-    public void setBasicTitle(String basicTitle) {
-        this.basicTitle = basicTitle;
+    public void setBasictitle(String basictitle) {
+        this.basictitle = basictitle;
+    }
+
+    private String projectSn ="";
+
+    public String getProjectSn() {
+        return projectSn;
+    }
+
+    public void setProjectSn(String projectSn) {
+        this.projectSn = projectSn;
+    }
+
+    private String depth ="";
+
+    public String getDepth() {
+        return depth;
+    }
+
+    public void setDepth(String depth) {
+        this.depth = depth;
+    }
+
+
+    private String catecode ="";
+
+    public String getCatecode() {
+        return catecode;
+    }
+
+    public void setCatecode(String catecode) {
+        this.catecode = catecode;
     }
 }

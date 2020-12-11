@@ -21,9 +21,7 @@ public class AppMain1Ctr {
 	@Autowired
 	private AppMain1Svc appmain1Svc;
 	
-	
-	
-	
+
 	@RequestMapping(value = "/AppMain1")
 	public String AppMain1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
@@ -114,28 +112,15 @@ public class AppMain1Ctr {
 			HttpServletRequest request, AppMain1VO appmain1Info, 
 			ModelMap modelMap) {
 		
-		
-		String[] fileno = request.getParameterValues("fileno");
-		//FileUtil fs = new FileUtil();
-	//	List<FileVO> filelist = fs.saveAllFilesBB(appmain1Info.getUploadfile());
-		appmain1Svc.insertAppMain1(appmain1Info);
 
-		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
+		appmain1Svc.insertAppMain1One(appmain1Info);
 
-		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
 
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
-		
-		return "appmain/AppMain1List";
+		return "redirect:AppMain1";
+
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	@RequestMapping(value = "/appmain1Up")
 	public String appmain1Up(SearchVO searchVO, 
 			HttpServletRequest request, AppMain1VO appmain1Info, 

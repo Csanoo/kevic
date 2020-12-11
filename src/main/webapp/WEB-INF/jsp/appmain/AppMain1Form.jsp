@@ -148,7 +148,7 @@
 												<td class="tdl" style="width: 15%">URL</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="text" value="" name="link" >
+													<input type="text" value="" name="url" >
 												</td>
 											</tr>
 										</table>

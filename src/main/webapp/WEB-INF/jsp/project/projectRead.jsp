@@ -14,8 +14,6 @@
                 <div class="pull-left">
                     <h1 class="title">프로젝트 관리</h1>
                 </div>
-
-
             </div>
         </div>
         <div class="clearfix"></div>
@@ -23,15 +21,22 @@
         <div class="col-lg-12">
             <section class="box ">
                 <header class="panel_header">
-                    <h2 class="title pull-left">프로젝트 등록</h2>
+                    <h2 class="title pull-left">프로젝트 상세</h2>
+                    <div class="actions panel_actions pull-right">
+
+                    </div>
 
                 </header>
                 <div class="content-body">
-                    ?? 최초 프로젝트등록후에  프로젝트메모, 카테고리 설정이 나와야 맞는거 아닌가요??
+                    <div style="display:flex">
+                        <a style="padding:10px; line-height:50px;border:1px solid #0c0c0c" href="/admin/projectDetail?sn=${projectInfo.sn}">기본정보</a>
+                        <a style="padding:10px; line-height: 50px;border:1px solid #0c0c0c" href="/admin/categoryDetail?sn=${projectInfo.sn}">카테고리</a>
+
+                    </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
-                            <form name="form1" action="projectRegSave" method="post"	enctype="multipart/form-data">
+                            <form name="form1" action="projectModifySave" method="post"	enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <table id="customers">
@@ -39,32 +44,32 @@
                                                 <td class="tdl" style="width: 15%">프로트젝트명 *</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="title" id="title" value="">
+                                                    <input type="text" name="title" id="title" value="${projectInfo.title}">
                                                     <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>( ex : KPOP 걸 그룹)
-                                                    <input type="hidden" name="titleCk" id="titleCk" value="0">
+                                                    <input type="hidden" name="titleCk" id="titleCk" value="1">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="projectcd"  id="projectcd" value="">
+                                                    <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}" readonly>
                                                     <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
-                                                    <input type="hidden" name="projectcdCk" id="projectcdCk" value="0">
+                                                    <input type="hidden" name="projectcdCk" id="projectcdCk" value="1">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">설명</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="comment" value="">
+                                                    <input type="text" name="comment" value="${projectInfo.comment}">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">사용여부</td>
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="radio" name="state" value="100" selected><label>사용</label>
-                                                    <input type="radio" name="state" value="200"><label>점검</label>
+                                                    <input type="radio" name="state" value="100" <c:if test="${projectInfo.state eq '100'}">checked</c:if> ><label>사용</label>
+                                                    <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>점검</label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -87,12 +92,12 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" class="form-control"></td>
+                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basictitle}" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>
-                                                <td style="width: 35%"><input name="userid" type="hidden" value="admin">
-                                                    admin
+                                                <td style="width: 35%"><input name="userid" type="hidden" value="admin" >
+                                                   admin
                                                     관리자기능 개발 이후
                                                 </td>
                                                 <td class="tdl" style="width: 15%">프로젝트 운영자</td>
@@ -144,6 +149,74 @@
 
                                 }
                             </script>
+                            <form name="form2" id="form2" action="projectSave" method="post"	enctype="multipart/form-data">
+
+                                <input type="hidden" name="sn" value="${projectInfo.sn}">
+
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <table id="customers">
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">제목</td>
+
+                                                <td style="width: 35%" colspan="3">
+                                                    <input type="text" name="title" value="" class="form-control">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">내용</td>
+
+                                                <td style="width: 35%" colspan="3">
+                                                    <input type="text" name="memo" value="" class="form-control">
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                        <div class="form-group" style="margin-top: 10px">
+                                            <button type="button" class="btn btn-orange" id="saveMemo">저장</button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                            <table class="table" id="dTable">
+                                <thead>
+                                <colgroup>
+                                    <col width="5%">
+                                    <col width="5%">
+                                    <col width="10%">
+                                    <col width="15%">
+                                    <col width="15%">
+                                    <col width="20%">
+                                    <col width="15%">
+                                    <col width="10%">
+                                </colgroup>
+                                <tr>
+                                    <th>No</th>
+                                    <th>제목</th>
+                                    <th>내용</th>
+                                    <th>등록자</th>
+                                    <th>등록일</th>
+                                    <th>관리</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <c:forEach var="memolist" items="${memolist}" varStatus="status">
+                                    <tr>
+                                        <td>${memolist.sn}</td>
+                                        <td>${memolist.title}</td>
+                                        <td>${memolist.memo}</td>
+                                        <td>${memolist.regDate}</td>
+                                        <td>admin</td>
+                                        <td>
+                                            <button type="button" class="btn btn-gray" onclick="modifyMemo('${memolist.sn}')">수정</button>
+                                            <button type="button" class="btn btn-orange" onclick="delMemo('${memolist.sn}')">X</button>
+                                        </td>
+                                    </tr>
+                                </c:forEach>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -222,6 +295,21 @@
                     alert("중복 된 프로젝트코드입니다.");
                     $("#projectcdCk").val(0);
                 }
+            },
+            error: function (data) {
+                alert("오류 관리자에게 문의해주세요");
+            }
+        });
+    });
+    $("#saveMemo").on("click",function(){
+        var $frm = $("#form2");
+         $.ajax({
+            type: "POST",
+            url: "/admin/saveMemo",
+            data: $frm.serialize(),
+            success: function (data) {
+                alert()
+                location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
             },
             error: function (data) {
                 alert("오류 관리자에게 문의해주세요");

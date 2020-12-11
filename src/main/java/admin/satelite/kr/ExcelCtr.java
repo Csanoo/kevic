@@ -55,8 +55,9 @@ public class ExcelCtr {
         if(excelFile==null || excelFile.isEmpty()){
             throw new RuntimeException("엑셀파일을 선택 해 주세요.");
         }
-        String realPath = request.getSession().getServletContext().getRealPath("/upload/");
-        File destFile = new File(""+excelFile.getOriginalFilename());
+
+        String realPath = request.getSession().getServletContext().getRealPath("upload");
+        File destFile = new File(realPath+"/excel/"+"upload_"+excelFile.getOriginalFilename());
         try{
             excelFile.transferTo(destFile);
         }catch(IllegalStateException | IOException e){

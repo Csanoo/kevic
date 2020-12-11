@@ -9,11 +9,31 @@
 		where sn=#{sn} 
 	</delete>
 
-	<select id="selectprojectOne"
-		parameterType="String"
-		resultType="main.java.admin.satelite.kr.ProjectVO">
+	<select id="selectprojectOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
 		where sn=#{sn} 
+	</select>
+
+
+	<select id="selectProjectDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn, title, projectcd, comment, state, logoimg, basictitle, regUser, mngUser, regDate  from tbl_project
+		where sn=#{sn}
+	</select>
+
+	<select id="selectCategoryDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		where sn=#{sn}
+	</select>
+
+
+	<select id="selectCategoryOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		where projectSn=#{sn} and depth=1
+	</select>
+
+	<select id="selectCategoryTwo" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		where projectSn=#{sn} and depth=2
 	</select>
 
 	<insert id="insertproject"
@@ -36,6 +56,12 @@
 		,videoUrl=#{videoUrl},ctSource=#{ctSource},title=#{title}
 		where sn=#{sn}
 		
+	</update>
+	<update id="updateprojectDetail" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_contents set
+		title = #{title}, projectcd=#{projectcd},state=#{state},comment=#{comment}
+		,logoimg=#{logoimg},basictitle=#{basictitle}
+		where sn=#{sn}
 	</update>
 
 
@@ -121,9 +147,13 @@
 	</select>
 
 
-	<select id="selectCateSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+	<select id="selectCateSelList" resultType="main.java.admin.satelite.kr.ProjectVO" parameterType="String">
 		SELECT code2,title from tcode where code1 = 'CATE'
 	</select>
+	<select id="selectMemoSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		SELECT sn, title, memo, regDate, userId from tbl_project_memo where projectSn = #{sn}
+	</select>
+
 
 	<select id="selectSourceSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
 		SELECT code2,title from tcode where code1 = 'CONT'
@@ -142,6 +172,14 @@
 		state = "100"
 		where sn=#{sn}
 	</update>
+
+
+
+	<insert id="insertProjectMemo"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_project_memo (title, projectSn, memo )
+		values ( #{title}, #{sn}, #{memo} )
+	</insert>
 
 </mapper>
 

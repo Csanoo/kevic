@@ -76,7 +76,7 @@
 		WHERE appkind = '1'
 		<if test='stitle != null and stitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{stitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
-		<if test='(startDate != null and endDate != null ) or (startDate != "" and endDate != "" ) '><![CDATA[  AND sdate LIKE CONCAT('%', #{startDate}, '%') ]]></if>
+		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[  AND regDate between  #{startDate} and #{endDate}  ]]></if>
 		<if test="orderKeyword=='1'">
 			ORDER BY sn ASC
 		</if>
