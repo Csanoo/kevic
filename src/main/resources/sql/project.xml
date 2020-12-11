@@ -86,7 +86,7 @@
 			ORDER BY keyword asc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sn DESC
+			ORDER BY sort DESC
 		</if>
 	</sql>
 
@@ -103,7 +103,7 @@
 			ORDER BY title DESC
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sort asc
+			ORDER BY sn asc
 		</if>
 	</sql>
 
@@ -192,7 +192,7 @@
 		SELECT sn, title  from tbl_project order by sn asc
 	</select>
 
-	<update id="prtSortConfirm" parameterType="main.java.admin.satelite.kr.ProjectVO">
+	<update id="prtConfirm" parameterType="main.java.admin.satelite.kr.ProjectVO">
 		update tbl_contents set
 		sort = #{sort}
 		where sn=#{sn}
