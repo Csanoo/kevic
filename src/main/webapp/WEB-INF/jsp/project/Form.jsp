@@ -87,13 +87,8 @@
 											</tr>
 											<tr>
 												<td class="tdl" style="width: 15%">출처</td>
-
 												<td style="width: 35%" colspan="3">
-													<select name="ctSource"  class="form-control" >
-														<c:forEach var="sourceview" items="${sourceview}"   varStatus="status">
-															<option value="${sourceview.code2}" <c:if test="${projectInfo.ctSource eq sourceview.code2}">selected</c:if>>${sourceview.title}</option>
-														</c:forEach>
-													</select>
+													<input name="ctSource" type="text"	class="form-control">
 												</td>
 											</tr>
 											<tr>
@@ -118,6 +113,27 @@
 							</form>
 							<script>
 								function fn_formSv() {
+								    var frm =  document.form1;
+                                    if(frm.keyword.value == ''){
+                                        alert('키워드를 확인해주세요.');
+                                        frm.keyword.focus();
+                                        return false;
+                                    }
+                                    if(frm.title.value == ''){
+                                        alert('타이틀 확인해주세요.');
+                                        frm.title.focus();
+                                        return false;을
+                                    }
+                                    if(frm.imageUrl.value == ''){
+                                        alert('이미지URL을 확인해주세요.');
+                                        frm.imageUrl.focus();
+                                        return false;
+                                    }
+                                    if(frm.ctSource.value == ''){
+                                        alert('출처를 확인해주세요.');
+                                        frm.ctSource.focus();
+                                        return false;
+                                    }
 									document.form1.submit();
 
 								}

@@ -143,6 +143,9 @@ public class ContentsSvc {
 
         }
     }
+    public List<?> selectBoxproject(SearchVO param) {
 
+        return sqlSession.selectList("selectBoxprojectCon", param);
+    }
 
 }

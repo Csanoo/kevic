@@ -32,8 +32,9 @@
                                             <td style="width: 75%">
                                                 <select name="sproject">
                                                     <option value="">프로젝트</option>
-                                                    <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
-                                                    <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+                                                    <c:forEach var="projectview" items="${projectview}"   varStatus="status">
+                                                        <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+                                                    </c:forEach>
                                                 </select> ?? 프로젝트 목록에서 프로젝트 항목을 셀렉트로 검색하는것 맞나요?
                                             </td>
                                         </tr>
@@ -126,7 +127,7 @@
                                         <tr>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td><c:if test="${listview.state eq '100'}">사용</c:if><c:if test="${listview.state eq '200'}">사용안함</c:if></td>
-                                            <td><img src="${listview.logoimg}" width="110"></td>
+                                            <td><img src="/admin/upload/images/${listview.logoimg}" width="110"></td>
                                             <td>${listview.title}</td>
                                             <td><div style="width:100px;overflow:hidden"></div></td>
                                             <td>0</td>

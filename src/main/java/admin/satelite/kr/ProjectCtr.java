@@ -321,6 +321,34 @@ public class ProjectCtr {
 
 
     @ResponseBody
+    @RequestMapping(value = "/prtSortConfirm")
+    public String prtSortConfirm(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+        String result = "TRUE";
+        try {
+            int cnt = Integer.parseInt(request.getParameter("CNT"));
+            int sort = 1;
+            //System.out.println(cnt);
+            String rprtOdr = request.getParameter("RPRT_ODR");
+            String [] strArray = rprtOdr.split(",");
+            for(int i=0; i<cnt; i++) {
+
+                Integer sn = Integer.valueOf((String)strArray[i]);
+                sort  = sort+i;
+
+                projectInfo.setSn(sn);
+                projectInfo.setSort(sort);
+
+                projectSvc.prtSortConfirm(projectInfo);
+            }
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return result;
+    }
+
+
+    @ResponseBody
     @RequestMapping(value = "/selPrjTitCt")
     public Integer selPrjTitCt(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
 

@@ -24,6 +24,15 @@ public class ProjectVO {
         this.userid = userid;
     }
 
+    private Integer sort;
+    public Integer getSort() {
+        return sort;
+    }
+    public void setSort(Integer sort) {
+        this.sort = sort;
+    }
+
+
     private String category="";
     public String category() {return category;}
     public void setCategory(String category) {

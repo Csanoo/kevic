@@ -31,7 +31,7 @@
                                             <td class="tdl" style="width: 25%">프로젝트</td>
                                             <td style="width: 75%">
                                                 <select name="sproject"  class="form-control">
-                                                    <option>프로젝트</option>
+                                                    <option value="">프로젝트</option>
                                                     <c:forEach var="projectview" items="${projectview}"   varStatus="status">
                                                         <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
                                                     </c:forEach>
@@ -52,7 +52,7 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">타이틀</td>
                                             <td style="width: 75%">
-                                                <input name="searchtitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
+                                                <input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -107,7 +107,7 @@
                                     <button type="button" class="btn btn-orange" onclick="fn_formGo()">직접저장</button>
                                     <button type="button" class="btn btn-gray"   onclick="publishNotPost()">노출중지</button>
                                     <button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
-                                    <button type="button" class="btn btn-orange" onclick="deletePost()">순서 저장</button>
+                                    <button type="button" class="btn btn-orange" onclick="fn_postsortConfirm()">순서 저장</button>
 
                                 </li>
                                 <li style="float: left;">
@@ -116,6 +116,13 @@
                                         <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
                                         <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
                                         <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+                                    </select>
+                                    <select name="pageNo" id="pageNo"  >
+                                        <option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '100'}">selected</c:if> value="100">100개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '200'}">selected</c:if> value="200">200개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '300'}">selected</c:if> value="300">300개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '500'}">selected</c:if> value="500">500개</option>
                                     </select>
                                 </li>
                             </ul>
@@ -165,7 +172,7 @@
                                             <td>0</td>
                                             <td>
                                                 이동
-                                                <input type="hidden" value="${listview.sn}" name="rankSn">
+                                                <input type="hidden" value="${listview.sn}" name="sort">
                                             </td>
                                             <td>
                                                 <div onclick="fn_notPublish()">X</div>
@@ -299,6 +306,35 @@
         }
     }
 
+    function fn_postsortConfirm(){
+        if(confirm('저장하시겠습니까?')){
+            var cnt = $("input[name='sort']").length;
+            var arr = new Array();
+            $("input[name='sort']").each(function () {
+                arr.push($(this).attr('value'));
+            });
+            $.ajax({
+                type: "POST",
+                url: "/admin/prtSortConfirm",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                success: function (jdata) {
+
+                    if (jdata != 'TRUE') {
+                        alert("오류");
+                    } else {
+                        alert("정상 처리되었니다.");
+                        location.href = "/admin/project";
+                    }
+                },
+                error: function (data) {
+                    alert(삭제완료);
+                    location.href = "/admin/project";
+                }
+            });
+        }else{
+            return false;
+        }
+    }
 </script>
 
 
@@ -307,6 +343,12 @@
 <script>
 
     $(function(){
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+        $("#pageNo").on("change",function(){
+            document.form1.submit();
+        });
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
                 $("input[name='chkSn']").prop('checked', true);

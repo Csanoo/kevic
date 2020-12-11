@@ -45,9 +45,10 @@
 
                                                 <td style="width: 35%">
                                                     <select>
-                                                        <option>프로젝트</option>
-                                                        <option value="01">프로젝트01</option>
-                                                        <option value="02">프로젝트02</option>
+                                                        <option value="">프로젝트</option>
+                                                        <c:forEach var="projectview" items="${projectview}"   varStatus="status">
+                                                            <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+                                                        </c:forEach>
                                                     </select>
                                                 </td>
 
@@ -77,8 +78,7 @@
                                                     <div>1</div>
                                                     <div class="controls">
 
-                                                        <input type="checkbox" name="fileno"
-                                                               value="<c:out value="${listview.fileno}"/>">
+                                                        <input type="checkbox" name="fileno"  value="<c:out value="${listview.fileno}"/>">
                                                         <a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
                                                             <c:out value="${listview.filename}"/>
                                                         </a>
@@ -102,6 +102,123 @@
                                             </c:forEach>
 
                                         </div>
+
+                                        <div class="content-body">
+                                            <ul class="list-unstyled">
+                                                <li style="float: left;">
+                                                    <button type="button" class="btn btn-orange" id="addRow">항목추가</button>
+                                                </li>
+                                            </ul>
+                                            <div class="row">
+                                                <div class="col-md-12 col-sm-12 col-xs-12">
+                                                    <table class="table" id="dTable">
+                                                        <thead>
+                                                        <colgroup>
+                                                            <col width="5%">
+                                                            <col width="10%">
+                                                            <col width="15%">
+                                                            <col width="15%">
+                                                            <col width="20%">
+                                                            <col width="15%">
+                                                            <col width="10%">
+                                                        </colgroup>
+                                                        <tr>
+                                                            <th>순서</th>
+                                                            <th>이미지</th>
+                                                            <th></th>
+                                                            <th>링크/타겟</th>
+                                                            <th>이동</th>
+                                                            <th>제외</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody id="bannerList">
+
+                                                        <tr id="banner1">
+                                                            <td>1</td>
+                                                            <td></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" /></td>
+                                                            <td><input type="text" name="link"/>
+                                                                <input type="radio" name="linkTarget1" value="100" checked/><labe>현재창</labe>
+                                                                <input type="radio" name="linkTarget1" value="200"/><labe>부모창</labe>
+                                                            </td>
+                                                            <td>
+                                                                이동
+                                                                <input type="hidden" value="${listview.sn}" name="sort">
+                                                            </td>
+                                                            <td>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  id="banner2">
+                                                            <td>2</td>
+                                                            <td></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="text" name="link" disabled/>
+                                                                <input type="radio" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
+                                                                <input type="radio" name="linkTarget2" value="200" disabled/><labe>부모창</labe>
+                                                            </td>
+                                                            <td>
+                                                                이동
+                                                                <input type="hidden" value="${listview.sn}" name="sort" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <div class="removeRow">X</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  id="banner3">
+                                                            <td>3</td>
+                                                            <td></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="text" name="link" disabled/>
+                                                                <input type="radio" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
+                                                                <input type="radio" name="linkTarget3" value="200" disabled/><labe>부모창</labe>
+                                                            </td>
+                                                            <td>
+                                                                이동
+                                                                <input type="hidden" value="${listview.sn}" name="sort" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <div class="removeRow">X</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  id="banner4">
+                                                            <td>4</td>
+                                                            <td></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="text" name="link" disabled/>
+                                                                <input type="radio" name="linkTarget4" value="100" checked disabled/><labe>현재창</labe>
+                                                                <input type="radio" name="linkTarget4" value="200" disabled/><labe>부모창</labe>
+                                                            </td>
+                                                            <td>
+                                                                이동
+                                                                <input type="hidden" value="${listview.sn}" name="sort" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <div class="removeRow">X</div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr  id="banner5">
+                                                            <td>5</td>
+                                                            <td></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="text" name="link" disabled/>
+                                                                <input type="radio" name="linkTarget5" value="100" disabled checked/><labe>현재창</labe>
+                                                                <input type="radio" name="linkTarget5" value="200" disabled/><labe>부모창</labe>
+                                                            </td>
+                                                            <td>
+                                                                이동
+                                                                <input type="hidden" value="${listview.sn}" name="sort" disabled>
+                                                            </td>
+                                                            <td>
+                                                                <div class="removeRow">X</div>
+                                                            </td>
+                                                        </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="form-group" style="margin-top: 10px">
 
                                             <button type="button" class="btn btn-gray"
@@ -149,3 +266,35 @@
 </section>
 <!-- END CONTENT -->
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp"/>
+
+<style>
+    #banner2{display:none}
+    #banner3{display:none}
+    #banner4{display:none}
+    #banner5{display:none}
+</style>
+<script type="text/javascript">
+
+    $(function(){
+
+        $("#dTable").tableDnD({
+            onDragClass: "dragRow"
+        });
+        $("#addRow").on("click",function(){
+            var bannerNum = 5;
+            $("#bannerList tr").each(function(){
+                if($(this).css("display")=='none') {
+                    bannerNum =  bannerNum - 1;
+                }
+            });
+            $("#bannerList tr").eq(bannerNum).show();
+            $("#bannerList tr").eq(bannerNum).find("input").attr("disabled", false);
+        });
+        $(".removeRow").on("click",function(){
+            $(this).parent().parent().find("input").attr("disabled", true);
+            $(this).parent().parent("tr").hide();
+        });
+
+    });
+
+</script>

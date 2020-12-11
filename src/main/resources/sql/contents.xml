@@ -88,5 +88,11 @@
 		where sn=#{sn}
 	</update>
 
+	<select id="selectBoxprojectCon" resultType="main.java.admin.satelite.kr.ContentsVO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, title  from tbl_project order by sn asc
+	</select>
+
+
+
 </mapper>
 

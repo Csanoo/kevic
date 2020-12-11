@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import main.java.common.satelite.kr.SearchVO;
 
+
 @Controller
 public class ContentsCtr {
 
@@ -27,15 +28,15 @@ public class ContentsCtr {
     @Autowired
     private ContentsSvc contentsSvc;
 
-    @Autowired
-    private ProjectSvc projectSvc;
+
 
 
     @RequestMapping(value = "/contents")
     public String Contents(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
 
-
+        List<?> projectview  = contentsSvc.selectBoxproject(searchVO);
+        modelMap.addAttribute("projectview", projectview);
         searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow
 
         List<?> listview  = contentsSvc.selectContentsList(searchVO);
@@ -52,10 +53,9 @@ public class ContentsCtr {
 
 
     @RequestMapping(value = "/contentsForm")
-    public String contentsForm(HttpServletRequest request, ContentsVO contentsInfo,
-                              ModelMap modelMap, SearchVO searchVO) {
+    public String contentsForm(HttpServletRequest request, ContentsVO contentsInfo,   ModelMap modelMap, SearchVO searchVO) {
 
-        List<?> projectview  = projectSvc.selectBoxproject(searchVO);
+        List<?> projectview  = contentsSvc.selectBoxproject(searchVO);
         modelMap.addAttribute("projectview", projectview);
         List<?> cateview  = contentsSvc.selectCateSelList(searchVO);
         modelMap.addAttribute("cateview", cateview);

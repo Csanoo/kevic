@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileUtil {
 	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles) {
-		String filePath = "/server/apache-tomcat-8.5.59/webapps/admin/upload/images/";
+		String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
 		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
 		List<FileVO> filelist = new ArrayList<FileVO>();
 

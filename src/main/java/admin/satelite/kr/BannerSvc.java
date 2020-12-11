@@ -176,8 +176,13 @@ public class BannerSvc {
 
 		sqlSession.delete("bannerChkDelete", param);
 	}
-	
-	
-	
+
+	public List<?> selectBoxproject(SearchVO param) {
+
+		return sqlSession.selectList("selectBoxprojectBan", param);
+	}
+
+
+
 
 }

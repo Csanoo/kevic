@@ -70,7 +70,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			<li><a href="/admin/BannerList"	class="<%=btr.CLASSACTIVE(HEADERURL, "BannerList")%>"> <span
 					class="title">프로젝트 배너관리</span>
 			</a></li>
-			<li><a href="/admin/banner1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "banner1Form")%>"> <span
+			<li><a href="/admin/bannerForm" class="<%=btr.CLASSACTIVE(HEADERURL, "bannerForm")%>"> <span
 					class="title">프로젝트 배너등록</span>
 			</a></li>
 		</ul>

@@ -21,8 +21,11 @@ public class BannerCtr {
 
 	@Autowired
 	private BannerSvc bannerSvc;
+
+	@Autowired
 	private Member1Svc member1Svc;
-	
+
+
 	@RequestMapping(value = "/SessionGo")
 	public String SessionGo(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 		return "member1/SessionGo";
@@ -32,8 +35,11 @@ public class BannerCtr {
 	public String Banner1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 		searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
 
+		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
 		List<?> listview  = bannerSvc.selectBanner1List(searchVO);
 
+
+		modelMap.addAttribute("projectview", projectview);
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 		
@@ -55,11 +61,11 @@ public class BannerCtr {
 		return "member1/Banner2List";
 
 	}
-	
-	
-	
+
 	@RequestMapping(value = "/bannerForm")
-	public String banner1Form(HttpServletRequest request, BannerVO banner1Info,	ModelMap modelMap) {
+	public String banner1Form(HttpServletRequest request, BannerVO banner1Info,	SearchVO searchVO, ModelMap modelMap) {
+		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
+		modelMap.addAttribute("projectview", projectview);
 		return "banner/BannerForm";
 	}
 	

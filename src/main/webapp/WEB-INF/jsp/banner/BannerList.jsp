@@ -36,15 +36,16 @@
 												<td style="width: 25%">
 													<select name="sproject">
 														<option value="">프로젝트</option>
-														<option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
-														<option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
+															<option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+														</c:forEach>
 													</select>
 												</td>
 												<td class="tdl" style="width: 25%">사용 여부</td>
 												<td style="width: 25%">
-													<input type="radio" name="state" value=""><label>전체</label>
-													<input type="radio" name="state" value="100"><label>사용</label>
-													<input type="radio" name="state" value="200"><label>사용안함</label>
+													<input type="radio" name="state" <c:if test="${searchVO.state eq ''}">checked</c:if> value=""><label>전체</label>
+													<input type="radio" name="state" <c:if test="${searchVO.state eq '100'}">checked</c:if> value="100"><label>사용</label>
+													<input type="radio" name="state" <c:if test="${searchVO.state eq '200'}">checked</c:if> value="200"><label>사용안함</label>
 												</td>
 											</tr>
 											<tr>
@@ -91,6 +92,13 @@
 											<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
 											<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
 											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+										</select>
+										<select name="pageNo" id="pageNo"  >
+											<option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
+											<option <c:if test="${searchVO.pageNo eq '100'}">selected</c:if> value="100">100개</option>
+											<option <c:if test="${searchVO.pageNo eq '200'}">selected</c:if> value="200">200개</option>
+											<option <c:if test="${searchVO.pageNo eq '300'}">selected</c:if> value="300">300개</option>
+											<option <c:if test="${searchVO.pageNo eq '500'}">selected</c:if> value="500">500개</option>
 										</select>
 									</li>
 								</ul>
@@ -221,6 +229,12 @@
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script type="text/javascript">
     $(function(){
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+        $("#pageNo").on("change",function(){
+            document.form1.submit();
+        });
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
                 $("input[name='chkSn']").prop('checked', true);

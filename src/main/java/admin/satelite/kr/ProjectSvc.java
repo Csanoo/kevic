@@ -97,9 +97,6 @@ public class ProjectSvc {
 
     }
 
-
-
-
     public List<?> selectBoxproject(SearchVO param) {
 
         return sqlSession.selectList("selectBoxproject", param);
@@ -221,5 +218,22 @@ public class ProjectSvc {
     public Integer selPrjCd(String param) {
         return sqlSession.selectOne("selPrjCd", param);
     }
+
+    public void prtSortConfirm(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        try {
+            sqlSession.update("prtSortConfirm", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+
+
+    }
+
 
 }
