@@ -4,8 +4,7 @@
 <mapper namespace="satelite.kr">
 
 	<delete id="banner1Delete"
-		parameterType="String"
-		>
+		parameterType="String"	>
 		delete from tbanner
 		where sn=#{sn} 
 	</delete>
@@ -26,12 +25,19 @@
 	
 	
 
-	<insert id="insertBanner1One"
-		parameterType="main.java.admin.satelite.kr.BannerVO">
-		insert into tbanner (
-		code2,imgfile,link,uname,umemo,type1,text1,text2 )
-		values ( #{code2}
-		, #{imgfile} , #{link},#{uname},#{umemo},#{type1},#{text1},#{text2} )
+	<insert id="insertBanner1One" parameterType="main.java.admin.satelite.kr.BannerVO" >
+		insert into tbanner (projectSn,state,title,sdate,edate )
+		values ( #{project}, #{state} , #{title},#{sdate},#{edate} )
+		<selectKey keyProperty="bannersn" resultType="Integer">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+	</insert>
+
+
+	<insert id="insertBannerDetail"
+			parameterType="main.java.admin.satelite.kr.BannerVO">
+		insert into tbl_bannerDetail (imgBanner,link,linkTarget,sort,updateDate,bannerSn )
+		values ( #{imgfile},#{link},#{linkTarget},#{sort},now(),#{bannersn} )
 	</insert>
 	
 	<insert id="updateBanner1One"
@@ -69,26 +75,27 @@
 
 
 	<sql id="includeBanner1">
-		WHERE code2 not in ('4UCH','HOTN')
-		<if
-			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
-			<foreach item="item" index="index" collection="searchTypeArr"
-				separator=" OR " open="AND (" close=")">
-				${item} LIKE CONCAT('%',
-				#{searchKeyword},'%' )
-			</foreach>
-		</if>
+		WHERE 1=1
+		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
+		<if test='sproject != null and sproject != "" '><![CDATA[  AND projectSn = #{sproject} ]]></if>
+		<if test='state != null and state != "" '><![CDATA[  AND type = #{state} ]]></if>
+		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 
 		<if test="orderKeyword=='1'">
-			ORDER BY code2 ASC
+			ORDER BY title asc
 		</if>
 		<if test="orderKeyword=='2'">
-			ORDER BY code2 DESC
+			ORDER BY title DESC
+		</if>
+		<if test="orderKeyword=='3'">
+			ORDER BY keyword asc
+		</if>
+		<if test="orderKeyword=='4'">
+			ORDER BY keyword asc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY code2 ASC
+			ORDER BY sn DESC
 		</if>
-
 
 	</sql>
 	
@@ -128,7 +135,7 @@
 		parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn,
 		code2,
-		imgfile,
+		(select imgBanner from tbl_bannerDetail where bannerSn = tbanner.sn LIMIT 1) as imgfile,
 		link,
 		title,
 		uname,

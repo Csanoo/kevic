@@ -44,8 +44,8 @@
 												<td class="tdl" style="width: 25%">사용 여부</td>
 												<td style="width: 25%">
 													<input type="radio" name="state" <c:if test="${searchVO.state eq ''}">checked</c:if> value=""><label>전체</label>
-													<input type="radio" name="state" <c:if test="${searchVO.state eq '100'}">checked</c:if> value="100"><label>사용</label>
-													<input type="radio" name="state" <c:if test="${searchVO.state eq '200'}">checked</c:if> value="200"><label>사용안함</label>
+													<input type="radio" name="state" <c:if test="${searchVO.state eq 'Y'}">checked</c:if> value="Y"><label>사용</label>
+													<input type="radio" name="state" <c:if test="${searchVO.state eq 'N'}">checked</c:if> value="N"><label>사용안함</label>
 												</td>
 											</tr>
 											<tr>
@@ -129,9 +129,9 @@
 												<td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
 												<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" />
 												</td>
-												<td><c:if test="${listview.state eq '100'}">사용</c:if><c:if test="${listview.state eq '200'}">사용안함</c:if></td>
+												<td><c:if test="${listview.state eq 'Y'}">사용</c:if><c:if test="${listview.state eq 'N'}">사용안함</c:if></td>
 												<td>${listview.project}</td>
-												<td><img src="/admin/upload/images/${listview.imgfile}" width="110"></td>
+												<td><img src="/upload/images/${listview.imgfile}" width="110"></td>
 												<td>${listview.title}</td>
 												<td>${listview.sdate}</td>
 												<td>${listview.edate}</td>

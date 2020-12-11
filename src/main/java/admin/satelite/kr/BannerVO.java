@@ -118,13 +118,22 @@ private String fucheck = "";
 
 	private String userid="";
 
-	private String sn="";
-	public String getSn() {
+	private Integer sn;
+	public Integer getSn() {
 		return sn;
 	}
-	public void setSn(String sn) {
+	public void setSn(Integer sn) {
 		this.sn = sn;
 	}
+
+	private Integer bannersn;
+	public Integer getBannersn() {
+		return bannersn;
+	}
+	public void setBannersn(Integer bannersn) {
+		this.bannersn = bannersn;
+	}
+
 	public String getCode1() {
 		return code1;
 	}
@@ -277,5 +286,14 @@ private String fucheck = "";
 	public void setUpdateDate(String updateDate) {
 		this.updateDate = updateDate;
 	}
+
+	private Integer sort = 0;
+	public Integer getSort() {
+		return sort;
+	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+
 
 }

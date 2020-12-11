@@ -78,25 +78,32 @@ public class BannerSvc {
 		}
 	}
 
-	public void insertBanner1(BannerVO param, List<FileVO> filelist, String[] fileno) {
+	public void insertBanner1(BannerVO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
 
-		for (FileVO f : filelist) {
-
-			param.setImgfile(f.getFilename());
-		}
 		try {
-
 			sqlSession.insert("insertBanner1One", param);
+			txManager.commit(status);
+		} catch (TransactionException ex) {
+			txManager.rollback(status);
+		}
+	}
 
+	public void insertBannerDetail(BannerVO param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = txManager.getTransaction(def);
+		try {
+			sqlSession.insert("insertBannerDetail", param);
 			txManager.commit(status);
 		} catch (TransactionException ex) {
 			txManager.rollback(status);
 
 		}
 	}
+
 	
 	public void updateBanner1(BannerVO param, List<FileVO> filelist,
                               String[] fileno) {

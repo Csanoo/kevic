@@ -29,22 +29,15 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
-                            <form name="form1" action="banner1Save" method="post"
-                                  enctype="multipart/form-data">
-
-
+                            <form name="form1" action="bannerSave" method="post"  enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
-
-
                                         <table id="customers">
                                             <tr>
-
-
                                                 <td class="tdl" style="width: 15%">프로젝트</td>
 
                                                 <td style="width: 35%">
-                                                    <select>
+                                                    <select name="project">
                                                         <option value="">프로젝트</option>
                                                         <c:forEach var="projectview" items="${projectview}"   varStatus="status">
                                                             <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
@@ -56,34 +49,35 @@
                                                 <td class="tdl" style="width: 15%">사용여부</td>
 
                                                 <td style="width: 35%">
-                                                    <input type="radio" name="state" value="100"><label>사용</label>
-                                                    <input type="radio" name="state" value="200"><label>사용안함</label>
+                                                    <input type="radio" name="state" value="Y" checked><label>사용</label>
+                                                    <input type="radio" name="state" value="N"><label>사용안함</label>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td class="tdl" style="width: 15%">배너 타이틀</td>
-                                                <td style="width: 35%"><input name="title" type="text"
-                                                                              class="form-control"></td>
-                                                <td class="tdl" style="width: 15%">문구</td>
-                                                <td style="width: 35%"><input name="title" type="comment"
-                                                                              class="form-control"></td>
+                                                <td style="width: 35%" colspan="3"><input name="title" type="text" class="form-control"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">사용기간</td>
+                                                <td style="width: 35%" colspan="3">
+                                                    <input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
+                                                    <input type="radio" value="N" name="displaytype"><label>기간 노출</label>
+                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+                                                    <input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+                                                </td>
                                             </tr>
                                         </table>
-
-
                                         <div class="form-group" style="">
                                             <c:forEach var="listview" items="${listview}" varStatus="status">
                                                 <div style="display:flex">
                                                     <div>1</div>
                                                     <div class="controls">
-
                                                         <input type="checkbox" name="fileno"  value="<c:out value="${listview.fileno}"/>">
                                                         <a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
                                                             <c:out value="${listview.filename}"/>
                                                         </a>
                                                         <c:out value="${listview.size2String()}"/>
-
                                                         <input type="file" name="uploadfile" multiple=""/>
                                                     </div>
                                                     <div class="link">
@@ -100,9 +94,7 @@
                                                     </div>
                                                 </div>
                                             </c:forEach>
-
                                         </div>
-
                                         <div class="content-body">
                                             <ul class="list-unstyled">
                                                 <li style="float: left;">
@@ -138,12 +130,15 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" /></td>
                                                             <td><input type="text" name="link"/>
-                                                                <input type="radio" name="linkTarget1" value="100" checked/><labe>현재창</labe>
-                                                                <input type="radio" name="linkTarget1" value="200"/><labe>부모창</labe>
+                                                                <input type="radio"  name="linkTarget1" value="100" checked/><labe>현재창</labe>
+                                                                <input type="radio"  name="linkTarget1" value="200"/><labe>부모창</labe>
+                                                                <input type="hidden" name="linkTarget" value="100">
                                                             </td>
                                                             <td>
+                                                                <div style="width:40px">
                                                                 이동
                                                                 <input type="hidden" value="${listview.sn}" name="sort">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                             </td>
@@ -153,12 +148,15 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
-                                                                <input type="radio" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
-                                                                <input type="radio" name="linkTarget2" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="radio" class="target" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
+                                                                <input type="radio" class="target" name="linkTarget2" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="hidden" name="linkTarget" value="100">
                                                             </td>
                                                             <td>
+                                                                <div style="width:40px">
                                                                 이동
                                                                 <input type="hidden" value="${listview.sn}" name="sort" disabled>
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <div class="removeRow">X</div>
@@ -169,8 +167,9 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
-                                                                <input type="radio" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
-                                                                <input type="radio" name="linkTarget3" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="radio" class="target" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
+                                                                <input type="radio" class="target" name="linkTarget3" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="hidden" name="linkTarget" value="100">
                                                             </td>
                                                             <td>
                                                                 이동
@@ -185,8 +184,9 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
-                                                                <input type="radio" name="linkTarget4" value="100" checked disabled/><labe>현재창</labe>
-                                                                <input type="radio" name="linkTarget4" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="radio" class="target" name="linkTarget4" value="100" checked disabled/><label>현재창</label>
+                                                                <input type="radio" class="target" name="linkTarget4" value="200" disabled/><label>부모창</label>
+                                                                <input type="hidden" name="linkTarget" value="100">
                                                             </td>
                                                             <td>
                                                                 이동
@@ -201,8 +201,9 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
-                                                                <input type="radio" name="linkTarget5" value="100" disabled checked/><labe>현재창</labe>
-                                                                <input type="radio" name="linkTarget5" value="200" disabled/><labe>부모창</labe>
+                                                                <input type="radio" class="target" name="linkTarget5" value="100" disabled checked/><label>현재창</label>
+                                                                <input type="radio" class="target" name="linkTarget5" value="200" disabled/><label>부모창</label>
+                                                                <input type="hidden" name="linkTarget" value="100">
                                                             </td>
                                                             <td>
                                                                 이동
@@ -235,6 +236,7 @@
                             </form>
                             <script>
                                 function fn_formSv() {
+
                                     document.form1.submit();
 
                                 }

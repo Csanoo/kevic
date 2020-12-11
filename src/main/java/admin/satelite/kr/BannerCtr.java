@@ -78,15 +78,35 @@ public class BannerCtr {
 	}
 
 	@RequestMapping(value = "/bannerSave")
-	public String banner1Save(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
+	public String bannerSave(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
+
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
-		bannerSvc.insertBanner1(banner1Info, filelist, fileno);
-		searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
-		List<?> listview  = bannerSvc.selectBanner1List(searchVO);
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
+
+		bannerSvc.insertBanner1(banner1Info);
+
+		String[] arrayLink = request.getParameterValues("link");
+		String[] arrayLinkTaget = request.getParameterValues("linkTarget");
+		String[] arrayImg = new String[filelist.size()];
+		int size = 0;
+		for(FileVO temp : filelist){
+			arrayImg[size++] = temp.getFilename();
+		}
+
+		for (int i = 0; i < arrayLink.length; i++) {
+			banner1Info.setLink(arrayLink[i]);
+			banner1Info.setLinkTarget(arrayLinkTaget[i]);
+			banner1Info.setImgfile(arrayImg[i]);
+			banner1Info.setSort(i);
+			bannerSvc.insertBannerDetail(banner1Info);
+		}
+
+
+	//	searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
+	//	List<?> listview  = bannerSvc.selectBanner1List(searchVO);
+	//	modelMap.addAttribute("listview", listview);
+	//	modelMap.addAttribute("searchVO", searchVO);
 		return "banner/BannerList";
 	}
 
@@ -111,7 +131,7 @@ public class BannerCtr {
 
 	@RequestMapping(value = "/bannerUp")
 	public String banner1Up(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
-		String sn = request.getParameter("sn");
+		Integer sn = Integer.parseInt(request.getParameter("sn"));
 		String code2 = request.getParameter("code2");
 		String link = request.getParameter("link");
 		String uname = request.getParameter("uname");
@@ -174,7 +194,7 @@ public class BannerCtr {
 	public String banner2Up(HttpServletRequest request, SearchVO searchVO, BannerVO banner1Info,
 			ModelMap modelMap) {
 		
-		String sn = request.getParameter("sn");
+		Integer sn = Integer.parseInt(request.getParameter("sn"));
 		String code2 = request.getParameter("code2");
 		String link = request.getParameter("link");
 		String uname = request.getParameter("uname");
