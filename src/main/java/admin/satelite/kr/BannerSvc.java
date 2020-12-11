@@ -42,9 +42,12 @@ public class BannerSvc {
 	public BannerVO selectContentsOne(String param) {
 		return sqlSession.selectOne("selectContentsOne", param);
 	}
-	
-	
-	
+
+
+	public List<?>  selectBannerDetail(String param) {
+		return sqlSession.selectList("selectBannerDetail", param);
+	}
+
 
 	public void insertBanner1One(BannerVO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

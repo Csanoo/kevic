@@ -12,7 +12,24 @@
 	<select id="selectBanner1One"
 		parameterType="main.java.admin.satelite.kr.BannerVO"
 		resultType="main.java.admin.satelite.kr.BannerVO">
-		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		SELECT sn,
+		code2,
+		link,
+		title,
+		uname,
+		umemo,
+		type1,
+		text1,
+		text2,
+		creatorimg,
+		projectSn,
+		sdate,
+		edate,
+		displayType,
+		state,
+		regDate,
+		updateDate,
+		linkTarget from tbanner
 		where sn=#{sn} 
 	</select>
 	
@@ -182,7 +199,9 @@
 		SELECT sn, title  from tbl_project order by sn asc
 	</select>
 
-	
+	<select id="selectBannerDetail"	resultType="main.java.admin.satelite.kr.BannerVO"	parameterType="String">
+		SELECT imgBanner, sort, link, linkTarget  from tbl_bannerDetail where bannerSn = #{sn} order by sort asc
+	</select>
 
 </mapper>
 

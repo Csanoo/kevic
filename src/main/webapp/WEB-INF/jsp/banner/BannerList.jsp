@@ -176,14 +176,14 @@
 
 <script>
 	function fn_formGo() {
-		location.href = "/admin/banner1Form";
+		location.href = "/admin/bannerForm";
 	}
 </script>
 
 <script>
 	function fn_readGo(_a) {
 		document.form1.sn.value = _a;
-		document.form1.action = "banner1Read";
+		document.form1.action = "bannerRead";
 		document.form1.submit();
 	}
 </script>

@@ -295,5 +295,12 @@ private String fucheck = "";
 		this.sort = sort;
 	}
 
+	private String imgBanner = "";
+	public String getImgBanner() {
+		return imgBanner;
+	}
+	public void setImgBanner(String imgBanner) {
+		this.imgBanner = imgBanner;
+	}
 
 }

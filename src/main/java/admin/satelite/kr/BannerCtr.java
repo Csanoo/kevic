@@ -73,7 +73,9 @@ public class BannerCtr {
 	public String banner1Read(HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
 		banner1Info = bannerSvc.selectBanner1One(sn);
+		List<?> bannerDetaillist = bannerSvc.selectBannerDetail(sn);
 		modelMap.addAttribute("banner1Info", banner1Info);
+		modelMap.addAttribute("bannerDetaillist", bannerDetaillist);
 		return "banner/BannerRead";
 	}
 
