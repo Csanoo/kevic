@@ -12,42 +12,41 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import main.java.common.satelite.kr.SearchVO;
-import main.java.admin.satelite.kr.Banner1VO;
 import main.java.common.satelite.kr.FileVO;
 
 @Service
-public class Banner1Svc {
+public class BannerSvc {
 
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	@Autowired
 	private DataSourceTransactionManager txManager;
 
-	public Banner1VO selectBanner1One(Banner1VO param) {
+	public BannerVO selectBanner1One(BannerVO param) {
 		return sqlSession.selectOne("selectBanner1One", param);
 	}
 	
-	public Banner1VO selectBanner1One(String param) {
+	public BannerVO selectBanner1One(String param) {
 		return sqlSession.selectOne("selectBanner1One", param);
 	}
 	
-	public Banner1VO selectBanner2One(Banner1VO param) {
+	public BannerVO selectBanner2One(BannerVO param) {
 		return sqlSession.selectOne("selectBanner2One", param);
 	}
 	
-	public Banner1VO selectBanner2One(String param) {
+	public BannerVO selectBanner2One(String param) {
 		return sqlSession.selectOne("selectBanner2One", param);
 	}
 	
 	
-	public Banner1VO selectContentsOne(String param) {
+	public BannerVO selectContentsOne(String param) {
 		return sqlSession.selectOne("selectContentsOne", param);
 	}
 	
 	
 	
 
-	public void insertBanner1One(Banner1VO param) {
+	public void insertBanner1One(BannerVO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -63,7 +62,7 @@ public class Banner1Svc {
 		}
 	}
 	
-	public void insertBanner2One(Banner1VO param) {
+	public void insertBanner2One(BannerVO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -79,7 +78,7 @@ public class Banner1Svc {
 		}
 	}
 
-	public void insertBanner1(Banner1VO param, List<FileVO> filelist, String[] fileno) {
+	public void insertBanner1(BannerVO param, List<FileVO> filelist, String[] fileno) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -99,8 +98,8 @@ public class Banner1Svc {
 		}
 	}
 	
-	public void updateBanner1(Banner1VO param, List<FileVO> filelist, 
-			String[] fileno) {
+	public void updateBanner1(BannerVO param, List<FileVO> filelist,
+                              String[] fileno) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -129,7 +128,7 @@ public class Banner1Svc {
 		
 	}
 	
-	public void insertBanner2(Banner1VO param, List<FileVO> filelist, String[] fileno) {
+	public void insertBanner2(BannerVO param, List<FileVO> filelist, String[] fileno) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -172,8 +171,11 @@ public class Banner1Svc {
 
 		sqlSession.delete("banner1Delete", param);
 	}
-	
-	
+
+	public void bannerChkDelete(String param) {
+
+		sqlSession.delete("bannerChkDelete", param);
+	}
 	
 	
 	

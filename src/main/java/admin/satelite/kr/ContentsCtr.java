@@ -27,7 +27,8 @@ public class ContentsCtr {
     @Autowired
     private ContentsSvc contentsSvc;
 
-
+    @Autowired
+    private ProjectSvc projectSvc;
 
 
     @RequestMapping(value = "/contents")
@@ -54,6 +55,8 @@ public class ContentsCtr {
     public String contentsForm(HttpServletRequest request, ContentsVO contentsInfo,
                               ModelMap modelMap, SearchVO searchVO) {
 
+        List<?> projectview  = projectSvc.selectBoxproject(searchVO);
+        modelMap.addAttribute("projectview", projectview);
         List<?> cateview  = contentsSvc.selectCateSelList(searchVO);
         modelMap.addAttribute("cateview", cateview);
         List<?> sourceview  = contentsSvc.selectSourceSelList(searchVO);

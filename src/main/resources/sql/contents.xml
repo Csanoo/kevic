@@ -33,7 +33,7 @@
 	</update>
 
 	<sql id="includecontents">
-		WHERE state = '100'
+		WHERE (state = '100' or state = '200')
 		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
 		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>

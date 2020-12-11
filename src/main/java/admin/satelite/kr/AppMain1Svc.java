@@ -84,20 +84,11 @@ public class AppMain1Svc {
 		}
 	}
 	
-	public void updateAppMain1(AppMain1VO param, List<FileVO> filelist, 
-			String[] fileno) {
+	public void updateAppMain1(AppMain1VO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
 
-		for (FileVO f : filelist) {
-
-			//param.setImgfile(f.getFilename());
-			param.setCreatorimg(f.getFilename());
-
-			
-		}
-		
 		try {
 			if (!param.getCreatorimg().equals("")) {
 				sqlSession.update("updateAppMain1One", param);
@@ -188,6 +179,11 @@ public class AppMain1Svc {
 	public void appmain1Delete(String param) {
 
 		sqlSession.delete("appmain1Delete", param);
+	}
+
+	public void chkPopDelete(String param) {
+
+		sqlSession.delete("chkPopDelete", param);
 	}
 
 

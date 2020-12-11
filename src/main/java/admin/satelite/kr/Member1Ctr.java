@@ -222,7 +222,7 @@ public class Member1Ctr {
 	}
 
 	@RequestMapping(value = "/postDelete")
-	public String postDelete(SearchVO searchVO,	 HttpServletRequest request, Banner1VO banner1Info,	 ModelMap modelMap) {
+	public String postDelete(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 
 
 		String sn = "";
@@ -591,7 +591,7 @@ public class Member1Ctr {
 
 	@RequestMapping(value = "/ContentsUpdate")
 	public String ContentsUpdate(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info,
+			HttpServletRequest request, BannerVO banner1Info,
 			ModelMap modelMap) {
 
 		
@@ -612,7 +612,7 @@ public class Member1Ctr {
 	
 	@RequestMapping(value = "/ContentsDelete")
 	public String ContentsDelete(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info, 
+			HttpServletRequest request, BannerVO banner1Info,
 			ModelMap modelMap) {
 
 		
@@ -627,7 +627,7 @@ public class Member1Ctr {
 
 	@RequestMapping(value = "/ContentsSave")
 	public String ContentsSave(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info, 
+			HttpServletRequest request, BannerVO banner1Info,
 			ModelMap modelMap) {
 
 		String USERID = "";
@@ -675,7 +675,7 @@ public class Member1Ctr {
 
 	@RequestMapping(value = "/ContentsForm")
 	public String ContentsForm(SearchVO searchVO, 
-			HttpServletRequest request, Banner1VO banner1Info,
+			HttpServletRequest request, BannerVO banner1Info,
 			ModelMap modelMap) {
 
 		String USERID = "";

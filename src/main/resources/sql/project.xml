@@ -161,8 +161,7 @@
 
 
 
-	<delete id="chkProjectDelete"
-			parameterType="String">
+	<delete id="chkProjectDelete"	parameterType="String">
 		delete from tbl_contents
 		where sn=#{sn}
 	</delete>
@@ -180,6 +179,12 @@
 		insert into tbl_project_memo (title, projectSn, memo )
 		values ( #{title}, #{sn}, #{memo} )
 	</insert>
+
+
+	<select id="selectBoxproject"
+			resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, title  from tbl_project order by sn asc
+	</select>
 
 </mapper>
 

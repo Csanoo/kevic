@@ -28,7 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller 
 public class EditorCtr {
-	 String ROOT_DIR = "E:/tom99/frontsite/ROOT/image";
+	 String ROOT_DIR = "/server/apache-tomcat-8.5.59/webapps/admin/upload/images/";
 	 @RequestMapping(value = "/summernoteImageUpload", method = RequestMethod.POST)
 	 public void sumernoteImageUpload(@RequestParam HashMap<String, String> params, HttpServletRequest request, HttpServletResponse response, @RequestParam("uploadFile") MultipartFile file) throws Exception {
 	        response.setCharacterEncoding("UTF-8");
@@ -53,7 +53,7 @@ public class EditorCtr {
 	             if(isImage) {
                      String path = params.get("path").toString();
                      HashMap<String, String> imageFileMap = saveFile(file, "/editor");
-                     fileUrl = "/mdvs/common/files/view?path=/editor&fileRename=" + imageFileMap.get("saveFileName"); //url 경로
+                     fileUrl = "/admin/common/files/view?path=/editor&fileRename=" + imageFileMap.get("saveFileName"); //url 경로
 	             }
 	             if(filesizeOver){
 	                 printWriter.println("파일크기초과");

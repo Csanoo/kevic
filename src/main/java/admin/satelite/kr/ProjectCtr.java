@@ -26,7 +26,8 @@ public class ProjectCtr {
     @RequestMapping(value = "/project")
     public String Project(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
-
+        List<?> projectview  = projectSvc.selectBoxproject(searchVO);
+        modelMap.addAttribute("projectview", projectview);
 
         searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
 
@@ -61,6 +62,8 @@ public class ProjectCtr {
     public String projectForm(HttpServletRequest request, ProjectVO projectInfo,
                                ModelMap modelMap, SearchVO searchVO) {
 
+        List<?> projectview  = projectSvc.selectBoxproject(searchVO);
+        modelMap.addAttribute("projectview", projectview);
         List<?> cateview  = projectSvc.selectCateSelList(searchVO);
         modelMap.addAttribute("cateview", cateview);
         List<?> sourceview  = projectSvc.selectSourceSelList(searchVO);
@@ -277,8 +280,9 @@ public class ProjectCtr {
             String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
             for(int i=0; i<cnt; i++) {
-                //System.out.println(i);
+
                 String sn = (String)strArray[i];
+
                 projectSvc.chkProjectDelete(sn);
             }
         } catch (Exception e) {

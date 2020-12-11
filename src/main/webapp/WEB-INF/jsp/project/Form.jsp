@@ -35,28 +35,21 @@
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
 							<form name="form1" action="projectSave" method="post"	enctype="multipart/form-data">
-
-
-
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12">
-
-
 										<table id="customers">
 											<tr>
-
-
 												<input value="1" name="appkind" type="hidden" class="form-control">
-
-
-
+												<input value="200" name="state" type="hidden" class="form-control">
 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
 
 												<td style="width: 35%" colspan="3">
 													<select name="project"  class="form-control">
+
 														<option>프로젝트</option>
-														<option value="001">프로젝트01</option>
-														<option value="002">프로젝트02</option>
+														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
+															<option value="${projectview.sn}" <c:if test="${projectInfo.project eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+														</c:forEach>
 													</select>
 												</td>
 											

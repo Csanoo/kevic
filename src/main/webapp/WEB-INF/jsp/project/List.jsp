@@ -30,10 +30,11 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">프로젝트</td>
                                             <td style="width: 75%">
-                                                <select name="sproject">
-                                                    <option value="">프로젝트</option>
-                                                    <option <c:if test="${searchVO.sproject eq '001'}">selected</c:if> value="01">프로젝트01</option>
-                                                    <option <c:if test="${searchVO.sproject eq '002'}">selected</c:if> value="02">프로젝트02</option>
+                                                <select name="sproject"  class="form-control">
+                                                    <option>프로젝트</option>
+                                                    <c:forEach var="projectview" items="${projectview}"   varStatus="status">
+                                                        <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+                                                    </c:forEach>
                                                 </select>
                                             </td>
                                         </tr>

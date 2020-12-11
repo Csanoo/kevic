@@ -71,8 +71,8 @@
 												<td class="tdl" style="width: 15%">사용 여부</td>
 
 												<td style="width: 35%">
-													<input type="radio" value="100" name="state" checked><label>사용</label>
-													<input type="radio" value="000" name="state"><label>사용안함</label>
+													<input type="radio" value="100" name="state" <c:if test="${appmain1Info.state eq '100'}">checked</c:if>><label>사용</label>
+													<input type="radio" value="000" name="state" <c:if test="${appmain1Info.state eq '000'}">checked</c:if>><label>사용안함</label>
 												</td>
 
 											</tr>
@@ -88,6 +88,8 @@
 												<td class="tdl" style="width: 15%">노출 기간</td>
 
 												<td style="width: 35%" colspan="3">
+													<input type="radio" value="Y" name="displaytype" <c:if test="${appmain1Info.displaytype eq 'Y'}">checked</c:if>><label>상시 노출</label>
+													<input type="radio" value="N" name="displaytype" <c:if test="${appmain1Info.displaytype eq 'N'}">checked</c:if>><label>기간 노출</label>
 													<input name="sdate" type="text" class="form-control datepicker" value="${appmain1Info.sdate}" data-format="yyyy-mm-dd">
 													<input name="edate" type="text" class="form-control datepicker" value="${appmain1Info.edate}" data-format="yyyy-mm-dd">
 												</td>
@@ -98,12 +100,11 @@
 												<td class="tdl" style="width: 15%">노출 시간</td>
 
 												<td style="width: 35%" colspan="3">
-													<div class="input-group bootstrap-timepicker timepicker">
+													<input type="radio" value="Y" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'Y'}">checked</c:if>><label>상시 노출</label>
+													<input type="radio" value="N" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'N'}">checked</c:if>><label>기간 노출</label>
 														<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" >
-													</div>
-													<div class="input-group bootstrap-timepicker timepicker">
 														<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00">
-													</div>
+
 												</td>
 
 											</tr>
@@ -121,8 +122,8 @@
 												<td class="tdl" style="width: 15%">팝업 크기</td>
 
 												<td style="width: 35%" colspan="3">
-													가로(pixel)<input name="sWidth" type="text" class="form-control" value="${appmain1Info.SWidth}">
-													세로(pixel)<input name="sHeight" type="text" class="form-control" value="${appmain1Info.SHeight}">
+													가로(pixel)<input name="sWidth" type="text" class="form-control" value="${appmain1Info.sWidth}">
+													세로(pixel)<input name="sHeight" type="text" class="form-control" value="${appmain1Info.sHeight}">
 												</td>
 
 											</tr>
@@ -130,9 +131,9 @@
 												<td class="tdl" style="width: 15%">팝업 닫기</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="radio" value="100" name="closeType" checked><label>오늘 이창을 열지 않음</label>
-													<input type="radio" value="200" name="closeType"><label>이 창을 7일간 열지 않음</label>
-													<input type="radio" value="300" name="closeType"><label>이 창을 다시 열지 않음</label>
+													<input type="radio" value="100" name="closeType" <c:if test="${appmain1Info.closeType eq '100'}">checked</c:if>><label>오늘 이창을 열지 않음</label>
+													<input type="radio" value="200" name="closeType" <c:if test="${appmain1Info.closeType eq '200'}">checked</c:if>><label>이 창을 7일간 열지 않음</label>
+													<input type="radio" value="300" name="closeType" <c:if test="${appmain1Info.closeType eq '300'}">checked</c:if>><label>이 창을 다시 열지 않음</label>
 												</td>
 											</tr>
 											<tr>
@@ -146,11 +147,11 @@
 												<td class="tdl" style="width: 15%">링크설정 닫기</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="radio" value="200" name="linkState" checked><label>사용안함</label>
-													<input type="radio" value="100" name="linkState"><label>사용</label>
+													<input type="radio" value="200" name="linkState" <c:if test="${appmain1Info.linkState eq '200'}">checked</c:if>><label>사용안함</label>
+													<input type="radio" value="100" name="linkState" <c:if test="${appmain1Info.linkState eq '100'}">checked</c:if>><label>사용</label>
 													<select name="linkTarget">
-														<option value="100">부모창</option>
-														<option value="200">새창열기</option>
+														<option value="100" <c:if test="${appmain1Info.linkState eq '100'}">selected</c:if>>부모창</option>
+														<option value="200" <c:if test="${appmain1Info.linkState eq '200'}">selected</c:if>>새창열기</option>
 													</select>
 												</td>
 											</tr>
@@ -158,7 +159,7 @@
 												<td class="tdl" style="width: 15%">URL</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="text" value="" name="link" >
+													<input type="text" value="${appmain1Info.link}" name="link" >
 												</td>
 											</tr>
 										</table>
@@ -179,8 +180,32 @@
 
 								</div>
 							</form>
+							<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
+							<script type="text/javascript">
+                                nhn.husky.EZCreator.createInIFrame({
+                                    oAppRef: umemo,
+                                    elPlaceHolder: "umemo",
+                                    sSkinURI: "/admin/design/assets/plugins/smart/SmartEditor2Skin.html",
+                                    htParams: {
+                                        bUseToolbar: true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+                                        bUseVerticalResizer: true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+                                        bUseModeChanger: true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+                                        //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+                                        fOnBeforeUnload: function () {
+                                            //alert("완료!");
+                                        }
+                                    }, //boolean
+                                    fOnAppLoad: function () {
+                                        //예제 코드
+                                        umemo.getById["umemo"].exec("PASTE_HTML", ["${appmain1Info.umemo}"]);
+                                    },
+                                    fCreator: "createSEditor"
+                                });
+							</script>
 							<script>
+
                                 function fn_formSv() {
+                                    umemo.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
                                     document.form1.submit();
 
                                 }

@@ -78,6 +78,8 @@
 												<td class="tdl" style="width: 15%">노출 기간</td>
 
 												<td style="width: 35%" colspan="3">
+													<input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
+													<input type="radio" value="N" name="displaytype"><label>기간 노출</label>
 													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
 													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
 												</td>
@@ -88,12 +90,10 @@
 												<td class="tdl" style="width: 15%">노출 시간</td>
 
 												<td style="width: 35%" colspan="3">
-													<div class="input-group bootstrap-timepicker timepicker">
-														<input name="stime" type="text" class="form-control" placeholder="24:00:00" >
-													</div>
-													<div class="input-group bootstrap-timepicker timepicker">
-														<input name="etime" type="text" class="form-control" placeholder="01:00:00">
-													</div>
+													<input type="radio" value="Y" name="dtimetype" checked><label>상시 노출</label>
+													<input type="radio" value="N" name="dtimetype"><label>기간 노출</label>
+													<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" >
+													<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00
 												</td>
 
 											</tr>
@@ -212,7 +212,7 @@
 </script>
 <script>
     function fn_formSv() {
-        oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+       // oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
         document.form1.submit();
 
     }

@@ -8,12 +8,12 @@
 	</delete>
 
 	<select id="selectAppMain1One" parameterType="String" resultType="main.java.admin.satelite.kr.AppMain1VO">
-		SELECT sn,code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType  from tbanner2 where sn=#{sn}
+		SELECT sn,code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType, displaytype, dtimetype, project, linkState, linkTarget  from tbanner2 where sn=#{sn}
 	</select>
 
 	<insert id="insertAppMain1One"	parameterType="main.java.admin.satelite.kr.AppMain1VO">
-		insert into tbanner2 (code2, imgfile,	link, title, umemo,	type1, text1, text2, appkind, creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType, project )
-		values ( #{code2}, #{imgfile} , #{link} ,#{title} ,#{umemo} ,#{type1} ,#{text1} ,#{text2} ,#{appkind} ,#{creatorimg}, #{sdate}, #{stime}, #{edate}, #{etime}, #{sWidth}, #{sHeight}, #{state}, #{positionX}, #{positionY}, #{closeType} ,#{project})
+		insert into tbanner2 (code2, imgfile,	link, title, umemo,	type1, text1, text2, appkind, creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType, project, linkState,linkTarget, displaytype, dtimetype )
+		values ( #{code2}, #{imgfile} , #{link} ,#{title} ,#{umemo} ,#{type1} ,#{text1} ,#{text2} ,#{appkind} ,#{creatorimg}, #{sdate}, #{stime}, #{edate}, #{etime}, #{sWidth}, #{sHeight}, #{state}, #{positionX}, #{positionY}, #{closeType} ,#{project},#{linkState}, #{linkTarget}, #{displaytype} ,#{dtimetype})
 	</insert>
 	
 	<insert id="insertAppMain2One" parameterType="main.java.admin.satelite.kr.AppMain1VO">
@@ -25,8 +25,16 @@
 	<update id="updateAppMain1One"
 		parameterType="main.java.admin.satelite.kr.AppMain1VO">
 		update tbanner2 set
-		link=#{link},title=#{title},umemo=#{umemo}
-		,text1=#{text1},text2=#{text2},creatorimg=#{creatorimg}
+		 code=#{code2},
+		  link = #{link},
+		  title=#{title},
+		  umemo=#{umemo},
+		  type1=#{type1},
+		  text1=#{text1},
+		  text2=#{text2},
+		  sdate = #{sdate}, stime = #{stime}, edate = #{edate}, etime = #{etime}
+		  , sWidth = #{sWidth}, sHeight = #{sHeight},
+		  state = #{state},positionX= #{positionX},positionY= #{positionY}, closeType= #{closeType} , project = #{project}, linkState = #{linkState},linkTarget= #{linkTarget},displaytype = #{displaytype} ,dtimetype = #{dtimetype}
 		where sn=#{sn}
 	</update>
 	
@@ -141,9 +149,12 @@
 
 		LIMIT ${rowStart-1}, 10
 	</select>
-	
-	
 
+
+	<delete id="chkPopDelete"	parameterType="String">
+		delete from tbanner2
+		where sn=#{sn}
+	</delete>
 	
 
 </mapper>

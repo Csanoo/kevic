@@ -1,6 +1,7 @@
 package main.java.admin.satelite.kr;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -14,6 +15,7 @@ import main.java.common.satelite.kr.SearchVO;
 import main.java.admin.satelite.kr.AppMain1VO;
 import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class AppMain1Ctr {
@@ -127,29 +129,58 @@ public class AppMain1Ctr {
 			ModelMap modelMap) {
 		
 		String sn = request.getParameter("sn");
-		
-		String link = request.getParameter("link");
-		String uname = request.getParameter("uname");
-		String umemo = request.getParameter("umemo");
-		
-		String text1 = request.getParameter("text1");
-		
-		
-		
-		appmain1Info.setLink(link);
-		appmain1Info.setUname(uname);
-		appmain1Info.setUmemo(umemo);
-		
-		appmain1Info.setText1(text1);
-		
 		appmain1Info.setSn(sn);
-		
-		
-		String[] fileno = request.getParameterValues("fileno");
-		FileUtil fs = new FileUtil();
-		List<FileVO> filelist = fs.saveAllFilesBB(appmain1Info.getUploadfile());
-		
-		appmain1Svc.updateAppMain1(appmain1Info, filelist, fileno);
+		String uname = request.getParameter("uname");
+		appmain1Info.setUname(uname);
+		String umemo = request.getParameter("umemo");
+		appmain1Info.setUmemo(umemo);
+		String code2 = request.getParameter("code2");
+		appmain1Info.setCode2(code2);
+		String link = request.getParameter("link");
+		appmain1Info.setLink(link);
+		String title = request.getParameter("title");
+		appmain1Info.setTitle(title);
+		String type1 = request.getParameter("type1");
+		appmain1Info.setType1(type1);
+		String text1 = request.getParameter("text1");
+		appmain1Info.setText1(text1);
+		String text2 = request.getParameter("text2");
+		appmain1Info.setText2(text2);
+		String appkind = request.getParameter("appkind");
+		appmain1Info.setAppkind(appkind);
+		String  sdate = request.getParameter("sdate");
+		appmain1Info.setSdate(sdate);
+		String  stime = request.getParameter("stime");
+		appmain1Info.setStime(stime);
+		String  edate = request.getParameter("edate");
+		appmain1Info.setEdate(edate);
+		String  etime = request.getParameter("etime");
+		appmain1Info.setEtime(etime);
+		Integer  sWidth = Integer.parseInt(request.getParameter("sWidth"));
+		appmain1Info.setsWidth(sWidth);
+		Integer  sHeight = Integer.parseInt(request.getParameter("sHeight"));
+		appmain1Info.setsHeight(sHeight);
+		String  state = request.getParameter("state");
+		appmain1Info.setState(state);
+		Integer  positionX = Integer.parseInt(request.getParameter("positionX"));
+		appmain1Info.setPositionX(positionX);
+		Integer  positionY = Integer.parseInt(request.getParameter("positionY"));
+		appmain1Info.setPositionY(positionY);
+		String  closeType = request.getParameter("closeType");
+		appmain1Info.setCloseType(closeType);
+		String  displaytype = request.getParameter("displaytype");
+		appmain1Info.setDisplaytype(displaytype);
+		String  dtimetype = request.getParameter("dtimetype");
+		appmain1Info.setDtimetype(dtimetype);
+		String  project = request.getParameter("project");
+		appmain1Info.setProject(project);
+		String  linkState = request.getParameter("linkState");
+		appmain1Info.setLinkState(linkState);
+		String  linkTarget = request.getParameter("linkTarget");
+		appmain1Info.setLinkTarget(linkTarget);
+
+
+		appmain1Svc.updateAppMain1(appmain1Info);
 
 		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
 
@@ -263,6 +294,27 @@ public class AppMain1Ctr {
 		return "appmain/AppMain2List";
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/popChkDelete")
+	public String popChkDelete(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap, ProjectVO projectInfo,
+							   ModelMap modelMap) throws Exception{
+		String result = "TRUE";
+		try {
+			int cnt = Integer.parseInt(request.getParameter("CNT"));
+			//System.out.println(cnt);
+			String rprtOdr = request.getParameter("RPRT_ODR");
+			String [] strArray = rprtOdr.split(",");
+			for(int i=0; i<cnt; i++) {
+				//System.out.println(i);
+				String sn = (String)strArray[i];
+				appmain1Svc.chkPopDelete(sn);
+			}
+		} catch (Exception e) {
+			//System.out.println(e.getMessage());
+			result = "FALSE";
+		}
+		return result;
+	}
 	
 
 }

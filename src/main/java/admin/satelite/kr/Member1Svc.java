@@ -209,7 +209,7 @@ public class Member1Svc {
 		return sqlSession.selectList("selectMember1Excel", param);
 	}
 	
-	public void updateContents(Banner1VO param, List<FileVO> filelist) {
+	public void updateContents(BannerVO param, List<FileVO> filelist) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
@@ -256,7 +256,7 @@ public class Member1Svc {
 		}
 	}
 	
-	public void insertContents(Banner1VO param,List<FileVO> filelist) {
+	public void insertContents(BannerVO param, List<FileVO> filelist) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);

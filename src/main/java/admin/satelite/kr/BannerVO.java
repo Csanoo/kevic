@@ -4,23 +4,23 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-public class Banner1VO {
+public class BannerVO {
 private String fucheck = "";
-	
+
 	public String getFucheck() {
 		return fucheck;
 	}
 	public void setFucheck(String fucheck) {
 		this.fucheck = fucheck;
 	}
-	
+
 	public String getCategory() {
 		return category;
 	}
 	public void setCategory(String category) {
 		this.category = category;
 	}
-	
+
 	private String category = "";
 
 	private List<MultipartFile> uploadfile;
@@ -34,7 +34,7 @@ private String fucheck = "";
 	}
 
 	private String filecnt;
-	
+
 	public String getType1() {
 		return type1;
 	}
@@ -44,7 +44,7 @@ private String fucheck = "";
 	}
 
 	private String type1;
-	
+
 	public String getText1() {
 		return text1;
 	}
@@ -63,7 +63,7 @@ private String fucheck = "";
 
 	private String text1;
 	private String text2;
-	
+
 	public String getUname() {
 		return uname;
 	}
@@ -81,7 +81,7 @@ private String fucheck = "";
 	}
 
 	private String uname;
-	
+
 	private String umemo;
 
 
@@ -99,7 +99,7 @@ private String fucheck = "";
 	public void setId(String id) {
 		this.id = id;
 	}
-	
+
 	public String getImgfile() {
 		return imgfile;
 	}
@@ -114,10 +114,10 @@ private String fucheck = "";
 	}
 	private String imgfile="";
 	private String link="";
-	
-	
+
+
 	private String userid="";
-	
+
 	private String sn="";
 	public String getSn() {
 		return sn;
@@ -150,9 +150,9 @@ private String fucheck = "";
 		this.memo = memo;
 	}
 	private String code1="";
-	
+
 	private String url="";
-	
+
 	public String getUrl() {
 		return url;
 	}
@@ -162,8 +162,8 @@ private String fucheck = "";
 	private String code2="";
 	private String title="";
 	private String memo="";
-	
-	
+
+
 	private String mobile="";
 	public String getMobile() {
 		return mobile;
@@ -185,7 +185,7 @@ private String fucheck = "";
 	}
 	private String email="";
 	private String wdate="";
-	
+
 	public String getUserid() {
 		return userid;
 	}
@@ -213,5 +213,69 @@ private String fucheck = "";
 	private String userpw="";
 	private String username="";
 	private String usertype="";
-    
+
+	private String sdate = "";
+	public String getSdate() {
+		return sdate;
+	}
+	public void setSdate(String sdate) {
+		this.sdate = sdate;
+	}
+	private String edate = "";
+	public String getEdate() {
+		return edate;
+	}
+	public void setEdate(String edate) {
+		this.edate = edate;
+	}
+
+	private String displayType = "";
+	public String getDisplayType() {
+		return displayType;
+	}
+	public void setDisplayType(String displayType) {
+		this.displayType = displayType;
+	}
+
+	private String linkTarget = "";
+	public String getLinkTarget() {
+		return linkTarget;
+	}
+	public void setLinkTarget(String linkTarget) {
+		this.linkTarget = linkTarget;
+	}
+
+
+	private String state = "";
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	private String project = "";
+	public String getProject() {
+		return project;
+	}
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	private String regDate = "";
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+	private String updateDate = "";
+	public String getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
 }

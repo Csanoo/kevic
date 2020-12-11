@@ -25,7 +25,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Contents2")%>
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "Contents")%>
 <%=btr.CLASSOPEN(HEADERURL, "project")%>
 <%=btr.CLASSOPEN(HEADERURL, "excelForm")%>
 	">
@@ -34,26 +34,27 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 		</a>
 		<ul class="sub-menu">
 			<li>
-				<a href="/admin/project" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
+				<a href="/admin/project" class="<%=btr.CLASSACTIVE(HEADERURL, "/admin/project")%>">
 					<span class="title">프로젝트 컨텐츠 관리</span>
 				</a>
 			</li>
 			<li>
-				<a href="/admin/contents" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
+				<a href="/admin/contents" class="<%=btr.CLASSACTIVE(HEADERURL, "/admin/contents")%>">
 					<span class="title">기본 컨텐츠 관리</span>
 				</a>
 			</li>
 			<li>
-				<a href="/admin/excelForm" class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Contents2")%>">
+				<a href="/admin/excelForm" class="<%=btr.CLASSACTIVE(HEADERURL, "/admin/excelForm")%>">
 					<span class="title">컨텐츠 엑셀 등록 </span>
 				</a>
 			</li>
 		</ul>
 	</li>
 	<li class="
-		<%=btr.CLASSOPEN(HEADERURL, "AppMain")%>
-		<%=btr.CLASSOPEN(HEADERURL, "Banner")%>
-		<%=btr.CLASSOPEN(HEADERURL, "posts/Post")%>">
+		<%=btr.CLASSOPEN(HEADERURL, "AppMain1")%>
+		<%=btr.CLASSOPEN(HEADERURL, "appmain1Form")%>
+		<%=btr.CLASSOPEN(HEADERURL, "BannerList")%>
+		<%=btr.CLASSOPEN(HEADERURL, "banner1Form")%>">
 		<a href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">운영 관리</span> <span class="arrow "></span>
 		</a>
@@ -64,8 +65,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 				</a>
 			</li>
 			<li><a href="/admin/AppMain1" class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain1")%>"> <span class="title">팝업 관리</span></a></li>
-			<li><a href="/admin/appmain1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "AppMain1")%>"> <span
-					class="title">팝업 등록</span>
+			<li><a href="/admin/appmain1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "appmain1Form")%>"> <span class="title">팝업 등록</span>
 			</a></li>
 			<li><a href="/admin/BannerList"	class="<%=btr.CLASSACTIVE(HEADERURL, "BannerList")%>"> <span
 					class="title">프로젝트 배너관리</span>

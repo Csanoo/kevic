@@ -113,16 +113,30 @@
 		<div class="clearfix"></div>
 			<form id="form1" name="form1" method="post">
 
-				<input type="hidden" name="sn" id="sn"
-					   value="" />
-
-				<input type="hidden" name="orderKeyword" id="orderKeyword"
-					   value="${searchVO.orderKeyword}" />
-
+				<input type="hidden" name="sn" id="sn" value="" />
 
 				<div class="col-lg-12">
-				<section class="box ">
-
+					<section class="box ">
+						<header class="panel_header">
+							<h2 class="title pull-left">목록 </h2>
+							<div class="pull-right" style="padding-top: 10px">
+								<ul class="list-unstyled">
+									<li style="float: left;">
+										<button type="button" class="btn btn-orange" onclick="deletePost()">선택삭제</button>
+									</li>
+									<li style="float: left;">
+										<select name="orderKeyword" id="orderKeyword"  >
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">시작일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="2">시작일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="3">수정일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="4">수정일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="5">등록일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="6">등록일 오름차순</option>
+										</select>
+									</li>
+								</ul>
+							</div>
+						</header>
 					<div class="content-body">
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
@@ -207,19 +221,17 @@
         else{
             $.ajax({
                 type: "POST",
-                url: "/admin/prtChkDelete",
+                url: "/admin/popChkDelete",
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                dataType:"json",
                 success: function(jdata){
-                    alert(jdata);
                     if(jdata != 'TRUE') {
                         alert("삭제 오류");
                     }else{
                         alert("삭제 성공");
-                        location.href = "/admin/project";
+                        location.href = "/admin/AppMain1";
                     }
                 },
-                error: function(data){location.href = "/admin/project";}
+                error: function(data){location.href = "/admin/AppMain1";}
             });
         }
     }

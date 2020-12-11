@@ -101,7 +101,7 @@
 								<table class="table">
 									<thead>
 										<tr>
-											<th>//</th>
+											<th><input type="checkbox" id="allChk" ></th>
 											<th>No</th>
 											<th>사용여부</th>
 											<th>프로젝트명</th>
@@ -128,7 +128,7 @@
 												<td>${listview.sdate}</td>
 												<td>${listview.edate}</td>
 												<td>${listview.updateDate}</td>
-												<td>${listview.regdate}</td>
+												<td>${listview.regDate}</td>
 												<td>admin</td>
 												<td><a href="javascript:fn_readGo('${listview.sn}')">수정</a></td>
 											</tr>
@@ -187,5 +187,47 @@
 		document.form1.target = "_new";
 		document.form1.submit();
 	}
+    function deletePost(){
+        var cnt = $("input[name='chkSn']:checked").length;
+        var arr = new Array();
+        $("input[name='chkSn']:checked").each(function() {
+            arr.push($(this).attr('value'));
+        });
+        if(cnt == 0){
+            alert("선택된 글이 없습니다.");
+        }
+        else{
+            $.ajax({
+                type: "POST",
+                url: "/admin/bannerChkDelete",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                success: function(jdata){
+                    if(jdata != 'TRUE') {
+                        alert("삭제 오류");
+                    }else{
+                        alert("삭제 성공");
+                        location.href = "/admin/BannerList";
+                    }
+                },
+                error: function(data){location.href = "/admin/AppMain1";}
+            });
+        }
+    }
+
+
 </script>
+
+
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+<script type="text/javascript">
+    $(function(){
+        $("#allChk").on("click",function(){
+            if ($(this).is(':checked')) {
+                $("input[name='chkSn']").prop('checked', true);
+            } else {
+
+                $("input[name='chkSn']").prop('checked', false);
+            }
+        });
+    })
+</script>

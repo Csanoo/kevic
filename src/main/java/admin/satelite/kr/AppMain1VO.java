@@ -347,15 +347,15 @@ public class AppMain1VO {
 
 	private int sWidth = 0;
 
-	public int getSWidth() { return sWidth;	}
+	public int getsWidth() { return sWidth;	}
 
-	public void setSWidth(int sWidth) {	this.sWidth = sWidth; }
+	public void setsWidth(int sWidth) {	this.sWidth = sWidth; }
 
 	private int sHeight = 0;
 
-	public int getSHeight() {return sHeight;}
+	public int getsHeight() {return sHeight;}
 
-	public void setSHeight(int sHeight) {this.sHeight = sHeight;}
+	public void setsHeight(int sHeight) {this.sHeight = sHeight;}
 
 	private String state = "100";
 
@@ -390,4 +390,24 @@ public class AppMain1VO {
 	}
 
 	public void setCloseType(String closeType) {this.closeType = closeType;}
+
+
+	private String displaytype = "";
+
+	public String getDisplaytype() {
+		return displaytype;
+	}
+
+	public void setDisplaytype(String displaytype) {this.displaytype = displaytype;}
+
+	private String dtimetype = "";
+
+	public String getDtimetype() {
+		return dtimetype;
+	}
+
+	public void setDtimetype(String dtimetype) {this.dtimetype = dtimetype;}
+
+
+
 }

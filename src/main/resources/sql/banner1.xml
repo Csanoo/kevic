@@ -11,15 +11,15 @@
 	</delete>
 
 	<select id="selectBanner1One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO"
-		resultType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO"
+		resultType="main.java.admin.satelite.kr.BannerVO">
 		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
 		where sn=#{sn} 
 	</select>
 	
 	<select id="selectContentsOne"
 		parameterType="String"
-		resultType="main.java.admin.satelite.kr.Banner1VO">
+		resultType="main.java.admin.satelite.kr.BannerVO">
 		SELECT sn,code2,userid,url,memo,title,category,imgfile,fucheck from tcontents
 		where sn=#{sn} 
 	</select>
@@ -27,7 +27,7 @@
 	
 
 	<insert id="insertBanner1One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		insert into tbanner (
 		code2,imgfile,link,uname,umemo,type1,text1,text2 )
 		values ( #{code2}
@@ -35,7 +35,7 @@
 	</insert>
 	
 	<insert id="updateBanner1One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		update tbanner set
 		code2=#{code2},imgfile=#{imgfile},link=#{link},uname=#{uname},umemo=#{umemo}
 		,text1=#{text1},text2=#{text2}
@@ -44,7 +44,7 @@
 	</insert>
 	
 	<insert id="updateBanner11One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		update tbanner set
 		code2=#{code2},link=#{link},uname=#{uname},umemo=#{umemo}
 		,text1=#{text1},text2=#{text2}
@@ -53,14 +53,14 @@
 	</insert>
 	
 	<select id="selectBanner2One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO"
-		resultType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO"
+		resultType="main.java.admin.satelite.kr.BannerVO">
 		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
 		where sn=#{sn} 
 	</select>
 
 	<insert id="insertBanner2One"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		insert into tbanner (
 		code2,imgfile,link,uname,umemo,type1,text1,text2 )
 		values ( #{code2}
@@ -124,9 +124,27 @@
 	</select>
 
 	<select id="selectBanner1List"
-		resultType="main.java.admin.satelite.kr.Banner1VO"
+		resultType="main.java.admin.satelite.kr.BannerVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
+		SELECT sn,
+		code2,
+		imgfile,
+		link,
+		title,
+		uname,
+		umemo,
+		type1,
+		text1,
+		text2,
+		creatorimg,
+		(select title from tbl_project where sn = tbanner.projectSn) as project,
+		sdate,
+		edate,
+		displayType,
+		state,
+		regDate,
+		updateDate,
+		linkTarget from tbanner
 		<include refid="includeBanner1" />
 
 		LIMIT ${rowStart-1}, 10
@@ -139,15 +157,19 @@
 	</select>
 
 	<select id="selectBanner2List"
-		resultType="main.java.admin.satelite.kr.Banner1VO"
+		resultType="main.java.admin.satelite.kr.BannerVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn,code2,imgfile,link,uname,umemo,type1,text1,text2 from tbanner
 		<include refid="includeBanner2" />
 
 		LIMIT ${rowStart-1}, 10
 	</select>
-	
-	
+
+
+	<delete id="bannerChkDelete" parameterType="String">
+		delete from tbanner
+		where sn=#{sn}
+	</delete>
 
 	
 

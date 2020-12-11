@@ -278,7 +278,7 @@ from tuser
 	
 	
 	<update id="updateContents"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		update tcontents set 
 		url=#{url} ,code2=#{code2},title=#{title},memo=#{memo},userid=#{userid}
 		,category=#{category}
@@ -288,7 +288,7 @@ from tuser
 	</update>
 	
 	<update id="updateContents2"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		update tcontents set 
 		url=#{url} ,code2=#{code2},title=#{title},memo=#{memo},userid=#{userid}
 		,category=#{category},fucheck=#{fucheck}
@@ -297,7 +297,7 @@ from tuser
 	</update>
 	
 	<insert id="insertContents"
-		parameterType="main.java.admin.satelite.kr.Banner1VO">
+		parameterType="main.java.admin.satelite.kr.BannerVO">
 		insert into tcontents (
 		url,code2,title,memo,userid,category,imgfile )
 		values ( #{url},#{code2},#{title},#{memo},#{userid},#{category},#{imgfile} )

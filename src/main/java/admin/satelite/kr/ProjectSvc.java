@@ -97,6 +97,14 @@ public class ProjectSvc {
 
     }
 
+
+
+
+    public List<?> selectBoxproject(SearchVO param) {
+
+        return sqlSession.selectList("selectBoxproject", param);
+    }
+
     public Integer selectProjectCount(SearchVO param) {
         return sqlSession.selectOne("selectprojectCount", param);
     }
@@ -107,7 +115,7 @@ public class ProjectSvc {
     }
 
     public Integer selectProjectCount2(SearchVO param) {
-        return sqlSession.selectOne("selectprojectCount", param);
+        return sqlSession.selectOne("selectprojectCount2", param);
     }
 
     public List<?> selectProjectList2(SearchVO param) {
