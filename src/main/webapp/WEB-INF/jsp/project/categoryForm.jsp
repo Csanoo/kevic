@@ -33,33 +33,13 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <div style="display: flex;justify-content: space-between">
                                 <form name="1depth" style="display: contents;">
-                                <div class="category" style="width:49%">
-                                    <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
-                                        <li>
-                                            <div class="uk-nestable-item">
-                                                <div class="uk-nestable-handle"></div>
-                                                <div data-nestable-action="toggle"></div>
-                                                <div class="list-label">
-                                                    <input type="title" value="">
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div class="category" style="width:49%" id="ondCate">
+
                                 </div>
                                 </form>
                                 <form name="2depth"  style="display: contents;">
-                                <div class="category" style="width:49%">
-                                    <ul class="uk-nestable" data-uk-nestable="{maxDepth:1}">
-                                        <li>
-                                            <div class="uk-nestable-item">
-                                                <div class="uk-nestable-handle"></div>
-                                                <div data-nestable-action="toggle"></div>
-                                                <div class="list-label">
-                                                    <input type="title" value="">
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
+                                <div class="category" style="width:49%"  id="twoCate">
+
                                 </div>
                                 </form>
 
@@ -86,43 +66,46 @@
                                 <button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
                             </div>
                         <div class="col-md-12 col-sm-12 col-xs-12">
-
-                            <form name="form1" action="projectSave" method="post"	enctype="multipart/form-data">
+                            <form name="form1" method="post" id="uploadForm">
+                                <input type="hidden" name="depth" value="1">
+                                <input type="hidden" name="pCate" value="0">
+                                <input type="hidden" name="sn" value="0">
+                                <input type="text" name="projectSn" value="${projectInfo.projectSn}">
                                 <div class="form-group">
-                                    <label class="form-label" for="email-1">경로</label>
-                                    <input type="email" class="form-control" id="path" >
+                                    <label class="form-label" >경로</label>
+                                    필요함?
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="email-1">카테고리명</label>
-                                    <input type="title" class="form-control" id="categoryTitle" >
+                                    <label class="form-label" for="categoryTitle">카테고리명*</label>
+                                    <input title="text" name="title" class="form-control" id="categoryTitle" >
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="email-1">타이틀배너</label>
-                                    <input type="banner" class="form-control" id="banner" >
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="form-label" for="email-1">아이콘</label>
-                                    <input type="icon" class="form-control" id="icon" >
+                                    <label class="form-label" for="banner">타이틀배너</label>
+                                    <input type="file" class="form-control" id="bannerImg" name="uploadfile" >
                                 </div>
 
                                 <div class="form-group">
-                                    <label class="form-label" for="email-1">광고 배너 설정</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="state" class="icheck-minimal-red" checked>
+                                    <label class="form-label" for="icon">아이콘*</label>
+                                    <input type="file" class="form-control" name="uploadfile" id="iconImg" >
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" >광고 배너 설정</label>
+                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="state" value="N" class="icheck-minimal-red"checked>
                                     <label class="iradio-label form-label" for="minimal-radio-1">사용안함</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-2" class="icheck-minimal-red" checked>
+                                    <input tabindex="5" type="radio" id="minimal-radio-2" name="state"  value="Y"  class="icheck-minimal-red">
                                     <label class="iradio-label form-label" for="minimal-radio-2">사용함</label>
                                     <input type="text" class="" style="width:10%;display: inline-block" name="time" id="time" >건 마다 광고 노출
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label" for="email-1">광고 삽입Tag</label>
+                                    <label class="form-label">광고 삽입Tag</label>
                                     <div class="controls">
                                         <textarea class="form-control" cols="5" id="field-6"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <button type="button" class="btn btn-primary  pull-right">목록</button>
-                                    <button type="button" class="btn btn-purple  pull-right">등록</button>
+                                    <button type="button"  class="btn btn-primary  pull-right">목록</button>
+                                    <button type="button" id="CateReg" class="btn btn-purple  pull-right">등록</button>
                                 </div>
 
                             </form>
@@ -153,19 +136,70 @@
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script src="/design/assets/plugins/uikit/js/uikit.min.js" type="text/javascript"></script><script src="/design/assets/plugins/uikit/js/components/nestable.min.js" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-<script>
+<script type="text/javascript">
 
     $(function(){
-        $("#preview").on("click",function(){
-            $("#preview-img").attr("src",$("input[name='imageUrl']").val());
-            $("#preview-keyword").html('('+$("input[name='keyword']").val()+')');
-            $("#preview-title").html($("input[name='title']").val());
 
+        $('#CateReg').on('click', function(){
+            if($("input[name='title']").val() == ''){
+                alert('카테고리명을 입력하세요');
+                return false;
+            }
+            if($("input[name='iconImg']").val() == ''){
+                alert('아이콘이미지를 등하세요');
+                return false;
+            }
+            var frm = $('#uploadForm')[0];
+            var formData = new FormData(frm);
+            formData.append('attachfiles', $("input[name='uploadfile']")[0].files[0]);
+            formData.append('attachfiles', $("input[name='uploadfile']")[1].files[0]);
+           // alert(formData);
+            $.ajax({
+                url : '/admin/CategorySave',
+                type : 'POST',
+                data : formData,
+                contentType : false,
+                processData : false,
+                success: function (data) {
+                    if (data != '1') {
+                        alert(" 오류");
+                    } else {
+                        cateReload();
+                    }
+                },
+                error: function (data) {
+                  //  alert(삭제완료);
+                    //location.href = "/admin/project";
+                }
+            }).done(function(data){
+               // callback(data);
+            });
         });
-
+        cateReload();
+        $(".table").tableDnD({
+            onDragClass: "dragRow"
+        });
     })
-</script>
 
+    function cateReload(){
+        $.get("/admin/categoryFList?sn=${projectInfo.projectSn}",function(data){
+
+            $( "#ondCate" ).html( data );
+
+            //alert( "Load was performed." );
+        });
+        $.get("/admin/categoryTList?sn=${projectInfo.projectSn}",function(data){
+            $( "#twoCate" ).html( data );
+            //alert( "Load was performed." );
+        });
+    }
+
+</script>
+<style>
+    .dragRow{
+        border:2px solid #CCCCCC;
+    }
+</style>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">

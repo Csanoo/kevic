@@ -41,11 +41,11 @@ public class ProjectSvc {
         return sqlSession.selectOne("selectCategoryDetail", param);
     }
 
-    public List<?>  selectCategoryOne(String param) {
+    public List<?>  selectCategoryOne(Integer param) {
         return sqlSession.selectList("selectCategoryOne", param);
     }
 
-    public List<?>  selectCategoryTwo(String param) {
+    public List<?>  selectCategoryTwo(Integer param) {
         return sqlSession.selectList("selectCategoryTwo", param);
     }
 
@@ -55,9 +55,7 @@ public class ProjectSvc {
         TransactionStatus status = txManager.getTransaction(def);
 
         try {
-
             sqlSession.insert("insertprojectOne", param);
-
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
@@ -234,6 +232,24 @@ public class ProjectSvc {
 
 
     }
+
+    public Integer insertCategory(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        try {
+            sqlSession.insert("insertCategory", param);
+            txManager.commit(status);
+            return 1;
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+            return 0;
+        }
+
+    }
+
+
 
 
 }

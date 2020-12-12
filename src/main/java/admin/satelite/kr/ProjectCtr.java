@@ -2,7 +2,7 @@ package main.java.admin.satelite.kr;
 
 import java.util.List;
 import java.util.Map;
-
+import java.io.File;
 import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.multipart.MultipartFile;
 import main.java.common.satelite.kr.SearchVO;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Controller
 public class ProjectCtr {
@@ -129,9 +130,14 @@ public class ProjectCtr {
 
 
         String sn = request.getParameter("sn");
-        projectInfo = projectSvc.selectCategoryDetail(sn);
-        List<?> catelistOne  = projectSvc.selectCategoryOne(sn);
-        List<?> catelistTwo  = projectSvc.selectCategoryTwo(sn);
+        projectInfo.setSn(Integer.parseInt(sn));
+
+
+       // projectInfo = projectSvc.selectCategoryDetail(sn);
+        projectInfo.setProjectSn(sn);
+        List<?> catelistOne  = projectSvc.selectCategoryOne(Integer.parseInt(sn));
+        List<?> catelistTwo  = projectSvc.selectCategoryTwo(Integer.parseInt(sn));
+
         modelMap.addAttribute("catelistOne", catelistOne);
         modelMap.addAttribute("catelistTwo", catelistTwo);
         modelMap.addAttribute("projectInfo", projectInfo);
@@ -296,7 +302,8 @@ public class ProjectCtr {
 
     @ResponseBody
     @RequestMapping(value = "/prtChkNotPublish")
-    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+    public String prtChkNotPublish(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap )
+throws Exception{
         String result = "TRUE";
         try {
             int cnt = Integer.parseInt(request.getParameter("CNT"));
@@ -347,6 +354,77 @@ public class ProjectCtr {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/CategorySave")
+    public Integer CategorySave(HttpServletRequest request, ProjectVO projectInfo, MultipartHttpServletRequest fileRequest) throws Exception{
+        try {
+            String[] fileno = request.getParameterValues("fileno");
+            String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+            FileUtil fs = new FileUtil();
+            List<MultipartFile> files = fileRequest.getFiles("attachfiles");
+            Integer num = 0;
+            if (null != files && files.size() > 0) {
+                for (MultipartFile multipartFile : files) {
+                    String fileName = multipartFile.getOriginalFilename();
+                    if(!"".equalsIgnoreCase(fileName)){
+                        if(num == 0) {
+                            projectInfo.setBannerImg(fileName);
+                            fs.saveFile(multipartFile, filePath, fileName);
+                        }
+                        if(num == 1) {
+                            projectInfo.setIconImg(fileName);
+                            fs.saveFile(multipartFile, filePath, fileName);
+                        }
+                    }
+                    num = num + 1;
+                }
+            }
+
+            return projectSvc.insertCategory(projectInfo);
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return 0;
+        }
+
+    }
+
+
+    @RequestMapping(value = "/categoryFList")
+    public String categoryFList(HttpServletRequest request,ModelMap modelMap) throws Exception{
+
+        try {
+            Integer projectSn = Integer.parseInt(request.getParameter("sn"));
+
+            List<?> catelistOne  = projectSvc.selectCategoryOne(projectSn);
+            modelMap.addAttribute("listview", catelistOne);
+            return "project/cateOne";
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return "error";
+        }
+
+    }
+
+
+    @RequestMapping(value = "/categoryTList")
+    public String categoryTList(HttpServletRequest request,ModelMap modelMap) throws Exception{
+
+        try {
+            Integer projectSn = Integer.parseInt(request.getParameter("sn"));
+
+
+            List<?> catelistTwo  = projectSvc.selectCategoryTwo(projectSn);
+
+
+            modelMap.addAttribute("listview", catelistTwo);
+            return "project/cateTwo";
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return "error";
+        }
+
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/selPrjTitCt")
@@ -376,5 +454,9 @@ public class ProjectCtr {
         }
 
     }
+
+
+
+
 
 }

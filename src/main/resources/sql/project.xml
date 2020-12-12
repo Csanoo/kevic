@@ -21,18 +21,18 @@
 	</select>
 
 	<select id="selectCategoryDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
 		where sn=#{sn}
 	</select>
 
 
 	<select id="selectCategoryOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{sn} and depth=1
 	</select>
 
 	<select id="selectCategoryTwo" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, catecode, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{sn} and depth=2
 	</select>
 
@@ -197,6 +197,12 @@
 		sort = #{sort}
 		where sn=#{sn}
 	</update>
+
+
+	<insert id="insertCategory"	parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_category (title,bannerImg,iconImg,adinfo,adtime,adTag,depth,pCate,projectSn,sort )
+		values ( #{title}, #{bannerImg}, #{iconImg} , #{adinfo},#{adtime},#{adTag},#{depth},#{pCate},#{projectSn},#{sort} )
+	</insert>
 
 </mapper>
 

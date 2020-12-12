@@ -1,5 +1,9 @@
 package main.java.common.satelite.kr;
 
+import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 public class FileVO {
 	
 	
@@ -27,7 +31,12 @@ public class FileVO {
     private String filename;
     private String realname;
     private long filesize;
-    
+
+	private MultipartFile attachFile;
+
+	private List<CommonsMultipartFile> attachFiles;
+	private CommonsMultipartFile attachFile1;
+	private CommonsMultipartFile attachFile2;
     private String lcode;
     public String getLcode() {
 		return lcode;

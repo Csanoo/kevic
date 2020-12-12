@@ -262,12 +262,61 @@ public class ProjectVO {
 
 
     private String catecode ="";
-
     public String getCatecode() {
         return catecode;
     }
-
     public void setCatecode(String catecode) {
         this.catecode = catecode;
     }
+
+    private String bannerImg = "";
+    public String getBannerImg() {
+        return bannerImg;
+    }
+    public void setBannerImg(String bannerImg) {
+        this.catecode = bannerImg;
+    }
+
+    private String iconImg = "";
+    public String getIconImg() {
+        return catecode;
+    }
+    public void setIconImg(String catecode) {
+        this.catecode = catecode;
+    }
+
+    private String adinfo = "";
+    public String getAdinfo() {
+        return adinfo;
+    }
+    public void setAdinfo(String adinfo) {
+        this.adinfo = adinfo;
+    }
+
+    private Integer adtime;
+    public Integer getAdtime() {
+        return adtime;
+    }
+    public void setAdtime(Integer adtime) {
+        this.sn = adtime;
+    }
+
+    private String adTag = "";
+    public String getAdTag() {
+        return adTag;
+    }
+    public void setAdTag(String adTag) {
+        this.adTag = adTag;
+    }
+
+
+    private Integer pCate;
+    public Integer getpCate() {
+        return pCate;
+    }
+    public void setpCate(Integer pCate) {
+        this.pCate = pCate;
+    }
+
+
 }
