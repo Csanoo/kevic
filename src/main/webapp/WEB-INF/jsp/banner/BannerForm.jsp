@@ -125,14 +125,18 @@
                                                         </thead>
                                                         <tbody id="bannerList">
 
+
+
                                                         <tr id="banner1">
                                                             <td>1</td>
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" /></td>
                                                             <td><input type="text" name="link"/>
+                                                                <div id="linkTarget1" class="target">
                                                                 <input type="radio"  name="linkTarget1" value="100" checked/><labe>현재창</labe>
                                                                 <input type="radio"  name="linkTarget1" value="200"/><labe>부모창</labe>
                                                                 <input type="hidden" name="linkTarget" value="100">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <div style="width:40px">
@@ -148,9 +152,11 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
+                                                                <div id="linkTarget2" class="target">
                                                                 <input type="radio" class="target" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
                                                                 <input type="radio" class="target" name="linkTarget2" value="200" disabled/><labe>부모창</labe>
                                                                 <input type="hidden" name="linkTarget" value="100">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 <div style="width:40px">
@@ -167,9 +173,11 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
+                                                                <div id="linkTarget3" class="target">
                                                                 <input type="radio" class="target" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
                                                                 <input type="radio" class="target" name="linkTarget3" value="200" disabled/><labe>부모창</labe>
                                                                 <input type="hidden" name="linkTarget" value="100">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 이동
@@ -184,9 +192,11 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
+                                                                <div id="linkTarget4" class="target">
                                                                 <input type="radio" class="target" name="linkTarget4" value="100" checked disabled/><label>현재창</label>
                                                                 <input type="radio" class="target" name="linkTarget4" value="200" disabled/><label>부모창</label>
                                                                 <input type="hidden" name="linkTarget" value="100">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 이동
@@ -201,9 +211,11 @@
                                                             <td></td>
                                                             <td><input type="file" name="uploadfile" multiple="" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
+                                                                <div id="linkTarget5" class="target">
                                                                 <input type="radio" class="target" name="linkTarget5" value="100" disabled checked/><label>현재창</label>
                                                                 <input type="radio" class="target" name="linkTarget5" value="200" disabled/><label>부모창</label>
                                                                 <input type="hidden" name="linkTarget" value="100">
+                                                                </div>
                                                             </td>
                                                             <td>
                                                                 이동
@@ -236,7 +248,6 @@
                             </form>
                             <script>
                                 function fn_formSv() {
-
                                     document.form1.submit();
 
                                 }
@@ -278,7 +289,11 @@
 <script type="text/javascript">
 
     $(function(){
-
+        $(".target input[type='radio']").on("change",function(){
+            if ($(this).is(':checked')) {
+                $(this).parent().children("input[name='linkTarget']").val($(this).val());
+            }
+        });
         $("#dTable").tableDnD({
             onDragClass: "dragRow"
         });

@@ -43,8 +43,17 @@
 	
 
 	<insert id="insertBanner1One" parameterType="main.java.admin.satelite.kr.BannerVO" >
-		insert into tbanner (projectSn,state,title,sdate,edate )
-		values ( #{project}, #{state} , #{title},#{sdate},#{edate} )
+		insert into tbanner (projectSn,state,title
+		<if	test="sdate!=null and sdate!='' and edate!=''">
+		,sdate,edate
+		</if>
+		)
+		values ( #{project}, #{state} , #{title}
+		<if	test="sdate!=null and sdate!='' and edate!=''">
+			,#{sdate},#{edate}
+		</if>
+
+		)
 		<selectKey keyProperty="bannersn" resultType="Integer">
 			SELECT LAST_INSERT_ID()
 		</selectKey>
@@ -65,7 +74,18 @@
 		where sn=#{sn}
 		
 	</insert>
-	
+
+	<insert id="updateBanner" parameterType="main.java.admin.satelite.kr.BannerVO">
+		update tbanner set
+		title=#{title},projectSn=#{project}
+		,state=#{state}
+		<if	test="sdate!=null and sdate!='' and edate !=''">
+		,sdate=#{sdate},edate=#{edate}
+		</if>
+		,displayType=#{displayType},updateDate=now()
+		where sn=#{sn}
+	</insert>
+
 	<insert id="updateBanner11One"
 		parameterType="main.java.admin.satelite.kr.BannerVO">
 		update tbanner set
@@ -203,5 +223,10 @@
 		SELECT imgBanner, sort, link, linkTarget  from tbl_bannerDetail where bannerSn = #{sn} order by sort asc
 	</select>
 
+
+	<delete id="deleteBannerDetail" parameterType="Integer">
+		delete from tbl_bannerDetail
+		where bannerSn=#{sn}
+	</delete>
 </mapper>
 

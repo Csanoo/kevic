@@ -224,10 +224,8 @@ window.open("/player2.jsp?_a="+_a+"&_b="+_b, "_blank", "toolbar=no,scrollbars=no
         <script src="/admin/design/assets/plugins/datetimepicker/js/datetimepicker.js" type="text/javascript"></script>
 <!-- CORE JS FRAMEWORK - END -->
 
-<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
-<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/editorLoad.js" charset="utf-8"></script>
 
-        
+
 
 
 

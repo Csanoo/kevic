@@ -15,6 +15,7 @@ import main.java.common.satelite.kr.SearchVO;
 import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class BannerCtr {
@@ -42,8 +43,8 @@ public class BannerCtr {
 		modelMap.addAttribute("projectview", projectview);
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-		
-		
+
+
 		return "banner/BannerList";
 
 	}
@@ -70,10 +71,12 @@ public class BannerCtr {
 	}
 	
 	@RequestMapping(value = "/bannerRead")
-	public String banner1Read(HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
+	public String banner1Read(HttpServletRequest request, BannerVO banner1Info,SearchVO searchVO, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
 		banner1Info = bannerSvc.selectBanner1One(sn);
 		List<?> bannerDetaillist = bannerSvc.selectBannerDetail(sn);
+		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
+		modelMap.addAttribute("projectview", projectview);
 		modelMap.addAttribute("banner1Info", banner1Info);
 		modelMap.addAttribute("bannerDetaillist", bannerDetaillist);
 		return "banner/BannerRead";
@@ -85,7 +88,6 @@ public class BannerCtr {
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
-
 		bannerSvc.insertBanner1(banner1Info);
 
 		String[] arrayLink = request.getParameterValues("link");
@@ -104,62 +106,63 @@ public class BannerCtr {
 			bannerSvc.insertBannerDetail(banner1Info);
 		}
 
-
-	//	searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
-	//	List<?> listview  = bannerSvc.selectBanner1List(searchVO);
-	//	modelMap.addAttribute("listview", listview);
-	//	modelMap.addAttribute("searchVO", searchVO);
-		return "banner/BannerList";
+		return "redirect:BannerList";
 	}
 
 
-	@RequestMapping(value = "/banner2Read")
-	public String banner2Read(HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
-		String sn = request.getParameter("sn");
-		banner1Info = bannerSvc.selectBanner2One(sn);
-		modelMap.addAttribute("banner1Info", banner1Info);
-		return "member1/Banner2Read";
-	}
-	
-	@RequestMapping(value = "/banner2Form")
-	public String banner2Form(HttpServletRequest request, BannerVO banner1Info,
-			ModelMap modelMap) {
-		
-		
-		
-		return "member1/Banner2Form";
-	}
+
 
 
 	@RequestMapping(value = "/bannerUp")
-	public String banner1Up(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
+	public String bannerUp(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 		Integer sn = Integer.parseInt(request.getParameter("sn"));
-		String code2 = request.getParameter("code2");
-		String link = request.getParameter("link");
-		String uname = request.getParameter("uname");
-		String umemo = request.getParameter("umemo");
-
-		banner1Info.setCode2(code2);
-		banner1Info.setLink(link);
-		banner1Info.setUname(uname);
-		banner1Info.setUmemo(umemo);
+		System.out.println(sn);
+		bannerSvc.deleteBannerDetail(sn);
+		String project = request.getParameter("project");
+		String title = request.getParameter("title");
+		String sdate = request.getParameter("sdate");
+		String edate = request.getParameter("edate");
+		String displaytype = request.getParameter("displaytype");
+		String state = request.getParameter("state");
+		banner1Info.setTitle(title);
+		banner1Info.setProject(project);
+		banner1Info.setSdate(sdate);
+		banner1Info.setEdate(edate);
+		banner1Info.setDisplayType(displaytype);
+		banner1Info.setState(state);
 		banner1Info.setSn(sn);
 
-
-		String[] fileno = request.getParameterValues("fileno");
+		bannerSvc.updateBanner1(banner1Info);
 		FileUtil fs = new FileUtil();
-		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
+	//	List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
 
-		bannerSvc.updateBanner1(banner1Info, filelist, fileno);
 
-		searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
+		String[] arrayLink = request.getParameterValues("link");
+		String[] arrayLinkTaget = request.getParameterValues("linkTarget");
+		String[] arrayImgOld = request.getParameterValues("uploadfileOld");
+		String[] arrayImgCk = request.getParameterValues("uploadfileck");
 
-		List<?> listview  = bannerSvc.selectBanner1List(searchVO);
+		//String[] arrayImg = new String[arrayImgCk.length];
 
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
 
-		return "banner/BannerList";
+		String bannerImg = "";
+		for (int i = 0; i < arrayLink.length; i++) {
+			if (arrayImgCk[i] == "T") {
+				bannerImg = arrayImgOld[i];
+			} else {
+				bannerImg = arrayImgOld[i];
+			}
+			banner1Info.setLink(arrayLink[i]);
+			banner1Info.setLinkTarget(arrayLinkTaget[i]);
+			banner1Info.setImgfile(bannerImg);
+			banner1Info.setSort(i);
+			banner1Info.setBannersn(sn);
+			if (bannerImg != "" && arrayLink[i] != ""){
+				bannerSvc.insertBannerDetail(banner1Info);
+			}
+		}
+
+		return "redirect:BannerList";
 	}
 
 	@RequestMapping(value = "/bannerDelete")
@@ -181,7 +184,22 @@ public class BannerCtr {
 		return "member1/BannerList";
 	}
 
+	@RequestMapping(value = "/banner2Read")
+	public String banner2Read(HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
+		String sn = request.getParameter("sn");
+		banner1Info = bannerSvc.selectBanner2One(sn);
+		modelMap.addAttribute("banner1Info", banner1Info);
+		return "member1/Banner2Read";
+	}
 
+	@RequestMapping(value = "/banner2Form")
+	public String banner2Form(HttpServletRequest request, BannerVO banner1Info,
+							  ModelMap modelMap) {
+
+
+
+		return "member1/Banner2Form";
+	}
 	@RequestMapping(value = "/ContentsRead")
 	public String ContentsRead(HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
@@ -219,7 +237,7 @@ public class BannerCtr {
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
-		bannerSvc.updateBanner1(banner1Info, filelist, fileno);
+		bannerSvc.updateBanner1(banner1Info);
 		searchVO.pageCalculate( bannerSvc.selectBanner2Count(searchVO) ); // startRow, endRow
 		List<?> listview  = bannerSvc.selectBanner2List(searchVO);
 		modelMap.addAttribute("listview", listview);

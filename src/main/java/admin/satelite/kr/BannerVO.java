@@ -33,6 +33,57 @@ private String fucheck = "";
 		this.uploadfile = uploadfile;
 	}
 
+
+	private List<MultipartFile> uploadfile1;
+
+	public List<MultipartFile> getUploadfile1() {
+		return uploadfile1;
+	}
+
+	public void setUploadfile1(List<MultipartFile> uploadfile) {
+		this.uploadfile1 = uploadfile1;
+	}
+
+	private List<MultipartFile> uploadfile2;
+
+	public List<MultipartFile> getUploadfile2() {
+		return uploadfile2;
+	}
+
+	public void setUploadfile2(List<MultipartFile> uploadfile2) {
+		this.uploadfile2 = uploadfile2;
+	}
+
+	private List<MultipartFile> uploadfile3;
+
+	public List<MultipartFile> getUploadfile3() {
+		return uploadfile3;
+	}
+
+	public void setUploadfile3(List<MultipartFile> uploadfile3) {
+		this.uploadfile3 = uploadfile3;
+	}
+
+	private List<MultipartFile> uploadfile4;
+
+	public List<MultipartFile> getUploadfile4() {
+		return uploadfile4;
+	}
+
+	public void setUploadfile4(List<MultipartFile> uploadfile4) {
+		this.uploadfile4 = uploadfile4;
+	}
+
+	private List<MultipartFile> uploadfile5;
+
+	public List<MultipartFile> getUploadfile5() {
+		return uploadfile5;
+	}
+
+	public void setUploadfile5(List<MultipartFile> uploadfile5) {
+		this.uploadfile5 = uploadfile5;
+	}
+
 	private String filecnt;
 
 	public String getType1() {
@@ -261,6 +312,14 @@ private String fucheck = "";
 	}
 	public void setState(String state) {
 		this.state = state;
+	}
+
+	private Integer projectSn;
+	public Integer getProjectSn() {
+		return projectSn;
+	}
+	public void setProjectSn(Integer projectSn) {
+		this.projectSn = projectSn;
 	}
 
 	private String project = "";

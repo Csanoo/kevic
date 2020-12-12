@@ -22,9 +22,9 @@ public class BannerSvc {
 	@Autowired
 	private DataSourceTransactionManager txManager;
 
-	public BannerVO selectBanner1One(BannerVO param) {
-		return sqlSession.selectOne("selectBanner1One", param);
-	}
+	//public BannerVO selectBanner1One(BannerVO param) {
+	//	return sqlSession.selectOne("selectBanner1One", param);
+	//}
 	
 	public BannerVO selectBanner1One(String param) {
 		return sqlSession.selectOne("selectBanner1One", param);
@@ -108,27 +108,13 @@ public class BannerSvc {
 	}
 
 	
-	public void updateBanner1(BannerVO param, List<FileVO> filelist,
-                              String[] fileno) {
+	public void updateBanner1(BannerVO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
 
-		for (FileVO f : filelist) {
-
-			param.setImgfile(f.getFilename());
-
-			
-		}
-		
 		try {
-			if (!param.getImgfile().equals("")) {
-				sqlSession.update("updateBanner1One", param);
-			} else {
-
-				sqlSession.update("updateBanner11One", param);
-			}
-
+			sqlSession.update("updateBanner", param);
 			txManager.commit(status);
 		} catch (TransactionException ex) {
 			txManager.rollback(status);
@@ -187,6 +173,9 @@ public class BannerSvc {
 		sqlSession.delete("bannerChkDelete", param);
 	}
 
+	public void deleteBannerDetail(Integer param){
+		sqlSession.delete("deleteBannerDetail", param);
+	}
 	public List<?> selectBoxproject(SearchVO param) {
 
 		return sqlSession.selectList("selectBoxprojectBan", param);

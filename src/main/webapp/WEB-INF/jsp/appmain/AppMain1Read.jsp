@@ -181,6 +181,9 @@
 								</div>
 							</form>
 							<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
+
+
+
 							<script type="text/javascript">
                                 nhn.husky.EZCreator.createInIFrame({
                                     oAppRef: umemo,

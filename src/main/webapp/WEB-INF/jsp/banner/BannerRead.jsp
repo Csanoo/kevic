@@ -29,7 +29,8 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form1" action="bannerSave" method="post"  enctype="multipart/form-data">
+							<form name="form1" action="bannerUp" method="post"  enctype="multipart/form-data">
+								<input type="hidden" name="sn" value="${banner1Info.sn}">
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<table id="customers">
@@ -39,8 +40,8 @@
 												<td style="width: 35%">
 													<select name="project">
 														<option value="">프로젝트</option>
-														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
-															<option value="${projectview.sn}" <c:if test="${banner1Info.projectSn eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+														<c:forEach var="projectview" items="${projectview}"   varStatus="status3">
+															<option value="${projectview.sn}" <c:if test="${banner1Info.projectSn == projectview.sn}">selected</c:if>>${projectview.title}</option>
 														</c:forEach>
 													</select>
 												</td>
@@ -126,14 +127,22 @@
 														<tbody id="bannerList">
 
 														<c:forEach var="bannerDetaillist" items="${bannerDetaillist}" varStatus="status">
-														<tr id="banner${status.index}">
-															<td>${status.index}</td>
+														<tr id="banner${status.index+1}">
+															<td>${status.index+1}</td>
 															<td><img src="/upload/images/${bannerDetaillist.imgBanner}" width="120" height="80"></td>
-															<td><input type="file" name="uploadfile" multiple="" value=""/></td>
+															<td>
+																<div class="imgChk">
+																	<input type="file" name="uploadfile${status.index+1}" multiple="" value=""/>
+																	<input type="hidden" name="uploadfileOld" multiple="" value="${bannerDetaillist.imgBanner}"/>
+																	<input type="hidden" class="chkFile" name="uploadfileck">
+																</div>
+															</td>
 															<td><input type="text" name="link" value="${bannerDetaillist.link}"/>
-																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '100'}">checked</c:if> value="100" checked/><labe>현재창</labe>
-																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '200'}">checked</c:if> value="200"/><labe>부모창</labe>
+																<div id="linkTarget${status.index}" class="target">
+																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '100'}">checked</c:if> value="100"/><label>현재창</label>
+																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '200'}">checked</c:if> value="200"/><label>부모창</label>
 																<input type="hidden" name="linkTarget" value="${banner1Info.linkTarget}">
+																</div>
 															</td>
 															<td>
 																<div style="width:40px">
@@ -142,11 +151,41 @@
 																</div>
 															</td>
 															<td>
+																<div class="removeRow">X</div>
 															</td>
 														</tr>
+															<c:set var="ss" value="${status.index+1}"/>
 														</c:forEach>
-
-
+														<c:forEach var="cnt" begin="${ss}" end="4" varStatus="status2">
+															<tr id="banner${status2.index+1}" style="display:none">
+																<td>${status2.index+1}</td>
+																<td></td>
+																<td>
+																	<div class="imgChk">
+																		<input type="file" name="uploadfile${status2.index+1}" multiple="" value="" disabled/>
+																		<input type="hidden" name="uploadfileOld" multiple="" value=""  disabled/>
+																		<input type="hidden" class="chkFile" name="uploadfileck" value="F"  disabled>
+																	</div>
+																</td>
+																<td><input type="text" name="link" value="" disabled/>
+																	<div id="linkTarget${status2.index}" class="target">
+																		<input type="radio"  name="linkTarget${status2.index}" value="100" checked  disabled/><label>현재창</label>
+																		<input type="radio"  name="linkTarget${status2.index}" value="200"  disabled/><label>부모창</label>
+																		<input type="hidden" name="linkTarget" value="${banner1Info.linkTarget}"  disabled>
+																	</div>
+																</td>
+																<td>
+																	<div style="width:40px">
+																		이동
+																		<input type="hidden" value="" name="sort"  disabled>
+																	</div>
+																</td>
+																<td>
+																	<div class="removeRow">X</div>
+																</td>
+															</tr>
+															</font>
+														</c:forEach>
 														</tbody>
 													</table>
 												</div>
@@ -203,14 +242,18 @@
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp"/>
 
 <style>
-	#banner2{display:none}
-	#banner3{display:none}
-	#banner4{display:none}
-	#banner5{display:none}
 </style>
 <script type="text/javascript">
 
     $(function(){
+        $(".target input[type='radio']").on("change",function(){
+            if ($(this).is(':checked')) {
+                $(this).parent().children("input[name='linkTarget']").val($(this).val());
+            }
+        });
+        $(".imgChk input[type='file']").on("change",function(){
+			$(this).parent().children("input[class='chkFile']").val('T');
+        });
 
         $("#dTable").tableDnD({
             onDragClass: "dragRow"
@@ -223,7 +266,7 @@
                 }
             });
             $("#bannerList tr").eq(bannerNum).show();
-            $("#bannerList tr").eq(bannerNum).find("input").attr("disabled", false);
+			$("#bannerList tr").eq(bannerNum).find("input").attr("disabled", false);
         });
         $(".removeRow").on("click",function(){
             $(this).parent().parent().find("input").attr("disabled", true);
