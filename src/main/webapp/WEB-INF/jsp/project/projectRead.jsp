@@ -29,9 +29,10 @@
                 </header>
                 <div class="content-body">
                     <div style="display:flex">
-                        <a style="padding:10px; line-height:50px;border:1px solid #0c0c0c" href="/admin/projectDetail?sn=${projectInfo.sn}">기본정보</a>
-                        <a style="padding:10px; line-height: 50px;border:1px solid #0c0c0c" href="/admin/categoryDetail?sn=${projectInfo.sn}">카테고리</a>
-
+                        <div style="display:flex">
+                            <a class="btn btn-orange" href="/admin/projectDetail?sn=${projectInfo.sn}">기본정보</a>
+                            <a class="btn btn-gray"href="/admin/categoryDetail?sn=${projectInfo.sn}">카테고리</a>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
@@ -223,7 +224,7 @@
             </section>
         </div>
 
-        <form name="formList" action="AppMain1List" method="post">
+        <form name="formList" action="projectList" method="post">
             <input type="hidden" name="searchType"
                    value="<c:out value="${searchVO.searchType}"/>"> <input
                 type="hidden" name="searchKeyword"

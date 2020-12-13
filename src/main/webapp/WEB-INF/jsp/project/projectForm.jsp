@@ -27,7 +27,6 @@
 
                 </header>
                 <div class="content-body">
-                    ?? 최초 프로젝트등록후에  프로젝트메모, 카테고리 설정이 나와야 맞는거 아닌가요??
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 

@@ -136,10 +136,10 @@ public class ProjectCtr {
        // projectInfo = projectSvc.selectCategoryDetail(sn);
         projectInfo.setProjectSn(sn);
         List<?> catelistOne  = projectSvc.selectCategoryOne(Integer.parseInt(sn));
-        List<?> catelistTwo  = projectSvc.selectCategoryTwo(Integer.parseInt(sn));
+       // List<?> catelistTwo  = projectSvc.selectCategoryTwo(Integer.parseInt(sn));
 
         modelMap.addAttribute("catelistOne", catelistOne);
-        modelMap.addAttribute("catelistTwo", catelistTwo);
+        //modelMap.addAttribute("catelistTwo", catelistTwo);
         modelMap.addAttribute("projectInfo", projectInfo);
 
         return "project/categoryForm";
@@ -405,15 +405,33 @@ throws Exception{
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/categoryFdel")
+    public String categoryFdel(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo,
+                               ModelMap modelMap) throws Exception{
+        String result = "TRUE";
+        try {
+            int sn = Integer.parseInt(request.getParameter("sn"));
+
+             projectSvc.categoryDelete(sn);
+
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return "TRUE";
+    }
 
     @RequestMapping(value = "/categoryTList")
-    public String categoryTList(HttpServletRequest request,ModelMap modelMap) throws Exception{
+    public String categoryTList(HttpServletRequest request,ModelMap modelMap,ProjectVO projectInfo) throws Exception{
 
         try {
-            Integer projectSn = Integer.parseInt(request.getParameter("sn"));
+            String projectSn = request.getParameter("sn");
+            Integer pCate = Integer.parseInt(request.getParameter("pCate"));
 
-
-            List<?> catelistTwo  = projectSvc.selectCategoryTwo(projectSn);
+            projectInfo.setProjectSn(projectSn);
+            projectInfo.setpCate(pCate);
+            List<?> catelistTwo  = projectSvc.selectCategoryTwo(projectInfo);
 
 
             modelMap.addAttribute("listview", catelistTwo);

@@ -30,12 +30,15 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">프로젝트</td>
                                             <td style="width: 75%">
+                                                <!--
                                                 <select name="sproject">
                                                     <option value="">프로젝트</option>
                                                     <c:forEach var="projectview" items="${projectview}"   varStatus="status">
                                                         <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
                                                     </c:forEach>
                                                 </select> ?? 프로젝트 목록에서 프로젝트 항목을 셀렉트로 검색하는것 맞나요?
+                                                -->
+                                                <input type="text" name="sproject" value="">
                                             </td>
                                         </tr>
                                         <tr>

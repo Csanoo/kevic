@@ -45,7 +45,7 @@ public class ProjectSvc {
         return sqlSession.selectList("selectCategoryOne", param);
     }
 
-    public List<?>  selectCategoryTwo(Integer param) {
+    public List<?>  selectCategoryTwo(ProjectVO param) {
         return sqlSession.selectList("selectCategoryTwo", param);
     }
 
@@ -64,6 +64,10 @@ public class ProjectSvc {
     }
 
 
+    public void categoryDelete(Integer param) {
+
+        sqlSession.delete("categoryDelete", param);
+    }
 
     public void updateproject(ProjectVO param, List<FileVO> filelist,  String[] fileno) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
