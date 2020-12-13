@@ -1,6 +1,7 @@
 package main.java.admin.satelite.kr;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -16,6 +17,7 @@ import main.java.common.satelite.kr.LeftMenuUtil;
 import main.java.common.satelite.kr.Search;
 import main.java.common.satelite.kr.SearchVO;
 import main.java.common.satelite.kr.Crawler;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 
 @Controller
@@ -397,7 +399,7 @@ public class Member1Ctr {
 		member1Svc.insertMember1One(param);
 
 
-		return "member1/LoginForm";
+		return "redirect:memberList";
 
 	}
 	
@@ -444,13 +446,8 @@ public class Member1Ctr {
 		param.setUsername(username);
 		param.setUsertype(usertype);
 		
-		
-		String[] fileno = request.getParameterValues("fileno");
-		FileUtil fs = new FileUtil();
-		List<FileVO> filelist = fs.saveAllFilesBB(mvo.getUploadfile());
-		
 
-		member1Svc.updateMember1One(param, filelist, fileno);
+		member1Svc.updateMember1One(param);
 
 
 		searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
@@ -464,7 +461,7 @@ public class Member1Ctr {
 
 
 
-		return "member1/MemberList";
+		return "redirect:memberList";
 
 	}
 
@@ -693,5 +690,18 @@ public class Member1Ctr {
 		
 		return "member1/ContentsForm";
 	}
+	@ResponseBody
+	@RequestMapping(value = "/dupUserid")
+	public Integer dupUserid(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap, ProjectVO projectInfo, ModelMap modelMap) throws Exception{
 
+		try {
+			String userid = request.getParameter("userid");
+			return member1Svc.selDupUserid(userid);
+
+		} catch (Exception e) {
+			//System.out.println(e.getMessage());
+			return 0;
+		}
+
+	}
 }

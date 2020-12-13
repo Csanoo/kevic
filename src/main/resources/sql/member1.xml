@@ -42,7 +42,7 @@ from dual
 		insert into tuser (
 		userid,userpw,username,usertype,mobile,email,wdate )
 		values ( #{userid}
-		, #{userpw} , #{username},'SA',#{mobile},#{email},current_timestamp)
+		, #{userpw} , #{username},#{usertype},#{mobile},#{email},current_timestamp)
 	</insert>
 	
 	<update id="updateMember1One"
@@ -96,19 +96,17 @@ from dual
 	<select id="selectMember1List"
 		resultType="main.java.admin.satelite.kr.Member1VO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT tuser.userid,userpw,username,
+		SELECT tuser.userid,userpw,username, state,
 case usertype when 'SA' then '관리자' 
-when 'CP' then '크리에이터'
+when 'CP' then '일반관리자'
 when 'EU' then '일반회원'
 else '미정' end as usertype
 ,mobile,email,wdate,ifnull(ccnt,0) ccnt 
 ,ifnull(mxwdt,'-') mxwdt
-
 from tuser
 		left outer join 
 		(select userid , count(*) ccnt from tcontents group by userid) zz
 		on zz.userid = tuser.userid
-		
 		left outer join
 		(select userid,max(wdate) mxwdt from edumgtfunclist group by userid) efc
 		on efc.userid = tuser.userid
@@ -440,6 +438,11 @@ else '-' end as category,imgfile,
 
 
 		LIMIT 1000
+	</select>
+
+
+	<select id="selDupUserid" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM tuser where userid = #{userid}
 	</select>
 
 </mapper>

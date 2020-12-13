@@ -137,7 +137,7 @@ public class Member1VO {
 		this.memo = memo;
 	}
 	private String code1="";
-	
+
 	private String url="";
 	
 	public String getUrl() {
@@ -208,6 +208,14 @@ public class Member1VO {
 	}
 	public void setRegdate(String regdate) {
 		this.regdate = regdate;
+	}
+
+	private String state ="";
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
 	}
     
 }

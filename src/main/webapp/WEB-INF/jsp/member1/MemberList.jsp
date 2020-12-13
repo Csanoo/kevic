@@ -75,59 +75,40 @@
 									<thead>
 										<tr>
 											<th>#</th>
+											<th>등급</th>
+											<th>사용 여부</th>
 											<th>아이디</th>
-											<th style='width: 10%'>회원명 [ <a
-												href="javascript:fn_orderKey('1')">▲</a> <a
-												href="javascript:fn_orderKey('2')">▼</a> ]
-											</th>
+											<th style='width: 10%'>이름</th>
 
 											<th>분류</th>
 
-											<th>연락처</th>
+											<th>운영프로젝</th>
 
-											<th>이메일</th>
+											<th>마지막 로그인</th>
 											
-											<th>동영상수</th>
+											<th>수정일자</th>
 											
-											<th>가입일자</th>
-											
-											<th>최근로그인일자</th>
+											<th>수정자</th>
 
 
 
 										</tr>
 									</thead>
 									<tbody>
-										<c:forEach var="listview" items="${listview}"
-											varStatus="status">
-
+										<c:forEach var="listview" items="${listview}" varStatus="status">
 
 											<tr>
-												<td><c:out
-														value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" />
+												<td>
+													<c:out	value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" />
 												</td>
+												<td>${listview.usertype}</td>
+												<td><c:if test="${listview.state eq 'Y'}">사용</c:if><c:if test="${listview.state eq 'N'}">사용안</c:if></td>
 												<td><c:out value="${listview.userid}" /></td>
-
-			<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
-			
-			<td>${listview.usertype}</td>
-
-
-												<td><c:out value="${listview.mobile}" /></td>
-												
-												<td><c:out value="${listview.email}" /></td>
-												
-												<td><c:out value="${listview.ccnt}" /></td>
-												
+												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
+												<td>0</td>
+												<td>-</td>
+												<td>ADMIN</td>
 												<td><c:out value="${listview.wdate}" /></td>
-												
-												<td><c:out value="${listview.mxwdt}" /></td>
-
-
-
-
-
-
 
 											</tr>
 										</c:forEach>

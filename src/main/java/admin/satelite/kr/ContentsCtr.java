@@ -314,37 +314,42 @@ public class ContentsCtr {
         objCell.setCellStyle(styleHd);
 
         List<?> listview  = contentsSvc.selectContentsList(searchVO);
-        for(int i=0; i<listview.size(); i++) {
-            int s = i + 1;
-            objRow = objSheet.createRow(s);
+
+        int rowNo = 0;
+        for(int i = 0; i < listview.size(); i++){
+
+
+
+
+            objRow = objSheet.createRow(rowNo++);
             objRow.setHeight ((short) 0x150);
 
             objCell = objRow.createCell(0);
-            objCell.setCellValue(listview.size() - i);
+            objCell.setCellValue(rowNo+1);
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(1);
-            objCell.setCellValue(listview.get(i).toString());
+        //    objCell.setCellValue(list.get(i).getImageUrl());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(2);
-            objCell.setCellValue(listview.get(i).toString());
+          //  objCell.setCellValue(list.getVideoUrl());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(3);
-            objCell.setCellValue(listview.get(i).toString());
+           // objCell.setCellValue(list.getCtSource());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(4);
-            objCell.setCellValue(listview.get(i).toString());
+          //  objCell.setCellValue(list.getTitle());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(5);
-            objCell.setCellValue(listview.get(i).toString());
+         //   objCell.setCellValue(list.getMemo());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(6);
-            objCell.setCellValue(listview.get(i).toString());
+          //  objCell.setCellValue(list.getRegDate());
             objCell.setCellStyle(styleHd);
 
         }

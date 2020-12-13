@@ -31,11 +31,6 @@
 					</div>
 				</header>
 				<div class="content-body">
-					
-					
-					
-					
-
 							<form name="form1" action="memberSave" method="post"
 								enctype="multipart/form-data">
 								
@@ -73,32 +68,29 @@
 										<input name="userpw" type="password" 
 										value="${mvo.userpw}"
 										class="form-control" style="width: 200px"></td>
-								
-								
 
-
-										<td class="tdl" style="width: 15%">회원타입</td>
+										<td class="tdl" style="width: 15%">비밀번호</td>
 										<td style="width: 35%" >
-										
-										
-										<select name="usertype" class="form-control" style="width: 100px">
-										<option value="SA" <c:if test="${mvo.usertype eq 'SA'}">selected</c:if>>관리자</option>
-										<option value="CP" <c:if test="${mvo.usertype eq 'CP'}">selected</c:if>>크리에이터</option>
-										<option value="EU" <c:if test="${mvo.usertype eq 'EU'}">selected</c:if>>일반회원</option>
-										</select>
-										
-										</td>
+											<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px"></td>
+
+
+
 								
 								</tr>
 								
 								<tr>
 
 
-										<td class="tdl" style="width: 15%">Mobile</td>
-										<td style="width: 35%" >
-										<input name="mobile" type="text" 
-										value="${mvo.mobile}"
-										class="form-control" style="width: 200px"></td>
+									<td class="tdl" style="width: 15%">회원타입</td>
+									<td style="width: 35%" >
+
+
+										<select name="usertype" class="form-control" style="width: 100px">
+											<option value="SA" <c:if test="${mvo.usertype eq 'SA'}">selected</c:if>>관리자</option>
+											<option value="EU" <c:if test="${mvo.usertype eq 'EU'}">selected</c:if>>일반관리자</option>
+										</select>
+
+									</td>
 								
 								
 
@@ -125,29 +117,7 @@
 </c:if>					
 
 
-										
 
-
-
-										<div class="form-group" style="display:block">
-											<label class="form-label" for="field-1">첨부파일</label>
-											<div class="controls">
-												<c:forEach var="listview" items="${listview}"
-													varStatus="status">
-													<input type="checkbox" name="fileno"
-														value="<c:out value="${listview.fileno}"/>">
-													<a
-														href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
-														<c:out value="${listview.filename}" />
-													</a>
-													<c:out value="${listview.size2String()}" />
-													<br />
-												</c:forEach>
-
-
-												<input type="file" name="uploadfile" multiple="" />
-											</div>
-										</div>
 
 										<div class="form-group" style="margin-top:20px">
 
@@ -163,7 +133,13 @@
 							</form>
 							<script>
 						function fn_formSv() {
-							document.form1.submit();
+                            if ( f.userpw.value != f.userpw1.value ) {
+                                alert("비번 확인 바랍니다.");
+                            } else {
+
+                                document.form1.submit();
+                            }
+
 
 						}
 						function fn_formRtn() {

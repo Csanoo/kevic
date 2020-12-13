@@ -62,8 +62,6 @@ public class Member1Svc {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
-
-		
 		
 		try {
 
@@ -76,7 +74,7 @@ public class Member1Svc {
 		}
 	}
 	
-	public void updateMember1One(Member1VO param,List<FileVO> filelist, 
+	public void updateMember1One2(Member1VO param,List<FileVO> filelist,
 			String[] fileno) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -274,6 +272,10 @@ public class Member1Svc {
 			txManager.rollback(status);
 
 		}
+	}
+
+	public Integer selDupUserid(String param) {
+		return sqlSession.selectOne("selDupUserid", param);
 	}
 
 }

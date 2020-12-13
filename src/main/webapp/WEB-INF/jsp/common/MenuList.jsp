@@ -91,8 +91,8 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 		</a>
 		<ul class="sub-menu">
 			<li><a href="/admin/memberList"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/memberList")%>"> <span class="title">관리자 계정 관리</span></a></li>
-			<li><a href="/admin/memberReg"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/memberReg")%>"> <span class="title">관리자 계정 등록</span>	</a></li>
-			<li><a href="/admin/auth"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/auth")%>"> <span class="title">관리/등급 관</span>	</a></li>
+			<li><a href="/admin/regist"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/regist")%>"> <span class="title">관리자 계정 등록</span>	</a></li>
+			<!--<li><a href="/admin/auth"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/auth")%>"> <span class="title">관리/등급 관리</span>	</a></li>-->
 		</ul>
 	</li>
 </ul>

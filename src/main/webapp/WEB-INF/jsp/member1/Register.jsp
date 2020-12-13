@@ -29,7 +29,7 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
-                            <form name="form1" action="projectRegSave" method="post"	enctype="multipart/form-data">
+                            <form name="form1" action="regist2" method="post"	enctype="multipart/form-data">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <table id="customers">
@@ -38,7 +38,8 @@
 
                                                 <td style="width: 35%">
                                                     <select name="usertype">
-                                                        <option value="">통합관리자</option>
+                                                        <option value="SA">통합관리자</option>
+                                                        <option value="EU">일반관리자</option>
                                                     </select>
                                                 </td>
                                                 <td class="tdl" style="width: 15%">사용여부</td>
@@ -53,7 +54,7 @@
 
                                                 <td style="width: 35%">
                                                     <input type="text" name="userid" id="userid" value="">
-                                                    <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>
+                                                    <button type="button" class="btn btn-gray" id="dupUserid">중복 확인</button>
                                                     <input type="hidden" name="useridCk" id="useridCk" value="0">
                                                 </td>
                                                 <td class="tdl" style="width: 15%">이름</td>
@@ -63,14 +64,14 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">이메일</td>
-                                                <td style="width: 35%"><input name="basictitle" type="text" class="form-control"></td>
+                                                <td style="width: 35%"><input name="email" type="text" class="form-control"></td>
                                                 <td class="tdl" style="width: 15%">마지막 로그인</td>
                                                 <td style="width: 35%"></td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">비밀번호</td>
                                                 <td style="width: 35%">
-                                                    <input autocomplete="off" placeholder="PassWord" type="password" name="userpw" id="userpw"  class="input" value="" size="20" />
+                                                    <input autocomplete="off"  type="password" name="userpw" id="userpw"  class="input" value="" size="20" />
                                                 </td>
                                                 <td class="tdl" style="width: 15%">비밀번호 확인</td>
                                                 <td style="width: 35%" >
@@ -95,9 +96,31 @@
                             <script>
                                 function fn_formSv() {
                                     var f =document.form1;
-                                    if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == ""
-                                        || f.mobile.value == "" || f.email.value == "" ) {
-                                        alert("필수 정보 모두 입력 바랍니다.");
+                                    if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == "" || f.email.value == "" ) {
+                                        if ( f.userid.value == ""){
+                                            alert("아이디 입력 바랍니다.");
+                                            return false;
+                                        }
+                                        if ( f.userpw.value == "" ){
+                                            alert("비밀번호를 입력 바랍니다.");
+                                            return false;
+                                        }
+                                        if ( f.userpw1.value == "" ){
+                                            alert("비밀번호 확인을 입력 바랍니다.");
+                                            return false;
+                                        }
+                                        if ( f.username.value == "" ){
+                                            alert("회원이름을 입력 바랍니다.");
+                                            return false;
+                                        }
+
+                                        if (f.email.value == "" ){
+                                            alert("이메일을 모두 입력 바랍니다.");
+                                            return false;
+                                        }
+
+
+
                                     }else{
                                         if ( f.userpw.value != f.userpw1.value ) {
                                             alert("비번 확인 바랍니다.");
@@ -148,46 +171,23 @@
         });
 
     })
-    $("#dupTit").on("click",function(){
-        var title = $("#title").val();
-        if(title==""){
-            alert("프로젝트명을 입력해주세요");
+
+    $("#dupUserid").on("click",function(){
+        var userid = $("#userid").val();
+        if(userid==""){
+            alert("아이디 입력해주세요");
             return false;
         }
         $.ajax({
             type: "POST",
-            url: "/admin/selPrjTitCt",
-            data: "title=" + title,
+            url: "/admin/dupUserid",
+            data: "userid=" + userid,
             success: function (jdata) {
                 if(jdata<1){
-                    alert("사용할 수 있는 프로젝트명입니다.");
-                    $("#titleCk").val(1);
-                }else{
-                    alert("중복 된 프로젝트명입니다.");
-                    $("#titleCk").val(0);
-                }
-            },
-            error: function (data) {
-                alert("오류 관리자에게 문의해주세요");
-            }
-        });
-    });
-    $("#dupCd").on("click",function(){
-        var projectcd = $("#projectcd").val();
-        if(projectcd==""){
-            alert("프로젝트코드를 입력해주세요");
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            url: "/admin/selPrjCd",
-            data: "title=" + projectcd,
-            success: function (jdata) {
-                if(jdata<1){
-                    alert("사용할 수 있는 프로젝트코드입니다.");
+                    alert("사용할 수 있는 아이디입니다..");
                     $("#projectcdCk").val(1);
                 }else{
-                    alert("중복 된 프로젝트코드입니다.");
+                    alert("중복 된 아이디입니다.");
                     $("#projectcdCk").val(0);
                 }
             },
