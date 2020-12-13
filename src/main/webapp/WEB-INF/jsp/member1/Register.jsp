@@ -1,200 +1,234 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c"  uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
-<!DOCTYPE html>
-<html class=" ">
-    <head>
- 
-        <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
-        <meta charset="utf-8" />
-        <title>Motiva Admin : Registration Page</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <meta content="" name="description" />
-        <meta content="" name="author" />
+<jsp:include page="/WEB-INF/jsp/common/LeftMenu2.jsp" />
 
-        <link rel="shortcut icon" href="/design/assets/images/favicon.png" type="image/x-icon" />    <!-- Favicon -->
-        <link rel="apple-touch-icon-precomposed" href="/design/assets/images/apple-touch-icon-57-precomposed.png">	<!-- For iPhone -->
-        <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/design/assets/images/apple-touch-icon-114-precomposed.png">    <!-- For iPhone 4 Retina display -->
-        <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/design/assets/images/apple-touch-icon-72-precomposed.png">    <!-- For iPad -->
-        <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/design/assets/images/apple-touch-icon-144-precomposed.png">    <!-- For iPad Retina display -->
+<section id="main-content" class=" ">
+    <section class="wrapper" style='margin-top:60px;display:inline-block;width:100%;padding:15px 0 0 15px;'>
+
+        <div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
+            <div class="page-title">
+
+                <div class="pull-left">
+                    <h1 class="title">프로젝트 관리</h1>
+                </div>
 
 
+            </div>
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="col-lg-12">
+            <section class="box ">
+                <header class="panel_header">
+                    <h2 class="title pull-left">프로젝트 등록</h2>
+
+                </header>
+                <div class="content-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <form name="form1" action="projectRegSave" method="post"	enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <table id="customers">
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">등급 *</td>
+
+                                                <td style="width: 35%">
+                                                    <select name="usertype">
+                                                        <option value="">통합관리자</option>
+                                                    </select>
+                                                </td>
+                                                <td class="tdl" style="width: 15%">사용여부</td>
+                                                <td style="width: 35%">
+                                                    <input type="radio" name="state" value="Y" checked><label>사용</label>
+                                                    <input type="radio" name="state" value="N"><label>점검</label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">ID</td>
+
+                                                <td style="width: 35%">
+                                                    <input type="text" name="userid" id="userid" value="">
+                                                    <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>
+                                                    <input type="hidden" name="useridCk" id="useridCk" value="0">
+                                                </td>
+                                                <td class="tdl" style="width: 15%">이름</td>
+                                                <td style="width: 35%">
+                                                    <input type="text" name="username" id="username" value="">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">이메일</td>
+                                                <td style="width: 35%"><input name="basictitle" type="text" class="form-control"></td>
+                                                <td class="tdl" style="width: 15%">마지막 로그인</td>
+                                                <td style="width: 35%"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">비밀번호</td>
+                                                <td style="width: 35%">
+                                                    <input autocomplete="off" placeholder="PassWord" type="password" name="userpw" id="userpw"  class="input" value="" size="20" />
+                                                </td>
+                                                <td class="tdl" style="width: 15%">비밀번호 확인</td>
+                                                <td style="width: 35%" >
+                                                    <input type="password" name="userpw1" id="userpw1" class="input" value="" size="20" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="4" id="warn"></td>
+                                            </tr>
+                                        </table>
 
 
-        <!-- CORE CSS FRAMEWORK - START -->
-        <link href="/design/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" media="screen"/>
-        <link href="/design/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/design/assets/plugins/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/design/assets/fonts/font-awesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="/design/assets/css/animate.min.css" rel="stylesheet" type="text/css"/>
-        <link href="/design/assets/plugins/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" type="text/css"/>
-        <!-- CORE CSS FRAMEWORK - END -->
+                                        <div class="form-group" style="margin-top: 10px">
+                                            <button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
+                                            <button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
+                                        </div>
 
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-        <link href="/design/assets/plugins/icheck/skins/square/orange.css" rel="stylesheet" type="text/css" media="screen"/>        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
+                                    </div>
 
+                                </div>
+                            </form>
+                            <script>
+                                function fn_formSv() {
+                                    var f =document.form1;
+                                    if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == ""
+                                        || f.mobile.value == "" || f.email.value == "" ) {
+                                        alert("필수 정보 모두 입력 바랍니다.");
+                                    }else{
+                                        if ( f.userpw.value != f.userpw1.value ) {
+                                            alert("비번 확인 바랍니다.");
+                                        } else {
+                                            f.submit();
+                                        }
+                                    }
 
-        <!-- CORE CSS TEMPLATE - START -->
-        <link href="/design/assets/css/style.css" rel="stylesheet" type="text/css"/>
-        <link href="/design/assets/css/responsive.css" rel="stylesheet" type="text/css"/>
-        <!-- CORE CSS TEMPLATE - END -->
+                                }
+                                function fn_formRtn() {
+                                    document.formList.submit();
 
-    </head>
-    <!-- END HEAD -->
+                                }
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
 
-    <!-- BEGIN BODY -->
-    <body class=" login_page">
-
-
-        <div class="register-wrapper">
-            <div id="register" class="login loginpage col-lg-offset-4 col-lg-4 col-md-offset-3 col-md-6 col-sm-offset-3 col-sm-6 col-xs-offset-2 col-xs-8">
-                <h1><a href="#" title="Login Page" tabindex="-1">Motiva Admin Regist</a></h1>
-
-                <form name="loginform" id="loginform" action="regist2" method="post" autocomplete="off">
-                    <p>
-                        <label for="user_login">User ID<br />
-                            <input autocomplete="off" placeholder="ID" type="text" name="userid" id="userid" 
-                            class="input" value="" size="20" /></label>
-                    </p>
-                    <p>
-                        <label for="user_pass">Password<br />
-                            <input autocomplete="off" placeholder="PassWord" type="password" name="userpw" id="userpw" 
-                            class="input" value="" size="20" /></label>
-                    </p>
-                    <p>
-                        <label for="user_pass">Confirm Password<br />
-                            <input type="password" name="userpw1" id="userpw1" class="input" value="" size="20" /></label>
-                    </p>
-                    
-                    <p>
-                        <label for="user_login">UserName<br />
-                            <input autocomplete="off" placeholder="ID" type="text" name="username" id="username" 
-                            class="input" value="" size="20" /></label>
-                    </p>
-                    
-                    <p>
-                        <label for="user_login">Mobile Phone<br />
-                            <input type="text" name="mobile" id="mobile" class="input" value="" size="20" /></label>
-                    </p>
-                    <p>
-                        <label for="user_login">Email<br />
-                            <input type="text" name="email" id="email" class="input" value="" size="20" /></label>
-                    </p>
-                    
-                    <p class="forgetmenot">
-                        <label class="icheck-label form-label" for="rememberme">
-                        <input name="rememberme" type="checkbox" id="rememberme" value="forever" class="skin-square-orange" checked> I agree to terms to conditions</label>
-                    </p>
+        <form name="formList" action="AppMain1List" method="post">
+            <input type="hidden" name="searchType"
+                   value="<c:out value="${searchVO.searchType}"/>"> <input
+                type="hidden" name="searchKeyword"
+                value="<c:out value="${searchVO.searchKeyword}"/>"> <input
+                type="hidden" name="orderKeyword"
+                value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
+                type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
+        </form>
 
 
 
-                    <p class="submit">
-                        <input type="button" name="wp-submit" id="wp-submit" 
-                        class="btn btn-orange btn-block" value="Sign Up" onclick="fn_chksave()" />
-                    </p>
-                </form>
-				
-				
-				<script>
-				function fn_chksave(){
-					var f = document.loginform;
-					if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == ""
-					|| f.mobile.value == "" || f.email.value == "" ) {
-						alert("필수 정보 모두 입력 바랍니다.");
-					}else{
-						if ( f.userpw.value != f.userpw1.value ) {
-							alert("비번 확인 바랍니다.");
-						} else {
-							
-							f.submit();
-						}
-					}
-				}
-				</script>
-				
+    </section>
+</section>
+<!-- END CONTENT -->
 
-                <p id="nav">
-                    <a class="pull-left" href="#" title="Password Lost and Found">Forgot password?</a>
-                    <a class="pull-right" href="login" title="Sign Up">Sign In</a>
+
+<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+
+<script>
+
+    $(function(){
+        $("#preview").on("click",function(){
+            $("#preview-img").attr("src",$("input[name='imageUrl']").val());
+            $("#preview-keyword").html('('+$("input[name='keyword']").val()+')');
+            $("#preview-title").html($("input[name='title']").val());
+
+        });
+
+    })
+    $("#dupTit").on("click",function(){
+        var title = $("#title").val();
+        if(title==""){
+            alert("프로젝트명을 입력해주세요");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/admin/selPrjTitCt",
+            data: "title=" + title,
+            success: function (jdata) {
+                if(jdata<1){
+                    alert("사용할 수 있는 프로젝트명입니다.");
+                    $("#titleCk").val(1);
+                }else{
+                    alert("중복 된 프로젝트명입니다.");
+                    $("#titleCk").val(0);
+                }
+            },
+            error: function (data) {
+                alert("오류 관리자에게 문의해주세요");
+            }
+        });
+    });
+    $("#dupCd").on("click",function(){
+        var projectcd = $("#projectcd").val();
+        if(projectcd==""){
+            alert("프로젝트코드를 입력해주세요");
+            return false;
+        }
+        $.ajax({
+            type: "POST",
+            url: "/admin/selPrjCd",
+            data: "title=" + projectcd,
+            success: function (jdata) {
+                if(jdata<1){
+                    alert("사용할 수 있는 프로젝트코드입니다.");
+                    $("#projectcdCk").val(1);
+                }else{
+                    alert("중복 된 프로젝트코드입니다.");
+                    $("#projectcdCk").val(0);
+                }
+            },
+            error: function (data) {
+                alert("오류 관리자에게 문의해주세요");
+            }
+        });
+    });
+</script>
+<script>
+    function fn_chksave(){
+        var f = document.loginform;
+        if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == ""
+            || f.mobile.value == "" || f.email.value == "" ) {
+            alert("필수 정보 모두 입력 바랍니다.");
+        }else{
+            if ( f.userpw.value != f.userpw1.value ) {
+                alert("비번 확인 바랍니다.");
+            } else {
+
+                f.submit();
+            }
+        }
+    }
+</script>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <img src="" id="preview-img">
+            </div>
+            <div class="modal-footer">
+                <p id="preview-keyword" style="text-align:left;font-size:12px">
                 </p>
-                <div class="clearfix"></div>
-                <div class="col-md-12 text-center register-social">
-
-                    <a href="#" class="btn btn-primary btn-lg facebook"><i class="fa fa-facebook icon-sm"></i></a>
-                    <a href="#" class="btn btn-primary btn-lg twitter"><i class="fa fa-twitter icon-sm"></i></a>
-                    <a href="#" class="btn btn-primary btn-lg google-plus"><i class="fa fa-google-plus icon-sm"></i></a>
-                    <a href="#" class="btn btn-primary btn-lg dribbble"><i class="fa fa-dribbble icon-sm"></i></a>
-
-                </div>
-
+                <p id="preview-title" style="text-align:left;font-size:16px">
+                </p>
             </div>
         </div>
-
-
-
-
-
-        <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
-
-
-        <!-- CORE JS FRAMEWORK - START --> 
-        <script src="/design/assets/js/jquery-1.11.2.min.js" type="text/javascript"></script> 
-        <script src="/design/assets/js/jquery.easing.min.js" type="text/javascript"></script> 
-        <script src="/design/assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script> 
-        <script src="/design/assets/plugins/pace/pace.min.js" type="text/javascript"></script>  
-        <script src="/design/assets/plugins/perfect-scrollbar/perfect-scrollbar.min.js" type="text/javascript"></script> 
-        <script src="/design/assets/plugins/viewport/viewportchecker.js" type="text/javascript"></script>  
-        <!-- CORE JS FRAMEWORK - END --> 
-
-
-        <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START --> 
-        <script src="/design/assets/plugins/icheck/icheck.min.js" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END --> 
-
-
-        <!-- CORE TEMPLATE JS - START --> 
-        <script src="/design/assets/js/scripts.js" type="text/javascript"></script> 
-        <!-- END CORE TEMPLATE JS - END --> 
-
-        <!-- Sidebar Graph - START --> 
-        <script src="/design/assets/plugins/sparkline-chart/jquery.sparkline.min.js" type="text/javascript"></script>
-        <script src="/design/assets/js/chart-sparkline.js" type="text/javascript"></script>
-        <!-- Sidebar Graph - END --> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        <!-- General section box modal start -->
-        <div class="modal" id="section-settings" tabindex="-1" role="dialog" aria-labelledby="ultraModal-Label" aria-hidden="true">
-            <div class="modal-dialog animated bounceInDown">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">Section Settings</h4>
-                    </div>
-                    <div class="modal-body">
-
-                        Body goes here...
-
-                    </div>
-                    <div class="modal-footer">
-                        <button data-dismiss="modal" class="btn btn-default" type="button">Close</button>
-                        <button class="btn btn-success" type="button">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- modal end -->
-    </body>
-</html>
-
-
-
+    </div>
+</div>

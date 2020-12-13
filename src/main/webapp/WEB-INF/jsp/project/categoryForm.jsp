@@ -46,7 +46,7 @@
                             </div>
                             <div style="display: flex;justify-content: space-between;width:80%">
                                 <form name="1depth" style="display: contents;">
-                                    <input type="hidden" name="key1">
+                                    <input type="hidden" name="key1" id="key1">
                                 <div class="category" style="width:49%;height:300px;min-height:300px;overflow-y: scroll" id="ondCate">
                                 </div>
                                 </form>
@@ -75,14 +75,11 @@
                         </div>
 
 
-
-
-
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <form name="form1" method="post" id="uploadForm">
                                 <input type="hidden" name="depth" value="1">
-                                <input type="hidden" name="pCate" value="0">
-                                <input type="hidden" name="sn" value="0">
+                                <input type="hidden" name="pCate" value="0" id="pCate">
+                                <input type="text" name="sn" id="sn" value="0">
                                 <input type="hidden" name="projectSn" value="${projectInfo.projectSn}">
 
                                 <div class="form-group">
@@ -92,11 +89,13 @@
                                 <div class="form-group">
                                     <label class="form-label" for="banner">타이틀배너</label>
                                     <input type="file" class="form-control" id="bannerImg" name="uploadfile" >
+                                    <input type="text" class="form-control" name="bannerImgOld" id="bannerImgOld" >
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label" for="icon">아이콘*</label>
                                     <input type="file" class="form-control" name="uploadfile" id="iconImg" >
+                                    <input type="text" class="form-control" name="iconImgOld" id="iconImgOld" >
                                 </div>
 
                                 <div class="form-group">
@@ -115,8 +114,10 @@
                                 </div>
 
                                 <div class="form-group" style="margin-top: 10px">
-                                    <button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
                                     <button type="button" class="btn btn-orange" id="CateReg">저장</button>
+                                    <button type="button" class="btn btn-orange" id="CateUp" style="display:none">수정</button>
+                                    <button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
+
                                 </div>
                             </form>
 
@@ -196,6 +197,51 @@
             }
         });
 
+        $('#CateUp').on('click', function(){
+            if($("input[name='title']").val() == ''){
+
+                return false;
+                alert('카테고리명을 입력하세요');
+            }
+            if(maxLengthCheck('categoryTitle', '카테고리명', 50)){
+
+            }else{
+                return false;
+            }
+
+            if(confirm('카테고리를 수정하시겠습니까?')) {
+                var frm = $('#uploadForm')[0];
+                var formData = new FormData(frm);
+                if($("input[name='uploadfile']")[0].files[0] != ''){
+                    formData.append('attachfiles', $("input[name='uploadfile']")[0].files[0]);
+                }
+                if($("input[name='uploadfile']")[1].files[0] != ''){
+                    formData.append('attachfiles', $("input[name='uploadfile']")[1].files[0]);
+                }
+                // alert(formData);
+                $.ajax({
+                    url: '/admin/categoryUp',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        if (data != '1') {
+                            alert(" 오류");
+                        } else {
+                            cateReload();
+                            initval();
+                        }
+                    },
+                    error: function (data) {
+                        //  alert(삭제완료);
+                        //location.href = "/admin/project";
+                    }
+                }).done(function (data) {
+                    // callback(data);
+                });
+            }
+        });
         cateReload();
         $(".table").tableDnD({
             onDragClass: "dragRow"
@@ -269,10 +315,26 @@
         $("input[name='key1']").val(Sn);
         $(".table tr td").removeClass("active");
         $(this).addClass("active");
+        $("#sn").val(Sn);
+        $("#categoryTitle").val($(this).children("input[name='title']").val());
+        $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
+        $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
+
+        if($(this).children("input[name='adInfo']").val() =='Y'){
+            $("minimal-radio-2").attr("checked",true);
+        }else{
+            $("minimal-radio-1").attr("checked",false);
+        }
+        $("#time").val($(this).children("input[name='adTime']").val());
+        $("#adInfp").val($(this).children("input[name=' adInfo']").val());
         $.get("/admin/categoryTList?sn=${projectInfo.projectSn}&pCate="+Sn,function(data){
             $( "#twoCate" ).html( data );
             //alert( "Load was performed." );
         });
+
+        //alert($(this).children("input[id='title']").val());
+        $("#CateUp").show();
+        $("#CateReg").hide();
 
     });
     $(document).on("click","#2depthT tr td",function(){
@@ -281,7 +343,13 @@
         $("input[name='key2']").val(Sn);
         $(".table tr td").removeClass("active");
         $(this).addClass("active");
-
+        $("#sn").val(Sn);
+        $("#pCate").val($("#key1").val());
+        $("#categoryTitle").val($(this).children("input[name='title']").val());
+        $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
+        $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
+        $("#CateUp").show();
+        $("#CateReg").hide();
     });
     function initval(){
         $("input[name='depth']").val('1');
@@ -292,6 +360,8 @@
         $("input[name='adInfo']").val('');
         $("textarea[name='adTag']").val('');
         $("input[name='adtime']").val('');
+        $("#CateUp").hide();
+        $("#CateReg").show();
     }
 
     function fn_formRtn() {

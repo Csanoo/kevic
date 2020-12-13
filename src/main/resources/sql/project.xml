@@ -210,5 +210,14 @@
 		values ( #{title}, #{bannerImg}, #{iconImg} , #{adinfo},#{adtime},#{adTag},#{depth},#{pCate},#{projectSn},#{sort} )
 	</insert>
 
+
+	<update id="updateCategory" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_category set
+		title = #{title}, bannerImg=#{bannerImg},iconImg=#{iconImg},adinfo=#{adinfo}
+		,adtime=#{adtime},adTag=#{adTag}
+		where sn=#{sn}
+
+	</update>
+
 </mapper>
 

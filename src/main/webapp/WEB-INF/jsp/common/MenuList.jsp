@@ -14,17 +14,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 %>
 
 <ul class='wraplist'>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Member")%>">
 
-		<a href="javascript:;"> <i
-			class="fa fa-folder-open"></i> <span class="title">회원관리</span>
-			<span class="arrow "></span>
-		</a>
-		<ul class="sub-menu">
-			<li><a href="/admin/memberList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Member")%>"> <span class="title">회원 목록</span>	</a></li>
-
-		</ul>
-	</li>
 	<li class="<%=btr.CLASSOPEN(HEADERURL, "Contents")%>
 <%=btr.CLASSOPEN(HEADERURL, "project")%>
 <%=btr.CLASSOPEN(HEADERURL, "excelForm")%>
@@ -91,6 +81,18 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 		<ul class="sub-menu">
 			<li><a href="/admin/projectList" class="<%=btr.CLASSACTIVE(HEADERURL, "/projectList")%>"> <span class="title">프로젝트 목록</span></a></li>
 			<li><a href="/admin/projectReg" class="<%=btr.CLASSACTIVE(HEADERURL, "/projectReg")%>"> <span class="title">프로젝트 등록</span></a></li>
+		</ul>
+	</li>
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Member")%>">
+
+		<a href="javascript:;"> <i
+				class="fa fa-folder-open"></i> <span class="title">환경설정</span>
+			<span class="arrow "></span>
+		</a>
+		<ul class="sub-menu">
+			<li><a href="/admin/memberList"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/memberList")%>"> <span class="title">관리자 계정 관리</span></a></li>
+			<li><a href="/admin/memberReg"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/memberReg")%>"> <span class="title">관리자 계정 등록</span>	</a></li>
+			<li><a href="/admin/auth"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/auth")%>"> <span class="title">관리/등급 관</span>	</a></li>
 		</ul>
 	</li>
 </ul>

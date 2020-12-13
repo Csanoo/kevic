@@ -358,7 +358,7 @@ throws Exception{
     @RequestMapping(value = "/CategorySave")
     public Integer CategorySave(HttpServletRequest request, ProjectVO projectInfo, MultipartHttpServletRequest fileRequest) throws Exception{
         try {
-            String[] fileno = request.getParameterValues("fileno");
+
             String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
             FileUtil fs = new FileUtil();
             List<MultipartFile> files = fileRequest.getFiles("attachfiles");
@@ -473,8 +473,63 @@ throws Exception{
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/categoryUp")
+    public Integer categoryUp(HttpServletRequest request, ProjectVO projectInfo, MultipartHttpServletRequest fileRequest) throws Exception{
+        try {
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
 
+            //Integer pCate = Integer.parseInt(request.getParameter("pCate"));
+            String projectSn = request.getParameter("projectSn");
+            String title = request.getParameter("title");
+            String bannerImgOld = request.getParameter("bannerImgOld");
+            String iconImgOld = request.getParameter("iconImgOld");
+            String adInfo = request.getParameter("adInfo");
+            if(request.getParameter("adtime") != "") {
+            //    Integer adtime = Integer.parseInt(request.getParameter("adtime"));
+              //  projectInfo.setAdtime(adtime);
+            }
+            String adTag = request.getParameter("adTag");
+            String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+            FileUtil fs = new FileUtil();
+            List<MultipartFile> files = fileRequest.getFiles("attachfiles");
+            Integer num = 0;
 
+            if (null != files && files.size() > 0) {
+                for (MultipartFile multipartFile : files) {
+                    String fileName = multipartFile.getOriginalFilename();
+                    if (!"".equalsIgnoreCase(fileName)) {
+                        if (num == 0) {
+                            projectInfo.setBannerImg(fileName);
+                            fs.saveFile(multipartFile, filePath, fileName);
+                        }
+                        if (num == 1) {
+                            projectInfo.setIconImg(fileName);
+                            fs.saveFile(multipartFile, filePath, fileName);
+                        }
+                    } else {
+                        if (num == 0) {
+                            projectInfo.setBannerImg(bannerImgOld);
+                        }
+                        if (num == 1) {
+                            projectInfo.setIconImg(iconImgOld);
+                        }
+                    }
+                    num = num + 1;
+                }
+            }
 
-
+            projectInfo.setSn(sn);
+            projectInfo.setTitle(title);
+           // projectInfo.setpCate(pCate);
+            projectInfo.setProjectSn(projectSn);
+            projectInfo.setAdinfo(adInfo);
+            projectInfo.setAdTag(adTag);
+            projectSvc.updateCategory(projectInfo);
+            return 1;
+        } catch (Exception e) {
+           // System.out.println(e.getMessage());
+            return 0;
+        }
+    }
 }

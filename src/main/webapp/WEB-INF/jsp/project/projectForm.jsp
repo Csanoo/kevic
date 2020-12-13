@@ -92,13 +92,13 @@
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>
                                                 <td style="width: 35%"><input name="userid" type="hidden" value="admin">
                                                     admin
-                                                    관리자기능 개발 이후
+
                                                 </td>
                                                 <td class="tdl" style="width: 15%">프로젝트 운영자</td>
                                                 <td style="width: 35%" >
                                                     <input name="mnguser" type="text"	class="form-control">
                                                     <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
-                                                    관리자기능 개발 이후
+
                                                 </td>
                                             </tr>
                                         </table>

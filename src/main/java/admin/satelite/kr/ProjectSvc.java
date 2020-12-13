@@ -83,6 +83,21 @@ public class ProjectSvc {
         }
 
     }
+    public void updateCategory(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+        try {
+            sqlSession.update("updateCategory", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+
+            txManager.rollback(status);
+
+        }
+
+    }
+
 
     public void updateprojectDetail(ProjectVO param, List<FileVO> filelist,  String[] fileno) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
