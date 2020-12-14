@@ -119,7 +119,7 @@
 				<div class="col-lg-12">
 					<section class="box ">
 						<header class="panel_header">
-							<h2 class="title pull-left">목록 </h2>
+							<h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div> </h2>
 							<div class="pull-right" style="padding-top: 10px">
 								<ul class="list-unstyled">
 									<li style="float: left;">
@@ -128,11 +128,11 @@
 									<li style="float: left;">
 										<select name="orderKeyword" id="orderKeyword"  >
 											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">시작일 내림차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="2">시작일 오름차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="3">수정일 내림차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="4">수정일 오름차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="5">등록일 내림차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="6">등록일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">시작일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">수정일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">수정일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">등록일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">등록일 오름차순</option>
 										</select>
 									</li>
 								</ul>

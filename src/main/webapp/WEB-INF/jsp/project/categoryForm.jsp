@@ -104,8 +104,8 @@
                                     <label class="iradio-label form-label" for="minimal-radio-1">사용안함</label>
                                     <input tabindex="5" type="radio" id="minimal-radio-2" name="adInfo"  class="icheck-minimal-red" value="Y">
                                     <label class="iradio-label form-label" for="minimal-radio-2">사용함</label>
-                                    <span id="timelayer" style="display:none">
-                                        <input type="text" class="" style="width:30px;display: inline-block;" name="adtime" id="time" >건 마다 광고 노출
+                                    <span id="timelayer" style="">
+                                        <input type="text" class="" style="width:30px;display: inline-block;" name="adtime" id="time" value="0">건 마다 광고 노출
                                     </span>
                                 </div>
                                 <div class="form-group">
@@ -301,11 +301,10 @@
         });
         $("input:radio[name=adInfo]").click(function(){
        // $(document).on("click","input[name='adInfo']",function(){
-            alert($("input[name='adInfo']:checked").val());
             if($("input[name='adInfo']:checked").val() =='Y'){
-                $("#timelayer").show();
+              //  $("#timelayer").show();
             }else{
-                $("#timelayer").hide();
+           //     $("#timelayer").hide();
             }
         });
 
@@ -336,26 +335,26 @@
 
         if($(this).children("input[name='adInfo']").val() =='Y'){
             $("minimal-radio-2").attr("checked",true);
-            $("#CateUp").show();
+          //  $("#CateUp").show();
 
         }else{
             $("minimal-radio-1").attr("checked",false);
-            $("#CateUp").hide();
+           // $("#CateUp").hide();
         }
-        $("#time").val($(this).children("input[name='adTime']").val());
-        $("#adInfp").val($(this).children("input[name=' adInfo']").val());
+       // $("#time").val($(this).children("input[name='adtime']").val());
+        $("#adInfo").val($(this).children("input[name='adInfo']").val());
         $.get("/admin/categoryTList?sn=${projectInfo.projectSn}&pCate="+Sn,function(data){
             $( "#twoCate" ).html( data );
             //alert( "Load was performed." );
         });
-
+        //$("#field-6").val($(this).children("input[name='adTag']").val());
         //alert($(this).children("input[id='title']").val());
         $("#CateUp").show();
         $("#CateReg").hide();
 
     });
     $(document).on("click","#2depthT tr td",function(){
-
+        //alert($(this).children("input[name='adtime']").val());
         var Sn =$(this).children("input[name='Sn']").val();
         $("input[name='key2']").val(Sn);
         $(".table tr td").removeClass("active");
@@ -365,19 +364,23 @@
         $("#categoryTitle").val($(this).children("input[name='title']").val());
         $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
         $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
+        $("#time").val($(this).children("input[name='adtime']").val());
+        $("#adInfo").val($(this).children("input[name='adInfo']").val());
+        $("#field-6").val($(this).children("input[name='adTag']").val());
         $("#CateUp").show();
         $("#CateReg").hide();
     });
     function initval(){
-        $("input[name='depth']").val('1');
-        $("input[name='pCate']").val('0');
-        $("input[name='sn']").val('0');
-        $("input[name='title']").val('');
-        $("input[name='uploadfile']").val('');
-        $("input:radio[name='adInfo']:radio[value='N']").prop('checked', true);
-        $("textarea[name='adTag']").val('');
-        $("input[name='adtime']").val('0');
+        $("#uploadForm input[name='depth']").val('1');
+        $("#uploadForm input[name='pCate']").val('0');
+        $("#uploadForm input[name='sn']").val('0');
+        $("#uploadForm input[name='title']").val('');
+        $("#uploadForm input[name='uploadfile']").val('');
+        $("#uploadForm input:radio[name='adInfo']:radio[value='N']").prop('checked', true);
+        $("#uploadForm textarea[name='adTag']").val('');
+        $("#uploadForm input[name='adtime']").val(0);
         $("#bannerImgOld").val('');
+        $("#field-6").val('');
         $("#iconImgOld").val('');
         $("#CateUp").hide();
         $("#CateReg").show();

@@ -113,9 +113,7 @@ public class ContentsCtr {
     }
 
     @RequestMapping(value = "/contentsUp")
-    public String contentsUp(SearchVO searchVO,
-                            HttpServletRequest request, ContentsVO contentsInfo,
-                            ModelMap modelMap) {
+    public String contentsUp(SearchVO searchVO, HttpServletRequest request, ContentsVO contentsInfo, ModelMap modelMap) {
 
         Integer sn = Integer.parseInt(request.getParameter("sn"));
         String title = request.getParameter("title");
@@ -189,7 +187,38 @@ public class ContentsCtr {
             //System.out.println(cnt);
             String rprtOdr = request.getParameter("RPRT_ODR");
             String project = request.getParameter("project");
-            String category = request.getParameter("category");
+            String category01 = request.getParameter("category1");
+            String category02 = request.getParameter("category2");
+            String [] strArray = rprtOdr.split(",");
+
+
+
+            for(int i=0; i<cnt; i++) {
+                System.out.println(i);
+                System.out.println(project);
+                Integer sn = Integer.valueOf((String)strArray[i]);
+
+                contentsInfo.setProject(project);
+                contentsInfo.setCategory01(category01);
+                contentsInfo.setCategory02(category02);
+                contentsInfo.setSn(sn);
+                contentsSvc.ContentsPublish(contentsInfo);
+            }
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return "TRUE";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/contentsChkMove")
+    public String contentsChkMove(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ContentsVO contentsInfo, ModelMap modelMap) throws Exception{
+        String result = "TRUE";
+        try {
+            int cnt = Integer.parseInt(request.getParameter("CNT"));
+            //System.out.println(cnt);
+            String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
 
 
@@ -197,12 +226,8 @@ public class ContentsCtr {
             for(int i=0; i<cnt; i++) {
                 //System.out.println(i);
                 Integer sn = Integer.valueOf((String)strArray[i]);
-
-                contentsInfo.setProject(project);
-                contentsInfo.setCategory(category);
                 contentsInfo.setSn(sn);
-
-                contentsSvc.ContentsPublish(contentsInfo);
+                contentsSvc.ContentsMove(contentsInfo);
             }
         } catch (Exception e) {
             //System.out.println(e.getMessage());

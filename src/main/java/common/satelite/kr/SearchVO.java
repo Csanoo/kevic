@@ -96,6 +96,16 @@ public class SearchVO extends  PageVO  {
 	}
 
 
+	private String ctSource = "";
+
+	public String getCtSource() {
+		return ctSource;
+	}
+
+	public void setCtSource(String ctSource) {
+		this.ctSource = ctSource;
+	}
+
 
 	private String userid;
 

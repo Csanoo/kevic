@@ -30,13 +30,14 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
                                         <tr>
-                                            <td class="tdl" style="width: 25%">프로젝트</td>
+                                            <td class="tdl" style="width: 25%">출처</td>
                                             <td style="width: 75%">
-                                                <select name="sproject">
-                                                    <option value="">프로젝트</option>
-                                                    <c:forEach var="projectview" items="${projectview}"   varStatus="status">
-                                                        <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
-                                                    </c:forEach>
+                                                <select name="ctSource">
+                                                    <option value="">출처</option>
+                                                    <option value="YTB">유튜브</option>
+                                                    <option value="TWT">트위터</option>
+                                                    <option value="FB">페이스북</option>
+
                                                 </select>
                                             </td>
                                         </tr>
@@ -238,7 +239,8 @@
     function publishPost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();
-        var pubcate = $("#pubcate").val();
+        var pubcate01 = $("#category1").val();
+        var pubcate02 = $("#category2").val();
         var pubproject = $("#pubproject").val();
         $("input[name='chkSn']:checked").each(function () {
             arr.push($(this).attr('value'));
@@ -250,7 +252,7 @@
             $.ajax({
                 type: "POST",
                 url: "/admin/contentsChkPublish",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&cate="+pubcate+"&project"+pubproject,
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&category1="+pubcate01+"&project="+pubproject+"&category2="+pubcate02,
 
                 success: function (jdata) {
                     if (jdata != 'TRUE') {
@@ -369,6 +371,7 @@
         });
         $("#category1").on("change",function(){
             var sn = $("#category1 option:selected").val();
+            alert(sn);
             $.get("/admin/category02?sn="+sn,function(data){
                 $( "#category2" ).html( data );
                 //alert( "Load was performed." );
@@ -405,9 +408,6 @@
                             <div id="category01">
                                 <select name="category01" id="category1" class="form-control" >
                                     <option value="">카테고리</option>
-                                    <c:forEach var="cateview" items="${cateview1}"   varStatus="status">
-                                        <option value="${cateview1.code2}" <c:if test="${projectInfo.catesn eq cateview1.sn}">selected</c:if>>${cateview1.title}</option>
-                                    </c:forEach>
 
                                 </select>
                             </div>

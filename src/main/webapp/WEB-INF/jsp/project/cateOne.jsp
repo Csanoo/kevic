@@ -7,14 +7,18 @@
 <c:forEach var="listview" items="${listview}" varStatus="status">
 <tr>
 <td>
-    <input type="hidden" value="${listview.sn}" name="Sn" >
-    <input type="hidden" value="${listview.title}" name="title" >
+    <input type="hidden" value="${listview.sn}" name="Sn">
+
     <input type="hidden" value="${listview.bannerImg}" name="bannerImg" >
+
     <input type="hidden" value="${listview.iconImg}" name="iconImg" >
     <input type="hidden" value="${listview.adTag}" name="adTag" >
     <input type="hidden" value="${listview.adinfo}" name="adinfo" >
-    <input type="hidden" value="${listview.adtime}" name="adinfo" >
+    <input type="hidden" value='${listview.adtime}' name="adtime" >
+    <input type="hidden" name="title" value="${listview.title}">
         ${listview.title}
+
+
 </td>
 </tr>
 </c:forEach>

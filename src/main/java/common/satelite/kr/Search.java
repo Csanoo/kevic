@@ -140,12 +140,13 @@ public class Search {
       //            +"','"+singleVideo.getSnippet().getTitle()+"','"
       //            +rId.getVideoId()+"','admin','유튜브','"+thumbnailURL+"','"+_kind+"') ";
 
-        qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
-        		+ " values ('"+singleVideo.getSnippet().getTitle()
-        		+"','"+singleVideo.getSnippet().getTitle()+"','"
-        		+videoUrl+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
+       // qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
+        //		+ " values ('"+singleVideo.getSnippet().getTitle()
+        //		+"','"+singleVideo.getSnippet().getTitle()+"','"
+        //		+videoUrl+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
 
-
+          qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state)"
+                  + " values ( 0, 0, 0, 'A1' , '"+thumbnailURL+"','"+videoUrl+"','YTB', '"+singleVideo.getSnippet().getTitle()+"', '000' ); ";
 
         pstmt = con.prepareStatement(qry);
 

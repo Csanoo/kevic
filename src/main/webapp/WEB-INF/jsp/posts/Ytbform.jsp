@@ -31,9 +31,10 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form1" action="ytbPost" method="post"
-								enctype="multipart/form-data">
-
+							<form name="form1" action="ytbForm" method="post" enctype="multipart/form-data">
+								<input type="hidden" name="orderKeyword" id="orderKeyword" value="${searchVO.orderKeyword}" />
+								<input type="hidden" name="sn" id="sn" value="" />
+								<input type="hidden" name="srch" id="srch" value="SRCH" />
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<table id="customers">
@@ -82,7 +83,7 @@
 										</div>
 									</div>
 								</div>
-							</form>
+
 
 
 						</div>
@@ -91,10 +92,7 @@
 			</section>
 		</div>
 
-					<form id="formBoard" name="formBoard" method="post" action="/admin/ytbForm">
-						<input type="hidden" name="orderKeyword" id="orderKeyword" value="${searchVO.orderKeyword}" />
-						<input type="hidden" name="sn" id="sn" value="" />
-						<input type="hidden" name="srch" id="srch" value="SRCH" />
+
 							<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
 								<div class="page-title">
 									<div class="pull-left">
@@ -113,7 +111,7 @@
 
 											<li style="float: left;">
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
-												<button type="button" class="btn btn-orange" onclick="fn_write();">컨텐츠 등록</button>
+												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
 											</li>
 											<!--
 											<li style="float: left;"><input type="checkbox" name="searchType" value="title" <c:if test="${fn:indexOf(searchVO.searchType, 'title')!= -1}">checked="checked"</c:if> />
@@ -133,93 +131,91 @@
 									</div>
 								</header>
 
-								<div class="content-body">
-									<div class="row">
-										<div class="col-md-12 col-sm-12 col-xs-12">
+									<div class="content-body">
+										<div class="row">
+											<div class="col-md-12 col-sm-12 col-xs-12">
+												<table class="table">
 
-
-											<table class="table">
-												<thead>
-												<tr>
-													<th style="width:5%"><input type="checkbox" id="allChk"></th>
-													<th style="width:5%">No</th>
-													<th style="width:10%">분류</th>
-													<th style="width:8%">썸네일</th>
-													<th style="width:8%;max-width:200px">링크</th>
-													<th style="width:8%">출처</th>
-													<th>제목</th>
-													<th style="width:10%">등록일</th>
-													<th style="width:10%">관리</th>
-												</tr>
-												</thead>
-												<tbody>
-												<% int ii=0; %>
-
-												<c:forEach var="listview" items="${listview}"   varStatus="status"><% ii++; %>
+													<thead>
 													<tr>
-														<td><input type="checkbox" name="chkId" value="${listview.sn}"></td>
-														<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
-														<td>${listview.category}</td>
-														<td>
-															<c:if test="${fn:indexOf(listview.imgfile, 'https://i.ytimg.com/')!= -1}">
-																<img src="${listview.imgfile}" width="150">
-															</c:if>
-															<c:if test="${fn:indexOf(listview.imgfile, 'https://i.ytimg.com/') == -1}">
-																<img src="${listview.imgfile}" width="150">
-															</c:if>
-														</td>
-														<td style="width:8%;max-width:200px;overflow:hidden;text-overflow:ellipsis;">${listview.url}</td>
-														<td>
-															<c:choose>
-																<c:when test="${listview.code2 eq 'YTB'}">
-																	유튜브
-																</c:when>
-																<c:when test="${listview.code2 eq 'fb'}">
-																	페이스
-																</c:when>
-																<c:when test="${listview.code2 eq 'INS'}">
-																	인스타
-																</c:when>
-																<c:when test="${listview.code2 eq 'TWT'}">
-																	트위터
-																</c:when>
-																<c:otherwise>
-																	불명
-																</c:otherwise>
-															</c:choose>
-														</td>
-														<td>
-															<c:if test="${listview.code2 != 'YTB'}">
-															<a href="${listview.url}">${listview.title}</a>
-															</c:if>
-															<c:if test="${listview.code2 eq 'YTB'}">
-																<a href="https://www.youtube.com/watch?v=${listview.url}">${listview.title}</a>
-															</c:if>
-														</td>
-														<td>${listview.regdate}</td>
-														<td>
-															<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/postDelete?sn=${listview.sn}'">삭제</button>
-														</td>
+														<th><input type="checkbox" id="allChk" ></th>
+														<th>No</th>
+														<th>이미지</th>
+														<th >출처이미지URL</th>
+														<th>영상URL</th>
+														<th>타이틀</th>
+														<th>등록일</th>
+														<th>관리</th>
 													</tr>
-												</c:forEach>
-												</tbody>
-											</table>
+													</thead>
+													<tbody>
 
-										</div>
-										<div class="col-md-12 col-sm-12 col-xs-12"
-											 style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
-											<jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
+													<c:forEach var="listview" items="${listview}" varStatus="status">
+														<tr>
+															<td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
+															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+															<td><img src="${listview.imageUrl}" width="110"></td>
+															<td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
+															<td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+															<td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
+															<td>
+																	${listview.regDate}<br>
+																등록자
+															</td>
+															<td>
+																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete?sn=${listview.sn}'">삭제</button>
+															</td>
+														</tr>
+													</c:forEach>
+													</tbody>
+												</table>
+
+											</div>
+
+											<div class="col-md-12 col-sm-12 col-xs-12"
+												 style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
+												<jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
+											</div>
 										</div>
 									</div>
-								</div>
 							</section>
 						</div>
 					</form>
 				</section>
 			</section>
+
 		<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script type="text/javascript">
+    function publishPost(){
+        var cnt = $("input[name='chkSn']:checked").length;
+        var arr = new Array();
+        $("input[name='chkSn']:checked").each(function () {
+          //  alert($(this).attr('value'));
+            arr.push($(this).attr('value'));
+        });
+        if (cnt == 0) {
+            alert("컨텐츠를 선택해주세요.");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/admin/contentsChkMove",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
 
+                success: function (jdata) {
+                    if (jdata != 'TRUE') {
+                        alert("삭제 오류");
+                    } else {
+                        alert("노출 성공");
+                        location.href = "/admin/contents";
+                    }
+                },
+                error: function (data) {
+                    //location.href = "/admin/project";
+                }
+            });
+        }
+    }
 	$(function(){
 	    $("#allChk").on("click",function(){
 
@@ -253,6 +249,15 @@
 
     }
 
+	$(function(){
+        $("#allChk").on("click",function(){
+            if ($(this).is(':checked')) {
+                $("input[name='chkSn']").prop('checked', true);
+            } else {
+                $("input[name='chkSn']").prop('checked', false);
+            }
+        });
+	});
 
 </script>
 <div class="loader" id ="loading"></div>

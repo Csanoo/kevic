@@ -141,19 +141,7 @@ public class Member1Ctr {
 			USERID = (String)request.getSession().getAttribute("USERID");
 		}
 
-		if ( USERTYPE.equals("CP")) {
 
-			searchVO.setUserid(USERID);
-
-			searchVO.pageCalculate( member1Svc.selectContents12Count(searchVO) ); // startRow, endRow
-
-			List<?> listview  = member1Svc.selectContents12List(searchVO);
-
-			modelMap.addAttribute("listview", listview);
-			modelMap.addAttribute("searchVO", searchVO);
-
-
-		}else {
 			searchVO.pageCalculate( member1Svc.selectContents1Count(searchVO) ); // startRow, endRow
 
 			List<?> listview  = member1Svc.selectContents1List(searchVO);
@@ -161,8 +149,6 @@ public class Member1Ctr {
 			modelMap.addAttribute("listview", listview);
 			modelMap.addAttribute("searchVO", searchVO);
 
-
-		}
 
 
 		List<?> cateview  = member1Svc.selectCode1List(searchVO);
@@ -184,8 +170,6 @@ public class Member1Ctr {
 		}
 
 		searchVO.setUserid(USERID);
-
-
 		String title = "";
 		String kind = "";
 		String snsType = "";

@@ -185,12 +185,12 @@ public class Member1Svc {
 	}
 	
 	public Integer selectContents1Count(SearchVO param) {
-		return sqlSession.selectOne("selectContents1Count", param);
+		return sqlSession.selectOne("selectcontentsCount0", param);
 	}
 
 	public List<?> selectContents1List(SearchVO param) {
 
-		return sqlSession.selectList("selectContents1List", param);
+		return sqlSession.selectList("selectcontentsList0", param);
 	}
 	
 	public Integer selectContents12Count(SearchVO param) {

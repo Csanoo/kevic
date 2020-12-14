@@ -561,8 +561,8 @@ throws Exception{
 
         try {
             Integer sn = Integer.parseInt(request.getParameter("sn"));
-            List<?> catelistTwo  = projectSvc.category01(sn);
-            modelMap.addAttribute("listview", catelistTwo);
+            List<?> catelistone  = projectSvc.category01(sn);
+            modelMap.addAttribute("listview", catelistone);
             return "project/category01";
         } catch (Exception e) {
             //System.out.println(e.getMessage());

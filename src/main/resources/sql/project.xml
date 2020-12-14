@@ -21,28 +21,28 @@
 	</select>
 
 	<select id="selectCategoryDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
 		where sn=#{sn}
 	</select>
 
 
-	<select id="selectCategoryOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
+	<select id="selectCategoryOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg ,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{sn} and depth=1
 	</select>
 
 	<select id="selectCategoryTwo" parameterType="main.java.admin.satelite.kr.ProjectVO" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{projectSn} and pCate =#{pCate} and depth=2
 	</select>
 
 	<select id="category01" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn as category01,title from tbl_category
 		where projectSn=#{sn} and depth=1
 	</select>
 
 	<select id="category02" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg,adinfo,adtime,adTag,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn as category02 ,title  from tbl_category
 		where pCate =#{sn} and depth=2
 	</select>
 
@@ -85,19 +85,19 @@
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 
 		<if test="orderKeyword=='1'">
-			ORDER BY title asc
+			ORDER BY title ASC
 		</if>
 		<if test="orderKeyword=='2'">
 			ORDER BY title DESC
 		</if>
 		<if test="orderKeyword=='3'">
-			ORDER BY keyword asc
+			ORDER BY keyword ASC
 		</if>
 		<if test="orderKeyword=='4'">
-			ORDER BY keyword asc
+			ORDER BY keyword Desc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sort DESC
+			ORDER BY sort ASC
 		</if>
 	</sql>
 
@@ -108,10 +108,10 @@
 		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
 
 		<if test="orderKeyword=='1'">
-			ORDER BY title ASC
+			ORDER BY ct desc
 		</if>
 		<if test="orderKeyword=='2'">
-			ORDER BY title DESC
+			ORDER BY ct asc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
 			ORDER BY sn asc
@@ -125,7 +125,7 @@
 		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
 		<include refid="includeproject" />
 
-		LIMIT ${rowStart-1}, 10
+		LIMIT ${rowStart-1}, 50
 	</select>
 
 
@@ -141,7 +141,10 @@
 	<select id="selectprojectList2"
 			resultType="main.java.admin.satelite.kr.ProjectVO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate from tbl_project
+		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, ct from (
+			SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, (select count(*)
+			from tbl_contents where project = tbl_project.sn) as ct from tbl_project
+		) A
 		<include refid="includeproject2" />
 		LIMIT ${rowStart-1}, 10
 	</select>

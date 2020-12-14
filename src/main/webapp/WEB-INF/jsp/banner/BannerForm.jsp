@@ -63,8 +63,10 @@
                                                 <td style="width: 35%" colspan="3">
                                                     <input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
                                                     <input type="radio" value="N" name="displaytype"><label>기간 노출</label>
-                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+                                                    <div style="width:220px;display:inline-flex">
+                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">~
                                                     <input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>

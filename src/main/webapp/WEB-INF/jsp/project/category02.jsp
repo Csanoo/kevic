@@ -4,6 +4,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <option value="">카테고리</option>
 <c:forEach var="listview" items="${listview}" varStatus="status">
-    <option value="${listview.sn}" >${listview.title}</option>
+    <option value="${listview.category02}" >${listview.title}</option>
 </c:forEach>
 

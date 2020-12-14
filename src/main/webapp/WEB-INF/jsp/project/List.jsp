@@ -100,7 +100,7 @@
             <div class="col-lg-12">
                 <section class="box ">
                     <header class="panel_header">
-                        <h2 class="title pull-left">목록 </h2>
+                        <h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div> </h2>
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">

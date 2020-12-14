@@ -73,15 +73,13 @@
             <div class="col-lg-12">
                 <section class="box ">
                     <header class="panel_header">
-                        <h2 class="title pull-left">목록 </h2>
+                        <h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div> </h2>
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
                                     <select name="orderKeyword" id="orderKeyword"  >
-                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">컨텐츠수 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">컨텐츠수 오름차순</option>
                                     </select>
                                 </li>
                             </ul>
@@ -98,8 +96,8 @@
                                         <col width="5%">
                                         <col width="10%">
                                         <col width="15%">
-                                        <col width="15%">
-                                        <col width="20%">
+                                        <col width="30%">
+                                        <col width="5%">
                                         <col width="15%">
                                         <col width="10%">
                                     </colgroup>
@@ -121,8 +119,8 @@
                                             <td><c:if test="${listview.state eq '100'}">사용</c:if><c:if test="${listview.state eq '200'}">사용안함</c:if></td>
                                             <td><img src="/upload/images/${listview.logoimg}" width="110"></td>
                                             <td>${listview.title}</td>
-                                            <td><div style="width:100px;overflow:hidden"></div></td>
-                                            <td>0</td>
+                                            <td><div style="width:230px;overflow:hidden"><a href="/admin/projectDetail?sn=${listview.sn}">http://test.comwihus.com/admin/projectDetail?sn=${listview.sn}</a></div></td>
+                                            <td><div style="width:20px;overflow:hidden">${listview.ct}</div></td>
                                             <td>${listview.regDate}</td>
                                             <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button></td>
                                         </tr>

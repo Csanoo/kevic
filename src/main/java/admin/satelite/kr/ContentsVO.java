@@ -174,4 +174,21 @@ public class ContentsVO {
         this.state = state;
     }
 
+
+    private String category01="";
+    public void setCategory01(String category01) {
+        this.category01 = category01;
+    }
+    public String getCategory01() {
+        return category01;
+    }
+
+    private String category02="";
+    public void setCategory02(String category02) {
+        this.category02 = category02;
+    }
+    public String getCategory02() {
+        return category02;
+    }
+
 }

@@ -293,7 +293,7 @@ public class ProjectVO {
         this.adinfo = adinfo;
     }
 
-    private Integer adtime;
+    private Integer adtime=0;
     public Integer getAdtime() {
         return adtime;
     }
@@ -340,6 +340,15 @@ public class ProjectVO {
     }
     public void setCategory02(Integer category02) {
         this.category02 = category02;
+    }
+
+
+    private Integer ct;
+    public Integer getCt() {
+        return ct;
+    }
+    public void setCt(Integer ct) {
+        this.ct = ct;
     }
 
 

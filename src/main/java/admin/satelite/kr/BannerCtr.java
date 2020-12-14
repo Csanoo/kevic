@@ -33,8 +33,13 @@ public class BannerCtr {
 	}
 	
 	@RequestMapping(value = "/BannerList")
-	public String Banner1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+	public String BannerList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+		String orderKeyword = request.getParameter("orderKeyword");
+		searchVO.setOrderKeyword(orderKeyword);
 		searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
+
+
+
 
 		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
 		List<?> listview  = bannerSvc.selectBanner1List(searchVO);
@@ -73,7 +78,9 @@ public class BannerCtr {
 	@RequestMapping(value = "/bannerRead")
 	public String banner1Read(HttpServletRequest request, BannerVO banner1Info,SearchVO searchVO, ModelMap modelMap) {
 		String sn = request.getParameter("sn");
+
 		banner1Info = bannerSvc.selectBanner1One(sn);
+
 		List<?> bannerDetaillist = bannerSvc.selectBannerDetail(sn);
 		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
 		modelMap.addAttribute("projectview", projectview);

@@ -146,7 +146,7 @@
                             </script>
                             <form name="form2" id="form2" action="projectSave" method="post"	enctype="multipart/form-data">
 
-                                <input type="text" name="sn" id="tableSn" value="${projectInfo.sn}">
+                                <input type="hidden" name="sn" id="tableSn" value="${projectInfo.sn}">
 
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -361,13 +361,72 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <img src="" id="preview-img">
+                <table id="customers">
+                    <tr>
+                        <td class="tdl" style="width: 15%">프로트젝트명 *</td>
+
+                        <td style="width: 35%" colspan="3">
+                            <input type="text" name="title" id="title" value="${projectInfo.title}">
+                            <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>( ex : KPOP 걸 그룹)
+                            <input type="hidden" name="titleCk" id="titleCk" value="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
+
+                        <td style="width: 35%" colspan="3">
+                            <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}" readonly>
+                            <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
+                            <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">설명</td>
+
+                        <td style="width: 35%" colspan="3">
+                            <input type="text" name="comment" value="${projectInfo.comment}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">사용여부</td>
+                        <td style="width: 35%" colspan="3">
+                            <input type="radio" name="state" value="100" <c:if test="${projectInfo.state eq '100'}">checked</c:if> ><label>사용</label>
+                            <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>점검</label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">기본 로고*</td>
+                        <td style="width: 35%" colspan="3">
+                            <div class="form-group" style="display:block">
+                                <div class="controls">
+                                    <input type="checkbox" name="modi" value="Y"/>
+                                    <input type="file" name="uploadfile" multiple="" />
+                                    <br /><c:out value="${projectInfo.logoimg}" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
+                        <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basicTitle}" class="form-control"></td>
+                    </tr>
+                    <tr>
+                        <td class="tdl" style="width: 15%">프로젝트 등록자</td>
+                        <td style="width: 35%"><input name="userid" type="hidden" value="admin" >
+                            admin
+                        </td>
+                        <td class="tdl" style="width: 15%">프로젝트 운영자</td>
+                        <td style="width: 35%" >
+                            <input name="mnguser" type="text"	class="form-control">
+                            <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
+
+                        </td>
+                    </tr>
+                </table>
+
             </div>
             <div class="modal-footer">
-                <p id="preview-keyword" style="text-align:left;font-size:12px">
-                </p>
-                <p id="preview-title" style="text-align:left;font-size:16px">
-                </p>
+
             </div>
         </div>
     </div>

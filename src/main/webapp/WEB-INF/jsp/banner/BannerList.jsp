@@ -62,7 +62,8 @@
 												</td>
 											</tr>
 										</table>
-										<div class="form-group" style="margin-top: 20px;float:right">
+										<div class="form-group pull-center" style="margin-top: 20px;float:right">
+											<button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
 											<button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
 										</div>
 									</div>
@@ -80,7 +81,7 @@
 
 					<div class="content-body">
 						<header class="panel_header">
-							<h2 class="title pull-left">목록 </h2>
+							<h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div></h2>
 							<div class="pull-right" style="padding-top: 10px">
 								<ul class="list-unstyled">
 									<li style="float: left;">
@@ -88,10 +89,10 @@
 									</li>
 									<li style="float: left;">
 										<select name="orderKeyword" id="orderKeyword"  >
-											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
-											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">시작일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">시작일 오름차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">수정일 내림차순</option>
+											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">수정일 오름차순</option>
 										</select>
 										<select name="pageNo" id="pageNo"  >
 											<option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
@@ -221,6 +222,11 @@
             });
         }
     }
+    function fn_scInit(){
+	    $("#form1 input[type='text']").val('');
+        $("select[name='sproject']").val('').prop("selected","true");
+        $("input[name='state']:radio[value='']").prop("checked","true");
+	}
 
 
 </script>

@@ -44,12 +44,12 @@
 
 	<insert id="insertBanner1One" parameterType="main.java.admin.satelite.kr.BannerVO" >
 		insert into tbanner (projectSn,state,title
-		<if	test="sdate!=null and sdate!='' and edate!=''">
+		<if	test="sdate!='' and edate !=''">
 		,sdate,edate
 		</if>
 		)
 		values ( #{project}, #{state} , #{title}
-		<if	test="sdate!=null and sdate!='' and edate!=''">
+		<if	test="sdate!='' and edate !=''">
 			,#{sdate},#{edate}
 		</if>
 
@@ -79,7 +79,7 @@
 		update tbanner set
 		title=#{title},projectSn=#{project}
 		,state=#{state}
-		<if	test="sdate!=null and sdate!='' and edate !=''">
+		<if	test="sdate!='' and edate !=''">
 		,sdate=#{sdate},edate=#{edate}
 		</if>
 		,displayType=#{displayType},updateDate=now()
@@ -115,23 +115,23 @@
 		WHERE 1=1
 		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND projectSn = #{sproject} ]]></if>
-		<if test='state != null and state != "" '><![CDATA[  AND type = #{state} ]]></if>
+		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 
 		<if test="orderKeyword=='1'">
-			ORDER BY title asc
+			ORDER BY sdate DESC
 		</if>
 		<if test="orderKeyword=='2'">
-			ORDER BY title DESC
+			ORDER BY sdate asc
 		</if>
 		<if test="orderKeyword=='3'">
-			ORDER BY keyword asc
+			ORDER BY updateDate desc
 		</if>
 		<if test="orderKeyword=='4'">
-			ORDER BY keyword asc
+			ORDER BY updateDate asc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sn DESC
+			ORDER BY sdate DESC
 		</if>
 
 	</sql>
@@ -191,7 +191,7 @@
 		linkTarget from tbanner
 		<include refid="includeBanner1" />
 
-		LIMIT ${rowStart-1}, 10
+		LIMIT ${rowStart-1}, 50
 	</select>
 	
 	<select id="selectBanner2Count" resultType="Integer"
