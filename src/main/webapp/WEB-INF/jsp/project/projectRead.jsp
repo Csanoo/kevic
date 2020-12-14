@@ -79,7 +79,7 @@
                                                 <td style="width: 35%" colspan="3">
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
-                                                            <input type="checkbox" name="modi" value="Y"/>
+                                                            <!--<input type="checkbox" name="modi" value="Y"/>-->
                                                             <input type="file" name="uploadfile" multiple="" />
                                                             <br /><c:out value="${projectInfo.logoimg}" />
                                                         </div>
@@ -97,8 +97,12 @@
                                                 </td>
                                                 <td class="tdl" style="width: 15%">프로젝트 운영자</td>
                                                 <td style="width: 35%" >
-                                                    <input name="mnguser" type="text"	class="form-control">
-                                                    <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
+                                                    <c:forEach var="mlist" items="${mlist}" varStatus="status">
+                                                        <c:if test="${mlist.puse eq '1'}">
+                                                        <span>${mlist.username}<span style="cursor:pointer" onClick="mDel('${mlist.userid}')">X</span></span>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    <button type="button" class="btn btn-gray pull-right" data-toggle="modal" onclick="memberList(${projectInfo.sn});" data-target="#myModal">추가</button>
 
                                                 </td>
                                             </tr>
@@ -228,9 +232,6 @@
                 value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
                 type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
         </form>
-
-
-
     </section>
 </section>
 <!-- END CONTENT -->
@@ -241,6 +242,7 @@
 <script>
 
     $(function(){
+
         $("#preview").on("click",function(){
             $("#preview-img").attr("src",$("input[name='imageUrl']").val());
             $("#preview-keyword").html('('+$("input[name='keyword']").val()+')');
@@ -325,6 +327,14 @@
                 }
             });
         });
+        $("#allChk").on("click",function(){
+            if ($(this).is(':checked')) {
+                $("input[name='chkSn']").prop('checked', true);
+            } else {
+
+                $("input[name='chkSn']").prop('checked', false);
+            }
+        });
     })
     function modifyMemo(){
         $("#mtitle").val($("#tblTitle").text());
@@ -351,6 +361,70 @@
         }
 
     }
+
+    function mDel(userid){
+        $.ajax({
+            type: "POST",
+            url: "/admin/delMember",
+            data: {"userid":userid,"sn":${projectInfo.sn}},
+            success: function (data) {
+                alert("정상 처리되었습니다.");
+                location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+            },
+            error: function (data) {
+                alert("오류 관리자에게 문의해주세요");
+            }
+        });
+    }
+    function memberList(sn){
+        $.get("/admin/categoryMember?sn=${projectInfo.sn}",function(data){
+            $( "#memberList" ).html( data );
+            //alert( "Load was performed." );
+        });
+    }
+
+    function fn_mngSave(id){
+        var cnt = 1;
+        var arr = new Array();
+        arr.push(id);
+
+        $.get("/admin/cmInsert?RPRT_ODR="+arr+"&CNT=1&sn=${projectInfo.sn}",function(data){
+            alert("정상 처리되었니다.");
+            location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+        });
+    }
+    function fn_mngChkSave(){
+
+        var cnt = $("input[name='chkSn']:checked").length;
+        var arr = new Array();
+        $("input[name='chkSn']:checked").each(function () {
+            arr.push($(this).attr('value'));
+        });
+        if (cnt == 0) {
+            alert("컨텐츠를 선택해주세요.");
+        }
+        else {
+            $.ajax({
+                type: "POST",
+                url: "/admin/cmInsert",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt+"&sn=${projectInfo.sn}",
+                success: function (jdata) {
+
+                    if (jdata != 'TRUE') {
+                        alert(" 오류");
+                    } else {
+                        alert("정상 처리되었니다.");
+                        location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+                    }
+                },
+                error: function (data) {
+                   // alert(삭제완료);
+                    //location.href = "/admin/project";
+                }
+            });
+        }
+
+    }
 </script>
 
 <!-- Modal -->
@@ -360,73 +434,49 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
-            <div class="modal-body">
-                <table id="customers">
-                    <tr>
-                        <td class="tdl" style="width: 15%">프로트젝트명 *</td>
+            <div class="modal-body" id="memberList">
+                <button type="button" class="btn btn-orange pull-right" onclick="fn_mngChkSave()">선택등록</button>
+                <table class="table">
+                    <thead>
+                    <colgroup>
+                        <col width="5%">
+                        <col width="20%">
+                        <col width="25%">
+                        <col width="20%">
+                        <col width="15%">
+                        <col width="15%">
 
-                        <td style="width: 35%" colspan="3">
-                            <input type="text" name="title" id="title" value="${projectInfo.title}">
-                            <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>( ex : KPOP 걸 그룹)
-                            <input type="hidden" name="titleCk" id="titleCk" value="3">
-                        </td>
-                    </tr>
+                    </colgroup>
                     <tr>
-                        <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
-
-                        <td style="width: 35%" colspan="3">
-                            <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}" readonly>
-                            <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
-                            <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
-                        </td>
+                        <th><input type="checkbox" id="allChk" ></th>
+                        <th>등급</th>
+                        <th>사용여부</th>
+                        <th>ID</th>
+                        <th>이름</th>
+                        <th>운영권한</th>
                     </tr>
-                    <tr>
-                        <td class="tdl" style="width: 15%">설명</td>
-
-                        <td style="width: 35%" colspan="3">
-                            <input type="text" name="comment" value="${projectInfo.comment}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tdl" style="width: 15%">사용여부</td>
-                        <td style="width: 35%" colspan="3">
-                            <input type="radio" name="state" value="100" <c:if test="${projectInfo.state eq '100'}">checked</c:if> ><label>사용</label>
-                            <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>점검</label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tdl" style="width: 15%">기본 로고*</td>
-                        <td style="width: 35%" colspan="3">
-                            <div class="form-group" style="display:block">
-                                <div class="controls">
-                                    <input type="checkbox" name="modi" value="Y"/>
-                                    <input type="file" name="uploadfile" multiple="" />
-                                    <br /><c:out value="${projectInfo.logoimg}" />
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                        <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basicTitle}" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td class="tdl" style="width: 15%">프로젝트 등록자</td>
-                        <td style="width: 35%"><input name="userid" type="hidden" value="admin" >
-                            admin
-                        </td>
-                        <td class="tdl" style="width: 15%">프로젝트 운영자</td>
-                        <td style="width: 35%" >
-                            <input name="mnguser" type="text"	class="form-control">
-                            <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
-
-                        </td>
-                    </tr>
+                    </thead>
+                    <tbody  style="height:600px">
+                    <c:forEach var="mlist" items="${mlist}" varStatus="status">
+                        <tr>
+                            <td><input type="checkbox" value="${mlist.userid}" name="chkSn"></td>
+                            <td><c:if test="${mlist.userType eq 'SA'}">최고관리자</c:if>
+                                <c:if test="${mlist.userType eq ''}">일반관리자</c:if>
+                            </td>
+                            <td><c:if test="${mlist.state eq 'Y'}">최고관리자</c:if>
+                                <c:if test="${mlist.state eq 'N'}">일반관리자</c:if></td>
+                            <td>${mlist.userid}</td>
+                            <td>${mlist.username}</td>
+                            <td><c:if test="${mlist.puse eq 0}" >
+                                <button id="projectMember" onClick="fn_mngSave('${mlist.userid}');">등록</button>
+                            </c:if> </td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
                 </table>
-
             </div>
             <div class="modal-footer">
-
+                <button type="button" class="btn btn-gray pull-right" data-dismiss="modal"  >닫기</button>
             </div>
         </div>
     </div>

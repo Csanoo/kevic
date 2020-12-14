@@ -88,19 +88,7 @@
                                                 <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
                                                 <td style="width: 35%" colspan="3"><input name="basicTitle" type="text" class="form-control"></td>
                                             </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">프로젝트 등록자</td>
-                                                <td style="width: 35%"><input name="userid" type="hidden" value="admin">
-                                                    admin
 
-                                                </td>
-                                                <td class="tdl" style="width: 15%">프로젝트 운영자</td>
-                                                <td style="width: 35%" >
-                                                    <input name="mnguser" type="text"	class="form-control">
-                                                    <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
-
-                                                </td>
-                                            </tr>
                                         </table>
 
                                         <div class="form-group" style="margin-top: 10px">

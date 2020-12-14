@@ -157,7 +157,7 @@
 															<td><img src="${listview.imageUrl}" width="110"></td>
 															<td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
 															<td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
-															<td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
+															<td class="title" style="display: flex">${listview.title}</td>
 															<td>
 																	${listview.regDate}<br>
 																등록자

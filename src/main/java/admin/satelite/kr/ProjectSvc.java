@@ -246,6 +246,12 @@ public class ProjectSvc {
         sqlSession.delete("projectMemoDelete", param);
     }
 
+    public void delMember(ProjectVO param) {
+
+        sqlSession.delete("delMember", param);
+    }
+
+
     public Integer selPrjTitCt(String param) {
         return sqlSession.selectOne("selPrjTitCt", param);
     }
@@ -267,10 +273,22 @@ public class ProjectSvc {
             txManager.rollback(status);
 
         }
-
-
     }
 
+
+    public void cmInsert(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        try {
+            sqlSession.update("cmInsert", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+    }
     public Integer insertCategory(ProjectVO param) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
@@ -298,4 +316,10 @@ public class ProjectSvc {
 
         return sqlSession.selectList("category02", param);
     }
+
+    public List<?> categoryMember(Integer param) {
+
+        return sqlSession.selectList("categoryMember", param);
+    }
+
 }

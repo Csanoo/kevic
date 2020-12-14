@@ -312,7 +312,6 @@
 
         $(document).on("click",".btn-modify",function(){
             var _title = $(this).prev("input").val();
-            alert(_title);
             var _sn = $(this).attr("data");
             $.ajax({
                 type: "POST",
@@ -371,7 +370,7 @@
         });
         $("#category1").on("change",function(){
             var sn = $("#category1 option:selected").val();
-            alert(sn);
+
             $.get("/admin/category02?sn="+sn,function(data){
                 $( "#category2" ).html( data );
                 //alert( "Load was performed." );
@@ -423,7 +422,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">등록</button>
+                <button type="button" class="btn btn-default"  onClick="publishPost();">등록</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
             </div>
         </div>

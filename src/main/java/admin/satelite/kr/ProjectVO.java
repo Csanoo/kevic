@@ -351,5 +351,31 @@ public class ProjectVO {
         this.ct = ct;
     }
 
+    private Integer puse;
+    public Integer getPuse() {
+        return puse;
+    }
+    public void setPuse(Integer puse) {
+        this.puse = puse;
+    }
+
+    private String userType;
+    public String getUserType() {
+        return userType;
+    }
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
+
+    private String username;
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+
 
 }

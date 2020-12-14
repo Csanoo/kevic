@@ -120,7 +120,9 @@ public class ProjectCtr {
 
         List<?> memolist  = projectSvc.selectMemoSelList(sn);
         modelMap.addAttribute("memolist", memolist);
-
+        Integer psn = Integer.parseInt(request.getParameter("sn"));
+        List<?> mlist  = projectSvc.categoryMember(psn);
+        modelMap.addAttribute("mlist", mlist);
         modelMap.addAttribute("projectInfo", projectInfo);
 
         return "project/projectRead";
@@ -378,6 +380,30 @@ throws Exception{
     }
 
     @ResponseBody
+    @RequestMapping(value = "/cmInsert")
+    public String cmInsert(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+        String result = "TRUE";
+        try {
+            int cnt = Integer.parseInt(request.getParameter("CNT"));
+            int sn = Integer.parseInt(request.getParameter("sn"));
+            projectInfo.setSn(sn);
+            String rprtOdr = request.getParameter("RPRT_ODR");
+            String [] strArray = rprtOdr.split(",");
+            for(int i=0; i<cnt; i++) {
+                String userid = (String)strArray[i];
+                projectInfo.setUserid(userid);
+                projectSvc.cmInsert(projectInfo);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return result;
+    }
+
+
+
+    @ResponseBody
     @RequestMapping(value = "/CategorySave")
     public Integer CategorySave(HttpServletRequest request, ProjectVO projectInfo, MultipartHttpServletRequest fileRequest) throws Exception{
         try {
@@ -585,5 +611,33 @@ throws Exception{
             return "";
         }
 
+    }
+
+    @RequestMapping(value = "/categoryMember")
+    public String categoryMember(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+      //  try {
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
+           // System.out.println(sn);
+            projectInfo.setSn(sn);
+
+            return "project/puser.jsp";
+
+     //   } catch (Exception e) {
+     //       System.out.println(e.getMessage());
+     //       return "";
+     //   }
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delMember")
+    public String delMember(HttpServletRequest request, ProjectVO projectInfo) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        String userid = request.getParameter("userid");
+        projectInfo.setSn(sn);
+        projectInfo.setUserid(userid);
+        projectSvc.delMember(projectInfo);
+        return "True";
     }
 }
