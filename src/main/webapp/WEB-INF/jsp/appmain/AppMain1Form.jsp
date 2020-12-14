@@ -46,15 +46,9 @@
 
 												<td style="width: 35%">
 													<select name="project">
-														<option value="001">
-															프로젝트01
-														</option>
-														<option value="002">
-															프로젝트02
-														</option>
-														<option value="003">
-															프로젝트03
-														</option>
+														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
+															<option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
+														</c:forEach>
 													</select>
 												</td>
 
@@ -190,7 +184,7 @@
 <script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
 <script type="text/javascript">
     nhn.husky.EZCreator.createInIFrame({
-        oAppRef: oEditors,
+        oAppRef: umemo,
         elPlaceHolder: "umemo",
         sSkinURI: "/admin/design/assets/plugins/smart/SmartEditor2Skin.html",
         htParams: {

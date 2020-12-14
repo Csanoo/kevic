@@ -28,31 +28,20 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
                                         <tr>
-                                            <td class="tdl" style="width: 25%">프로젝트</td>
+                                            <td class="tdl" style="width: 25%">사용여</td>
                                             <td style="width: 75%">
-                                                <!--
-                                                <select name="sproject">
-                                                    <option value="">프로젝트</option>
-                                                    <c:forEach var="projectview" items="${projectview}"   varStatus="status">
-                                                        <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
-                                                    </c:forEach>
-                                                </select> ?? 프로젝트 목록에서 프로젝트 항목을 셀렉트로 검색하는것 맞나요?
-                                                -->
-                                                <input type="text" name="sproject" value="">
+                                                <input type="radio" name="state" value=""><label>전체</label>
+                                                <input type="radio" name="state" value="100"><label>사용</label>
+                                                <input type="radio" name="state" value="200"><label>중지</label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="tdl" style="width: 25%">타이틀</td>
+                                            <td class="tdl" style="width: 25%">프로젝트명</td>
                                             <td style="width: 75%">
                                                 <input name="searchtitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">키워드</td>
-                                            <td style="width: 75%">
-                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
-                                            </td>
-                                        </tr>
+
                                     </table>
                                     <div class="form-group" style="margin-top: 20px">
                                         <button type="button" class="btn btn-orange" onclick="fn_formSubmit()">검색</button>

@@ -270,5 +270,13 @@ public class ProjectSvc {
 
 
 
+    public List<?> category01(Integer param) {
 
+        return sqlSession.selectList("category01", param);
+    }
+
+    public List<?> category02(Integer param) {
+
+        return sqlSession.selectList("category02", param);
+    }
 }

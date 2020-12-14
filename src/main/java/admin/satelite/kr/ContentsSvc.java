@@ -80,7 +80,10 @@ public class ContentsSvc {
         return sqlSession.selectList("selectcontentsList", param);
     }
 
+    public List<ContentsVO> selectexcelList(SearchVO param) {
 
+        return sqlSession.selectList("selectexcelList", param);
+    }
     public Integer selectAppMain2Count(SearchVO param) {
         return sqlSession.selectOne("selectAppMain2Count", param);
     }

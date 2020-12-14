@@ -37,7 +37,8 @@
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
-                            <form name="form1" action="projectModifySave" method="post"	enctype="multipart/form-data">
+                            <form name="form1" action="projectRegUp" method="post"	enctype="multipart/form-data">
+                                <input type="hidden" name="sn" id="sn" value="${projectInfo.sn}">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <table id="customers">
@@ -47,7 +48,7 @@
                                                 <td style="width: 35%" colspan="3">
                                                     <input type="text" name="title" id="title" value="${projectInfo.title}">
                                                     <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>( ex : KPOP 걸 그룹)
-                                                    <input type="hidden" name="titleCk" id="titleCk" value="1">
+                                                    <input type="hidden" name="titleCk" id="titleCk" value="3">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -56,7 +57,7 @@
                                                 <td style="width: 35%" colspan="3">
                                                     <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}" readonly>
                                                     <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
-                                                    <input type="hidden" name="projectcdCk" id="projectcdCk" value="1">
+                                                    <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
                                                 </td>
                                             </tr>
                                             <tr>
@@ -78,34 +79,27 @@
                                                 <td style="width: 35%" colspan="3">
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
-                                                            <c:forEach var="listview" items="${listview}" varStatus="status">
-                                                                <input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">
-                                                                <a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
-                                                                    <c:out value="${listview.filename}" />
-                                                                </a>
-                                                                <c:out value="${listview.size2String()}" />
-                                                                <br />
-                                                            </c:forEach>
+                                                            <input type="checkbox" name="modi" value="Y"/>
                                                             <input type="file" name="uploadfile" multiple="" />
+                                                            <br /><c:out value="${projectInfo.logoimg}" />
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basictitle}" class="form-control"></td>
+                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basicTitle}" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>
                                                 <td style="width: 35%"><input name="userid" type="hidden" value="admin" >
                                                    admin
-                                                    관리자기능 개발 이후
                                                 </td>
                                                 <td class="tdl" style="width: 15%">프로젝트 운영자</td>
                                                 <td style="width: 35%" >
                                                     <input name="mnguser" type="text"	class="form-control">
                                                     <button type="button" class="btn btn-gray"	data-toggle="modal" data-target="#myModal">추가</button>
-                                                    관리자기능 개발 이후
+
                                                 </td>
                                             </tr>
                                         </table>

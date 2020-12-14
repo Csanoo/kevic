@@ -38,7 +38,11 @@ public class AppMain1Svc {
 	public AppMain1VO selectAppMain2One(String param) {
 		return sqlSession.selectOne("selectAppMain2One", param);
 	}
-	
+
+	public List<?> selectBoxproject(SearchVO param) {
+
+		return sqlSession.selectList("selectBoxproject3", param);
+	}
 
 
 	public void insertAppMain1One(AppMain1VO param) {

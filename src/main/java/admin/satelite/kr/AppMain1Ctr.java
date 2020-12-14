@@ -11,18 +11,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import main.java.common.satelite.kr.SearchVO;
+
 import main.java.admin.satelite.kr.AppMain1VO;
 import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
 import org.springframework.web.bind.annotation.ResponseBody;
+import main.java.admin.satelite.kr.ProjectSvc;
+import main.java.common.satelite.kr.SearchVO;
 
 @Controller
 public class AppMain1Ctr {
 
 	@Autowired
 	private AppMain1Svc appmain1Svc;
-	
+	private ProjectSvc projectSvc;
 
 	@RequestMapping(value = "/AppMain1")
 	public String AppMain1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
@@ -32,7 +34,9 @@ public class AppMain1Ctr {
 		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
 
 
+		List<?> projectview  = appmain1Svc.selectBoxproject(searchVO);
 
+		modelMap.addAttribute("projectview", projectview);
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 
@@ -60,23 +64,25 @@ public class AppMain1Ctr {
 	
 	
 	@RequestMapping(value = "/appmain1Form")
-	public String appmain1Form(HttpServletRequest request, AppMain1VO appmain1Info, 
+	public String appmain1Form(HttpServletRequest request, AppMain1VO appmain1Info, SearchVO searchVO,
 			ModelMap modelMap) {
-		
-		
+
+		List<?> projectview  = appmain1Svc.selectBoxproject(searchVO);
+		modelMap.addAttribute("projectview", projectview);
 		
 		return "appmain/AppMain1Form";
 	}
 	
 	@RequestMapping(value = "/appmain1Read")
-	public String appmain1Read(HttpServletRequest request, AppMain1VO appmain1Info, 
+	public String appmain1Read(HttpServletRequest request, AppMain1VO appmain1Info, SearchVO searchVO,
 			ModelMap modelMap) {
 		
 		
 		String sn = request.getParameter("sn");
-		
-		
 
+
+		List<?> projectview  = appmain1Svc.selectBoxproject(searchVO);
+		modelMap.addAttribute("projectview", projectview);
 		appmain1Info = appmain1Svc.selectAppMain1One(sn);
 
 		modelMap.addAttribute("appmain1Info", appmain1Info);

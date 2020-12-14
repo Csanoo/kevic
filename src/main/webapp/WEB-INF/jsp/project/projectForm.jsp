@@ -86,7 +86,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" class="form-control"></td>
+                                                <td style="width: 35%" colspan="3"><input name="basicTitle" type="text" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>
@@ -125,13 +125,13 @@
                                         frm.title.focus();
                                         return false;
                                     }
-                                    if(frm.basictitle.value == ''){
+                                    if(frm.basicTitle.value == ''){
                                         alert('기본 페이지 타이틀을 확인해주세요.');
-                                        frm.title.focus();
+                                        frm.basicTitle.focus();
                                         return false;
                                     }
-                                    if(frm.uploadfile.value == ''){력
-                                        alert('기본로고를 입해주세요.');
+                                    if(frm.uploadfile.value == ''){
+                                        alert('기본로고를 입력해주세요.');
                                         frm.title.focus();
                                         return false;
                                     }

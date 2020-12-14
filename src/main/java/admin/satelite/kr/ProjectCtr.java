@@ -50,7 +50,8 @@ public class ProjectCtr {
 
         List<?> listview  = projectSvc.selectProjectList2(searchVO);
         //List<?> cateview  = projectSvc.selectCateSelList(searchVO);
-
+        List<?> projectview  = projectSvc.selectBoxproject(searchVO);
+        modelMap.addAttribute("projectview", projectview);
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
         //modelMap.addAttribute("cateview", cateview);
@@ -531,5 +532,36 @@ throws Exception{
            // System.out.println(e.getMessage());
             return 0;
         }
+    }
+
+    @RequestMapping(value = "/category01")
+    public String category01(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+        try {
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
+            List<?> catelistTwo  = projectSvc.category01(sn);
+            modelMap.addAttribute("listview", catelistTwo);
+            return "project/category01";
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return "false";
+        }
+
+    }
+
+    @RequestMapping(value = "/category02")
+    public String category02(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+        try {
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
+            List<?> catelistTwo  = projectSvc.category02(sn);
+            modelMap.addAttribute("listview", catelistTwo);
+            return "project/category02";
+
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            return "";
+        }
+
     }
 }

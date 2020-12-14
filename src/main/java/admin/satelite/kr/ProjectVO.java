@@ -318,5 +318,29 @@ public class ProjectVO {
         this.pCate = pCate;
     }
 
+    private String basicTitle="";
+    public String getBasicTitle() {
+        return basicTitle;
+    }
+    public void setBasicTitle(String basicTitle) {
+        this.basicTitle = basicTitle;
+    }
+
+    private Integer category01;
+    public Integer getCategory01() {
+        return category01;
+    }
+    public void setCategory01(Integer category01) {
+        this.category01 = category01;
+    }
+
+    private Integer category02;
+    public Integer getCategory02() {
+        return category02;
+    }
+    public void setCategory02(Integer category02) {
+        this.category02 = category02;
+    }
+
 
 }

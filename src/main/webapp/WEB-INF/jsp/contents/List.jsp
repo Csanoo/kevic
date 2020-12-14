@@ -79,6 +79,7 @@
                             <script>
                                 function fn_formSv() {
                                     $("#loading").show();
+                                    document.form1.action="";
                                     document.form1.submit();
                                 }
                             </script>
@@ -187,6 +188,7 @@
 </form>
 <script>
     function fn_formSubmit() {
+        document.form1.action='';
         document.form1.submit();
     }
 
@@ -200,7 +202,6 @@
         document.form1.action = "contentsRead";
         document.form1.submit();
     }
-
 
 
     function deletePost(){
@@ -265,6 +266,11 @@
             });
         }
     }
+    function excelDownload() {
+        document.form1.action='ExcelDownload';
+        document.form1.submit();
+    }
+
 </script>
 
 
@@ -354,6 +360,20 @@
                 });
             }
         });
+        $("#pubproject").on("change",function(){
+            var sn = $("#pubproject option:selected").val();
+            $.get("/admin/category01?sn="+sn,function(data){
+                $( "#category1" ).html( data );
+                //alert( "Load was performed." );
+            });
+        });
+        $("#category1").on("change",function(){
+            var sn = $("#category1 option:selected").val();
+            $.get("/admin/category02?sn="+sn,function(data){
+                $( "#category2" ).html( data );
+                //alert( "Load was performed." );
+            });
+        });
     });
 </script>
 
@@ -382,11 +402,21 @@
                     <tr>
                         <td class="tdl" style="width: 25%">카테고리</td>
                         <td style="width: 75%">
-                            <select name="category" id="pubcate" class="form-control" >
-                                <c:forEach var="cateview" items="${cateview}"   varStatus="status">
-                                    <option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-                                </c:forEach>
-                            </select>
+                            <div id="category01">
+                                <select name="category01" id="category1" class="form-control" >
+                                    <option value="">카테고리</option>
+                                    <c:forEach var="cateview" items="${cateview1}"   varStatus="status">
+                                        <option value="${cateview1.code2}" <c:if test="${projectInfo.catesn eq cateview1.sn}">selected</c:if>>${cateview1.title}</option>
+                                    </c:forEach>
+
+                                </select>
+                            </div>
+                            <div id="category02">
+                                <select name="category02" id="category2" class="form-control" >
+                                    <option value="">카테고리</option>
+
+                                </select>
+                            </div>
                         </td>
                     </tr>
                 </table>

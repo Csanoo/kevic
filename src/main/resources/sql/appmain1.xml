@@ -21,7 +21,10 @@
 		code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg )
 		values ( '2', concat('https://i.ytimg.com/vi/',#{link},'/default.jpg'), #{link},#{title},#{umemo},#{type1},#{text1},#{text2},'2',#{creatorimg} )
 	</insert>
-	
+	<select id="selectBoxproject3"
+			resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, title  from tbl_project order by sn asc
+	</select>
 	<update id="updateAppMain1One"
 		parameterType="main.java.admin.satelite.kr.AppMain1VO">
 		update tbanner2 set

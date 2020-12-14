@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
+import java.util.ArrayList;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -260,7 +260,7 @@ public class ContentsCtr {
     }
 
     @RequestMapping(value="/ExcelDownload")
-    public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model) throws Exception {
+    public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model, ContentsVO contentsVO) throws Exception {
 
         HSSFWorkbook objWorkBook = new HSSFWorkbook();
         HSSFSheet objSheet = null;
@@ -313,43 +313,41 @@ public class ContentsCtr {
         objCell.setCellValue("등록일");
         objCell.setCellStyle(styleHd);
 
-        List<?> listview  = contentsSvc.selectContentsList(searchVO);
-
+        List<ContentsVO> listview  = contentsSvc.selectexcelList(searchVO);
+        listview.forEach(s -> System.out.println(s));
         int rowNo = 0;
-        for(int i = 0; i < listview.size(); i++){
-
-
-
+        ArrayList val;
+        for(ContentsVO list : listview){
 
             objRow = objSheet.createRow(rowNo++);
             objRow.setHeight ((short) 0x150);
 
             objCell = objRow.createCell(0);
-            objCell.setCellValue(rowNo+1);
+            objCell.setCellValue(rowNo);
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(1);
-        //    objCell.setCellValue(list.get(i).getImageUrl());
+            objCell.setCellValue(""+list.getImageUrl());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(2);
-          //  objCell.setCellValue(list.getVideoUrl());
+            objCell.setCellValue(""+list.getVideoUrl());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(3);
-           // objCell.setCellValue(list.getCtSource());
+            objCell.setCellValue(""+list.getCtSource());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(4);
-          //  objCell.setCellValue(list.getTitle());
+            objCell.setCellValue(""+list.getTitle());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(5);
-         //   objCell.setCellValue(list.getMemo());
+            objCell.setCellValue(""+list.getMemo());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(6);
-          //  objCell.setCellValue(list.getRegDate());
+            objCell.setCellValue(""+list.getRegDate());
             objCell.setCellStyle(styleHd);
 
         }
@@ -368,5 +366,6 @@ public class ContentsCtr {
         response.getOutputStream().flush();
         response.getOutputStream().close();
     }
+
 
 }

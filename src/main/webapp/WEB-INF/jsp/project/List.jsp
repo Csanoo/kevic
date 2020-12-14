@@ -196,10 +196,12 @@
 </form>
 <script>
     function fn_formSubmit() {
+        document.form1.action='';
         document.form1.submit();
     }
 
     function fn_orderKey(_a) {
+        document.form1.action='';
         document.form1.orderKeyword.value = _a;
         document.form1.submit();
     }
@@ -335,6 +337,11 @@
             return false;
         }
     }
+    function excelDownload() {
+        document.form1.action='ExcelDownload';
+        document.form1.submit();
+    }
+
 </script>
 
 

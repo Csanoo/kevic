@@ -79,7 +79,7 @@
                             <form name="form1" method="post" id="uploadForm">
                                 <input type="hidden" name="depth" value="1">
                                 <input type="hidden" name="pCate" value="0" id="pCate">
-                                <input type="text" name="sn" id="sn" value="0">
+                                <input type="hidden" name="sn" id="sn" value="0">
                                 <input type="hidden" name="projectSn" value="${projectInfo.projectSn}">
 
                                 <div class="form-group">

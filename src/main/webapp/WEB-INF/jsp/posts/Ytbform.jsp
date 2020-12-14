@@ -43,7 +43,7 @@
 											</tr>
 											<tr>
 												<td class="tdl" style="width: 25%">컨텐츠 타입</td>
-												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
+												<td style="width: 75%"><input name="kind" type="text"	value="" class="form-control"></td>
 											</tr>
 											<tr>
 												<td class="tdl" style="width: 25%">카테고리</td>
@@ -80,9 +80,9 @@
 									
 									if ( document.form1.title.value == ""){
                                         alert("검색어를 입력해주세요.");
-									}
-									if ( document.form1.kind.value == "" ){
-										alert("분류값을 입력해주세요");
+								//	}
+								//	if ( document.form1.kind.value == "" ){
+										//alert("분류값을 입력해주세요");
 									}else{
                                         $("#loading").show();
 									    document.form1.submit();

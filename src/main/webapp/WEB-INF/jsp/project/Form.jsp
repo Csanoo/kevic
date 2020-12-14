@@ -44,7 +44,7 @@
 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
 
 												<td style="width: 35%" colspan="3">
-													<select name="project"  class="form-control">
+													<select name="project"  id="project" class="form-control">
 
 														<option>프로젝트</option>
 														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
@@ -68,10 +68,21 @@
 											<tr>
 												<td class="tdl" style="width: 15%">전시 카테고리</td>
 												<td style="width: 35%" colspan="3">
-													<select name="category"  class="form-control" >
+													<div id="category01">
+													<select name="category01" id="category1" class="form-control" >
 														<option value="">카테고리</option>
-														<option value="001">카테고리1*구현전</option>
+														<c:forEach var="cateview" items="${cateview1}"   varStatus="status">
+															<option value="${cateview1.code2}" <c:if test="${projectInfo.catesn eq cateview1.sn}">selected</c:if>>${cateview1.title}</option>
+														</c:forEach>
+
 													</select>
+													</div>
+													<div id="category02">
+														<select name="category02" id="category2" class="form-control" >
+															<option value="">카테고리</option>
+
+														</select>
+													</div>
 												</td>
 											</tr>
 											<tr>
@@ -177,7 +188,22 @@
             $("#preview-title").html($("input[name='title']").val());
 
         });
+		$("#project").on("change",function(){
+            var sn = $("#project option:selected").val();
+            $.get("/admin/category01?sn="+sn,function(data){
+                $( "#category1" ).html( data );
+                //alert( "Load was performed." );
+            });
+		});
+        $("#category1").on("change",function(){
 
+            var sn = $("#category1 option:selected").val();
+            alert(sn);
+            $.get("/admin/category02?sn="+sn,function(data){
+                $( "#category2" ).html( data );
+                //alert( "Load was performed." );
+            });
+        });
     })
 </script>
 
