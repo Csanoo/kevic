@@ -376,6 +376,8 @@ public class ProjectVO {
     }
 
 
-
+    private Integer adNum;
+    public Integer getAdNum(){return adNum;}
+    public void setAdNum(Integer adNum){this.adNum = adNum;}
 
 }

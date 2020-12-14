@@ -100,9 +100,9 @@
 
                                 <div class="form-group">
                                     <label class="form-label" >광고 배너 설정</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="adInfo"  class="icheck-minimal-red" value="N" checked>
+                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="adinfo"  class="icheck-minimal-red" value="N" checked>
                                     <label class="iradio-label form-label" for="minimal-radio-1">사용안함</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-2" name="adInfo"  class="icheck-minimal-red" value="Y">
+                                    <input tabindex="5" type="radio" id="minimal-radio-2" name="adinfo"  class="icheck-minimal-red" value="Y">
                                     <label class="iradio-label form-label" for="minimal-radio-2">사용함</label>
                                     <span id="timelayer" style="">
                                         <input type="text" class="" style="width:30px;display: inline-block;" name="adtime" id="time" value="0">건 마다 광고 노출
@@ -341,13 +341,16 @@
             $("minimal-radio-1").attr("checked",false);
            // $("#CateUp").hide();
         }
-       // $("#time").val($(this).children("input[name='adtime']").val());
-        $("#adInfo").val($(this).children("input[name='adInfo']").val());
+        $("#time").val($(this).children("input[name='adtime']").val());
+       // $("#adInfo").val();
+        var adInfo = $(this).children("input[name='adinfo']").val();
+
+        $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
         $.get("/admin/categoryTList?sn=${projectInfo.projectSn}&pCate="+Sn,function(data){
             $( "#twoCate" ).html( data );
             //alert( "Load was performed." );
         });
-        //$("#field-6").val($(this).children("input[name='adTag']").val());
+        $("#field-6").val($(this).children("input[name='adTag']").val());
         //alert($(this).children("input[id='title']").val());
         $("#CateUp").show();
         $("#CateReg").hide();
@@ -365,7 +368,9 @@
         $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
         $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
         $("#time").val($(this).children("input[name='adtime']").val());
-        $("#adInfo").val($(this).children("input[name='adInfo']").val());
+        var adInfo = $(this).children("input[name='adinfo']").val();
+
+        $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
         $("#field-6").val($(this).children("input[name='adTag']").val());
         $("#CateUp").show();
         $("#CateReg").hide();
@@ -376,7 +381,7 @@
         $("#uploadForm input[name='sn']").val('0');
         $("#uploadForm input[name='title']").val('');
         $("#uploadForm input[name='uploadfile']").val('');
-        $("#uploadForm input:radio[name='adInfo']:radio[value='N']").prop('checked', true);
+        $("#uploadForm input:radio[name='adinfo']:radio[value='N']").prop('checked', true);
         $("#uploadForm textarea[name='adTag']").val('');
         $("#uploadForm input[name='adtime']").val(0);
         $("#bannerImgOld").val('');

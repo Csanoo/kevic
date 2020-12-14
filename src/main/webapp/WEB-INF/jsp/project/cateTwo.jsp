@@ -13,7 +13,7 @@
                 <input type="hidden" value="${listview.iconImg}" name="iconImg" >
                 <input type="hidden" value="${listview.adTag}" name="adTag" >
                 <input type="hidden" value="${listview.adinfo}" name="adinfo" >
-                <input type="hidden" value="${listview.adtime}" name="adtime" >
+                <input type="hidden" value="${listview.adNum}" name="adtime" >
                     ${listview.title}
             </td>
         </tr>

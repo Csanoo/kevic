@@ -27,12 +27,12 @@
 
 
 	<select id="selectCategoryOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg ,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg ,iconImg ,adinfo ,adtime as 'adNum', adTag ,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{sn} and depth=1
 	</select>
 
 	<select id="selectCategoryTwo" parameterType="main.java.admin.satelite.kr.ProjectVO" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime as 'adNum',adTag ,regDate, pCate, depth, projectSn  from tbl_category
 		where projectSn=#{projectSn} and pCate =#{pCate} and depth=2
 	</select>
 
