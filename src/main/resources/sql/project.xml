@@ -227,8 +227,17 @@
 		title = #{title}, bannerImg=#{bannerImg},iconImg=#{iconImg},adinfo=#{adinfo}
 		,adtime=#{adtime},adTag=#{adTag}
 		where sn=#{sn}
-
+	</update>
+	<update id="updateProjectMemo" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_project_memo set
+		title = #{title}, memo = #{memo}
+		where sn=#{sn}
 	</update>
 
+
+	<delete id="projectMemoDelete"	parameterType="Integer">
+		delete from tbl_project_memo
+		where sn=#{sn}
+	</delete>
 </mapper>
 

@@ -202,6 +202,7 @@ public class Member1Ctr {
 			try {
 				srch.execute(title, kind);
 			} catch(Exception e) {
+				System.out.println(e.getMessage());
 			}
 
 		}else if(snsType.equals("twi")){

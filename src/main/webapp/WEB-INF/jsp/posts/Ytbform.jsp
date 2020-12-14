@@ -42,6 +42,11 @@
 												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
 											</tr>
 											<tr>
+												<td class="tdl" style="width: 25%">키워드(키워드 입력)</td>
+												<td style="width: 75%"><input name="kind" type="text"	value="" class="form-control"></td>
+											</tr>
+											<!--
+											<tr>
 												<td class="tdl" style="width: 25%">컨텐츠 타입</td>
 												<td style="width: 75%"><input name="kind" type="text"	value="" class="form-control"></td>
 											</tr>
@@ -56,15 +61,18 @@
 												</select>
 												</td>
 											</tr>
+											-->
 											<tr>
 												<td class="tdl" style="width: 25%">SNS</td>
 												<td style="width: 75%">
-													<select name="snsType" class="form-control" >
-														<option>크롤링할 SNS를 선택해주세요.</option>
+													<select name="snsType" id="snsType" class="form-control" >
+														<option value="">크롤링할 SNS를 선택해주세요.</option>
 														<option value="ytb">유튜브</option>
+														<!--
 														<option value="insta">인스타</option>
 														<option value="fb">페이스북</option>
 														<option value="twi">트위터</option>
+														-->
 													</select>
 												</td>
 											</tr>
@@ -75,22 +83,7 @@
 									</div>
 								</div>
 							</form>
-							<script>
-								function fn_formSv() {
-									
-									if ( document.form1.title.value == ""){
-                                        alert("검색어를 입력해주세요.");
-								//	}
-								//	if ( document.form1.kind.value == "" ){
-										//alert("분류값을 입력해주세요");
-									}else{
-                                        $("#loading").show();
-									    document.form1.submit();
-									}
 
-								}
-
-							</script>
 
 						</div>
 					</div>
@@ -238,12 +231,30 @@
 				}
 			});
 		});
+
 	});
 	function fn_write(){
         location.href = "/admin/ContentsForm";
 	}
-</script>
+    function fn_formSv() {
 
+        if ( document.form1.title.value == ""){
+            alert("검색어를 입력해주세요.");
+            return false;
+        }
+        if ( $("#snsType option:selected").val() == ""){
+            alert("크롤링할 SNS을 선택해주세요.");
+            return false;
+        }
+
+        $("#loading").show();
+        document.form1.submit();
+
+
+    }
+
+
+</script>
 <div class="loader" id ="loading"></div>
 <style>
 	.loader {

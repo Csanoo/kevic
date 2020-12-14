@@ -84,27 +84,29 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="categoryTitle">카테고리명*</label>
-                                    <input title="text" name="title" class="form-control" id="categoryTitle" >
+                                    <input type="text" name="title" class="form-control" id="categoryTitle" >
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="banner">타이틀배너</label>
-                                    <input type="file" class="form-control" id="bannerImg" name="uploadfile" >
-                                    <input type="text" class="form-control" name="bannerImgOld" id="bannerImgOld" >
+                                    <input type="file" class="form-control" name="uploadfile" id="bannerImg"  >
+                                    <input type="text" class="form-control" name="bannerImgOld" id="bannerImgOld" style="border:0">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label" for="icon">아이콘*</label>
                                     <input type="file" class="form-control" name="uploadfile" id="iconImg" >
-                                    <input type="text" class="form-control" name="iconImgOld" id="iconImgOld" >
+                                    <input type="text" class="form-control" name="iconImgOld" id="iconImgOld" style="border:0">
                                 </div>
 
                                 <div class="form-group">
                                     <label class="form-label" >광고 배너 설정</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="adInfo" value="N" class="icheck-minimal-red"checked>
+                                    <input tabindex="5" type="radio" id="minimal-radio-1" name="adInfo"  class="icheck-minimal-red" value="N" checked>
                                     <label class="iradio-label form-label" for="minimal-radio-1">사용안함</label>
-                                    <input tabindex="5" type="radio" id="minimal-radio-2" name="adInfo"  value="Y"  class="icheck-minimal-red">
+                                    <input tabindex="5" type="radio" id="minimal-radio-2" name="adInfo"  class="icheck-minimal-red" value="Y">
                                     <label class="iradio-label form-label" for="minimal-radio-2">사용함</label>
-                                    <input type="text" class="" style="width:10%;display: inline-block" name="adtime" id="time" >건 마다 광고 노출
+                                    <span id="timelayer" style="display:none">
+                                        <input type="text" class="" style="width:30px;display: inline-block;" name="adtime" id="time" >건 마다 광고 노출
+                                    </span>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">광고 삽입Tag</label>
@@ -146,25 +148,25 @@
 
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
-<script src="/design/assets/plugins/uikit/js/uikit.min.js" type="text/javascript"></script><script src="/design/assets/plugins/uikit/js/components/nestable.min.js" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+<script src="/admin/design/assets/plugins/uikit/js/uikit.min.js" type="text/javascript"></script>
+<script src="/admin/design/assets/plugins/uikit/js/components/nestable.min.js" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
 <script type="text/javascript">
 
     $(function(){
 
         $('#CateReg').on('click', function(){
-            if($("input[name='title']").val() == ''){
-
-                return false;
+            if($("#categoryTitle").val() == ''){
                 alert('카테고리명을 입력하세요');
+                return false;
             }
             if(maxLengthCheck('categoryTitle', '카테고리명', 50)){
 
             }else{
-                return false;
+               return false;
             }
 
-            if($("input[name='iconImg']").val() == ''){
-                alert('아이콘이미지를 등하세요');
+            if($("#iconImg").val() == ''){
+                alert('아이콘이미지를 등록하세요');
                 return false;
             }
             if(confirm('카테고리를 생성하시겠습니까?')) {
@@ -199,9 +201,9 @@
 
         $('#CateUp').on('click', function(){
             if($("input[name='title']").val() == ''){
-
-                return false;
                 alert('카테고리명을 입력하세요');
+                return false;
+
             }
             if(maxLengthCheck('categoryTitle', '카테고리명', 50)){
 
@@ -253,6 +255,8 @@
             $("input[name='pCate']").val('0');
             $("input[name='sn']").val('0');
             $("input[name='title']").focus();
+            $("#bannerImgOld").val();
+            $("#iconImgOld").val();
         });
 
         $("#Cate2DethReg").on("click",function(){
@@ -295,6 +299,15 @@
             }
 
         });
+        $("input:radio[name=adInfo]").click(function(){
+       // $(document).on("click","input[name='adInfo']",function(){
+            alert($("input[name='adInfo']:checked").val());
+            if($("input[name='adInfo']:checked").val() =='Y'){
+                $("#timelayer").show();
+            }else{
+                $("#timelayer").hide();
+            }
+        });
 
     })
 
@@ -305,6 +318,7 @@
             $( "#ondCate" ).html( data );
             $( "#twoCate" ).html( "" );
             //alert( "Load was performed." );
+            initval()
         });
 
     }
@@ -322,8 +336,11 @@
 
         if($(this).children("input[name='adInfo']").val() =='Y'){
             $("minimal-radio-2").attr("checked",true);
+            $("#CateUp").show();
+
         }else{
             $("minimal-radio-1").attr("checked",false);
+            $("#CateUp").hide();
         }
         $("#time").val($(this).children("input[name='adTime']").val());
         $("#adInfp").val($(this).children("input[name=' adInfo']").val());
@@ -357,9 +374,11 @@
         $("input[name='sn']").val('0');
         $("input[name='title']").val('');
         $("input[name='uploadfile']").val('');
-        $("input[name='adInfo']").val('');
+        $("input:radio[name='adInfo']:radio[value='N']").prop('checked', true);
         $("textarea[name='adTag']").val('');
-        $("input[name='adtime']").val('');
+        $("input[name='adtime']").val('0');
+        $("#bannerImgOld").val('');
+        $("#iconImgOld").val('');
         $("#CateUp").hide();
         $("#CateReg").show();
     }

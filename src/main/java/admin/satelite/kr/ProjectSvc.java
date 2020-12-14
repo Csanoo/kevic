@@ -226,6 +226,25 @@ public class ProjectSvc {
 
         }
     }
+    public void updateProjectMemo(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        try {
+            sqlSession.update("updateProjectMemo", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+    }
+
+
+    public void projectMemoDelete(Integer param) {
+
+        sqlSession.delete("projectMemoDelete", param);
+    }
 
     public Integer selPrjTitCt(String param) {
         return sqlSession.selectOne("selPrjTitCt", param);

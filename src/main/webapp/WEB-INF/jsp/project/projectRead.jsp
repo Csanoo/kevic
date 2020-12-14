@@ -146,7 +146,7 @@
                             </script>
                             <form name="form2" id="form2" action="projectSave" method="post"	enctype="multipart/form-data">
 
-                                <input type="hidden" name="sn" value="${projectInfo.sn}">
+                                <input type="text" name="sn" id="tableSn" value="${projectInfo.sn}">
 
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
@@ -155,20 +155,21 @@
                                                 <td class="tdl" style="width: 15%">제목</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="title" value="" class="form-control">
+                                                    <input type="text" name="title"  id="mtitle" value="" class="form-control">
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">내용</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="memo" value="" class="form-control">
+                                                    <input type="text" name="memo" id="mmemo"  value="" class="form-control">
                                                 </td>
                                             </tr>
                                         </table>
 
                                         <div class="form-group" style="margin-top: 10px">
                                             <button type="button" class="btn btn-orange" id="saveMemo">저장</button>
+                                            <button type="button" class="btn btn-orange" id="updateMemo" style="display: none">수정</button>
                                         </div>
 
                                     </div>
@@ -199,11 +200,11 @@
                                 <tbody>
                                 <c:forEach var="memolist" items="${memolist}" varStatus="status">
                                     <tr>
-                                        <td>${memolist.sn}</td>
-                                        <td>${memolist.title}</td>
-                                        <td>${memolist.memo}</td>
-                                        <td>${memolist.regDate}</td>
+                                        <td id="tblSn">${memolist.sn}</td>
+                                        <td id="tblTitle">${memolist.title}</td>
+                                        <td id="tblMemo">${memolist.memo}</td>
                                         <td>admin</td>
+                                        <td>${memolist.regDate}</td>
                                         <td>
                                             <button type="button" class="btn btn-gray" onclick="modifyMemo('${memolist.sn}')">수정</button>
                                             <button type="button" class="btn btn-orange" onclick="delMemo('${memolist.sn}')">X</button>
@@ -247,70 +248,109 @@
 
         });
 
+
+        $("#dupTit").on("click",function(){
+            var title = $("#title").val();
+            if(title==""){
+                alert("프로젝트명을 입력해주세요");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/admin/selPrjTitCt",
+                data: "title=" + title,
+                success: function (jdata) {
+                    if(jdata<1){
+                        alert("사용할 수 있는 프로젝트명입니다.");
+                        $("#titleCk").val(1);
+                    }else{
+                        alert("중복 된 프로젝트명입니다.");
+                        $("#titleCk").val(0);
+                    }
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+        });
+        $("#dupCd").on("click",function(){
+            var projectcd = $("#projectcd").val();
+            if(projectcd==""){
+                alert("프로젝트코드를 입력해주세요");
+                return false;
+            }
+            $.ajax({
+                type: "POST",
+                url: "/admin/selPrjCd",
+                data: "title=" + projectcd,
+                success: function (jdata) {
+                    if(jdata<1){
+                        alert("사용할 수 있는 프로젝트코드입니다.");
+                        $("#projectcdCk").val(1);
+                    }else{
+                        alert("중복 된 프로젝트코드입니다.");
+                        $("#projectcdCk").val(0);
+                    }
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+        });
+        $("#saveMemo").on("click",function(){
+            var $frm = $("#form2");
+             $.ajax({
+                type: "POST",
+                url: "/admin/saveMemo",
+                data: $frm.serialize(),
+                success: function (data) {
+                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+        });
+        $("#updateMemo").on("click",function(){
+            var $frm = $("#form2");
+            $.ajax({
+                type: "POST",
+                url: "/admin/updateMemo",
+                data: $frm.serialize(),
+                success: function (data) {
+                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+        });
     })
-    $("#dupTit").on("click",function(){
-        var title = $("#title").val();
-        if(title==""){
-            alert("프로젝트명을 입력해주세요");
-            return false;
-        }
-        $.ajax({
-            type: "POST",
-            url: "/admin/selPrjTitCt",
-            data: "title=" + title,
-            success: function (jdata) {
-                if(jdata<1){
-                    alert("사용할 수 있는 프로젝트명입니다.");
-                    $("#titleCk").val(1);
-                }else{
-                    alert("중복 된 프로젝트명입니다.");
-                    $("#titleCk").val(0);
+    function modifyMemo(){
+        $("#mtitle").val($("#tblTitle").text());
+        $("#mmemo").val($("#tblMemo").text());
+        $("#tableSn").val($("#tblSn").text());
+        $("#saveMemo").hide();
+        $("#updateMemo").show();
+
+    }
+    function delMemo(sn){
+        if(confirm("메모를 삭제하겠습니까?")){
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/delMemo",
+                data: {"sn":sn},
+                success: function (data) {
+                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
                 }
-            },
-            error: function (data) {
-                alert("오류 관리자에게 문의해주세요");
-            }
-        });
-    });
-    $("#dupCd").on("click",function(){
-        var projectcd = $("#projectcd").val();
-        if(projectcd==""){
-            alert("프로젝트코드를 입력해주세요");
-            return false;
+            });
         }
-        $.ajax({
-            type: "POST",
-            url: "/admin/selPrjCd",
-            data: "title=" + projectcd,
-            success: function (jdata) {
-                if(jdata<1){
-                    alert("사용할 수 있는 프로젝트코드입니다.");
-                    $("#projectcdCk").val(1);
-                }else{
-                    alert("중복 된 프로젝트코드입니다.");
-                    $("#projectcdCk").val(0);
-                }
-            },
-            error: function (data) {
-                alert("오류 관리자에게 문의해주세요");
-            }
-        });
-    });
-    $("#saveMemo").on("click",function(){
-        var $frm = $("#form2");
-         $.ajax({
-            type: "POST",
-            url: "/admin/saveMemo",
-            data: $frm.serialize(),
-            success: function (data) {
-                alert()
-                location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
-            },
-            error: function (data) {
-                alert("오류 관리자에게 문의해주세요");
-            }
-        });
-    });
+
+    }
 </script>
 
 <!-- Modal -->

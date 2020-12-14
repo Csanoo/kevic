@@ -30,7 +30,7 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">사용여</td>
                                             <td style="width: 75%">
-                                                <input type="radio" name="state" value=""><label>전체</label>
+                                                <input type="radio" name="state" value="" checked><label>전체</label>
                                                 <input type="radio" name="state" value="100"><label>사용</label>
                                                 <input type="radio" name="state" value="200"><label>중지</label>
                                             </td>
@@ -119,7 +119,7 @@
                                         <tr>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td><c:if test="${listview.state eq '100'}">사용</c:if><c:if test="${listview.state eq '200'}">사용안함</c:if></td>
-                                            <td><img src="/admin/upload/images/${listview.logoimg}" width="110"></td>
+                                            <td><img src="/upload/images/${listview.logoimg}" width="110"></td>
                                             <td>${listview.title}</td>
                                             <td><div style="width:100px;overflow:hidden"></div></td>
                                             <td>0</td>

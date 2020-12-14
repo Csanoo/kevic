@@ -57,6 +57,7 @@ public class Search {
   public void execute(String _title, String _kind) {
     try {
       String queryTerm = _title;
+      System.out.println(queryTerm);
       youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
         public void initialize(HttpRequest request) throws IOException {}
       }).setApplicationName("youtube-cmdline-search-sample").build();
@@ -131,7 +132,7 @@ public class Search {
         //Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().get("default");
 
           String thumbnailURL = "http://img.youtube.com/vi/" + rId.getVideoId() + "/hqdefault.jpg";
-
+          String videoUrl = "https://www.youtube.com/watch?"+rId.getVideoId();
         if ( singleVideo.getSnippet().getTitle().indexOf( query ) > 0 ) {
 
        //   qry = "insert into tcontents ( title, keyword, videoUrl, userid, ctSource, imageURL, category)"
@@ -142,7 +143,7 @@ public class Search {
         qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
         		+ " values ('"+singleVideo.getSnippet().getTitle()
         		+"','"+singleVideo.getSnippet().getTitle()+"','"
-        		+rId.getVideoId()+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
+        		+videoUrl+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
 
 
 

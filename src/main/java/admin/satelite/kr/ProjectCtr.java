@@ -199,6 +199,28 @@ public class ProjectCtr {
         return "True";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/updateMemo")
+    public String updateMemo(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        String title = request.getParameter("title");
+        String memo = request.getParameter("memo");
+        projectInfo.setSn(sn);
+        projectInfo.setTitle(title);
+        projectInfo.setMemo(memo);
+
+        projectSvc.updateProjectMemo(projectInfo);
+        return "True";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delMemo")
+    public String delMemo(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        projectSvc.projectMemoDelete(sn);
+        return "True";
+    }
+
     @RequestMapping(value = "/projectUp")
     public String projectUp(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
 
