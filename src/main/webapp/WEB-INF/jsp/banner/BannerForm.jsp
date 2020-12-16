@@ -250,6 +250,23 @@
                             </form>
                             <script>
                                 function fn_formSv() {
+                                    var frm =document.form1;
+                                    if($("select[name='project']").val()==''){
+                                        alert('프로젝트를 선택해주세요.');
+                                        frm.project.focus();
+                                        return false;
+                                    }
+                                    if(frm.title.value == ''){
+                                        alert('프로젝트명을 확인해주세요.');
+                                        frm.title.focus();
+                                        return false;
+                                    }
+
+                                    if(frm.uploadfile.value == ''){
+                                        alert('이미지를 등록해주세요.');
+                                        frm.uploadfile.focus();
+                                        return false;
+                                    }
                                     document.form1.submit();
 
                                 }
@@ -281,8 +298,10 @@
 </section>
 <!-- END CONTENT -->
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp"/>
-
 <style>
+    .dragRow{
+        border:2px solid #CCCCCC;
+    }
     #banner2{display:none}
     #banner3{display:none}
     #banner4{display:none}
@@ -299,15 +318,12 @@
         $("#dTable").tableDnD({
             onDragClass: "dragRow"
         });
-        $("#addRow").on("click",function(){
-            var bannerNum = 5;
-            $("#bannerList tr").each(function(){
-                if($(this).css("display")=='none') {
-                    bannerNum =  bannerNum - 1;
-                }
+        $(document).on("click","#addRow",function(){
+            $(".banner:hidden").each(function(){
+                $(this).find("input").attr("disabled", false);
+                $(this).show();
+                return false;
             });
-            $("#bannerList tr").eq(bannerNum).show();
-            $("#bannerList tr").eq(bannerNum).find("input").attr("disabled", false);
         });
         $(".removeRow").on("click",function(){
             $(this).parent().parent().find("input").attr("disabled", true);

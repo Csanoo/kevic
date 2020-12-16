@@ -30,9 +30,9 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">사용여부</td>
                                             <td style="width: 75%">
-                                                <input type="radio" name="state" value="" <c:if test="${searchVO.state eq ''}">selected</c:if>>checked><label>전체</label>
-                                                <input type="radio" name="state" value="100" <c:if test="${searchVO.state eq '100'}">selected</c:if>>><label>사용</label>
-                                                <input type="radio" name="state" value="200" <c:if test="${searchVO.state eq '200'}">selected</c:if>>><label>중지</label>
+                                                <input type="radio" name="state" value="" <c:if test="${searchVO.state eq ''}"> checked</c:if>><label>전체</label>
+                                                <input type="radio" name="state" value="100" <c:if test="${searchVO.state eq '100'}"> checked</c:if>><label>사용</label>
+                                                <input type="radio" name="state" value="200" <c:if test="${searchVO.state eq '200'}"> checked</c:if>><label>중지</label>
                                             </td>
                                         </tr>
                                         <tr>
@@ -82,6 +82,13 @@
                                         <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">컨텐츠수 내림차순</option>
                                         <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">컨텐츠수 오름차순</option>
                                     </select>
+                                    <select name="pageNo" id="pageNo"  >
+                                        <option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '100'}">selected</c:if> value="100">100개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '200'}">selected</c:if> value="200">200개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '300'}">selected</c:if> value="300">300개</option>
+                                        <option <c:if test="${searchVO.pageNo eq '500'}">selected</c:if> value="500">500개</option>
+                                    </select>
                                 </li>
                             </ul>
                         </div>
@@ -126,6 +133,11 @@
                                             <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button></td>
                                         </tr>
                                     </c:forEach>
+                                    <c:if test="${searchVO.totRow <= 0}">
+                                        <tr>
+                                            <td colspan="8">검색결과가 없습니다.</td>
+                                        </tr>
+                                    </c:if>
                                     </tbody>
                                 </table>
 
@@ -264,6 +276,12 @@
 <script>
 
     $(function(){
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+        $("#pageNo").on("change",function(){
+            document.form1.submit();
+        });
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
                 $("input[name='chkSn']").prop('checked', true);

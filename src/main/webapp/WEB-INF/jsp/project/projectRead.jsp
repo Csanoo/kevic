@@ -55,7 +55,7 @@
                                                 <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
 
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}" readonly>
+                                                    <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}">
                                                     <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
                                                     <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
                                                 </td>
@@ -127,19 +127,15 @@
                                     }
                                     if(frm.projectcdCk.value == '0'){
                                         alert('프로젝트코드를 확인해주세요.');
-                                        frm.title.focus();
+                                        frm.projectcd.focus();
                                         return false;
                                     }
                                     if(frm.basictitle.value == ''){
                                         alert('기본 페이지 타이틀을 확인해주세요.');
-                                        frm.title.focus();
+                                        frm.basictitle.focus();
                                         return false;
                                     }
-                                    if(frm.uploadfile.value == ''){력
-                                        alert('기본로고를 입해주세요.');
-                                        frm.title.focus();
-                                        return false;
-                                    }
+
                                     document.form1.submit();
 
                                 }
@@ -423,7 +419,26 @@
                 }
             });
         }
+        var oldTitle = "${projectInfo.title}";
+        $("input[name='title']").on("propertychange change keyup paste input", function() {
+            var currentVal = $(this).val();
+            if(currentVal == oldTitle) {
+                return;
+            }
 
+            oldTitle = currentVal;
+            $("#titleCk").val(0);
+        });
+        var oldProjectcd = "${projectInfo.projectcd}";
+        $("input[name='projectcd']").on("propertychange change keyup paste input", function() {
+            var currentVal = $(this).val();
+            if(currentVal == oldProjectcd) {
+                return;
+            }
+
+            oldProjectcd = currentVal;
+            $("#projectcdCk").val(0);
+        });
     }
 </script>
 

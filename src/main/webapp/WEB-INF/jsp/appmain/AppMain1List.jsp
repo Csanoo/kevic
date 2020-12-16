@@ -47,7 +47,7 @@
 											</td>
 										</tr>
 										<tr>
-											<td class="tdl" style="width: 25%">타이틀</td>
+											<td class="tdl" style="width: 25%">팝업제목</td>
 											<td style="width: 75%">
 												<input name="stitle" type="text"	value="${searchVO.stitle}" class="form-control">
 											</td>
@@ -111,6 +111,13 @@
 											<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">수정일 오름차순</option>
 											<option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">등록일 내림차순</option>
 											<option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">등록일 오름차순</option>
+										</select>
+										<select name="pageNo" id="pageNo"  >
+											<option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
+											<option <c:if test="${searchVO.pageNo eq '100'}">selected</c:if> value="100">100개</option>
+											<option <c:if test="${searchVO.pageNo eq '200'}">selected</c:if> value="200">200개</option>
+											<option <c:if test="${searchVO.pageNo eq '300'}">selected</c:if> value="300">300개</option>
+											<option <c:if test="${searchVO.pageNo eq '500'}">selected</c:if> value="500">500개</option>
 										</select>
 									</li>
 								</ul>
@@ -184,6 +191,12 @@
 
                 $("input[name='chkSn']").prop('checked', false);
             }
+        });
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+        $("#pageNo").on("change",function(){
+            document.form1.submit();
         });
     });
 

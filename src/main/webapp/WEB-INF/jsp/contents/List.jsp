@@ -120,7 +120,7 @@
                                 <li style="float: left;">
                                     <button type="button" class="btn btn-orange" id="updatemPost">선택수정</button>
                                     <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">  컨텐츠 전시</button>
-                                    <button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
+                                    <button type="button" class="btn btn-gray" onclick="deletePost()">일괄 삭제</button>
                                     <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
                                 </li>
                                 <li style="float: left;">

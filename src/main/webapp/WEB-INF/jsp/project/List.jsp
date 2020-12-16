@@ -158,9 +158,9 @@
                                     <colgroup>
                                         <col width="5%">
                                         <col width="5%">
-                                        <col width="10%">
-                                        <col width="15%">
-                                        <col width="15%">
+                                        <col width="5%">
+                                        <col width="5%">
+                                        <col width="5%">
                                         <col width="20%">
                                         <col width="15%">
                                         <col width="10%">
@@ -168,9 +168,9 @@
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
-                                        <th>이미지</th>
-                                        <th>출처이미지URL</th>
-                                        <th>영상URL</th>
+                                        <th >이미지</th>
+                                        <th style="200px">출처이미지URL</th>
+                                        <th style="150px">영상URL</th>
                                         <th>타이틀</th>
                                         <th>키워드</th>
                                         <th>등록일</th>
@@ -198,7 +198,7 @@
                                                 <input type="hidden" value="${listview.sn}" name="sort">
                                             </td>
                                             <td>
-                                                <div onclick="fn_notPublish()">X</div>
+                                                <div onclick="fn_notPublish(${listview.sn})">X</div>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -339,10 +339,13 @@
     function fn_postsortConfirm(){
         if(confirm('저장하시겠습니까?')){
             var cnt = $("input[name='sort']").length;
+
             var arr = new Array();
             $("input[name='sort']").each(function () {
+               // alert($(this).attr('value'));
                 arr.push($(this).attr('value'));
             });
+
             $.ajax({
                 type: "POST",
                 url: "/admin/prtSortConfirm",
@@ -357,7 +360,7 @@
                     }
                 },
                 error: function (data) {
-                    alert(삭제완료);
+                    alert('오류발생');
                     location.href = "/admin/project";
                 }
             });
@@ -368,6 +371,7 @@
     function excelDownload() {
         document.form1.action='ExcelDownload';
         document.form1.submit();
+        document.form1.action='';
     }
 
 </script>
@@ -379,9 +383,11 @@
 
     $(function(){
         $("#orderKeyword").on("change",function(){
+            document.form1.action='';
             document.form1.submit();
         });
         $("#pageNo").on("change",function(){
+            document.form1.action='';
             document.form1.submit();
         });
         $("#allChk").on("click",function(){
@@ -398,7 +404,7 @@
         });
         $("#pubproject").on("change",function(){
             var sn = $("#pubproject option:selected").val();
-            $.get("/admin/category01?sn="+sn+"&sel="+${searchVO.category01},function(data){
+            $.get("/admin/category01?sn="+sn+"&sel=${searchVO.category01}",function(data){
                 $( "#category1" ).html( data );
                 //alert( "Load was performed." );
             });
@@ -406,7 +412,7 @@
         $("#category1").on("change",function(){
             var sn = $("#category1 option:selected").val();
 
-            $.get("/admin/category02?sn="+sn+"&sel="+${searchVO.category01},function(data){
+            $.get("/admin/category02?sn="+sn+"&sel=${searchVO.category01}",function(data){
                 $( "#category2" ).html( data );
                 //alert( "Load was performed." );
             });

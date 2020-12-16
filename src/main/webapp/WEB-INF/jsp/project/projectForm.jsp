@@ -62,7 +62,7 @@
                                             <tr>
                                                 <td class="tdl" style="width: 15%">사용여부</td>
                                                 <td style="width: 35%" colspan="3">
-                                                    <input type="radio" name="state" value="100" selected><label>사용</label>
+                                                    <input type="radio" name="state" value="100" checked><label>사용</label>
                                                     <input type="radio" name="state" value="200"><label>점검</label>
                                                 </td>
                                             </tr>
@@ -165,7 +165,26 @@
             $("#preview-title").html($("input[name='title']").val());
 
         });
+        var oldTitle = "${projectInfo.title}";
+        $("input[name='title']").on("propertychange change keyup paste input", function() {
+            var currentVal = $(this).val();
+            if(currentVal == oldTitle) {
+                return;
+            }
 
+            oldTitle = currentVal;
+            $("#titleCk").val(0);
+        });
+        var oldProjectcd = "${projectInfo.projectcd}";
+        $("input[name='projectcd']").on("propertychange change keyup paste input", function() {
+            var currentVal = $(this).val();
+            if(currentVal == oldProjectcd) {
+                return;
+            }
+
+            oldProjectcd = currentVal;
+            $("#projectcdCk").val(0);
+        });
     })
     $("#dupTit").on("click",function(){
         var title = $("#title").val();

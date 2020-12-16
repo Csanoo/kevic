@@ -127,7 +127,7 @@
 														<tbody id="bannerList">
 
 														<c:forEach var="bannerDetaillist" items="${bannerDetaillist}" varStatus="status">
-														<tr id="banner${status.index+1}">
+														<tr id="banner${status.index+1}" class="banner">
 															<td>${status.index+1}</td>
 															<td><img src="/upload/images/${bannerDetaillist.imgBanner}" width="120" height="80"></td>
 															<td>
@@ -157,7 +157,7 @@
 															<c:set var="ss" value="${status.index+1}"/>
 														</c:forEach>
 														<c:forEach var="cnt" begin="${ss}" end="4" varStatus="status2">
-															<tr id="banner${status2.index+1}" style="display:none">
+															<tr id="banner${status2.index+1}" style="display:none"  class="banner">
 																<td>${status2.index+1}</td>
 																<td></td>
 																<td>
@@ -242,6 +242,9 @@
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp"/>
 
 <style>
+	.dragRow{
+		border:2px solid #CCCCCC;
+	}
 </style>
 <script type="text/javascript">
 
@@ -258,15 +261,12 @@
         $("#dTable").tableDnD({
             onDragClass: "dragRow"
         });
-        $("#addRow").on("click",function(){
-            var bannerNum = 5;
-            $("#bannerList tr").each(function(){
-                if($(this).css("display")=='none') {
-                    bannerNum =  bannerNum - 1;
-                }
+        $(document).on("click","#addRow",function(){
+            $(".banner:hidden").each(function(){
+                $(this).find("input").attr("disabled", false);
+                $(this).show();
+                return false;
             });
-            $("#bannerList tr").eq(bannerNum).show();
-			$("#bannerList tr").eq(bannerNum).find("input").attr("disabled", false);
         });
         $(".removeRow").on("click",function(){
             $(this).parent().parent().find("input").attr("disabled", true);

@@ -35,21 +35,12 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form1" action="appmain1Up" method="post"
-								  enctype="multipart/form-data">
-
-								<input name="sn" type="hidden"
-									   value="${appmain1Info.sn}">
-
-
-
+							<form name="form1" action="appmain1Up" method="post"  enctype="multipart/form-data">
+								<input name="sn" type="hidden"  value="${appmain1Info.sn}">
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12">
-
-
 										<table id="customers">
 											<tr>
-
 												<input value="1" name="appkind" type="hidden" class="form-control">
 
 												<td class="tdl" style="width: 15%">프로트젝트명 </td>
@@ -58,7 +49,7 @@
 													<select name="project">
 														<option value="">프로젝트</option>
 														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
-															<option value="${projectview.sn}" <c:if test="${searchVO.sproject eq appmain1Info.project}">selected</c:if>>${projectview.title}</option>
+															<option value="${projectview.sn}" <c:if test="${projectview.sn eq appmain1Info.project}">selected</c:if>>${projectview.title}</option>
 														</c:forEach>
 													</select>
 												</td>
@@ -132,9 +123,9 @@
 												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">상세 디자인</td>
+												<td class="tdl" style="width: 30%">상세 디자인</td>
 
-												<td style="width: 35%" colspan="3">
+												<td style="width:70%" colspan="3">
 													<textarea name="umemo" id="umemo"></textarea>
 												</td>
 											</tr>
@@ -145,8 +136,8 @@
 													<input type="radio" value="200" name="linkState" <c:if test="${appmain1Info.linkState eq '200'}">checked</c:if>><label>사용안함</label>
 													<input type="radio" value="100" name="linkState" <c:if test="${appmain1Info.linkState eq '100'}">checked</c:if>><label>사용</label>
 													<select name="linkTarget">
-														<option value="100" <c:if test="${appmain1Info.linkState eq '100'}">selected</c:if>>부모창</option>
-														<option value="200" <c:if test="${appmain1Info.linkState eq '200'}">selected</c:if>>새창열기</option>
+														<option value="100" <c:if test="${appmain1Info.linkTarget eq '100'}">selected</c:if>>부모창</option>
+														<option value="200" <c:if test="${appmain1Info.linkTarget eq '200'}">selected</c:if>>새창열기</option>
 													</select>
 												</td>
 											</tr>
@@ -175,35 +166,15 @@
 
 								</div>
 							</form>
-							<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
 
 
 
-							<script type="text/javascript">
-                                nhn.husky.EZCreator.createInIFrame({
-                                    oAppRef: umemo,
-                                    elPlaceHolder: "umemo",
-                                    sSkinURI: "/admin/design/assets/plugins/smart/SmartEditor2Skin.html",
-                                    htParams: {
-                                        bUseToolbar: true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
-                                        bUseVerticalResizer: true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
-                                        bUseModeChanger: true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
-                                        //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
-                                        fOnBeforeUnload: function () {
-                                            //alert("완료!");
-                                        }
-                                    }, //boolean
-                                    fOnAppLoad: function () {
-                                        //예제 코드
-                                        umemo.getById["umemo"].exec("PASTE_HTML", ["${appmain1Info.umemo}"]);
-                                    },
-                                    fCreator: "createSEditor"
-                                });
-							</script>
+
+
 							<script>
 
                                 function fn_formSv() {
-                                    umemo.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+                                    oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
                                     document.form1.submit();
 
                                 }
@@ -243,3 +214,28 @@
 
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+<script type="text/javascript" src="/admin/design/assets/plugins/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+
+<script type="text/javascript">
+
+    var oEditors = [];
+    nhn.husky.EZCreator.createInIFrame({
+        oAppRef: oEditors,
+        elPlaceHolder: "umemo",
+        sSkinURI: "/admin/design/assets/plugins/se2/SmartEditor2Skin.html",
+        htParams: {
+            bUseToolbar: false,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseVerticalResizer: true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseModeChanger: true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+            //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
+            fOnBeforeUnload: function () {
+                //alert("완료!");
+            }
+        }, //boolean
+        fOnAppLoad: function () {
+            //예제 코드
+            oEditors.getById["umemo"].exec("PASTE_HTML", ['${appmain1Info.umemo}']);
+        },
+        fCreator: "createSEditor"
+    });
+</script>

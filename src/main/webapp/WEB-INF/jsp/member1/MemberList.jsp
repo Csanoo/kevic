@@ -79,19 +79,10 @@
 											<th>사용 여부</th>
 											<th>아이디</th>
 											<th style='width: 10%'>이름</th>
-
-											<th>분류</th>
-
-											<th>운영프로젝</th>
-
+											<th>운영프로젝트</th>
 											<th>마지막 로그인</th>
-											
 											<th>수정일자</th>
-											
 											<th>수정자</th>
-
-
-
 										</tr>
 									</thead>
 									<tbody>
@@ -105,9 +96,8 @@
 												<td><c:if test="${listview.state eq 'Y'}">사용</c:if><c:if test="${listview.state eq 'N'}">사용안</c:if></td>
 												<td><c:out value="${listview.userid}" /></td>
 												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
-												<td>0</td>
-												<td>-</td>
-												<td>ADMIN</td>
+												<td>${listview.projectct}</td>
+												<td>${listview.mxwdt}</td>
 												<td><c:out value="${listview.wdate}" /></td>
 
 											</tr>

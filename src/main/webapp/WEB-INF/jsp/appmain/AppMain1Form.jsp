@@ -94,8 +94,8 @@
 
 												<td class="tdl" style="width: 15%">노출 위치</td>
 
-												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control">
-													좌측<input name="positionX" type="text" class="form-control">
+												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
+													좌측<input name="positionX" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
 												</td>
 
 											</tr>
@@ -104,8 +104,8 @@
 												<td class="tdl" style="width: 15%">팝업 크기</td>
 
 												<td style="width: 35%" colspan="3">
-													가로(pixel)<input name="sWidth" type="text" class="form-control" placeholder="px단위 입력해야합니다.">
-													세로(pixel)<input name="sHeight" type="text" class="form-control" placeholder="px단위 입력해야합니다.">
+													가로(pixel)<input name="sWidth" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
+													세로(pixel)<input name="sHeight" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
 												</td>
 
 											</tr>
@@ -158,8 +158,6 @@
 
 								</div>
 							</form>
-
-
 						</div>
 					</div>
 				</div>
@@ -181,14 +179,31 @@
 
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
-<script type="text/javascript" src="/admin/design/assets/plugins/smart/js/HuskyEZCreator.js" charset="utf-8"></script>
+<script type="text/javascript" src="/admin/design/assets/plugins/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
+
+<script>
+    function fn_formSv() {
+        oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+        document.form1.submit();
+
+    }
+    function fn_formRtn() {
+        document.formList.submit();
+
+    }
+    $(function(){
+        $('.timepicker').timepicker();
+    });
+</script>
+
 <script type="text/javascript">
+    var oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
-        oAppRef: umemo,
+        oAppRef: oEditors,
         elPlaceHolder: "umemo",
-        sSkinURI: "/admin/design/assets/plugins/smart/SmartEditor2Skin.html",
+        sSkinURI: "/admin/design/assets/plugins/se2/SmartEditor2Skin.html",
         htParams: {
-            bUseToolbar: true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+            bUseToolbar: false,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
             bUseVerticalResizer: true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
             bUseModeChanger: true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
             //aAdditionalFontList : aAdditionalFontSet,		// 추가 글꼴 목록
@@ -203,17 +218,4 @@
         fCreator: "createSEditor"
     });
 </script>
-<script>
-    function fn_formSv() {
-       // oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
-        document.form1.submit();
 
-    }
-    function fn_formRtn() {
-        document.formList.submit();
-
-    }
-    $(function(){
-        $('.timepicker').timepicker();
-    });
-</script>
