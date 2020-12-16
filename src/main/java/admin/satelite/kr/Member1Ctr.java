@@ -175,16 +175,16 @@ public class Member1Ctr {
 		String snsType = "";
 		
 		title = request.getParameter("title");
-		kind = request.getParameter("kind");
+		//kind = request.getParameter("kind");
 		snsType = request.getParameter("snsType");
 
-		System.out.println(snsType);
+		//System.out.println(snsType);
 		Search srch = new Search();
 		Crawler crawler = new Crawler();
 
 		if(snsType.equals("ytb")) {
 			try {
-				srch.execute(title, kind);
+				srch.execute(title);
 			} catch(Exception e) {
 				System.out.println(e.getMessage());
 			}

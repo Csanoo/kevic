@@ -1,12 +1,19 @@
 package main.java.admin.satelite.kr;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
 import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
+import org.apache.poi.hssf.usermodel.*;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +30,7 @@ public class ProjectCtr {
 
     @Autowired
     private ProjectSvc projectSvc;
+
 
     @RequestMapping(value = "/project")
     public String Project(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
@@ -587,7 +595,10 @@ throws Exception{
 
         try {
             Integer sn = Integer.parseInt(request.getParameter("sn"));
+            String sel = request.getParameter("sel");
+            projectInfo.setCategory(sel);
             List<?> catelistone  = projectSvc.category01(sn);
+            modelMap.addAttribute("projectVO", projectInfo);
             modelMap.addAttribute("listview", catelistone);
             return "project/category01";
         } catch (Exception e) {
@@ -602,7 +613,10 @@ throws Exception{
 
         try {
             Integer sn = Integer.parseInt(request.getParameter("sn"));
+            String sel = request.getParameter("sel");
+            projectInfo.setCategory(sel);
             List<?> catelistTwo  = projectSvc.category02(sn);
+            modelMap.addAttribute("projectVO", projectInfo);
             modelMap.addAttribute("listview", catelistTwo);
             return "project/category02";
 
@@ -640,4 +654,122 @@ throws Exception{
         projectSvc.delMember(projectInfo);
         return "True";
     }
+
+    @RequestMapping(value="/ExcelDownloadP")
+    public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model, ProjectVO projectVO) throws Exception {
+
+        HSSFWorkbook objWorkBook = new HSSFWorkbook();
+        HSSFSheet objSheet = null;
+        HSSFRow objRow = null;
+        HSSFCell objCell = null;       //셀 생성
+
+        //제목 폰트
+        HSSFFont font = objWorkBook.createFont();
+        font.setFontHeightInPoints((short)9);
+        font.setBoldweight((short)font.BOLDWEIGHT_BOLD);
+        font.setFontName("맑은고딕");
+
+        //제목 스타일에 폰트 적용, 정렬
+        HSSFCellStyle styleHd = objWorkBook.createCellStyle();    //제목 스타일
+        styleHd.setFont(font);
+        styleHd.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+        styleHd.setVerticalAlignment (HSSFCellStyle.VERTICAL_CENTER);
+
+        objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
+
+        // 1행
+        objRow = objSheet.createRow(1);
+        objRow.setHeight ((short) 0x150);
+
+        objCell = objRow.createCell(0);
+        objCell.setCellValue("No");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(1);
+        objCell.setCellValue("이미지URL");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(2);
+        objCell.setCellValue("비디URL");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(3);
+        objCell.setCellValue("출처");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(4);
+        objCell.setCellValue("타이틀");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(5);
+        objCell.setCellValue("키워드");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(6);
+        objCell.setCellValue("등록일");
+        objCell.setCellStyle(styleHd);
+
+        List<ProjectVO> listview  = projectSvc.selectexcelList(searchVO);
+        // listview.forEach(s -> );
+        int rowNo = 2;
+        String str = "";
+        ArrayList val;
+        for(ProjectVO list : listview){
+            str = list.getTitle();
+            str = str.replaceAll("&amp;", "&");
+            str = str.replaceAll("&apos;", "'");
+            str = str.replaceAll("&#39;", "'");
+            str = str.replaceAll("&quot;", "\"");
+            str = str.replaceAll("&lt;", "<");
+            str = str.replaceAll("&gt;", ">");
+
+            objRow = objSheet.createRow(rowNo++);
+            objRow.setHeight ((short) 0x150);
+
+            objCell = objRow.createCell(0);
+            objCell.setCellValue(rowNo);
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(1);
+            objCell.setCellValue(""+list.getImageUrl());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(2);
+            objCell.setCellValue(""+list.getVideoUrl());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(3);
+            objCell.setCellValue(""+list.getCtSource());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(4);
+            objCell.setCellValue(""+str);
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(5);
+            objCell.setCellValue(""+list.getMemo());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(6);
+            objCell.setCellValue(""+list.getRegDate());
+            objCell.setCellStyle(styleHd);
+
+        }
+
+        SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd");
+        Date currentTime = new Date ();
+        String mTime = mSimpleDateFormat.format ( currentTime );
+
+        response.setContentType("Application/Msexcel");
+        response.setHeader("Content-Disposition", "ATTachment; Filename=Contents_Bulk_upload_"+mTime+".xls");
+
+        OutputStream fileOut  = response.getOutputStream();
+
+        objWorkBook.write(fileOut);
+        fileOut.close();
+
+        response.getOutputStream().flush();
+        response.getOutputStream().close();
+    }
+
 }

@@ -104,8 +104,8 @@
 												<td class="tdl" style="width: 15%">팝업 크기</td>
 
 												<td style="width: 35%" colspan="3">
-													가로(pixel)<input name="sWidth" type="text" class="form-control">
-													세로(pixel)<input name="sHeight" type="text" class="form-control">
+													가로(pixel)<input name="sWidth" type="text" class="form-control" placeholder="px단위 입력해야합니다.">
+													세로(pixel)<input name="sHeight" type="text" class="form-control" placeholder="px단위 입력해야합니다.">
 												</td>
 
 											</tr>

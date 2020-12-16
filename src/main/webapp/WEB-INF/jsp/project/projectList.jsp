@@ -28,15 +28,15 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
                                         <tr>
-                                            <td class="tdl" style="width: 25%">사용여</td>
+                                            <td class="tdl" style="width: 25%">사용여부</td>
                                             <td style="width: 75%">
-                                                <input type="radio" name="state" value="" checked><label>전체</label>
-                                                <input type="radio" name="state" value="100"><label>사용</label>
-                                                <input type="radio" name="state" value="200"><label>중지</label>
+                                                <input type="radio" name="state" value="" <c:if test="${searchVO.state eq ''}">selected</c:if>>checked><label>전체</label>
+                                                <input type="radio" name="state" value="100" <c:if test="${searchVO.state eq '100'}">selected</c:if>>><label>사용</label>
+                                                <input type="radio" name="state" value="200" <c:if test="${searchVO.state eq '200'}">selected</c:if>>><label>중지</label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="tdl" style="width: 25%">프로젝트명</td>
+                                            <td class="tdl" style="width: 25%">타이틀</td>
                                             <td style="width: 75%">
                                                 <input name="searchtitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
                                             </td>
@@ -44,6 +44,7 @@
 
                                     </table>
                                     <div class="form-group" style="margin-top: 20px">
+                                        <button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
                                         <button type="button" class="btn btn-orange" onclick="fn_formSubmit()">검색</button>
                                     </div>
                                 </div>

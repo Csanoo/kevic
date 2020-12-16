@@ -75,6 +75,13 @@ public class SearchVO extends  PageVO  {
 		this.stitle = stitle;
 	}
 
+	private String skeyword = "";
+
+	public String getSkeyword() {	return skeyword;}
+
+	public void setSkeyword(String skeyword) {
+		this.skeyword = skeyword;
+	}
 
 	private String sproject = "";
 
@@ -120,7 +127,7 @@ public class SearchVO extends  PageVO  {
 
     private String schCode;
 
-    private String orderKeyword = "";
+    private String orderKeyword = "4";
 
     private String schSubCode = "";
 
@@ -246,13 +253,13 @@ public class SearchVO extends  PageVO  {
 		this.y = y;
 	}
 
-	public String pageNo = "50";
+	public Integer pageNo = 50;
 
-	public String getPageNo() {
+	public Integer getPageNo() {
 		return pageNo;
 	}
 
-	public void setPageNo(String pageNo) {
+	public void setPageNo(Integer pageNo) {
 		this.pageNo = pageNo;
 	}
 
@@ -265,6 +272,28 @@ public class SearchVO extends  PageVO  {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+	public String category01 = "";
+
+	public String getCategory01() {
+		return category01;
+	}
+
+	public void setCategory01(String category01) {
+		this.category01 = category01;
+	}
+
+
+	public String category02 = "";
+
+	public String getCategory02() {
+		return category02;
+	}
+
+	public void setCategory02(String category02) {
+		this.category02 = category02;
+	}
+
 
 }
  

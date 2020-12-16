@@ -55,43 +55,21 @@
 										<tr>
 											<td class="tdl" style="width: 25%">등록</td>
 											<td style="width: 75%">
-												<div class="input-group js-datepicker">
-													<input type="text" class="form-control datepicker" name="startDate" value="${searchVO.startDate}" data-format="yyyy-mm-dd">
-													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
+												<input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
+												<input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+												<div style="display: inline-block;">
+													<button  type="button" onClick="dateperiod(0);">오늘</button>
+													<button type="button" onClick="dateperiod(6);">1주</button>
+													<button type="button" onClick="dateperiod(30);">1개월</button>
+													<button type="button" onClick="dateperiod(180);">6개월</button>
+													<button type="button" onClick="dateperiod(365);">1년</button>
+													<button type="button" onClick="dateperiod(999);">전체</button>
 												</div>
-												<div class="input-group js-datepicker">
-													<input type="text" class="form-control datepicker" name="endDate" value="${searchVO.endDate}" data-format="yyyy-mm-dd">
-													<span class="input-group-addon"><span class="btn-icon-calendar"></span></span>
-												</div>
-												<!--
-												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd"> ~
-												<input name="searchDate[]" type="text"	value="" class="form-control datepicker" data-format="yyyy-mm-dd">
-
-												<div class="btn-group js-dateperiod" data-toggle="buttons" data-target-name="searchDate">
-													<label class="btn btn-white btn-sm hand">
-														<input type="radio" name="searchPeriod" value="0">오늘
-													</label>
-													<label class="btn btn-white btn-sm hand">
-														<input type="radio" name="searchPeriod" value="6">7일
-													</label>
-													<label class="btn btn-white btn-sm hand">
-														<input type="radio" name="searchPeriod" value="14">15일
-													</label>
-													<label class="btn btn-white btn-sm hand">
-														<input type="radio" name="searchPeriod" value="29">1개월
-													</label>
-													<label class="btn btn-white btn-sm hand">
-														<input type="radio" name="searchPeriod" value="89">3개월
-													</label>
-													<label class="btn btn-white btn-sm hand  active">
-														<input type="radio" name="searchPeriod" value="364">1년
-													</label>
-												</div>
-												-->
 											</td>
 										</tr>
 									</table>
 									<div class="form-group" style="margin-top: 20px">
+										<button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
 										<button type="button" class="btn btn-orange" onclick="fn_formSv()">검색</button>
 									</div>
 								</div>
@@ -119,7 +97,7 @@
 				<div class="col-lg-12">
 					<section class="box ">
 						<header class="panel_header">
-							<h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div> </h2>
+							<h2 class="title pull-left"> <div style="font-size:14px">총 ${searchVO.totRow}건</div> </h2>
 							<div class="pull-right" style="padding-top: 10px">
 								<ul class="list-unstyled">
 									<li style="float: left;">
@@ -168,6 +146,11 @@
 											</td>
 										</tr>
 									</c:forEach>
+									<c:if test="${searchVO.totRow <= 0}">
+										<tr>
+											<td colspan="7">검색결과가 없습니다.</td>
+										</tr>
+									</c:if>
 									</tbody>
 								</table>
 							</div>

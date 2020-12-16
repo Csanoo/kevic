@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
+
+
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,8 +35,12 @@ public class ContentsCtr {
 
     @RequestMapping(value = "/contents")
     public String Contents(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
-
-
+        String pageNo = request.getParameter("pageNo");
+        if ( pageNo == null ){
+            pageNo = "50";
+        }
+        System.out.println(request.getParameter("orderKeyword"));
+        searchVO.setPageNo(Integer.parseInt(pageNo));
         List<?> projectview  = contentsSvc.selectBoxproject(searchVO);
         modelMap.addAttribute("projectview", projectview);
         searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow
@@ -307,7 +313,7 @@ public class ContentsCtr {
         objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
 
         // 1행
-        objRow = objSheet.createRow(0);
+        objRow = objSheet.createRow(1);
         objRow.setHeight ((short) 0x150);
 
         objCell = objRow.createCell(0);
@@ -339,10 +345,18 @@ public class ContentsCtr {
         objCell.setCellStyle(styleHd);
 
         List<ContentsVO> listview  = contentsSvc.selectexcelList(searchVO);
-        listview.forEach(s -> System.out.println(s));
-        int rowNo = 0;
+       // listview.forEach(s -> );
+        int rowNo = 2;
         ArrayList val;
+        String str ="";
         for(ContentsVO list : listview){
+            str = list.getTitle();
+            str = str.replaceAll("&amp;", "&");
+            str = str.replaceAll("&apos;", "'");
+            str = str.replaceAll("&#39;", "'");
+            str = str.replaceAll("&quot;", "\"");
+            str = str.replaceAll("&lt;", "<");
+            str = str.replaceAll("&gt;", ">");
 
             objRow = objSheet.createRow(rowNo++);
             objRow.setHeight ((short) 0x150);
@@ -364,7 +378,7 @@ public class ContentsCtr {
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(4);
-            objCell.setCellValue(""+list.getTitle());
+            objCell.setCellValue(""+str);
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(5);

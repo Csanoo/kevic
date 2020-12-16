@@ -30,12 +30,24 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">프로젝트</td>
                                             <td style="width: 75%">
-                                                <select name="sproject"  class="form-control">
+                                                <select name="sproject"  class="form-control" id="pubproject">
                                                     <option value="">프로젝트</option>
                                                     <c:forEach var="projectview" items="${projectview}"   varStatus="status">
                                                         <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
                                                     </c:forEach>
                                                 </select>
+                                                <div id="category01">
+                                                    <select name="category01" id="category1" class="form-control" >
+                                                        <option value="">카테고리</option>
+
+                                                    </select>
+                                                </div>
+                                                <div id="category02">
+                                                    <select name="category02" id="category2" class="form-control" >
+                                                        <option value="">카테고리</option>
+
+                                                    </select>
+                                                </div>
                                             </td>
                                         </tr>
                                         <tr>
@@ -58,7 +70,7 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">키워드</td>
                                             <td style="width: 75%">
-                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
+                                                <input name="skeyword" type="text"	value="${searchVO.skeyword}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -66,10 +78,19 @@
                                             <td style="width: 75%">
                                                 <input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
                                                 <input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+                                                <div style="display: inline-block;">
+                                                    <button  type="button" onClick="dateperiod(0);">오늘</button>
+                                                    <button type="button" onClick="dateperiod(6);">1주</button>
+                                                    <button type="button" onClick="dateperiod(30);">1개월</button>
+                                                    <button type="button" onClick="dateperiod(180);">6개월</button>
+                                                    <button type="button" onClick="dateperiod(365);">1년</button>
+                                                    <button type="button" onClick="dateperiod(999);">전체</button>
+                                                </div>
                                             </td>
                                         </tr>
                                     </table>
                                     <div class="form-group" style="margin-top: 20px">
+                                        <button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
                                         <button type="button" class="btn btn-orange" onclick="fn_formSubmit()">검색</button>
                                     </div>
                                 </div>
@@ -100,7 +121,7 @@
             <div class="col-lg-12">
                 <section class="box ">
                     <header class="panel_header">
-                        <h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div> </h2>
+                        <h2 class="title pull-left"> <div style="font-size:14px">총 ${searchVO.totRow}건</div> </h2>
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
@@ -151,6 +172,7 @@
                                         <th>출처이미지URL</th>
                                         <th>영상URL</th>
                                         <th>타이틀</th>
+                                        <th>키워드</th>
                                         <th>등록일</th>
                                         <th>메시지</th>
                                         <th>좋아요</th>
@@ -164,9 +186,10 @@
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:100px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
-                                            <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+                                            <td><div style="width:50px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
+                                            <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
+                                            <td>${listview.keyword}</td>
                                             <td>${listview.regDate}</td>
                                             <td>0</td>
                                             <td>0</td>
@@ -179,6 +202,11 @@
                                             </td>
                                         </tr>
                                     </c:forEach>
+                                    <c:if test="${searchVO.totRow <= 0}">
+                                        <tr>
+                                            <td colspan="11">검색결과가 없습니다.</td>
+                                        </tr>
+                                    </c:if>
                                     </tbody>
                                 </table>
 
@@ -368,8 +396,39 @@
         $("#dTable").tableDnD({
             onDragClass: "dragRow"
         });
+        $("#pubproject").on("change",function(){
+            var sn = $("#pubproject option:selected").val();
+            $.get("/admin/category01?sn="+sn+"&sel="+${searchVO.category01},function(data){
+                $( "#category1" ).html( data );
+                //alert( "Load was performed." );
+            });
+        });
+        $("#category1").on("change",function(){
+            var sn = $("#category1 option:selected").val();
+
+            $.get("/admin/category02?sn="+sn+"&sel="+${searchVO.category01},function(data){
+                $( "#category2" ).html( data );
+                //alert( "Load was performed." );
+            });
+        });
+
+
     })
 
+    function categorySet(){
+        $.get("/admin/category01?sn=${searchVO.sproject}&sel=${searchVO.category01}",function(data){
+            $( "#category1" ).html( data );
+            //alert( "Load was performed." );
+        });
+        $.get("/admin/category02?sn=${searchVO.category01}&sel=${searchVO.category02}",function(data){
+            $( "#category2" ).html( data );
+            //alert( "Load was performed." );
+        });
+    }
+
+
+
+    categorySet();
 
 </script>
 <style>

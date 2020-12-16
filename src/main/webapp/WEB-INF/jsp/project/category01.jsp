@@ -5,6 +5,6 @@
 
 <option value="">카테고리</option>
     <c:forEach var="listview" items="${listview}" varStatus="status">
-        <option value="${listview.category01}" >${listview.title}</option>
+        <option value="${listview.category01}" <c:if test="${projectVO.category eq listview.category01}">selected</c:if>>${listview.title}</option>
     </c:forEach>
 

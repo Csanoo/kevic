@@ -137,7 +137,7 @@
             </section>
         </div>
 
-        <form name="formList" action="AppMain1List" method="post">
+        <form name="formList" action="projectList" method="post">
             <input type="hidden" name="searchType"
                    value="<c:out value="${searchVO.searchType}"/>"> <input
                 type="hidden" name="searchKeyword"

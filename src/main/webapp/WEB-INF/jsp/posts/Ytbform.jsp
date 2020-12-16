@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form1" action="ytbForm" method="post" enctype="multipart/form-data">
+							<form name="form1" action="ytbPost" method="post" >
 								<input type="hidden" name="orderKeyword" id="orderKeyword" value="${searchVO.orderKeyword}" />
 								<input type="hidden" name="sn" id="sn" value="" />
 								<input type="hidden" name="srch" id="srch" value="SRCH" />
@@ -245,8 +245,6 @@
 
         $("#loading").show();
         document.form1.submit();
-
-
     }
 
 	$(function(){

@@ -147,7 +147,7 @@ public class LeftMenuUtil {
 			stmt.executeUpdate(sql1);
 
 		} catch (SQLException ex) {
-
+			System.out.println(ex.getErrorCode());
 		} finally {
 			
 			try {

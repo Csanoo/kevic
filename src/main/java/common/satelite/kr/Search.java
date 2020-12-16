@@ -54,10 +54,10 @@ public class Search {
 
 
 
-  public void execute(String _title, String _kind) {
+  public void execute(String _title) {
     try {
       String queryTerm = _title;
-      System.out.println(queryTerm);
+     // System.out.println(queryTerm);
       youtube = new YouTube.Builder(HTTP_TRANSPORT, JSON_FACTORY, new HttpRequestInitializer() {
         public void initialize(HttpRequest request) throws IOException {}
       }).setApplicationName("youtube-cmdline-search-sample").build();
@@ -81,7 +81,7 @@ public class Search {
       List<SearchResult> searchResultList = searchResponse.getItems();
 
       if (searchResultList != null) {
-        prettyPrint(searchResultList.iterator(), queryTerm, _kind);
+        prettyPrint(searchResultList.iterator(), queryTerm);
       }
 
     } catch (GoogleJsonResponseException e) {
@@ -111,7 +111,7 @@ public class Search {
   }
 
 
-  private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query, String _kind) {
+  private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
 
  
     while (iteratorSearchResults.hasNext()) {
@@ -123,6 +123,8 @@ public class Search {
       Connection con = null;
       PreparedStatement pstmt = null;
       String qry = "";
+
+      System.out.println(singleVideo.getSnippet().getTitle());
       try {
       con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
       
@@ -133,7 +135,7 @@ public class Search {
 
           String thumbnailURL = "http://img.youtube.com/vi/" + rId.getVideoId() + "/hqdefault.jpg";
           String videoUrl = "https://www.youtube.com/watch?"+rId.getVideoId();
-        if ( singleVideo.getSnippet().getTitle().indexOf( query ) > 0 ) {
+      //  if ( singleVideo.getSnippet().getTitle().indexOf( query ) > 0 ) {
 
        //   qry = "insert into tcontents ( title, keyword, videoUrl, userid, ctSource, imageURL, category)"
       //            + " values ('"+singleVideo.getSnippet().getTitle()
@@ -147,7 +149,7 @@ public class Search {
 
           qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state)"
                   + " values ( 0, 0, 0, 'A1' , '"+thumbnailURL+"','"+videoUrl+"','YTB', '"+singleVideo.getSnippet().getTitle()+"', '000' ); ";
-
+          //System.out.print(qry);
         pstmt = con.prepareStatement(qry);
 
 
@@ -156,7 +158,7 @@ public class Search {
         con.close();
 
         }
-      }
+    //  }
 
       }catch(Exception e) {
     	  System.out.println( e.getMessage() );

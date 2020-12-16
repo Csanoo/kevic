@@ -222,6 +222,7 @@ window.open("/player2.jsp?_a="+_a+"&_b="+_b, "_blank", "toolbar=no,scrollbars=no
         <script src="/admin/design/assets/plugins/timepicker/js/timepicker.js" type="text/javascript"></script>
         <script src="/admin/design/assets/plugins/datepicker/js/datepicker.js" type="text/javascript"></script>
         <script src="/admin/design/assets/plugins/datetimepicker/js/datetimepicker.js" type="text/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 <!-- CORE JS FRAMEWORK - END -->
 
 

@@ -59,6 +59,14 @@
 												<td style="width: 75%" colspan="3">
 													<input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
 													<input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+													<div style="display: inline-block;">
+														<button  type="button" onClick="dateperiod(0);">오늘</button>
+														<button type="button" onClick="dateperiod(6);">1주</button>
+														<button type="button" onClick="dateperiod(30);">1개월</button>
+														<button type="button" onClick="dateperiod(180);">6개월</button>
+														<button type="button" onClick="dateperiod(365);">1년</button>
+														<button type="button" onClick="dateperiod(999);">전체</button>
+													</div>
 												</td>
 											</tr>
 										</table>
@@ -81,7 +89,7 @@
 
 					<div class="content-body">
 						<header class="panel_header">
-							<h2 class="title pull-left"> <div style="font-size:14px">(${searchVO.totRow})</div></h2>
+							<h2 class="title pull-left"> <div style="font-size:14px">총 ${searchVO.totRow}건</div></h2>
 							<div class="pull-right" style="padding-top: 10px">
 								<ul class="list-unstyled">
 									<li style="float: left;">
@@ -142,6 +150,11 @@
 												<td><a href="javascript:fn_readGo('${listview.sn}')">수정</a></td>
 											</tr>
 										</c:forEach>
+										<c:if test="${searchVO.totRow <= 0}">
+											<tr>
+												<td colspan="12">검색결과가 없습니다.</td>
+											</tr>
+										</c:if>
 									</tbody>
 								</table>
 							</div>
@@ -222,11 +235,7 @@
             });
         }
     }
-    function fn_scInit(){
-	    $("#form1 input[type='text']").val('');
-        $("select[name='sproject']").val('').prop("selected","true");
-        $("input[name='state']:radio[value='']").prop("checked","true");
-	}
+
 
 
 </script>

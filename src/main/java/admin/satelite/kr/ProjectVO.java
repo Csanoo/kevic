@@ -309,6 +309,13 @@ public class ProjectVO {
         this.adTag = adTag;
     }
 
+    private String keyword = "";
+    public String getKeyword() {
+        return keyword;
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
 
     private Integer pCate;
     public Integer getpCate() {
@@ -341,7 +348,6 @@ public class ProjectVO {
     public void setCategory02(Integer category02) {
         this.category02 = category02;
     }
-
 
     private Integer ct;
     public Integer getCt() {

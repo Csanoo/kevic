@@ -322,4 +322,9 @@ public class ProjectSvc {
         return sqlSession.selectList("categoryMember", param);
     }
 
+    public List<ProjectVO> selectexcelList(SearchVO param) {
+
+        return sqlSession.selectList("selectprojectList", param);
+    }
+
 }
