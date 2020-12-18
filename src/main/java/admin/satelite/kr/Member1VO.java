@@ -217,5 +217,13 @@ public class Member1VO {
 	public void setState(String state) {
 		this.state = state;
 	}
+
+	private Integer projectct;
+	public Integer getProjectct() {
+		return projectct;
+	}
+	public void setProjectct(Integer projectct) {
+		this.projectct = projectct;
+	}
     
 }

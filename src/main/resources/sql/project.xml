@@ -144,9 +144,10 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, ct from (
 			SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, (select count(*)
-			from tbl_contents where project = tbl_project.sn) as ct from tbl_project
+			from tbl_contents where project = tbl_project.sn) as 'ct' from tbl_project
 		) A
 		<include refid="includeproject2" />
+
 		LIMIT ${rowStart-1}, #{pageNo}
 	</select>
 
@@ -154,7 +155,7 @@
 
 	<select id="selectprojectCount2" resultType="Integer"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT COUNT(*) FROM tbl_project
+		SELECT COUNT(*) as 'ct' FROM tbl_project
 		<include refid="includeproject2" />
 	</select>
 

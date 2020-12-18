@@ -35,6 +35,7 @@ public class ProjectCtr {
     @RequestMapping(value = "/project")
     public String Project(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
+        searchVO.setDisplayRowCount(searchVO.getPageNo());
         List<?> projectview  = projectSvc.selectBoxproject(searchVO);
         modelMap.addAttribute("projectview", projectview);
 
@@ -54,16 +55,14 @@ public class ProjectCtr {
     @RequestMapping(value = "/projectList")
     public String projectList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
+        searchVO.setDisplayRowCount(searchVO.getPageNo());
         searchVO.pageCalculate( projectSvc.selectProjectCount2(searchVO) ); // startRow, endRow
 
         List<?> listview  = projectSvc.selectProjectList2(searchVO);
-        //List<?> cateview  = projectSvc.selectCateSelList(searchVO);
         List<?> projectview  = projectSvc.selectBoxproject(searchVO);
         modelMap.addAttribute("projectview", projectview);
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
-        //modelMap.addAttribute("cateview", cateview);
-
         return "project/projectList";
 
     }
@@ -192,7 +191,8 @@ public class ProjectCtr {
         List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
 
         projectSvc.insertProject(projectInfo, filelist, fileno);
-        return "project/projectForm";
+
+        return "redirect:projectList";
     }
 
     @ResponseBody
@@ -286,7 +286,7 @@ public class ProjectCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "redirect:project";
+        return "redirect:projectList";
     }
 
     @RequestMapping(value = "/projectDelete")
@@ -362,26 +362,19 @@ throws Exception{
 
     @ResponseBody
     @RequestMapping(value = "/prtSortConfirm")
-    public String prtSortConfirm(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+    public String prtSortConfirm(HttpServletRequest request, ProjectVO projectInfo) throws Exception{
         String result = "TRUE";
         try {
-            int cnt = Integer.parseInt(request.getParameter("CNT"));
-            int sort = 1;
-            //System.out.println(cnt);
+            Integer cnt = Integer.parseInt(request.getParameter("CNT"));
+
             String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
-            for(int i=0; i<cnt; i++) {
+            projectInfo.setCt(cnt);
+            projectInfo.setStrArray(strArray);
+            projectSvc.prtSortConfirm(projectInfo);
 
-                Integer sn = Integer.valueOf((String)strArray[i]);
-                sort  = sort+i;
-
-                projectInfo.setSn(sn);
-                projectInfo.setSort(sort);
-
-                projectSvc.prtSortConfirm(projectInfo);
-            }
         } catch (Exception e) {
-            //System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
             result = "FALSE";
         }
         return result;
@@ -392,11 +385,13 @@ throws Exception{
     public String cmInsert(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
         String result = "TRUE";
         try {
-            int cnt = Integer.parseInt(request.getParameter("CNT"));
-            int sn = Integer.parseInt(request.getParameter("sn"));
-            projectInfo.setSn(sn);
+            Integer cnt = Integer.parseInt(request.getParameter("CNT"));
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
             String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
+            projectInfo.setSn(sn);
+            projectInfo.setCt(cnt);
+            projectInfo.setStrArray(strArray);
             for(int i=0; i<cnt; i++) {
                 String userid = (String)strArray[i];
                 projectInfo.setUserid(userid);
@@ -678,7 +673,7 @@ throws Exception{
         objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
 
         // 1행
-        objRow = objSheet.createRow(1);
+        objRow = objSheet.createRow(0);
         objRow.setHeight ((short) 0x150);
 
         objCell = objRow.createCell(0);
@@ -686,15 +681,15 @@ throws Exception{
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(1);
-        objCell.setCellValue("이미지URL");
+        objCell.setCellValue("컨텐츠타입");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("비디URL");
+        objCell.setCellValue("이미지URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);
-        objCell.setCellValue("출처");
+        objCell.setCellValue("비디URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(4);
@@ -709,9 +704,17 @@ throws Exception{
         objCell.setCellValue("등록일");
         objCell.setCellStyle(styleHd);
 
+        objCell = objRow.createCell(7);
+        objCell.setCellValue("좋아요");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(8);
+        objCell.setCellValue("등록일");
+        objCell.setCellStyle(styleHd);
+
         List<ProjectVO> listview  = projectSvc.selectexcelList(searchVO);
         // listview.forEach(s -> );
-        int rowNo = 2;
+        int rowNo = 1;
         String str = "";
         ArrayList val;
         for(ProjectVO list : listview){
@@ -731,27 +734,36 @@ throws Exception{
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(1);
+            objCell.setCellValue(""+list.getType());
+            objCell.setCellStyle(styleHd);
+
+
+            objCell = objRow.createCell(2);
             objCell.setCellValue(""+list.getImageUrl());
             objCell.setCellStyle(styleHd);
 
-            objCell = objRow.createCell(2);
+            objCell = objRow.createCell(3);
             objCell.setCellValue(""+list.getVideoUrl());
             objCell.setCellStyle(styleHd);
 
-            objCell = objRow.createCell(3);
-            objCell.setCellValue(""+list.getCtSource());
-            objCell.setCellStyle(styleHd);
-
             objCell = objRow.createCell(4);
-            objCell.setCellValue(""+str);
+            objCell.setCellValue(""+list.getTitle());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(5);
-            objCell.setCellValue(""+list.getMemo());
+            objCell.setCellValue(""+list.getKeyword());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(6);
             objCell.setCellValue(""+list.getRegDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(7);
+            objCell.setCellValue("0");
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(8);
+            objCell.setCellValue("0");
             objCell.setCellStyle(styleHd);
 
         }

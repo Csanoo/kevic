@@ -21,13 +21,12 @@
 		  p:driverClassName="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
 		  p:url="jdbc:log4jdbc:mysql://localhost:3306/motiva?serverTimezone=UTC"
 		  p:username="crdb" p:password="admin123"
-		  p:initialSize="2"
-		  p:maxActive="30"
-		  p:maxIdle="10"
-		  p:minIdle="3"
+		  p:initialSize="21"
+		  p:maxActive="120"
+		  p:maxIdle="120"
 		  p:maxWait="30000"
-		  p:removeAbandoned="true"
-		  p:removeAbandonedTimeout="30"
+		  p:removeAbandoned="false"
+		  p:removeAbandonedTimeout="60"
 		  p:validationQuery="SELECT 1" />
 
 
@@ -50,6 +49,7 @@
 
 	<tx:advice id="txAdvice" transaction-manager="txManager">
 		<tx:attributes>
+			<tx:method name="get*" read-only="true"/>
 			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>

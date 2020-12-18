@@ -92,15 +92,8 @@ public class AppMain1Svc {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
 		TransactionStatus status = txManager.getTransaction(def);
-
 		try {
-			if (!param.getCreatorimg().equals("")) {
-				sqlSession.update("updateAppMain1One", param);
-			} else {
-
-				sqlSession.update("updateAppMain11One", param);
-			}
-
+			sqlSession.update("updateAppMain1One", param);
 			txManager.commit(status);
 		} catch (TransactionException ex) {
 			txManager.rollback(status);

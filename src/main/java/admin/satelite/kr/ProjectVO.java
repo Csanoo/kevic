@@ -8,6 +8,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class ProjectVO {
 
+    private String [] strArray;
+    public String [] getStrArray(){
+        return strArray;
+    }
+    public void setStrArray(String [] strArray){ this.strArray = strArray;}
+
     private Integer sn;
     public Integer getSn() {
         return sn;

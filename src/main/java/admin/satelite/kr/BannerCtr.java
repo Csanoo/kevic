@@ -36,11 +36,16 @@ public class BannerCtr {
 	public String BannerList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 		String orderKeyword = request.getParameter("orderKeyword");
 		searchVO.setOrderKeyword(orderKeyword);
+
+
+		String pageNo = request.getParameter("pageNo");
+		if ( pageNo == null ){
+			pageNo = "50";
+		}
+		searchVO.setDisplayRowCount(Integer.parseInt(pageNo));
+		searchVO.setDisplayRowCount(searchVO.getPageNo());
+
 		searchVO.pageCalculate( bannerSvc.selectBanner1Count(searchVO) ); // startRow, endRow
-
-
-
-
 		List<?> projectview  = bannerSvc.selectBoxproject(searchVO);
 		List<?> listview  = bannerSvc.selectBanner1List(searchVO);
 

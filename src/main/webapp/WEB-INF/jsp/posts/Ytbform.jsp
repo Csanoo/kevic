@@ -163,7 +163,7 @@
 																등록자
 															</td>
 															<td>
-																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete?sn=${listview.sn}'">삭제</button>
+																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button>
 															</td>
 														</tr>
 													</c:forEach>

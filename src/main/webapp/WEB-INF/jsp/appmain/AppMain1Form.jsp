@@ -91,13 +91,10 @@
 												</td>
 											</tr>
 											<tr>
-
 												<td class="tdl" style="width: 15%">노출 위치</td>
-
 												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
 													좌측<input name="positionX" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
 												</td>
-
 											</tr>
 											<tr>
 
@@ -150,7 +147,8 @@
 										<div class="form-group" style="margin-top: 10px">
 											<button type="button" class="btn btn-gray"
 													onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-orange"
+											<button type="button" class="btn btn-orange" data-popup-open="example">미리보</button>
+											<button type="button" class="btn btn-orange"기
 													onclick="fn_formSv()">저장</button>
 										</div>
 
@@ -194,9 +192,7 @@
     $(function(){
         $('.timepicker').timepicker();
     });
-</script>
 
-<script type="text/javascript">
     var oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
         oAppRef: oEditors,
@@ -217,5 +213,59 @@
         },
         fCreator: "createSEditor"
     });
+
+    function fn_preview(){
+        var frm = document.form1;
+        if($("select[name='project']").val()==''){
+            alert('프로젝트를 선택해주세요.');
+            frm.project.focus();
+            return false;
+        }
+        if(frm.title.value == '0'){
+            alert('팝업타이틀명을 확인해주세요.');
+            frm.title.focus();
+            return false;
+        }
+
+        if(frm.projectcdCk.value == '0'){
+            alert('프로젝트코드를 확인해주세요.');
+            frm.title.focus();
+            return false;
+        }
+        if(frm.basicTitle.value == ''){
+            alert('기본 페이지 타이틀을 확인해주세요.');
+            frm.basicTitle.focus();
+            return false;
+        }
+        if(frm.uploadfile.value == ''){
+            alert('기본로고를 입력해주세요.');
+            frm.title.focus();
+            return false;
+        }
+	}
+    $(function() {
+        //----- OPEN
+        $('[data-popup-open]').on('click', function(e)  {
+            var targeted_popup_class = jQuery(this).attr('data-popup-open');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+
+            e.preventDefault();
+        });
+
+        //----- CLOSE
+        $('[data-popup-close]').on('click', function(e)  {
+            var targeted_popup_class = jQuery(this).attr('data-popup-close');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+
+            e.preventDefault();
+        });
+    });
 </script>
+
+<div class="popup" data-popup="example">
+	<div class="popup-inner">
+		<div class="popup-contents"> <a class="popup-close" data-popup-close="example" href="#">X</a>
+			memo </div>
+	</div>
+</div>
 

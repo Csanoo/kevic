@@ -176,19 +176,16 @@ public class ProjectSvc {
 
 
     public void notProjectPublish(ProjectVO param) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
+       // DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    //    def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+      //  TransactionStatus status = txManager.getTransaction(def);
 
-        try {
+     //   try {
             sqlSession.update("notProjectPublish", param);
-            txManager.commit(status);
-        } catch (TransactionException ex) {
-            txManager.rollback(status);
-
-        }
-
-
+      //      txManager.commit(status);
+     //   } catch (TransactionException ex) {
+      //      txManager.rollback(status);
+      //  }
     }
 
 
@@ -267,7 +264,18 @@ public class ProjectSvc {
         TransactionStatus status = txManager.getTransaction(def);
 
         try {
-            sqlSession.update("prtSortConfirm", param);
+
+            Integer sort = 1;
+            String [] strArray = param.getStrArray();
+            Integer cnt = param.getCt();
+            for(int i=0; i<cnt; i++) {
+                Integer sn = Integer.valueOf((String) strArray[i]);
+                sort = sort + i;
+                System.out.println(sort);
+                param.setSn(sn);
+                param.setSort(sort);
+                sqlSession.update("prtConfirm", param);
+            }
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
@@ -277,17 +285,17 @@ public class ProjectSvc {
 
 
     public void cmInsert(ProjectVO param) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
+     //   DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    //    def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    //    TransactionStatus status = txManager.getTransaction(def);
 
-        try {
+     //   try {
             sqlSession.update("cmInsert", param);
-            txManager.commit(status);
-        } catch (TransactionException ex) {
-            txManager.rollback(status);
+      //      txManager.commit(status);
+      //  } catch (TransactionException ex) {
+      //      txManager.rollback(status);
 
-        }
+     //   }
     }
     public Integer insertCategory(ProjectVO param) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();

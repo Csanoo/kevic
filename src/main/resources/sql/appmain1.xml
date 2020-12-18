@@ -40,25 +40,28 @@
 			resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn, title  from tbl_project order by sn asc
 	</select>
-	<update id="updateAppMain1One"
-		parameterType="main.java.admin.satelite.kr.AppMain1VO">
+	<update id="updateAppMain1One"	parameterType="main.java.admin.satelite.kr.AppMain1VO">
 		update tbanner2 set
-		 code=#{code2},
-		  link = #{link},
-		  title=#{title},
-		  umemo=#{umemo},
-		  type1=#{type1},
-		  text1=#{text1},
-		  text2=#{text2},
+		link=#{link}
+		,title=#{title}
+		,umemo=#{umemo}
+		,sWidth=#{sWidth}
+		,sHeight=#{sHeight}
+		,state=#{state}
+		,positionX=#{positionX}
+		,positionY=#{positionY}
+		,closeType=#{closeType}
+		,project=#{project}
+		,linkState=#{linkState}
+		,linkTarget=#{linkTarget}
+		,displaytype=#{displaytype}
+		,dtimetype=#{dtimetype}
 		<if	test="sdate!='' and edate !=''">
-			sdate = #{sdate}, edate = #{edate},
+			,sdate=#{sdate}, edate=#{edate}
 		</if>
 		<if	test="stime!='' and etime !=''">
-			stime = #{stime}, etime = #{etime},
+			,stime=#{stime}, etime=#{etime}
 		</if>
-
-		   sWidth = #{sWidth}, sHeight = #{sHeight},
-		  state = #{state},positionX= #{positionX},positionY= #{positionY}, closeType= #{closeType} , project = #{project}, linkState = #{linkState},linkTarget= #{linkTarget},displaytype = #{displaytype} ,dtimetype = #{dtimetype}
 		where sn=#{sn}
 	</update>
 	
@@ -109,14 +112,26 @@
 		<if test='stitle != null and stitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{stitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND project = #{sproject} ]]></if>
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[  AND regDate between  #{startDate} and #{endDate}  ]]></if>
-		<if test="orderKeyword=='1'">
-			ORDER BY sn ASC
+		<if test='orderKeyword=="1"'>
+			ORDER BY sdate DESC
 		</if>
-		<if test="orderKeyword=='2'">
-			ORDER BY sn DESC
+		<if test='orderKeyword=="2"'>
+			ORDER BY sdate ASC
 		</if>
-		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sn ASC
+		<if test='orderKeyword=="3"'>
+			ORDER BY regDate DESC
+		</if>
+		<if test='orderKeyword=="4"'>
+			ORDER BY regDate ASC
+		</if>
+		<if test='orderKeyword=="5"'>
+			ORDER BY regDate DESC
+		</if>
+		<if test='orderKeyword=="6"'>
+			ORDER BY regDate ASC
+		</if>
+		<if test='orderKeyword=="" or orderKeyword==" "'>
+			ORDER BY sdate DESC
 		</if>
 	</sql>
 	
@@ -153,10 +168,10 @@
 
 	<select id="selectAppMain1List"
 		resultType="main.java.admin.satelite.kr.AppMain1VO"	parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, project, code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType,regDate from tbanner2
+		SELECT sn, (select title from tbl_project where sn = tbanner2.project) as 'project', code2,imgfile,link,title,umemo,type1,text1,text2,appkind,creatorimg, sdate, stime, edate, etime, sWidth, sHeight, state, positionX, positionY, closeType,regDate from tbanner2
 		<include refid="includeAppMain1" />
 
-		LIMIT ${rowStart-1}, 10
+		LIMIT ${rowStart-1}, #{pageNo}
 	</select>
 	
 	<select id="selectAppMain2Count" resultType="Integer"

@@ -3668,19 +3668,19 @@ function byteCheck(el){
 function dateperiod(day){
 
     if(day == 30) {
-        var sDate = moment().format('YYYY-MM-DD');
-        var eDate = moment().add(1, 'months').format('YYYY-MM-DD');
+        var sDate = moment().add(-1, 'months').format('YYYY-MM-DD');
+        var eDate = moment().format('YYYY-MM-DD');
     }else if(day == 180){
-        var sDate = moment().format('YYYY-MM-DD');
-        var eDate = moment().add(6, 'months').format('YYYY-MM-DD');
+        var sDate = moment().add(-6, 'months').format('YYYY-MM-DD');
+        var eDate = moment().format('YYYY-MM-DD');
 
     }else if(day == 999){
     var sDate = ''
     var eDate = ''
 
     }else{
-        var sDate = moment().format('YYYY-MM-DD');
-        var eDate = moment().add(day, 'days').format('YYYY-MM-DD');
+        var sDate = moment().add(-day, 'days').format('YYYY-MM-DD');
+        var eDate = moment().format('YYYY-MM-DD');
     }
 
     document.form1.startDate.value=sDate;

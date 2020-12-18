@@ -134,17 +134,16 @@ public class AppMain1VO {
 	public void setImgfile(String imgfile) {
 		this.imgfile = imgfile;
 	}
-
+	private String link = "";
 	public String getLink() {
 		return link;
 	}
-
 	public void setLink(String link) {
 		this.link = link;
 	}
 
 	private String imgfile = "";
-	private String link = "";
+
 
 
 	private String userid = "";
@@ -300,41 +299,6 @@ public class AppMain1VO {
 		this.edate = edate;
 	}
 
-	private String regDate = "";
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-
-	private String project = "";
-	public String getProject() {
-		return project;
-	}
-	public void setProject(String project) {
-		this.project = project;
-	}
-
-	private String linkState = "";
-	public String getLinkState() {
-		return linkState;
-	}
-	public void setLinkState(String linkState) {
-		this.linkState = linkState;
-	}
-
-	private String linkTarget = "";
-	public String getLinkTarget() {
-		return linkTarget;
-	}
-	public void setLinkTarget(String linkTarget) {
-		this.linkTarget = linkTarget;
-	}
-
 	private String etime = "";
 
 	public String getEtime() {
@@ -408,6 +372,39 @@ public class AppMain1VO {
 
 	public void setDtimetype(String dtimetype) {this.dtimetype = dtimetype;}
 
+	private String regDate = "";
 
+	public String getRegDate() {
+		return regDate;
+	}
+
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+
+
+	private String project = "";
+	public String getProject() {
+		return project;
+	}
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	private String linkState = "";
+	public String getLinkState() {
+		return linkState;
+	}
+	public void setLinkState(String linkState) {
+		this.linkState = linkState;
+	}
+
+	private String linkTarget = "";
+	public String getLinkTarget() {
+		return linkTarget;
+	}
+	public void setLinkTarget(String linkTarget) {
+		this.linkTarget = linkTarget;
+	}
 
 }

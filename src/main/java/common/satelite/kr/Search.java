@@ -113,59 +113,57 @@ public class Search {
 
   private static void prettyPrint(Iterator<SearchResult> iteratorSearchResults, String query) {
 
- 
-    while (iteratorSearchResults.hasNext()) {
 
-      SearchResult singleVideo = iteratorSearchResults.next();
-      ResourceId rId = singleVideo.getId();
-
-    
       Connection con = null;
       PreparedStatement pstmt = null;
       String qry = "";
 
-      System.out.println(singleVideo.getSnippet().getTitle());
+
       try {
-      con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
-      
-      
-      
-      if (rId.getKind().equals("youtube#video")) {
-        //Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().get("default");
+        con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
 
-          String thumbnailURL = "http://img.youtube.com/vi/" + rId.getVideoId() + "/hqdefault.jpg";
-          String videoUrl = "https://www.youtube.com/watch?"+rId.getVideoId();
-      //  if ( singleVideo.getSnippet().getTitle().indexOf( query ) > 0 ) {
+        while (iteratorSearchResults.hasNext()) {
 
-       //   qry = "insert into tcontents ( title, keyword, videoUrl, userid, ctSource, imageURL, category)"
-      //            + " values ('"+singleVideo.getSnippet().getTitle()
-      //            +"','"+singleVideo.getSnippet().getTitle()+"','"
-      //            +rId.getVideoId()+"','admin','유튜브','"+thumbnailURL+"','"+_kind+"') ";
+          SearchResult singleVideo = iteratorSearchResults.next();
+          ResourceId rId = singleVideo.getId();
+          System.out.println(singleVideo.getSnippet().getTitle());
+          if (rId.getKind().equals("youtube#video")) {
+            //Thumbnail thumbnail = singleVideo.getSnippet().getThumbnails().get("default");
 
-       // qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
-        //		+ " values ('"+singleVideo.getSnippet().getTitle()
-        //		+"','"+singleVideo.getSnippet().getTitle()+"','"
-        //		+videoUrl+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
+            String thumbnailURL = "http://img.youtube.com/vi/" + rId.getVideoId() + "/hqdefault.jpg";
+            String videoUrl = "https://www.youtube.com/watch?" + rId.getVideoId();
+            //  if ( singleVideo.getSnippet().getTitle().indexOf( query ) > 0 ) {
 
-          qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state)"
-                  + " values ( 0, 0, 0, 'A1' , '"+thumbnailURL+"','"+videoUrl+"','YTB', '"+singleVideo.getSnippet().getTitle()+"', '000' ); ";
-          //System.out.print(qry);
-        pstmt = con.prepareStatement(qry);
+            //   qry = "insert into tcontents ( title, keyword, videoUrl, userid, ctSource, imageURL, category)"
+            //            + " values ('"+singleVideo.getSnippet().getTitle()
+            //            +"','"+singleVideo.getSnippet().getTitle()+"','"
+            //            +rId.getVideoId()+"','admin','유튜브','"+thumbnailURL+"','"+_kind+"') ";
+
+            // qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
+            //		+ " values ('"+singleVideo.getSnippet().getTitle()
+            //		+"','"+singleVideo.getSnippet().getTitle()+"','"
+            //		+videoUrl+"','cp0001','YTB','"+thumbnailURL+"','"+_kind+"') ";
+
+            qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state)"
+                    + " values ( 0, 0, 0, 'A1' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + singleVideo.getSnippet().getTitle() + "', '000' ); ";
+            //System.out.print(qry);
+            pstmt = con.prepareStatement(qry);
+            pstmt.executeUpdate();
 
 
-        pstmt.executeUpdate();
-        pstmt.close();
-        con.close();
-
+          }
         }
     //  }
-
+        pstmt.close();
+        con.close();
       }catch(Exception e) {
     	  System.out.println( e.getMessage() );
+      }finally {
+
       }
 
 
 
-    }
+
   }
 }

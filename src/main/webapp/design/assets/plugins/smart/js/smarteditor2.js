@@ -3841,7 +3841,7 @@ nhn.husky.SE_EditingAreaManager = jindo.$Class({
 	// form submit 전에 이 부분을 실행시켜야 됨.
 	$ON_UPDATE_CONTENTS_FIELD : function(){
 		//this.oIRField.value = this.oApp.getIR();
-		parent.cleanUploadImages();
+		//parent.cleanUploadImages();
 		this.elContentsField.value = this.oApp.getContents();
 		this.oApp.exec("UPDATE_RAW_CONTENTS");
 		//this.sCurrentRawContents = this.elContentsField.value;

@@ -29,6 +29,12 @@ public class AppMain1Ctr {
 	@RequestMapping(value = "/AppMain1")
 	public String AppMain1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
+		String pageNo = request.getParameter("pageNo");
+		if ( pageNo == null ){
+			pageNo = "50";
+		}
+		searchVO.setDisplayRowCount(Integer.parseInt(pageNo));
+		searchVO.setDisplayRowCount(searchVO.getPageNo());
 		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
 
 		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
@@ -130,9 +136,7 @@ public class AppMain1Ctr {
 	
 
 	@RequestMapping(value = "/appmain1Up")
-	public String appmain1Up(SearchVO searchVO, 
-			HttpServletRequest request, AppMain1VO appmain1Info, 
-			ModelMap modelMap) {
+	public String appmain1Up(SearchVO searchVO, HttpServletRequest request, AppMain1VO appmain1Info,	ModelMap modelMap) {
 		
 		String sn = request.getParameter("sn");
 		appmain1Info.setSn(sn);
@@ -146,12 +150,6 @@ public class AppMain1Ctr {
 		appmain1Info.setLink(link);
 		String title = request.getParameter("title");
 		appmain1Info.setTitle(title);
-		String type1 = request.getParameter("type1");
-		appmain1Info.setType1(type1);
-		String text1 = request.getParameter("text1");
-		appmain1Info.setText1(text1);
-		String text2 = request.getParameter("text2");
-		appmain1Info.setText2(text2);
 		String appkind = request.getParameter("appkind");
 		appmain1Info.setAppkind(appkind);
 		String  sdate = request.getParameter("sdate");
@@ -188,14 +186,7 @@ public class AppMain1Ctr {
 
 		appmain1Svc.updateAppMain1(appmain1Info);
 
-		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
-
-		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
-
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
-		
-		return "appmain/AppMain1List";
+		return "redirect:AppMain1";
 	}
 	
 	@RequestMapping(value = "/appmain2Up")
@@ -221,8 +212,8 @@ public class AppMain1Ctr {
 		appmain1Info.setText2(text2);
 		
 		appmain1Info.setSn(sn);
-		
-		
+
+
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(appmain1Info.getUploadfile());

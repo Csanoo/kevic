@@ -76,8 +76,8 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">등록 기간</td>
                                             <td style="width: 75%">
-                                                <input name="startDate" type="text"	value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
-                                                <input name="endDate" type="text"	value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
+                                                <input name="startDate" type="text"	 autocomplete="off" value="${searchVO.startDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block"> ~
+                                                <input name="endDate" type="text"	autocomplete="off" value="${searchVO.endDate}" class="form-control datepicker" data-format="yyyy-mm-dd" style="width:100px;display:inline-block">
                                                 <div style="display: inline-block;">
                                                     <button  type="button" onClick="dateperiod(0);">오늘</button>
                                                     <button type="button" onClick="dateperiod(6);">1주</button>
@@ -113,7 +113,7 @@
                 <div class="page-title">
 
                     <div class="pull-left">
-                        <h1 class="title">콘텐츠 목록</h1>
+                        <h1 class="title">컨텐츠 목록</h1>
                     </div>
                 </div>
             </div>
@@ -168,6 +168,7 @@
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
+                                        <th>컨텐츠타입</th>
                                         <th >이미지</th>
                                         <th style="200px">출처이미지URL</th>
                                         <th style="150px">영상URL</th>
@@ -185,9 +186,10 @@
                                         <tr>
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+                                            <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:50px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
-                                            <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}">${listview.videoUrl}</a></div></td>
+                                            <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>
                                             <td>${listview.regDate}</td>
@@ -369,7 +371,7 @@
         }
     }
     function excelDownload() {
-        document.form1.action='ExcelDownload';
+        document.form1.action='ExcelDownloadP';
         document.form1.submit();
         document.form1.action='';
     }

@@ -16,6 +16,8 @@ import main.java.common.satelite.kr.SearchVO;
 import main.java.admin.satelite.kr.ContentsVO;
 import main.java.common.satelite.kr.FileVO;
 
+import javax.transaction.Transactional;
+
 @Service
 public class ContentsSvc {
 
@@ -117,50 +119,45 @@ public class ContentsSvc {
 
 
     public void ContentsPublish(ContentsVO param) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
+       // DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+      //  def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+      // TransactionStatus status = txManager.getTransaction(def);
 
-        try {
+     //   try {
             sqlSession.update("ContentsPublish", param);
-            txManager.commit(status);
-        } catch (TransactionException ex) {
-            txManager.rollback(status);
+      //      txManager.commit(status);
+      //  } catch (TransactionException ex) {
+      //      txManager.rollback(status);
 
-        }
+      //  }
 
 
     }
+
     public void ContentsMove(ContentsVO param) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
-
-        try {
+    //    DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+     //   def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+     //   TransactionStatus status = txManager.getTransaction(def);
+    //    try {
             sqlSession.update("ContentsMove", param);
-            txManager.commit(status);
-        } catch (TransactionException ex) {
-            txManager.rollback(status);
-
-        }
-
-
+      //      txManager.commit(status);
+     //   } catch (TransactionException ex) {
+       //     txManager.rollback(status);
+       // }
     }
 
 
     public void ContentsUpdate(ContentsVO param) {
-        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-        TransactionStatus status = txManager.getTransaction(def);
+    //    DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+    //    def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+    //    TransactionStatus status = txManager.getTransaction(def);
 
-        try {
+    //    try {
             sqlSession.update("ContentsUpdate", param);
-            txManager.commit(status);
-        } catch (TransactionException ex) {
-            txManager.rollback(status);
-            System.out.println(ex.getMessage());
-
-        }
+     //       txManager.commit(status);
+   //    } catch (TransactionException ex) {
+    //        txManager.rollback(status);
+     //   }
     }
     public List<?> selectBoxproject(SearchVO param) {
 

@@ -204,7 +204,7 @@ public class Member1Ctr {
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 
-		return "posts/Ytbform";
+		return "redirect:ytbForm";
 
 	}
 
@@ -521,7 +521,6 @@ public class Member1Ctr {
 
 
 		searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
-
 		List<?> listview  = member1Svc.selectMember1List(searchVO);
 
 		modelMap.addAttribute("listview", listview);

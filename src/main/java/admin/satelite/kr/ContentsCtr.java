@@ -39,8 +39,8 @@ public class ContentsCtr {
         if ( pageNo == null ){
             pageNo = "50";
         }
-        System.out.println(request.getParameter("orderKeyword"));
-        searchVO.setPageNo(Integer.parseInt(pageNo));
+        searchVO.setDisplayRowCount(Integer.parseInt(pageNo));
+        searchVO.setDisplayRowCount(searchVO.getPageNo());
         List<?> projectview  = contentsSvc.selectBoxproject(searchVO);
         modelMap.addAttribute("projectview", projectview);
         searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow
@@ -160,6 +160,24 @@ public class ContentsCtr {
         modelMap.addAttribute("searchVO", searchVO);
 
         return "redirect:contents";
+    }
+
+    @RequestMapping(value = "/contentsDelete2")
+    public String contentsDelete2(HttpServletRequest request, SearchVO searchVO , ContentsVO contentsInfo, ModelMap modelMap) {
+
+
+        String sn = request.getParameter("sn");
+        contentsSvc.contentsDelete(sn);
+
+
+        searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow
+
+        List<?> listview  = contentsSvc.selectContentsList(searchVO);
+
+        modelMap.addAttribute("listview", listview);
+        modelMap.addAttribute("searchVO", searchVO);
+
+        return "redirect:ytbForm";
     }
 
     @ResponseBody
