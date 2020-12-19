@@ -11,7 +11,7 @@
 
     <context:annotation-config/>
     
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <tx:annotation-driven transaction-manager="txManager"/>
     
     <context:component-scan base-package="main.java.admin" />
 
@@ -53,8 +53,8 @@
 			<tx:method name="*" rollback-for="Exception"/>
 		</tx:attributes>
 	</tx:advice>
-	
-	
+
+
 
 	
 	    

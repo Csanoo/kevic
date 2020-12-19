@@ -198,7 +198,6 @@
         $("#category1").on("change",function(){
 
             var sn = $("#category1 option:selected").val();
-            alert(sn);
             $.get("/admin/category02?sn="+sn,function(data){
                 $( "#category2" ).html( data );
                 //alert( "Load was performed." );

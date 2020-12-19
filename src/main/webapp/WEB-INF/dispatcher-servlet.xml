@@ -29,4 +29,28 @@
         <property name="maxInMemorySize" value="100000000" />
     </bean>
 	<mvc:resources mapping="/upload/**" location="/upload/" />
+
+	<!--bean id="AuthLoginInterceptor" class="main.java.common.satelite.kr.AuthLoginInterceptor">
+	</bean>-->
+	<!-- Interceptor 설정 -->
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/project"/>
+			<mvc:mapping path="/contents"/>
+			<mvc:mapping path="/PostList"/>
+			<mvc:mapping path="/AppMain1"/>
+			<mvc:mapping path="/appmain1Form"/>
+			<mvc:mapping path="/BannerList"/>
+			<mvc:mapping path="/bannerForm"/>
+			<mvc:mapping path="/ytbForm"/>
+			<mvc:mapping path="/projectList"/>
+			<mvc:mapping path="/projectReg"/>
+			<mvc:mapping path="/memberList"/>
+			<mvc:mapping path="/regist"/>
+			<mvc:mapping path="/excelForm"/>
+
+			<bean class="main.java.common.satelite.kr.AuthLoginInterceptor"/>
+		</mvc:interceptor>
+	</mvc:interceptors>
+
 </beans>

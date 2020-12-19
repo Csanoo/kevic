@@ -124,7 +124,8 @@ public class ContentsSvc {
       // TransactionStatus status = txManager.getTransaction(def);
 
      //   try {
-            sqlSession.update("ContentsPublish", param);
+          //  sqlSession.update("ContentsPublish", param);
+            sqlSession.insert("insertContentsPublish", param);
       //      txManager.commit(status);
       //  } catch (TransactionException ex) {
       //      txManager.rollback(status);

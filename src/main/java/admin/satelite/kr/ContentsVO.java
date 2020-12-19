@@ -4,9 +4,21 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class ContentsVO {
+
+    HttpServletRequest request;
+
+    private String userid="";;
+    public String getUserid() {
+        return userid;
+    }
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
+
 
     private Integer sn;
     public Integer getSn() {
@@ -189,6 +201,14 @@ public class ContentsVO {
     }
     public String getCategory02() {
         return category02;
+    }
+
+    private String keyword="";
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+    public String getKeyword() {
+        return keyword;
     }
 
 }

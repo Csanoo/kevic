@@ -280,7 +280,7 @@ public class ContentsCtr {
 
                 contentsInfo.setTitle(title);
                 contentsInfo.setSn(sn);
-
+                System.out.println(i);
                 contentsSvc.ContentsUpdate(contentsInfo);
             }
         } catch (Exception e) {
@@ -331,7 +331,7 @@ public class ContentsCtr {
         objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
 
         // 1행
-        objRow = objSheet.createRow(1);
+        objRow = objSheet.createRow(0);
         objRow.setHeight ((short) 0x150);
 
         objCell = objRow.createCell(0);
@@ -364,7 +364,7 @@ public class ContentsCtr {
 
         List<ContentsVO> listview  = contentsSvc.selectexcelList(searchVO);
        // listview.forEach(s -> );
-        int rowNo = 2;
+        int rowNo = 1;
         ArrayList val;
         String str ="";
         for(ContentsVO list : listview){

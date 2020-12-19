@@ -153,12 +153,10 @@
 										<br>
 										<div class="form-group" style="margin-top: 10px">
 
-											<button type="button" class="btn btn-gray"
-													onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-orange"
-													onclick="fn_formSv()">저장</button>
-											<button type="button" class="btn btn-purple"
-													onclick="fn_formDel()">삭제</button>
+											<button type="button" class="btn btn-gray" onclick="fn_formRtn()">목록</button>
+											<button type="button" class="btn btn-orange" data-popup-open="example">미리보기</button>
+											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
+
 
 										</div>
 
@@ -238,4 +236,28 @@
         },
         fCreator: "createSEditor"
     });
+    $(function() {
+        //----- OPEN
+        $('[data-popup-open]').on('click', function(e)  {
+            var targeted_popup_class = jQuery(this).attr('data-popup-open');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+
+            e.preventDefault();
+        });
+
+        //----- CLOSE
+        $('[data-popup-close]').on('click', function(e)  {
+            var targeted_popup_class = jQuery(this).attr('data-popup-close');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+
+            e.preventDefault();
+        });
+    });
 </script>
+
+<div class="popup" data-popup="example">
+	<div class="popup-inner">
+		<div class="popup-contents"> <a class="popup-close" data-popup-close="example" href="#">X</a>
+			memo </div>
+	</div>
+</div>

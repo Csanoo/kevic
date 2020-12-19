@@ -38,13 +38,13 @@
                                                 </select>
                                                 <div id="category01">
                                                     <select name="category01" id="category1" class="form-control" >
-                                                        <option value="">카테고리</option>
+                                                        <option value="0">카테고리</option>
 
                                                     </select>
                                                 </div>
                                                 <div id="category02">
                                                     <select name="category02" id="category2" class="form-control" >
-                                                        <option value="">카테고리</option>
+                                                        <option value="0">카테고리</option>
 
                                                     </select>
                                                 </div>
@@ -188,7 +188,7 @@
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:50px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
+                                            <td><div style="width:180px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
                                             <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>

@@ -685,11 +685,11 @@ throws Exception{
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("이미지URL");
+        objCell.setCellValue("출처이미지URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);
-        objCell.setCellValue("비디URL");
+        objCell.setCellValue("영상URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(4);
@@ -701,7 +701,7 @@ throws Exception{
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(6);
-        objCell.setCellValue("등록일");
+        objCell.setCellValue("메시지");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(7);

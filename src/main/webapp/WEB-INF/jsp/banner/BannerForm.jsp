@@ -129,10 +129,10 @@
 
 
 
-                                                        <tr id="banner1">
+                                                        <tr id="banner1" class="banner">
                                                             <td>1</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" /></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" /></td>
                                                             <td><input type="text" name="link"/>
                                                                 <div id="linkTarget1" class="target">
                                                                 <input type="radio"  name="linkTarget1" value="100" checked/><labe>현재창</labe>
@@ -149,10 +149,10 @@
                                                             <td>
                                                             </td>
                                                         </tr>
-                                                        <tr  id="banner2">
+                                                        <tr  id="banner2" class="banner">
                                                             <td>2</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget2" class="target">
                                                                 <input type="radio" class="target" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
@@ -170,10 +170,10 @@
                                                                 <div class="removeRow">X</div>
                                                             </td>
                                                         </tr>
-                                                        <tr  id="banner3">
+                                                        <tr  id="banner3" class="banner">
                                                             <td>3</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget3" class="target">
                                                                 <input type="radio" class="target" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
@@ -189,10 +189,10 @@
                                                                 <div class="removeRow">X</div>
                                                             </td>
                                                         </tr>
-                                                        <tr  id="banner4">
+                                                        <tr  id="banner4" class="banner">
                                                             <td>4</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget4" class="target">
                                                                 <input type="radio" class="target" name="linkTarget4" value="100" checked disabled/><label>현재창</label>
@@ -208,10 +208,10 @@
                                                                 <div class="removeRow">X</div>
                                                             </td>
                                                         </tr>
-                                                        <tr  id="banner5">
+                                                        <tr  id="banner5" class="banner">
                                                             <td>5</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" disabled/></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget5" class="target">
                                                                 <input type="radio" class="target" name="linkTarget5" value="100" disabled checked/><label>현재창</label>
@@ -262,7 +262,7 @@
                                         return false;
                                     }
 
-                                    if(frm.uploadfile.value == ''){
+                                    if(frm.uploadfile[0].value == ''){
                                         alert('이미지를 등록해주세요.');
                                         frm.uploadfile.focus();
                                         return false;
@@ -319,6 +319,7 @@
             onDragClass: "dragRow"
         });
         $(document).on("click","#addRow",function(){
+
             $(".banner:hidden").each(function(){
                 $(this).find("input").attr("disabled", false);
                 $(this).show();

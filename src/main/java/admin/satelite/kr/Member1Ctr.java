@@ -1,13 +1,20 @@
 package main.java.admin.satelite.kr;
 
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -15,6 +22,7 @@ import main.java.common.satelite.kr.FileUtil;
 import main.java.common.satelite.kr.FileVO;
 import main.java.common.satelite.kr.LeftMenuUtil;
 import main.java.common.satelite.kr.Search;
+import main.java.common.satelite.kr.SearchYtb;
 import main.java.common.satelite.kr.SearchVO;
 import main.java.common.satelite.kr.Crawler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -97,15 +105,12 @@ public class Member1Ctr {
 	public String Code1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
 
-
-
 		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
 
 		List<?> listview  = member1Svc.selectCode1List(searchVO);
 
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-
 
 		return "member1/CodeList";
 
@@ -151,7 +156,7 @@ public class Member1Ctr {
 
 
 
-		List<?> cateview  = member1Svc.selectCode1List(searchVO);
+		List<?> cateview  = member1Svc.selectCodetype();
 
 		modelMap.addAttribute("cateview", cateview);
 
@@ -171,30 +176,32 @@ public class Member1Ctr {
 
 		searchVO.setUserid(USERID);
 		String title = "";
-		String kind = "";
+		String stype = "";
 		String snsType = "";
-		
+		Integer CountCt = 0;
 		title = request.getParameter("title");
-		//kind = request.getParameter("kind");
+		stype = request.getParameter("type");
 		snsType = request.getParameter("snsType");
+		CountCt = Integer.parseInt(request.getParameter("CountCt"));
 
 		//System.out.println(snsType);
 		Search srch = new Search();
+		SearchYtb searchYtb = new SearchYtb();
 		Crawler crawler = new Crawler();
 
 		if(snsType.equals("ytb")) {
 			try {
-				srch.execute(title);
+				//srch.execute(title);
+				searchYtb.execute(title, stype,CountCt,USERID);
 			} catch(Exception e) {
-				System.out.println(e.getMessage());
+				System.out.println("test="+e.getMessage());
 			}
-
 		}else if(snsType.equals("twi")){
-			crawler.searchTwit(title, kind);
+			crawler.searchTwit(title, stype);
 		}else if(snsType.equals("fb")){
-			crawler.searchFb(title, kind);
+			crawler.searchFb(title, stype);
 		}else if(snsType.equals("insta")){
-			crawler.searchInsta(title, kind);
+			crawler.searchInsta(title, stype);
 		}
 
 		searchVO.pageCalculate( member1Svc.selectContents1Count(searchVO) ); // startRow, endRow
@@ -339,8 +346,8 @@ public class Member1Ctr {
 	}
 
 	@RequestMapping(value = "/logout")
-	public String MainLogout(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
-
+	public String MainLogout(HttpSession session) {
+		session.invalidate();
 		return "member1/LoginForm";
 
 	}
@@ -471,11 +478,7 @@ public class Member1Ctr {
 		mvo = member1Svc.selectMember1One(param);
 
 		if (mvo != null) {
-			if ( ( mvo.getUsertype().equals("SA") && !mvo.getUsername().equals("") ) ||
-
-					( mvo.getUsertype().equals("CP") && !mvo.getUsername().equals("") )
-
-					) {
+			if ( ( mvo.getUsertype().equals("SA") && !mvo.getUsername().equals("") ) ||	( mvo.getUsertype().equals("CP") && !mvo.getUsername().equals("") )) {
 
 				session.setAttribute("USERNAME", mvo.getUsername());
 				session.setAttribute("USERTYPE", mvo.getUsertype());
@@ -504,10 +507,10 @@ public class Member1Ctr {
 
 				modelMap.addAttribute("mvo", mvo);
 
-				return "redirect:ytbForm";
+				return "redirect:project";
 
 			} else {
-				return "member1/LoginForm";
+				return "redirect:project";
 			}
 
 		} else {
@@ -688,4 +691,137 @@ public class Member1Ctr {
 		}
 
 	}
+
+	@RequestMapping(value="/ExcelDownloadC")
+	public void ExcelDownload(HttpServletResponse response, SearchVO searchVO, Model model, Member1VO member1VO) throws Exception {
+
+		HSSFWorkbook objWorkBook = new HSSFWorkbook();
+		HSSFSheet objSheet = null;
+		HSSFRow objRow = null;
+		HSSFCell objCell = null;       //셀 생성
+
+		//제목 폰트
+		HSSFFont font = objWorkBook.createFont();
+		font.setFontHeightInPoints((short)9);
+		font.setBoldweight((short)font.BOLDWEIGHT_BOLD);
+		font.setFontName("맑은고딕");
+
+		//제목 스타일에 폰트 적용, 정렬
+		HSSFCellStyle styleHd = objWorkBook.createCellStyle();    //제목 스타일
+		styleHd.setFont(font);
+		styleHd.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+		styleHd.setVerticalAlignment (HSSFCellStyle.VERTICAL_CENTER);
+
+		objSheet = objWorkBook.createSheet("콘텐츠목록");     //워크시트 생성
+
+		// 1행
+		objRow = objSheet.createRow(0);
+		objRow.setHeight ((short) 0x150);
+
+		objCell = objRow.createCell(0);
+		objCell.setCellValue("No");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(1);
+		objCell.setCellValue("컨텐츠타입");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(2);
+		objCell.setCellValue("출처이미지URL");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(3);
+		objCell.setCellValue("영상URL");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(4);
+		objCell.setCellValue("출처");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(5);
+		objCell.setCellValue("타이틀");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(6);
+		objCell.setCellValue("키워드");
+		objCell.setCellStyle(styleHd);
+
+		objCell = objRow.createCell(7);
+		objCell.setCellValue("등록일");
+		objCell.setCellStyle(styleHd);
+
+
+
+		List<Member1VO> listview  = member1Svc.selectexcelList(searchVO);
+		// listview.forEach(s -> );
+		int rowNo = 1;
+		String str = "";
+		ArrayList val;
+		for(Member1VO list : listview){
+			str = list.getTitle();
+			str = str.replaceAll("&amp;", "&");
+			str = str.replaceAll("&apos;", "'");
+			str = str.replaceAll("&#39;", "'");
+			str = str.replaceAll("&quot;", "\"");
+			str = str.replaceAll("&lt;", "<");
+			str = str.replaceAll("&gt;", ">");
+
+			objRow = objSheet.createRow(rowNo++);
+			objRow.setHeight ((short) 0x150);
+
+			objCell = objRow.createCell(0);
+			objCell.setCellValue(rowNo-1);
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(1);
+			objCell.setCellValue(""+list.getType());
+			objCell.setCellStyle(styleHd);
+
+
+			objCell = objRow.createCell(2);
+			objCell.setCellValue(""+list.getImageUrl());
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(3);
+			objCell.setCellValue(""+list.getVideoUrl());
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(4);
+			objCell.setCellValue(""+list.getCtSource());
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(5);
+			objCell.setCellValue(""+str);
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(6);
+			objCell.setCellValue(""+list.getKeyword());
+			objCell.setCellStyle(styleHd);
+
+			objCell = objRow.createCell(7);
+			objCell.setCellValue(""+list.getRegDate());
+			objCell.setCellStyle(styleHd);
+
+
+
+		}
+
+		SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat ( "yyyyMMdd");
+		Date currentTime = new Date ();
+		String mTime = mSimpleDateFormat.format ( currentTime );
+
+		response.setContentType("Application/Msexcel");
+		response.setHeader("Content-Disposition", "ATTachment; Filename=Contents_Bulk_upload_"+mTime+".xls");
+
+		OutputStream fileOut  = response.getOutputStream();
+
+		objWorkBook.write(fileOut);
+		fileOut.close();
+
+		response.getOutputStream().flush();
+		response.getOutputStream().close();
+	}
+
 }
+
+

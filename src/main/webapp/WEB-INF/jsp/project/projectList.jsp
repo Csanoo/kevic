@@ -36,9 +36,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td class="tdl" style="width: 25%">타이틀</td>
+                                            <td class="tdl" style="width: 25%">프로젝트명</td>
                                             <td style="width: 75%">
-                                                <input name="searchtitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
+                                                <input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
                                             </td>
                                         </tr>
 
@@ -66,7 +66,7 @@
                 <div class="page-title">
 
                     <div class="pull-left">
-                        <h1 class="title">콘텐츠 목록</h1>
+                        <h1 class="title">프로젝트 목록</h1>
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@
                                         <th>No</th>
                                         <th>사용여부</th>
                                         <th>로고</th>
-                                        <th>타이틀</th>
+                                        <th>프로젝트명</th>
                                         <th>URL</th>
                                         <th>컨텐츠</th>
                                         <th>등록일</th>

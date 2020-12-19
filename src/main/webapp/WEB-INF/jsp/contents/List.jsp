@@ -119,7 +119,7 @@
                             <ul class="list-unstyled">
                                 <li style="float: left;">
                                     <button type="button" class="btn btn-orange" id="updatemPost">선택수정</button>
-                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal">  컨텐츠 전시</button>
+                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal" onclick="ctNum()">  컨텐츠 전시</button>
                                     <button type="button" class="btn btn-gray" onclick="deletePost()">일괄 삭제</button>
                                     <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
                                 </li>
@@ -200,7 +200,6 @@
         </section>
     </section>
 
-    #packageCourse_slide > div
 </form>
 <script>
     function fn_formSubmit() {
@@ -390,6 +389,10 @@
             });
         });
     });
+    function ctNum(){
+        var cnt = $("input[name='chkSn']:checked").length;
+        $("#ctNum").html(cnt);
+    }
 </script>
 
 <!-- Modal -->
@@ -419,13 +422,13 @@
                         <td style="width: 75%">
                             <div id="category01">
                                 <select name="category01" id="category1" class="form-control" >
-                                    <option value="">카테고리</option>
+                                    <option value="0">카테고리</option>
 
                                 </select>
                             </div>
                             <div id="category02">
                                 <select name="category02" id="category2" class="form-control" >
-                                    <option value="">카테고리</option>
+                                    <option value="0">카테고리</option>
 
                                 </select>
                             </div>
@@ -433,6 +436,8 @@
                     </tr>
                 </table>
                 </form>
+                <p>카테고리를 2Depth까지 설정한 경우, 컨텐츠는 2Depth에 등록해 주세요.</p>
+                <p>선택한 (<span style="color:red;" id="ctNum"></span>)건의 컨텐츠를 카테고리에 추가합니다.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"  onClick="publishPost();">등록</button>

@@ -131,6 +131,62 @@
 							
 							
 							</form>
+
+					<div class="content-body">
+						<div class="row">
+							<div class="col-md-12 col-sm-12 col-xs-12">
+								<table class="table" id="dTable">
+									<thead>
+									<colgroup>
+										<col width="5%">
+										<col width="5%">
+										<col width="5%">
+										<col width="5%">
+										<col width="5%">
+										<col width="20%">
+										<col width="15%">
+										<col width="10%">
+									</colgroup>
+									<tr>
+										<th>No</th>
+										<th>사용여부</th>
+										<th>로고</th>
+										<th>프로젝트명</th>
+										<th>URL</th>
+										<th>콘텐츠</th>
+										<th>등록일</th>
+										<th>관리권한</th>
+									</tr>
+									</thead>
+									<tbody>
+									<c:forEach var="listview" items="${listview}" varStatus="status">
+										<tr>
+											<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+											<td>${listview.state}</td>
+											<td><img src="${listview.imageUrl}" width="110"></td>
+											<td><img src="${listview.title}" width="110"></td>
+											<td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
+											<td>${listview.keyword}</td>
+											<td>${listview.regDate}</td>
+											<td>0</td>
+											<td><button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button></td>
+										</tr>
+									</c:forEach>
+									<c:if test="${searchVO.totRow <= 0}">
+										<tr>
+											<td colspan="11">검색결과가 없습니다.</td>
+										</tr>
+									</c:if>
+									</tbody>
+								</table>
+
+							</div>
+
+							<div class="col-md-12 col-sm-12 col-xs-12" style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
+								<jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
+							</div>
+						</div>
+					</div>
 							<script>
 						function fn_formSv() {
                             if ( f.userpw.value != f.userpw1.value ) {

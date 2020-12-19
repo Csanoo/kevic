@@ -147,7 +147,6 @@
 										<div class="form-group" style="margin-top: 10px">
 											<button type="button" class="btn btn-gray"
 													onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-orange" data-popup-open="example">미리보</button>
 											<button type="button" class="btn btn-orange"기
 													onclick="fn_formSv()">저장</button>
 										</div>
@@ -222,26 +221,11 @@
             return false;
         }
         if(frm.title.value == '0'){
-            alert('팝업타이틀명을 확인해주세요.');
+            alert('팝업 타이틀명을 확인해주세요.');
             frm.title.focus();
             return false;
         }
 
-        if(frm.projectcdCk.value == '0'){
-            alert('프로젝트코드를 확인해주세요.');
-            frm.title.focus();
-            return false;
-        }
-        if(frm.basicTitle.value == ''){
-            alert('기본 페이지 타이틀을 확인해주세요.');
-            frm.basicTitle.focus();
-            return false;
-        }
-        if(frm.uploadfile.value == ''){
-            alert('기본로고를 입력해주세요.');
-            frm.title.focus();
-            return false;
-        }
 	}
     $(function() {
         //----- OPEN

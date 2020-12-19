@@ -181,7 +181,7 @@ public class ProjectSvc {
       //  TransactionStatus status = txManager.getTransaction(def);
 
      //   try {
-            sqlSession.update("notProjectPublish", param);
+            sqlSession.delete("notProjectPublish", param);
       //      txManager.commit(status);
      //   } catch (TransactionException ex) {
       //      txManager.rollback(status);

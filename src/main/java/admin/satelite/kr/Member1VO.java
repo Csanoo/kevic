@@ -225,5 +225,52 @@ public class Member1VO {
 	public void setProjectct(Integer projectct) {
 		this.projectct = projectct;
 	}
-    
+
+	private String ctSource="";
+	public void setCtSource(String ctSource) {
+		this.ctSource = ctSource;
+	}
+	public String getCtSource() {
+		return ctSource;
+	}
+
+	private String keyword="";
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+	public String getKeyword() {
+		return keyword;
+	}
+
+	private String type="";
+	public void setType(String keyword) {
+		this.type = type;
+	}
+	public String getType() {
+		return type;
+	}
+
+	private String imageUrl ="";
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	private String videoUrl ="";
+	public void setVideoUrl(String videoUrl) {
+		this.videoUrl = videoUrl;
+	}
+	public String getVideoUrl() {
+		return videoUrl;
+	}
+
+	private String regDate ="";
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public String getRegDate() {
+		return regDate;
+	}
 }

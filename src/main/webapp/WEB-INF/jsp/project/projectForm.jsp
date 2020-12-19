@@ -79,7 +79,7 @@
                                                                 <c:out value="${listview.size2String()}" />
                                                                 <br />
                                                             </c:forEach>
-                                                            <input type="file" name="uploadfile" multiple="" />
+                                                            <input type="file" name="uploadfile" multiple="" accept="image/*" />
                                                         </div>
                                                     </div>
                                                 </td>

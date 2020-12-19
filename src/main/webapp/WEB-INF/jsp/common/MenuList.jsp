@@ -7,14 +7,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 //btr.setUserProgram(HEADERURL);
 %>
 
-<%
-	String sessionUTYPE = "";
-	if ( session.getAttribute("USERTYPE") != null ) 
-	{ sessionUTYPE = (String)session.getAttribute("USERTYPE"); }
-	if(sessionUTYPE == ""){
-	    response.sendRedirect("/admin/");
-	}
-%>
+
 
 <ul class='wraplist'>
 

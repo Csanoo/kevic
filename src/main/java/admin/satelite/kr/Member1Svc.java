@@ -127,7 +127,11 @@ public class Member1Svc {
 
 		return sqlSession.selectList("selectCode1SelList");
 	}
-	
+	public List<?> selectCodetype() {
+
+		return sqlSession.selectList("selectCodetype");
+	}
+
 	public Member1VO selectCode1One(String param) {
 		return sqlSession.selectOne("selectCode1One", param);
 	}
@@ -192,7 +196,13 @@ public class Member1Svc {
 
 		return sqlSession.selectList("selectcontentsList0", param);
 	}
-	
+
+
+	public List<Member1VO> selectexcelList(SearchVO param) {
+
+		return sqlSession.selectList("selectexcelList2", param);
+	}
+
 	public Integer selectContents12Count(SearchVO param) {
 		return sqlSession.selectOne("selectContents12Count", param);
 	}

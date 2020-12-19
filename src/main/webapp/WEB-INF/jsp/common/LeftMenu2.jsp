@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
+
 <!DOCTYPE html>
 <html class=" ">
     <head>
@@ -44,7 +45,7 @@
         <link href="/admin/design/assets/css/responsive.css" rel="stylesheet" type="text/css"/>
         <!-- CORE CSS TEMPLATE - END -->
 
-    
+
 <style>
 
 a[href*="http"] {
@@ -106,7 +107,6 @@ table{font-size:14px}
     <body >
 
 
-
 <!-- START TOPBAR -->
         <div class='page-topbar '>
             <div class='logo-area2'>
@@ -137,12 +137,7 @@ table{font-size:14px}
                                 </li>
                             </ul>
                         </li>
-                        <li class="chat-toggle-wrapper">
-                            <a href="#" data-toggle="chatbar" class="toggle_chat">
-                                <i class="fa fa-comments"></i>
-                                <span class="badge badge-warning">9</span>
-                            </a>
-                        </li>
+
                     </ul>			
                 </div>		
             </div>
@@ -168,10 +163,11 @@ table{font-size:14px}
                                 <a href="ui-profile.html">관리</a>
 
                                 <!-- Available statuses: online, idle, busy, away and offline -->
-                                <span class="profile-status online"></span>
+
                             </h3>
 
-                            <p class="profile-title">Web Developer</p>
+
+                            <p class="profile-title"> ${sessionUTYPE}</p>
 
                         </div>
 

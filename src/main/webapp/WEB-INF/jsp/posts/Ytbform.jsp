@@ -31,8 +31,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form1" action="ytbPost" method="post" >
-								<input type="hidden" name="orderKeyword" id="orderKeyword" value="${searchVO.orderKeyword}" />
+							<form name="form2" action="ytbPost" method="post" >
 								<input type="hidden" name="sn" id="sn" value="" />
 								<input type="hidden" name="srch" id="srch" value="SRCH" />
 								<div class="row">
@@ -43,26 +42,21 @@
 												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 25%">키워드(키워드 입력)</td>
-												<td style="width: 75%"><input name="kind" type="text"	value="" class="form-control"></td>
-											</tr>
-											<!--
-											<tr>
 												<td class="tdl" style="width: 25%">컨텐츠 타입</td>
-												<td style="width: 75%"><input name="kind" type="text"	value="" class="form-control"></td>
-											</tr>
-											<tr>
-												<td class="tdl" style="width: 25%">카테고리</td>
 												<td style="width: 75%">
-												<select name="kind"  class="form-control" >
+												<select name="type"  class="form-control" >
 													<c:forEach var="cateview" items="${cateview}"   varStatus="status">
 													<option value="${cateview.code2}" <c:if test="${banner1Info.category eq cateview.code2}">selected</c:if>>${cateview.title}</option>
 													</c:forEach>
-
 												</select>
 												</td>
 											</tr>
-											-->
+											<tr>
+												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
+												<td style="width: 75%">
+													<input type="number" name="CountCt"class="form-control">
+												</td>
+											</tr>
 											<tr>
 												<td class="tdl" style="width: 25%">SNS</td>
 												<td style="width: 75%">
@@ -79,19 +73,18 @@
 											</tr>
 										</table>
 										<div class="form-group" style="margin-top: 20px">
+											<button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
 											<button type="button" class="btn btn-orange" onclick="fn_formSv()">크롤링 시작</button>
 										</div>
 									</div>
 								</div>
-
-
-
+							</form>
 						</div>
 					</div>
 				</div>
 			</section>
 		</div>
-
+<form name="form1" method="post" >
 
 							<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
 								<div class="page-title">
@@ -112,22 +105,24 @@
 											<li style="float: left;">
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
-											</li>
-											<!--
-											<li style="float: left;"><input type="checkbox" name="searchType" value="title" <c:if test="${fn:indexOf(searchVO.searchType, 'title')!= -1}">checked="checked"</c:if> />
-												<label class="chkselect" for="searchType1">이름</label>&nbsp;&nbsp;
-													<input type="checkbox" name="searchType" value="code2" <c:if test="${fn:indexOf(searchVO.searchType, 'code2')!=-1}">checked="checked"</c:if> />
-												<label class="chkselect" for="searchType2">분류</label>&nbsp;&nbsp;
+												<button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
+												<button type="button" class="btn btn-gray" onclick="deletePost()">일괄 삭제</button>
 											</li>
 											<li style="float: left;">
-												<input type="text" style="width: 150px; height: 28px" name="searchKeyword"	value='<c:out value="${searchVO.searchKeyword}"/>' onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
+												<select name="orderKeyword" id="orderKeyword"  >
+													<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
+													<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
+													<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
+													<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+												</select>
+												<select name="pageNo" id="pageNo"  >
+													<option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
+													<option <c:if test="${searchVO.pageNo eq '100'}">selected</c:if> value="100">100개</option>
+													<option <c:if test="${searchVO.pageNo eq '200'}">selected</c:if> value="200">200개</option>
+													<option <c:if test="${searchVO.pageNo eq '300'}">selected</c:if> value="300">300개</option>
+													<option <c:if test="${searchVO.pageNo eq '500'}">selected</c:if> value="500">500개</option>
+												</select>
 											</li>
-											<li style="float: left;">&nbsp;&nbsp;
-												<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">검색</button>
-
-											</li>
-												-->
-										</ul>
 									</div>
 								</header>
 
@@ -140,10 +135,13 @@
 													<tr>
 														<th><input type="checkbox" id="allChk" ></th>
 														<th>No</th>
+														<th>컨텐츠타입</th>
 														<th>이미지</th>
-														<th >출처이미지URL</th>
+														<th>출처이미지URL</th>
 														<th>영상URL</th>
+														<th>출처</th>
 														<th>타이틀</th>
+														<th>키워드</th>
 														<th>등록일</th>
 														<th>관리</th>
 													</tr>
@@ -154,13 +152,16 @@
 														<tr>
 															<td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
 															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+															<td> ${listview.type}</td>
 															<td><img src="${listview.imageUrl}" width="110"></td>
 															<td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
 															<td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+															<td><div style="width:100px;overflow:hidden">${listview.ctSource}</div></td>
 															<td class="title" style="display: flex">${listview.title}</td>
+															<td>${listview.keyword}</td>
 															<td>
 																	${listview.regDate}<br>
-																등록자
+																			admin
 															</td>
 															<td>
 																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button>
@@ -186,6 +187,7 @@
 
 		<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script type="text/javascript">
+
     function publishPost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();
@@ -217,6 +219,12 @@
         }
     }
 	$(function(){
+        $("#orderKeyword").on("change",function(){
+            document.form1.submit();
+        });
+        $("#pageNo").on("change",function(){
+            document.form1.submit();
+        });
 	    $("#allChk").on("click",function(){
 
 	        $("input[name=chkId]").each(function(){
@@ -234,7 +242,7 @@
 	}
     function fn_formSv() {
 
-        if ( document.form1.title.value == ""){
+        if ( document.form2.title.value == ""){
             alert("검색어를 입력해주세요.");
             return false;
         }
@@ -242,9 +250,12 @@
             alert("크롤링할 SNS을 선택해주세요.");
             return false;
         }
-
+        if ( document.form2.title.value == ""){
+            alert("검색어를 입력해주세요.");
+            return false;
+        }
         $("#loading").show();
-        document.form1.submit();
+        document.form2.submit();
     }
 
 	$(function(){
@@ -256,6 +267,38 @@
             }
         });
 	});
+    function excelDownload() {
+        document.form1.action='ExcelDownloadC';
+        document.form1.submit();
+        document.form1.action='';
+    }
+    function deletePost(){
+        var cnt = $("input[name='chkSn']:checked").length;
+        var arr = new Array();
+        $("input[name='chkSn']:checked").each(function() {
+            arr.push($(this).attr('value'));
+        });
+        if(cnt == 0){
+            alert("선택된 글이 없습니다.");
+            return false;
+        }
+        else{
+            $.ajax({
+                type: "POST",
+                url: "/admin/contentsChkDelete",
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                success: function(jdata){
+                    if(jdata != 'TRUE') {
+                        alert("삭제 오류");
+                    }else{
+                        alert("삭제 성공");
+                        location.href = "/admin/ytbForm";
+                    }
+                },
+                error: function(data){alert(data);location.href = "/admin/ytbForm";}
+            });
+        }
+    }
 
 </script>
 <div class="loader" id ="loading"></div>

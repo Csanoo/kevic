@@ -106,9 +106,6 @@
 								</table>
 
 							</div>
-
-
-
 							<div class="col-md-12 col-sm-12 col-xs-12"
 								style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
 								<jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
