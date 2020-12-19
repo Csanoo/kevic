@@ -32,7 +32,7 @@
 
 	<!--bean id="AuthLoginInterceptor" class="main.java.common.satelite.kr.AuthLoginInterceptor">
 	</bean>-->
-	<!-- Interceptor 설정 -->
+	<!-- Interceptor 설정 ->
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/project"/>
@@ -52,5 +52,5 @@
 			<bean class="main.java.common.satelite.kr.AuthLoginInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>
-
+-->
 </beans>

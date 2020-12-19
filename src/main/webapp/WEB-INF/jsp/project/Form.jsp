@@ -99,7 +99,12 @@
 											<tr>
 												<td class="tdl" style="width: 15%">출처</td>
 												<td style="width: 35%" colspan="3">
-													<input name="ctSource" type="text"	class="form-control">
+													<select name="ctSource" id="ctSource" class="form-control" >
+														<c:forEach var="sourceview" items="${sourceview}"   varStatus="status">
+															<option value="${sourceview.code2}">${sourceview.title}</option>
+														</c:forEach>
+
+													</select>
 												</td>
 											</tr>
 											<tr>

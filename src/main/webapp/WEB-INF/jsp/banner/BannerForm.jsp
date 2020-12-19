@@ -64,8 +64,8 @@
                                                     <input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
                                                     <input type="radio" value="N" name="displaytype"><label>기간 노출</label>
                                                     <div style="width:220px;display:inline-flex">
-                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">~
-                                                    <input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled> ~
+                                                    <input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -310,6 +310,16 @@
 <script type="text/javascript">
 
     $(function(){
+
+        $("input[name='displaytype']").on("change",function(){
+           if($(this).val()=='Y'){
+               $("input[name='sdate']").attr("disabled",true);
+               $("input[name='edate']").attr("disabled",true);
+           }else{
+               $("input[name='sdate']").attr("disabled",false);
+               $("input[name='edate']").attr("disabled",false);
+           }
+        });
         $(".target input[type='radio']").on("change",function(){
             if ($(this).is(':checked')) {
                 $(this).parent().children("input[name='linkTarget']").val($(this).val());

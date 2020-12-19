@@ -167,7 +167,8 @@
 											<td><img src="${listview.title}" width="110"></td>
 											<td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
 											<td>${listview.keyword}</td>
-											<td>${listview.regDate}</td>
+											<td>${listview.regDate}<br>
+													</td>
 											<td>0</td>
 											<td><button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button></td>
 										</tr>

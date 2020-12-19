@@ -76,8 +76,8 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="displaytype" <c:if test="${appmain1Info.displaytype eq 'Y'}">checked</c:if>><label>상시 노출</label>
 													<input type="radio" value="N" name="displaytype" <c:if test="${appmain1Info.displaytype eq 'N'}">checked</c:if>><label>기간 노출</label>
-													<input name="sdate" type="text" class="form-control datepicker" value="${appmain1Info.sdate}" data-format="yyyy-mm-dd">
-													<input name="edate" type="text" class="form-control datepicker" value="${appmain1Info.edate}" data-format="yyyy-mm-dd">
+													<input name="sdate" type="text" class="form-control datepicker" value="${appmain1Info.sdate}" data-format="yyyy-mm-dd" <c:if test="${appmain1Info.displaytype eq 'Y'}">disabled</c:if>>
+													<input name="edate" type="text" class="form-control datepicker" value="${appmain1Info.edate}" data-format="yyyy-mm-dd" <c:if test="${appmain1Info.displaytype eq 'Y'}">disabled</c:if>>
 												</td>
 
 											</tr>
@@ -88,8 +88,8 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'Y'}">checked</c:if>><label>상시 노출</label>
 													<input type="radio" value="N" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'N'}">checked</c:if>><label>기간 노출</label>
-														<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" >
-														<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00">
+														<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
+														<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
 
 												</td>
 
@@ -239,6 +239,15 @@
     $(function() {
         //----- OPEN
         $('[data-popup-open]').on('click', function(e)  {
+            var xposition = $("input[name=positionX]").val();
+            var yposition = $("input[name=positionY]").val();
+			$("#popup-title").html($("input[name=title]").val());
+            oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+            $("#popup-content").html($("#umemo").val());
+            $(".popup-inner").height($("input[name=sHeight]").val());
+            $(".popup-inner").width($("input[name=sWidth]").val());
+            $(".popup-inner").css("top",yposition+"px");
+            $(".popup-inner").css("left",xposition+"px");
             var targeted_popup_class = jQuery(this).attr('data-popup-open');
             $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
 
@@ -252,12 +261,41 @@
 
             e.preventDefault();
         });
+        $("input[name='displaytype']").on("change",function(){
+            if($(this).val()=='Y'){
+                $("input[name='sdate']").attr("disabled",true);
+                $("input[name='edate']").attr("disabled",true);
+            }else{
+                $("input[name='sdate']").attr("disabled",false);
+                $("input[name='edate']").attr("disabled",false);
+            }
+        });
+        $("input[name='dtimetype']").on("change",function(){
+            if($(this).val()=='Y'){
+                $("input[name='stime']").attr("disabled",true);
+                $("input[name='etime']").attr("disabled",true);
+            }else{
+                $("input[name='stime']").attr("disabled",false);
+                $("input[name='etime']").attr("disabled",false);
+            }
+        });
     });
 </script>
 
 <div class="popup" data-popup="example">
 	<div class="popup-inner">
 		<div class="popup-contents"> <a class="popup-close" data-popup-close="example" href="#">X</a>
-			memo </div>
+			<span id="popup-title"></span>
+			<div id="popup-content">
+
+			</div>
+		</div>
 	</div>
 </div>
+<style>
+	.popup { /* 팝업이 열렸을 때, 팝업창 주변 전체를 어둡게 합니다 */ display: none; position:fixed; width: 100%; height: 100%; top:0; left:0; background:rgba(0,0,0,0.5);
+		z-index: 2000;}
+	.popup-inner { /* 열렸을 때 팝업창 크기와 색상을 지정합니다. */ position:absolute; width: 50%; height: 50%; padding : 10px; background:#fff; z-index:2001}
+	.popup-close{ /* 팝업창 내 닫기 버튼의 위치를 지정합니다. */ position: absolute; display: block; top:10px; right: 10px; }
+
+</style>

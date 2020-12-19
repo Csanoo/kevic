@@ -139,9 +139,9 @@
 															</td>
 															<td><input type="text" name="link" value="${bannerDetaillist.link}"/>
 																<div id="linkTarget${status.index}" class="target">
-																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '100'}">checked</c:if> value="100"/><label>현재창</label>
-																<input type="radio"  name="linkTarget${status.index}" <c:if test="${banner1Info.linkTarget eq '200'}">checked</c:if> value="200"/><label>부모창</label>
-																<input type="hidden" name="linkTarget" value="${banner1Info.linkTarget}">
+																<input type="radio"  name="linkTarget${status.index}" <c:if test="${bannerDetaillist.linkTarget eq '100'}">checked</c:if> value="100"/><label>현재창</label>
+																<input type="radio"  name="linkTarget${status.index}" <c:if test="${bannerDetaillist.linkTarget eq '200'}">checked</c:if> value="200"/><label>부모창</label>
+																<input type="hidden" name="linkTarget" value="${bannerDetaillist.linkTarget}">
 																</div>
 															</td>
 															<td>
@@ -162,7 +162,7 @@
 																<td></td>
 																<td>
 																	<div class="imgChk">
-																		<input type="file" name="uploadfile${status2.index+1}" multiple="" value="" disabled/>
+																		<input type="file" name="uploadfile${status2.index+1}" multiple="" value="" accept="image/*"  disabled/>
 																		<input type="hidden" name="uploadfileOld" multiple="" value=""  disabled/>
 																		<input type="hidden" class="chkFile" name="uploadfileck" value="F"  disabled>
 																	</div>

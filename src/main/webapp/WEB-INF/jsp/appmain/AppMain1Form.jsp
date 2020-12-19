@@ -74,9 +74,10 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
 													<input type="radio" value="N" name="displaytype"><label>기간 노출</label>
-													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
-													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd">
+													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled>
+													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled>
 												</td>
+
 
 											</tr>
 											<tr>
@@ -86,10 +87,11 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="dtimetype" checked><label>상시 노출</label>
 													<input type="radio" value="N" name="dtimetype"><label>기간 노출</label>
-													<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" >
-													<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00">
+													<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" disabled placeholder="24:00:00" >
+													<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" disabled placeholder="01:00:00">
 												</td>
 											</tr>
+
 											<tr>
 												<td class="tdl" style="width: 15%">노출 위치</td>
 												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control" placeholder="px단위를 입력해야합니다.">
@@ -128,7 +130,7 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="200" name="linkState" checked><label>사용안함</label>
 													<input type="radio" value="100" name="linkState"><label>사용</label>
-													<select name="linkTarget">
+													<select name="linkTarget" disabled>
 														<option value="100">부모창</option>
 														<option value="200">새창열기</option>
 													</select>
@@ -138,7 +140,7 @@
 												<td class="tdl" style="width: 15%">URL</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="text" value="" name="url" >
+													<input type="text" value="" name="url" disabled>
 												</td>
 											</tr>
 										</table>
@@ -147,6 +149,7 @@
 										<div class="form-group" style="margin-top: 10px">
 											<button type="button" class="btn btn-gray"
 													onclick="fn_formRtn()">목록</button>
+											<button type="button" class="btn btn-orange" data-popup-open="example">미리보기</button>
 											<button type="button" class="btn btn-orange"기
 													onclick="fn_formSv()">저장</button>
 										</div>
@@ -179,8 +182,128 @@
 <script type="text/javascript" src="/admin/design/assets/plugins/se2/js/HuskyEZCreator.js" charset="utf-8"></script>
 
 <script>
+    $(function(){
+        $('.timepicker').timepicker();
+        $("input[name='displaytype']").on("change",function(){
+            if($(this).val()=='Y'){
+                $("input[name='sdate']").attr("disabled",true);
+                $("input[name='edate']").attr("disabled",true);
+            }else{
+                $("input[name='sdate']").attr("disabled",false);
+                $("input[name='edate']").attr("disabled",false);
+            }
+        });
+        $("input[name='dtimetype']").on("change",function(){
+            if($(this).val()=='Y'){
+                $("input[name='stime']").attr("disabled",true);
+                $("input[name='etime']").attr("disabled",true);
+            }else{
+                $("input[name='stime']").attr("disabled",false);
+                $("input[name='etime']").attr("disabled",false);
+            }
+        });
+        $("input[name='linkState']").on("change",function(){
+            if($(this).val()=='200'){
+                $("input[name='url']").attr("disabled",true);
+                $("select[name='linkTarget']").attr("disabled",true);
+            }else{
+                $("input[name='url']").attr("disabled",false);
+                $("select[name='linkTarget']").attr("disabled",false);
+            }
+        });
+        //----- OPEN
+        $('[data-popup-open]').on('click', function(e)  {
+            var frm = document.form1;
+
+            if(frm.title.value == '0'){
+                alert('팝업 타이틀명을 확인해주세요.');
+                frm.title.focus();
+                return false;
+            }
+            var xposition = $("input[name=positionX]").val();
+            var yposition = $("input[name=positionY]").val();
+            $("#popup-title").html($("input[name=title]").val());
+            oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+            $("#popup-content").html($("#umemo").val());
+            $(".popup-inner").height($("input[name=sHeight]").val());
+            $(".popup-inner").width($("input[name=sWidth]").val());
+            $(".popup-inner").css("top",yposition+"px");
+            $(".popup-inner").css("left",xposition+"px");
+            var targeted_popup_class = jQuery(this).attr('data-popup-open');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
+
+            e.preventDefault();
+        });
+
+        //----- CLOSE
+        $('[data-popup-close]').on('click', function(e)  {
+            var targeted_popup_class = jQuery(this).attr('data-popup-close');
+            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
+
+            e.preventDefault();
+        });
+    });
     function fn_formSv() {
         oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+        var frm = document.form1;
+        if($("select[name='project']").val()==''){
+            alert('프로젝트를 선택해주세요.');
+            frm.project.focus();
+            return false;
+        }
+        if(frm.title.value == ''){
+            alert('팝업 타이틀을 확인해주세요.');
+            frm.title.focus();
+            return false;
+        }
+        if(frm.displaytype.value == 'N' ){
+            if( frm.sdate.value == '' || frm.edate.value == '') {
+                alert('기간노출시 시작일과 종료일을 모두 입력해주세요.');
+                frm.sdate.focus();
+                return false;
+            }
+        }
+        if(frm.dtimetype.value == 'N' ){
+            if( frm.stime.value == '' || frm.etime.value == '') {
+                alert('시간제한시 시작시간과 종료시간을 모두 입력해주세요.');
+                frm.stime.focus();
+                return false;
+            }
+        }
+        if(frm.positionY.value == ''){
+            alert('팝업위치를 확인해주세요.');
+            frm.positionY.focus();
+            return false;
+        }
+        if(frm.positionX.value == ''){
+            alert('팝업위치를 확인해주세요.');
+            frm.positionX.focus();
+            return false;
+        }
+        if(frm.sHeight.value == ''){
+            alert('팝업 크기를 확인해주세요.');
+            frm.sHeight.focus();
+            return false;
+        }
+        if(frm.sWidth.value == ''){
+            alert('팝업 크기를  확인해주세요.');
+            frm.sWidth.focus();
+            return false;
+        }
+        if(frm.linkState.value == '100' ){
+            if( frm.url.value == '' ) {
+                alert('링크 타겟 사용시 URL을 입력해주세요)');
+                frm.url.focus();
+                return false;
+            }
+        }
+
+		var umemo = $("#umemo").val();
+        if( umemo == ""  || umemo == null || umemo == '&nbsp;' || umemo == '<p>&nbsp;</p>')  {
+            alert("상세디자인 입력하세요.");
+            oEditors.getById["umemo"].exec("FOCUS"); //포커싱
+            return;
+        }
         document.form1.submit();
 
     }
@@ -188,9 +311,7 @@
         document.formList.submit();
 
     }
-    $(function(){
-        $('.timepicker').timepicker();
-    });
+
 
     var oEditors = [];
     nhn.husky.EZCreator.createInIFrame({
@@ -214,17 +335,7 @@
     });
 
     function fn_preview(){
-        var frm = document.form1;
-        if($("select[name='project']").val()==''){
-            alert('프로젝트를 선택해주세요.');
-            frm.project.focus();
-            return false;
-        }
-        if(frm.title.value == '0'){
-            alert('팝업 타이틀명을 확인해주세요.');
-            frm.title.focus();
-            return false;
-        }
+
 
 	}
     $(function() {
@@ -245,11 +356,20 @@
         });
     });
 </script>
-
 <div class="popup" data-popup="example">
 	<div class="popup-inner">
 		<div class="popup-contents"> <a class="popup-close" data-popup-close="example" href="#">X</a>
-			memo </div>
+			<span id="popup-title"></span>
+			<div id="popup-content">
+
+			</div>
+		</div>
 	</div>
 </div>
+<style>
+	.popup { /* 팝업이 열렸을 때, 팝업창 주변 전체를 어둡게 합니다 */ display: none; position:fixed; width: 100%; height: 100%; top:0; left:0; background:rgba(0,0,0,0.5);
+		z-index: 2000;}
+	.popup-inner { /* 열렸을 때 팝업창 크기와 색상을 지정합니다. */ position:absolute; width: 50%; height: 50%; padding : 10px; background:#fff; z-index:2001}
+	.popup-close{ /* 팝업창 내 닫기 버튼의 위치를 지정합니다. */ position: absolute; display: block; top:10px; right: 10px; }
 
+</style>

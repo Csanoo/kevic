@@ -29,6 +29,7 @@
 		state,
 		regDate,
 		updateDate,
+		regid,
 		linkTarget from tbanner
 		where sn=#{sn} 
 	</select>
@@ -43,12 +44,12 @@
 	
 
 	<insert id="insertBanner1One" parameterType="main.java.admin.satelite.kr.BannerVO" >
-		insert into tbanner (projectSn,state,title
+		insert into tbanner (projectSn,state,title,regid
 		<if	test="sdate!='' and edate !=''">
 		,sdate,edate
 		</if>
 		)
-		values ( #{project}, #{state} , #{title}
+		values ( #{project}, #{state} , #{title}, #{userid}
 		<if	test="sdate!='' and edate !=''">
 			,#{sdate},#{edate}
 		</if>
@@ -62,7 +63,7 @@
 
 	<insert id="insertBannerDetail"
 			parameterType="main.java.admin.satelite.kr.BannerVO">
-		insert into tbl_bannerDetail (imgBanner,link,linkTarget,sort,updateDate,bannerSn )
+		insert into tbl_bannerDetail (imgBanner,link,linkTarget,sort,updateDate,bannerSn)
 		values ( #{imgfile},#{link},#{linkTarget},#{sort},now(),#{bannersn} )
 	</insert>
 	

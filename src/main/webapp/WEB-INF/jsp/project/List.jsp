@@ -70,7 +70,7 @@
                                         <tr>
                                             <td class="tdl" style="width: 25%">키워드</td>
                                             <td style="width: 75%">
-                                                <input name="skeyword" type="text"	value="${searchVO.skeyword}" class="form-control">
+                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -192,7 +192,7 @@
                                             <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>
-                                            <td>${listview.regDate}</td>
+                                            <td>${listview.regDate}<br>${listview.userid}</td>
                                             <td>0</td>
                                             <td>0</td>
                                             <td>
