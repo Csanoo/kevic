@@ -63,15 +63,15 @@ from dual
 
 	<sql id="includeMember1">
 		WHERE userpw != ''
-		<if
-			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+		<if	test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
 			<foreach item="item" index="index" collection="searchTypeArr"
 				separator=" OR " open="AND (" close=")">
 				${item} LIKE CONCAT('%',
 				#{searchKeyword},'%' )
 			</foreach>
 		</if>
-
+		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
+		<if test='usertype != null and usertype != "" '><![CDATA[  AND usertype = #{usertype} ]]></if>
 		<if test="orderKeyword=='1'">
 			ORDER BY usertype,username ASC
 		</if>
@@ -366,7 +366,7 @@ from tuser
 	<select id="selectcontentsList0"
 			resultType="main.java.admin.satelite.kr.ContentsVO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, category, (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate, keyword from tbl_contents
+		SELECT sn, category, (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate, keyword, userid from tbl_contents
 		<include refid="includecontents0" />
 
 		LIMIT ${rowStart-1}, ${pageNo}
@@ -375,7 +375,7 @@ from tuser
 
 	<select id="selectexcelList2" resultType="main.java.admin.satelite.kr.Member1VO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate, keyword from tbl_contents
+		SELECT  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate as 'crtdate', keyword, userid from tbl_contents
 		<include refid="includecontents0" />
 	</select>
 	<select id="selectcontentsCount0" resultType="Integer"
@@ -493,6 +493,13 @@ else '-' end as category,imgfile,
 
 	<select id="selDupUserid" resultType="Integer" parameterType="String">
 		SELECT COUNT(*) FROM tuser where userid = #{userid}
+	</select>
+
+	<select id="project_member"	resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT A.sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser,  ct, A.regDate from (
+		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, (select count(*)
+		from tbl_contents where project = tbl_project.sn) as 'ct' from tbl_project
+		) A inner join tbl_member_project B on A.sn = B.projectSn where userid = #{userid}
 	</select>
 
 </mapper>

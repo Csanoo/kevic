@@ -103,9 +103,30 @@ public class ProjectSvc {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
-
+        for (FileVO f : filelist) {
+            param.setLogoimg(f.getFilename());
+        }
         try {
             sqlSession.update("updateprojectDetail", param);
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            txManager.rollback(status);
+
+        }
+
+    }
+
+    public void updateprojectDetail2(ProjectVO param, List<FileVO> filelist,  String[] fileno) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
+
+        for (FileVO f : filelist) {
+            param.setLogoimg(f.getFilename());
+        }
+
+        try {
+            sqlSession.update("updateprojectDetail2", param);
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
@@ -283,7 +304,30 @@ public class ProjectSvc {
         }
     }
 
+    public void cateSort(ProjectVO param) {
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+        TransactionStatus status = txManager.getTransaction(def);
 
+        try {
+            Integer sort = 1;
+            String [] strArray = param.getStrArray();
+            Integer cnt = param.getCt();
+            for(int i=0; i<cnt; i++) {
+                Integer sn = Integer.valueOf((String) strArray[i]);
+                sort = sort + i;
+                System.out.println(sort);
+                param.setSn(sn);
+                param.setSort(sort);
+                sqlSession.update("cateSort", param);
+            }
+            txManager.commit(status);
+        } catch (TransactionException ex) {
+            System.out.println(ex.getMessage());
+            txManager.rollback(status);
+
+        }
+    }
     public void cmInsert(ProjectVO param) {
      //   DefaultTransactionDefinition def = new DefaultTransactionDefinition();
     //    def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

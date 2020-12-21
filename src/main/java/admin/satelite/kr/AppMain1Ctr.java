@@ -125,7 +125,6 @@ public class AppMain1Ctr {
 	public String appmain1Save(SearchVO searchVO, 
 			HttpServletRequest request, AppMain1VO appmain1Info, 
 			ModelMap modelMap) {
-		
 
 		appmain1Svc.insertAppMain1One(appmain1Info);
 

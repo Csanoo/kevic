@@ -338,6 +338,15 @@ private String fucheck = "";
 		this.regDate = regDate;
 	}
 
+
+	private String regid = "";
+	public String getRegid() {
+		return regid;
+	}
+	public void setRegid(String regid) {
+		this.regid = regid;
+	}
+
 	private String updateDate = "";
 	public String getUpdateDate() {
 		return updateDate;

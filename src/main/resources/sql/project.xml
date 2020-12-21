@@ -28,22 +28,22 @@
 
 	<select id="selectCategoryOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT  sn,title,bannerImg ,iconImg ,adinfo ,adtime as 'adNum', adTag ,regDate, pCate, depth, projectSn  from tbl_category
-		where projectSn=#{sn} and depth=1
+		where projectSn=#{sn} and depth=1 order by sort asc
 	</select>
 
 	<select id="selectCategoryTwo" parameterType="main.java.admin.satelite.kr.ProjectVO" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime as 'adNum',adTag ,regDate, pCate, depth, projectSn  from tbl_category
-		where projectSn=#{projectSn} and pCate =#{pCate} and depth=2
+		where projectSn=#{projectSn} and pCate =#{pCate} and depth=2 order by sort asc
 	</select>
 
 	<select id="category01" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT  sn as category01,title from tbl_category
-		where projectSn=#{sn} and depth=1
+		where projectSn=#{sn} and depth=1 order by sort asc
 	</select>
 
 	<select id="category02" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT  sn as category02 ,title  from tbl_category
-		where pCate =#{sn} and depth=2
+		where pCate =#{sn} and depth=2 order by sort asc
 	</select>
 
 
@@ -226,7 +226,11 @@
 		sort = #{sort}
 		where sn=#{sn}
 	</update>
-
+	<update id="cateSort" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_category set
+		sort = #{sort}
+		where sn=#{sn}
+	</update>
 
 	<insert id="insertCategory"	parameterType="main.java.admin.satelite.kr.ProjectVO">
 		insert into tbl_category (title,bannerImg,iconImg,adinfo,adtime,adTag,depth,pCate,projectSn,sort )

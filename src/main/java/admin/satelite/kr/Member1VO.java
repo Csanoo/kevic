@@ -243,7 +243,7 @@ public class Member1VO {
 	}
 
 	private String type="";
-	public void setType(String keyword) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public String getType() {
@@ -266,11 +266,11 @@ public class Member1VO {
 		return videoUrl;
 	}
 
-	private String regDate ="";
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
+	private String crtdate="";
+	public void setCrtdate(String crtdate) {
+		this.crtdate = crtdate;
 	}
-	public String getRegDate() {
-		return regDate;
+	public String getCrtdate() {
+		return crtdate;
 	}
 }

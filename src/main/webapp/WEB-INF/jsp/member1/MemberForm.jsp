@@ -137,16 +137,7 @@
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<table class="table" id="dTable">
 									<thead>
-									<colgroup>
-										<col width="5%">
-										<col width="5%">
-										<col width="5%">
-										<col width="5%">
-										<col width="5%">
-										<col width="20%">
-										<col width="15%">
-										<col width="10%">
-									</colgroup>
+
 									<tr>
 										<th>No</th>
 										<th>사용여부</th>
@@ -159,23 +150,21 @@
 									</tr>
 									</thead>
 									<tbody>
-									<c:forEach var="listview" items="${listview}" varStatus="status">
+									<c:forEach var="plist" items="${plist}" varStatus="status">
 										<tr>
-											<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
-											<td>${listview.state}</td>
-											<td><img src="${listview.imageUrl}" width="110"></td>
-											<td><img src="${listview.title}" width="110"></td>
-											<td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
-											<td>${listview.keyword}</td>
-											<td>${listview.regDate}<br>
-													</td>
-											<td>0</td>
-											<td><button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button></td>
+											<td>${status.index}</td>
+											<td><c:if test="${plist.state} =='100'">사용</c:if><c:if test="${plist.state} =='200'">점검</c:if></td>
+											<td>${plist.title}</td>
+											<td><img src="/upload/images/${plist.logoimg}" width="110"></td>
+											<td><a href="/admin/projectDetail?sn=${plist.sn}">/admin/projectDetail?sn=${plist.sn}</a></td>
+											<td style="width:60px">${plist.ct}</td>
+											<td>${plist.regDate}</td>
+											<td><button type="button" class="btn btn-orange" onclick="mDel(${plist.sn})">제외</button></td>
 										</tr>
 									</c:forEach>
-									<c:if test="${searchVO.totRow <= 0}">
+									<c:if test="${status.end <= 0}">
 										<tr>
-											<td colspan="11">검색결과가 없습니다.</td>
+											<td colspan="8">검색결과가 없습니다.</td>
 										</tr>
 									</c:if>
 									</tbody>
@@ -203,6 +192,20 @@
 							document.formList.submit();
 
 						}
+                        function mDel(sn){
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/delMember",
+                                data: {"userid":'${mvo.userid}',"sn":sn},
+                                success: function (data) {
+                                    alert("정상 처리되었습니다.");
+                                    location.href = "/admin/member1Read?userid=${mvo.userid}";
+                                },
+                                error: function (data) {
+                                    alert("오류 관리자에게 문의해주세요");
+                                }
+                            });
+                        }
 					</script>
 
 						</div>

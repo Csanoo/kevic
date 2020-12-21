@@ -104,18 +104,10 @@ public class ProjectCtr {
     }
 
     @RequestMapping(value = "/projectRead")
-    public String projectRead(HttpServletRequest request, ProjectVO projectInfo,
-                               ModelMap modelMap) {
-
-
+    public String projectRead(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
         String sn = request.getParameter("sn");
-
-
-
         projectInfo = projectSvc.selectProjectOne(sn);
-
         modelMap.addAttribute("projectInfo", projectInfo);
-
         return "project/Read";
     }
 
@@ -280,6 +272,11 @@ public class ProjectCtr {
         projectInfo.setState(state);
         projectInfo.setSn(sn);
 
+        String[] fileno = request.getParameterValues("fileno");
+        FileUtil fs = new FileUtil();
+        List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
+
+        projectSvc.updateprojectDetail(projectInfo, filelist, fileno);
 
         searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
         List<?> listview  = projectSvc.selectProjectList(searchVO);
@@ -319,9 +316,7 @@ public class ProjectCtr {
             String rprtOdr = request.getParameter("RPRT_ODR");
             String [] strArray = rprtOdr.split(",");
             for(int i=0; i<cnt; i++) {
-
                 String sn = (String)strArray[i];
-
                 projectSvc.chkProjectDelete(sn);
             }
         } catch (Exception e) {
@@ -346,10 +341,7 @@ throws Exception{
             for(int i=0; i<cnt; i++) {
 
                 Integer sn = Integer.valueOf((String)strArray[i]);
-
-
                 projectInfo.setSn(sn);
-
                 projectSvc.notProjectPublish(projectInfo);
             }
         } catch (Exception e) {
@@ -524,6 +516,26 @@ throws Exception{
         }
 
     }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/cateSort")
+    public String cateSort(HttpServletRequest request, ProjectVO projectInfo) throws Exception{
+        String result = "TRUE";
+        try {
+            Integer cnt = Integer.parseInt(request.getParameter("CNT"));
+            String rprtOdr = request.getParameter("RPRT_ODR");
+            String [] strArray = rprtOdr.split(",");
+            projectInfo.setCt(cnt);
+            projectInfo.setStrArray(strArray);
+            projectSvc.cateSort(projectInfo);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return result;
+    }
+
 
     @ResponseBody
     @RequestMapping(value = "/categoryUp")
@@ -701,16 +713,17 @@ throws Exception{
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(6);
-        objCell.setCellValue("메시지");
+        objCell.setCellValue("등록일");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(7);
-        objCell.setCellValue("좋아요");
+        objCell.setCellValue("메시지");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(8);
-        objCell.setCellValue("등록일");
+        objCell.setCellValue("좋아요");
         objCell.setCellStyle(styleHd);
+
 
         List<ProjectVO> listview  = projectSvc.selectexcelList(searchVO);
         // listview.forEach(s -> );
@@ -730,7 +743,7 @@ throws Exception{
             objRow.setHeight ((short) 0x150);
 
             objCell = objRow.createCell(0);
-            objCell.setCellValue(rowNo);
+            objCell.setCellValue(rowNo-1);
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(1);

@@ -216,7 +216,14 @@ public class Member1Svc {
 
 		return sqlSession.selectList("selectMember1Excel", param);
 	}
-	
+
+
+
+	public List<?> projectmember(SearchVO param) {
+
+		return sqlSession.selectList("project_member", param);
+	}
+
 	public void updateContents(BannerVO param, List<FileVO> filelist) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
 		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);

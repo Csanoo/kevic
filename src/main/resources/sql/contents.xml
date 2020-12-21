@@ -60,7 +60,7 @@
 	<select id="selectcontentsList"
 		resultType="main.java.admin.satelite.kr.ContentsVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate from tbl_contents
+		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate,userid as 'regid'  from tbl_contents
 		<include refid="includecontents" />
 
 		LIMIT ${rowStart-1}, #{pageNo}
@@ -68,7 +68,7 @@
 	<select id="selectexcelList"
 			resultType="main.java.admin.satelite.kr.ContentsVO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate from tbl_contents
+		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, regDate,userid as 'regid' from tbl_contents
 		<include refid="includecontents" />
 
 	</select>

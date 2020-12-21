@@ -45,14 +45,14 @@
                             </div>
                             </div>
                             <div style="display: flex;justify-content: space-between;width:80%">
-                                <form name="1depth" style="display: contents;">
+                                <form name="1depth" id="1depth" style="display: contents;">
                                     <input type="hidden" name="key1" id="key1">
                                 <div class="category" style="width:49%;height:300px;min-height:300px;overflow-y: scroll" id="ondCate">
                                 </div>
                                 </form>
 
 
-                                <form name="2depth"  style="display: contents;">
+                                <form name="2depth"  id="2depth" style="display: contents;">
                                     <input type="hidden" name="key2">
                                 <div class="category" style="width:49%;height:300px;min-height:300px;overflow-y: scroll"  id="twoCate">
 
@@ -73,7 +73,15 @@
                                 }
                             </script>
                         </div>
+                        <div style="display: flex;justify-content: space-between;width:80%;margin-top:20px">
+                            <div class="form-group" style="width:49%">
 
+                                <button type="button" id="Cate1Sort" class="btn btn-purple  pull-right">등록</button>
+                            </div>
+                            <div class="form-group" style="width:49%">
+                                <button type="button" id="Cate2Sort" class="btn btn-purple  pull-right">등록</button>
+                            </div>
+                        </div>
 
                         <div class="col-md-12 col-sm-12 col-xs-12">
                             <form name="form1" method="post" id="uploadForm">
@@ -148,12 +156,10 @@
 
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
-<script src="/admin/design/assets/plugins/uikit/js/uikit.min.js" type="text/javascript"></script>
-<script src="/admin/design/assets/plugins/uikit/js/components/nestable.min.js" type="text/javascript"></script><!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
+
 <script type="text/javascript">
 
     $(function(){
-
         $('#CateReg').on('click', function(){
             if($("#categoryTitle").val() == ''){
                 alert('카테고리명을 입력하세요');
@@ -307,7 +313,59 @@
            //     $("#timelayer").hide();
             }
         });
+        $(document).on("click","#1depthT tr td",function(){
 
+            var Sn =$(this).children("input[name='Sn']").val();
+            $("input[name='key1']").val(Sn);
+            $(".table tr td").removeClass("active");
+            $(this).addClass("active");
+            $("#sn").val(Sn);
+            $("#categoryTitle").val($(this).children("input[name='title']").val());
+            $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
+            $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
+
+            if($(this).children("input[name='adInfo']").val() =='Y'){
+                $("minimal-radio-2").attr("checked",true);
+                //  $("#CateUp").show();
+
+            }else{
+                $("minimal-radio-1").attr("checked",false);
+                // $("#CateUp").hide();
+            }
+            $("#time").val($(this).children("input[name='adtime']").val());
+            // $("#adInfo").val();
+            var adInfo = $(this).children("input[name='adinfo']").val();
+
+            $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
+            $.get("/admin/categoryTList?sn=${projectInfo.projectSn}&pCate="+Sn,function(data){
+                $( "#twoCate" ).html( data );
+                //alert( "Load was performed." );
+            });
+            $("#field-6").val($(this).children("input[name='adTag']").val());
+            //alert($(this).children("input[id='title']").val());
+            $("#CateUp").show();
+            $("#CateReg").hide();
+
+        });
+        $(document).on("click","#2depthT tr td",function(){
+            //alert($(this).children("input[name='adtime']").val());
+            var Sn =$(this).children("input[name='Sn']").val();
+            $("input[name='key2']").val(Sn);
+            $(".table tr td").removeClass("active");
+            $(this).addClass("active");
+            $("#sn").val(Sn);
+            $("#pCate").val($("#key1").val());
+            $("#categoryTitle").val($(this).children("input[name='title']").val());
+            $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
+            $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
+            $("#time").val($(this).children("input[name='adtime']").val());
+            var adInfo = $(this).children("input[name='adinfo']").val();
+
+            $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
+            $("#field-6").val($(this).children("input[name='adTag']").val());
+            $("#CateUp").show();
+            $("#CateReg").hide();
+        });
     })
 
 
@@ -322,59 +380,7 @@
 
     }
 
-    $(document).on("click","#1depthT tr td",function(){
 
-        var Sn =$(this).children("input[name='Sn']").val();
-        $("input[name='key1']").val(Sn);
-        $(".table tr td").removeClass("active");
-        $(this).addClass("active");
-        $("#sn").val(Sn);
-        $("#categoryTitle").val($(this).children("input[name='title']").val());
-        $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
-        $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
-
-        if($(this).children("input[name='adInfo']").val() =='Y'){
-            $("minimal-radio-2").attr("checked",true);
-          //  $("#CateUp").show();
-
-        }else{
-            $("minimal-radio-1").attr("checked",false);
-           // $("#CateUp").hide();
-        }
-        $("#time").val($(this).children("input[name='adtime']").val());
-       // $("#adInfo").val();
-        var adInfo = $(this).children("input[name='adinfo']").val();
-
-        $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
-        $.get("/admin/categoryTList?sn=${projectInfo.projectSn}&pCate="+Sn,function(data){
-            $( "#twoCate" ).html( data );
-            //alert( "Load was performed." );
-        });
-        $("#field-6").val($(this).children("input[name='adTag']").val());
-        //alert($(this).children("input[id='title']").val());
-        $("#CateUp").show();
-        $("#CateReg").hide();
-
-    });
-    $(document).on("click","#2depthT tr td",function(){
-        //alert($(this).children("input[name='adtime']").val());
-        var Sn =$(this).children("input[name='Sn']").val();
-        $("input[name='key2']").val(Sn);
-        $(".table tr td").removeClass("active");
-        $(this).addClass("active");
-        $("#sn").val(Sn);
-        $("#pCate").val($("#key1").val());
-        $("#categoryTitle").val($(this).children("input[name='title']").val());
-        $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
-        $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
-        $("#time").val($(this).children("input[name='adtime']").val());
-        var adInfo = $(this).children("input[name='adinfo']").val();
-
-        $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
-        $("#field-6").val($(this).children("input[name='adTag']").val());
-        $("#CateUp").show();
-        $("#CateReg").hide();
-    });
     function initval(){
         $("#uploadForm input[name='depth']").val('1');
         $("#uploadForm input[name='pCate']").val('0');
@@ -395,6 +401,58 @@
         document.formList.submit();
 
     }
+    $('#Cate1Sort').on('click', function(){
+
+            var cnt = $("#1depth input[name='Sn']").length;
+            var arr = new Array();
+            $("#1depth input[name='Sn']").each(function() {
+                arr.push($(this).attr('value'));
+            });
+
+            $.ajax({
+                url: '/admin/cateSort',
+                type: 'POST',
+                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                success: function (data) {
+                    if (data != 'TRUE') {
+                        alert(" 오류");
+                    }
+                },
+                error: function (data) {
+                    //  alert(삭제완료);
+                    //location.href = "/admin/project";
+                }
+            }).done(function (data) {
+                alert("저장되었습니다.");
+            });
+
+    });
+    $('#Cate2Sort').on('click', function(){
+
+        var cnt = $("#2depth input[name='Sn']").length;
+        var arr = new Array();
+        $("#2depth input[name='Sn']").each(function() {
+            arr.push($(this).attr('value'));
+        });
+
+        $.ajax({
+            url: '/admin/cateSort',
+            type: 'POST',
+            data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+            success: function (data) {
+                if (data != 'TRUE') {
+                    alert(" 오류");
+                }
+            },
+            error: function (data) {
+                //  alert(삭제완료);
+                //location.href = "/admin/project";
+            }
+        }).done(function (data) {
+            alert("저장되었습니다.");
+        });
+
+    });
 </script>
 <style>
     .dragRow{
@@ -421,3 +479,4 @@
         </div>
     </div>
 </div>
+

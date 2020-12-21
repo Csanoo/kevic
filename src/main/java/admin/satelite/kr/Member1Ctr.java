@@ -550,8 +550,7 @@ public class Member1Ctr {
 	}
 
 	@RequestMapping(value = "/member1Read")
-	public String member1Read(
-			HttpServletRequest request,SearchVO searchVO, ModelMap modelMap) {
+	public String member1Read(HttpServletRequest request,SearchVO searchVO, ModelMap modelMap, ProjectVO projectVO) {
 
 		String uid = request.getParameter("userid");
 
@@ -560,7 +559,9 @@ public class Member1Ctr {
 		param = member1Svc.selectMember1Read(uid);
 
 		modelMap.addAttribute("mvo", param);
-
+		searchVO.setUserid(uid);
+		List<?> plist  = member1Svc.projectmember(searchVO);
+		modelMap.addAttribute("plist", plist);
 
 
 		return "member1/MemberForm";
@@ -799,7 +800,7 @@ public class Member1Ctr {
 			objCell.setCellStyle(styleHd);
 
 			objCell = objRow.createCell(7);
-			objCell.setCellValue(""+list.getRegDate());
+			objCell.setCellValue(""+list.getCrtdate());
 			objCell.setCellStyle(styleHd);
 
 

@@ -294,6 +294,15 @@ public class SearchVO extends  PageVO  {
 		this.category02 = category02;
 	}
 
+	public String usertype = "";
+
+	public String getUsertype() {
+		return usertype;
+	}
+
+	public void setUsertype(String usertype) {
+		this.usertype = usertype;
+	}
 
 }
  

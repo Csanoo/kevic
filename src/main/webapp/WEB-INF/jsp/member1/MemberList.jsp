@@ -32,38 +32,49 @@
 
 			<div class="col-lg-12">
 				<section class="box ">
-
+					<div class="row">
+						<div class="col-md-12 col-sm-12 col-xs-12">
+							<table id="customers">
+								<tr>
+									<td class="tdl" style="width: 25%">등급</td>
+									<td style="width: 25%">
+										<select name="usertype">
+											<option value="">전체</option>
+											<option value="SA">통합관리자</option>
+											<option value="CP">일반관리자</option>
+										</select>
+									</td>
+									<td class="tdl" style="width: 25%">사용여부</td>
+									<td style="width: 25%">
+										<input type="radio" name="state" id="state" value="" <c:if test="${searchVO.state ==''}">checked</c:if>><label for="state">전체</label>
+										<input type="radio" name="state" id="state1" value="Y" <c:if test="${searchVO.state =='Y'}">checked</c:if>><label for="state1">사용</label>
+										<input type="radio" name="state" id="state2" value="N" <c:if test="${searchVO.state =='N'}">checked</c:if>><label for="state2">사용안함</label>
+									</td>
+								</tr>
+								<tr>
+									<td class="tdl" style="width: 25%">검색어</td>
+									<td style="width: 75%" colspan="3">
+										<select name="searchType" class="form-control">
+											<option value="">선택</option>
+											<option value="tuser.userid" <c:if test="${searchVO.searchType =='userid'}">selected</c:if>>아이디</option>
+											<option value="email" <c:if test="${searchVO.searchType =='email'}">selected</c:if>>이메일</option>
+											<option value="username" <c:if test="${searchVO.searchType =='username'}">selected</c:if>>이름</option>
+										</select>
+										<input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
+									</td>
+								</tr>
+							</table>
+							<div class="form-group" style="margin-top: 20px;float:right">
+								<button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
+								<button type="button" class="btn btn-orange" onclick="fn_formSubmit()">검색</button>
+							</div>
+						</div>
+					</div>
 
 
 
 					<header class="panel_header">
 						<h2 class="title pull-left">회원목록 </h2>
-						<div class="pull-right" style="padding-top: 10px">
-							<ul class="list-unstyled">
-								<li style="float: left;"><input type="checkbox"
-									name="searchType" value="username"
-									<c:if test="${fn:indexOf(searchVO.searchType, 'username')!= -1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType1">이름</label>&nbsp;&nbsp;
-
-									<input type="checkbox" name="searchType" value="userid"
-									<c:if test="${fn:indexOf(searchVO.searchType, 'userid')!=-1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType2">아이디</label>&nbsp;&nbsp;
-								</li>
-								<li style="float: left;"><input type="text"
-									style="width: 150px; height: 28px" name="searchKeyword"
-									value='<c:out value="${searchVO.searchKeyword}"/>'
-									onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
-								</li>
-								<li style="float: left;">&nbsp;&nbsp;
-									<button type="button" class="btn btn-primary "
-										onclick="fn_formSubmit()">검색</button> <!-- button type="button" class="btn btn-orange" onclick="fn_formGo()">신규</button -->
-								</li>
-
-								
-
-
-							</ul>
-						</div>
 					</header>
 
 					<div class="content-body">
@@ -93,7 +104,7 @@
 													<c:out	value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" />
 												</td>
 												<td>${listview.usertype}</td>
-												<td><c:if test="${listview.state eq 'Y'}">사용</c:if><c:if test="${listview.state eq 'N'}">사용안</c:if></td>
+												<td><c:if test="${listview.state eq 'Y'}">사용</c:if><c:if test="${listview.state eq 'N'}">사용안함</c:if></td>
 												<td><c:out value="${listview.userid}" /></td>
 												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
 												<td>${listview.projectct}</td>

@@ -211,4 +211,12 @@ public class ContentsVO {
         return keyword;
     }
 
+    private String regid="";;
+    public String getRegid() {
+        return regid;
+    }
+    public void setRegid(String regid) {
+        this.userid = regid;
+    }
+
 }

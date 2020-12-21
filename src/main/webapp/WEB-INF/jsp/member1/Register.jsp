@@ -39,7 +39,7 @@
                                                 <td style="width: 35%">
                                                     <select name="usertype">
                                                         <option value="SA">통합관리자</option>
-                                                        <option value="EU">일반관리자</option>
+                                                        <option value="CP">일반관리자</option>
                                                     </select>
                                                 </td>
                                                 <td class="tdl" style="width: 15%">사용여부</td>

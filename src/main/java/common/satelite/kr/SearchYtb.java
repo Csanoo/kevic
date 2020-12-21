@@ -64,7 +64,7 @@ public class SearchYtb {
 
         try {
             query = youtube.search().list("id,snippet");
-            query.setMaxResults(Long.parseLong("30"));
+            query.setMaxResults(Long.parseLong("50"));
             query.setKey(KEY);
             query.setType("video");
             query.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url),nextPageToken");
@@ -88,7 +88,7 @@ public class SearchYtb {
                         String thumbnailURL = "http://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
                         String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
                         qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
-                        + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"' '"+userid+"'  from dual "
+                        + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
                         + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
                         System.out.print(qry);
                         pstmt = con.prepareStatement(qry);
@@ -101,7 +101,7 @@ public class SearchYtb {
                     System.out.println("vNum="+vNum);
                     //System.out.println("nextToken :  "+ nextToken);
                 //} while (i < 1);
-                } while (nextToken != null && i < 5 && vNum < CountCt);
+                } while (nextToken != null && i < 20 && vNum < CountCt);
                 pstmt.close();
                 con.close();
                // return items;

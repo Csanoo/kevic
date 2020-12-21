@@ -151,8 +151,9 @@
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
+                                        <th>컨텐츠타입</th>
                                         <th>이미지</th>
-                                        <th >출처이미지URL</th>
+                                        <th>출처이미지URL</th>
                                         <th>영상URL</th>
                                         <th>타이틀</th>
                                         <th>등록일</th>
@@ -165,13 +166,14 @@
                                         <tr>
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+                                            <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
                                             <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
                                             <td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
                                             <td>
                                                     ${listview.regDate}<br>
-                                                   등록자
+                                                            ${listview.userid}
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete?sn=${listview.sn}'">삭제</button>

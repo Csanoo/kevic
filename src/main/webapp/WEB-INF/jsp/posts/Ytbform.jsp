@@ -161,7 +161,8 @@
 															<td>${listview.keyword}</td>
 															<td>
 																	${listview.regDate}<br>
-																			admin
+																			${listview.userid}
+
 															</td>
 															<td>
 																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button>

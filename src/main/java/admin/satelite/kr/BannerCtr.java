@@ -97,6 +97,11 @@ public class BannerCtr {
 	@RequestMapping(value = "/bannerSave")
 	public String bannerSave(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 
+		String USERID = "";
+		if ( request.getSession().getAttribute("USERID") != null ) {
+			USERID = (String)request.getSession().getAttribute("USERID");
+		}
+		banner1Info.setUserid(USERID);
 		String[] fileno = request.getParameterValues("fileno");
 		FileUtil fs = new FileUtil();
 		List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
