@@ -71,7 +71,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			<li><a href="/admin/projectReg" class="<%=btr.CLASSACTIVE(HEADERURL, "project/projectForm")%>"> <span class="title">프로젝트 등록</span></a></li>
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Member")%> <%=btr.CLASSOPEN(HEADERURL, "member1/Register")%>">
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Member")%> <%=btr.CLASSOPEN(HEADERURL, "member1/Register")%> <%=btr.CLASSOPEN(HEADERURL, "member1/usertypelist")%>">
 
 		<a href="javascript:;"> <i
 				class="fa fa-folder-open"></i> <span class="title">환경설정</span>
@@ -80,7 +80,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 		<ul class="sub-menu">
 			<li><a href="/admin/memberList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Member")%>"> <span class="title">관리자 계정 관리</span></a></li>
 			<li><a href="/admin/regist"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Register")%>"> <span class="title">관리자 계정 등록</span>	</a></li>
-			<!--<li><a href="/admin/auth"	class="<%=btr.CLASSACTIVE(HEADERURL, "admin/auth")%>"> <span class="title">관리/등급 관리</span>	</a></li>-->
+			<li><a href="/admin/usertypeList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/usertypelist")%>"> <span class="title">관리/등급 관리</span>	</a></li>
 		</ul>
 	</li>
 </ul>
