@@ -273,4 +273,12 @@ public class Member1VO {
 	public String getCrtdate() {
 		return crtdate;
 	}
+
+	private String regid="";
+	public void setRegid(String regid) {
+		this.regid = regid;
+	}
+	public String getRegid() {
+		return regid;
+	}
 }

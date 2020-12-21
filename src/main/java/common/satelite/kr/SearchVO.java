@@ -304,5 +304,16 @@ public class SearchVO extends  PageVO  {
 		this.usertype = usertype;
 	}
 
+	public String code2 = "";
+
+	public String getCode2() {
+		return code2;
+	}
+
+	public void setCode2(String code2) {
+		this.code2 = code2;
+	}
+
+
 }
  

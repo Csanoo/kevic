@@ -76,10 +76,10 @@
                         <div style="display: flex;justify-content: space-between;width:80%;margin-top:20px">
                             <div class="form-group" style="width:49%">
 
-                                <button type="button" id="Cate1Sort" class="btn btn-purple  pull-right">등록</button>
+                                <button type="button" id="Cate1Sort" class="btn btn-orange  pull-right">순서 저장</button>
                             </div>
                             <div class="form-group" style="width:49%">
-                                <button type="button" id="Cate2Sort" class="btn btn-purple  pull-right">등록</button>
+                                <button type="button" id="Cate2Sort" class="btn btn-orange  pull-right">순서 저장</button>
                             </div>
                         </div>
 

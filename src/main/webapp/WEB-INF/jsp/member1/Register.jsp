@@ -38,8 +38,9 @@
 
                                                 <td style="width: 35%">
                                                     <select name="usertype">
-                                                        <option value="SA">통합관리자</option>
-                                                        <option value="CP">일반관리자</option>
+                                                        <c:forEach var="listsel" items="${listsel}"   varStatus="status">
+                                                            <option value='${listsel.code2}' >${listsel.title}</option>
+                                                        </c:forEach>
                                                     </select>
                                                 </td>
                                                 <td class="tdl" style="width: 15%">사용여부</td>
@@ -77,9 +78,6 @@
                                                 <td style="width: 35%" >
                                                     <input type="password" name="userpw1" id="userpw1" class="input" value="" size="20" />
                                                 </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4" id="warn"></td>
                                             </tr>
                                         </table>
 

@@ -107,9 +107,9 @@ public class Member1Ctr {
 
 		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
 
-		List<?> listview  = member1Svc.selectCode1List(searchVO);
+		//List<?> listview  = member1Svc.selectCode1List(searchVO);
 
-		modelMap.addAttribute("listview", listview);
+		//modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 
 		return "member1/CodeList";
@@ -243,7 +243,7 @@ public class Member1Ctr {
 		Member1VO mvo = new Member1VO();
 		mvo = member1Svc.selectCode1One(sn);
 		modelMap.addAttribute("mvo", mvo);
-		
+
 		List<?> listsel  = member1Svc.selectCode1SelList();
 
 		modelMap.addAttribute("listsel", listsel);
@@ -315,7 +315,8 @@ public class Member1Ctr {
 
 	@RequestMapping(value = "/regist")
 	public String MainRegist1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
-
+		List<?> listsel  = member1Svc.selectCode2SelList();
+		modelMap.addAttribute("listsel", listsel);
 		return "member1/Register";
 
 	}
@@ -360,7 +361,7 @@ public class Member1Ctr {
 		String username = "";
 		String email = "";
 		String mobile = "";
-
+		String usertype = "";
 		if (request.getParameter("userid") != null) {
 			userid = request.getParameter("userid");
 		}
@@ -377,8 +378,8 @@ public class Member1Ctr {
 			email = request.getParameter("email");
 		}
 
-		if (request.getParameter("mobile") != null) {
-			mobile = request.getParameter("mobile");
+		if (request.getParameter("usertype") != null) {
+			usertype = request.getParameter("usertype");
 		}
 
 		Member1VO param = new Member1VO();
@@ -387,6 +388,7 @@ public class Member1Ctr {
 		param.setEmail(email);
 		param.setMobile(mobile);
 		param.setUsername(username);
+		param.setUsertype(usertype);
 
 		member1Svc.insertMember1One(param);
 
@@ -562,7 +564,8 @@ public class Member1Ctr {
 		searchVO.setUserid(uid);
 		List<?> plist  = member1Svc.projectmember(searchVO);
 		modelMap.addAttribute("plist", plist);
-
+		List<?> listsel  = member1Svc.selectCode2SelList();
+		modelMap.addAttribute("listsel", listsel);
 
 		return "member1/MemberForm";
 	}
@@ -678,6 +681,89 @@ public class Member1Ctr {
 		
 		return "member1/ContentsForm";
 	}
+
+	@RequestMapping(value = "/usertypeList")
+	public String usertypeList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+
+		String code1 = "";
+		if ( request.getParameter("code1") != null) {
+			code1 = request.getParameter("code1");
+		}
+		searchVO.pageCalculate( member1Svc.selectMemberCodeCount(searchVO) );
+		List<?> listGrade  = member1Svc.selectMemberCode(searchVO);
+
+		modelMap.addAttribute("listGrade", listGrade);
+		modelMap.addAttribute("code1", code1);
+		List<?> listsel  = member1Svc.selectCode2SelList();
+
+		modelMap.addAttribute("listsel", listsel);
+		return "member1/usertypelist";
+
+	}
+
+	@RequestMapping(value = "/usertypeRead")
+	public String usertypeRead(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+
+		String sn = "";
+		if ( request.getParameter("sn")!= null) {
+			sn = request.getParameter("sn");
+		}
+		Member1VO mvo = new Member1VO();
+		mvo = member1Svc.selectCode1One(sn);
+		modelMap.addAttribute("mvo", mvo);
+
+
+		return "member1/usertypeRead";
+
+	}
+
+	@RequestMapping(value = "/usertypeSave")
+	public String usertypeSave(Member1VO mvo,HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+		mvo.setCode1("USER");
+		mvo.setCode1memo("회원");
+		String USERID = "";
+		if ( request.getSession().getAttribute("USERID") != null ) {
+			USERID = (String)request.getSession().getAttribute("USERID");
+		}
+		mvo.setUserid(USERID);
+		member1Svc.insertCode1One(mvo);
+
+		return "redirect:usertypeList";
+
+	}
+
+	@RequestMapping(value = "/userTypeForm")
+	public String userTypeForm(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+
+		String code1 = "";
+		if ( request.getParameter("code1") != null) {
+			code1 = request.getParameter("code1");
+		}
+
+		List<?> listsel  = member1Svc.selectCode1SelList();
+
+		modelMap.addAttribute("listsel", listsel);
+
+		modelMap.addAttribute("code1", code1);
+
+
+		return "member1/userTypeForm";
+
+	}
+
+	@RequestMapping(value = "/userTypeDelete")
+	public String userTypeDelete(HttpServletRequest request) {
+
+		String sn = "";
+		if ( request.getParameter("sn") != null) {
+			sn = request.getParameter("sn");
+		}
+		member1Svc.deleteCode1One(sn);
+		return "redirect:usertypeList";
+
+	}
+
+
 	@ResponseBody
 	@RequestMapping(value = "/dupUserid")
 	public Integer dupUserid(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap, ProjectVO projectInfo, ModelMap modelMap) throws Exception{

@@ -56,7 +56,7 @@
 									<td style="width: 75%" colspan="3">
 										<select name="searchType" class="form-control">
 											<option value="">선택</option>
-											<option value="tuser.userid" <c:if test="${searchVO.searchType =='userid'}">selected</c:if>>아이디</option>
+											<option value="tuser.userid" <c:if test="${searchVO.searchType =='tuser.userid'}">selected</c:if>>아이디</option>
 											<option value="email" <c:if test="${searchVO.searchType =='email'}">selected</c:if>>이메일</option>
 											<option value="username" <c:if test="${searchVO.searchType =='username'}">selected</c:if>>이름</option>
 										</select>
@@ -98,7 +98,6 @@
 									</thead>
 									<tbody>
 										<c:forEach var="listview" items="${listview}" varStatus="status">
-
 											<tr>
 												<td>
 													<c:out	value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" />
@@ -110,7 +109,6 @@
 												<td>${listview.projectct}</td>
 												<td>${listview.mxwdt}</td>
 												<td><c:out value="${listview.wdate}" /></td>
-
 											</tr>
 										</c:forEach>
 									</tbody>

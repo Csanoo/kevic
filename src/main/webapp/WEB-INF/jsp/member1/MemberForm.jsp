@@ -86,8 +86,9 @@
 
 
 										<select name="usertype" class="form-control" style="width: 100px">
-											<option value="SA" <c:if test="${mvo.usertype eq 'SA'}">selected</c:if>>관리자</option>
-											<option value="EU" <c:if test="${mvo.usertype eq 'EU'}">selected</c:if>>일반관리자</option>
+											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
+												<option value='${listsel.code2}' <c:if test="${mvo.usertype eq listsel.code2}">selected</c:if>>${listsel.title}</option>
+											</c:forEach>
 										</select>
 
 									</td>
@@ -131,8 +132,10 @@
 							
 							
 							</form>
-
-					<div class="content-body">
+					<header class="panel_header">
+						<h2 class="title pull-left">관리 프로젝트 </h2>
+					</header>
+						<div class="content-body">
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
 								<table class="table" id="dTable">

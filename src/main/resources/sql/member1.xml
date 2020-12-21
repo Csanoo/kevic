@@ -167,12 +167,7 @@ from tuser
 		1000
 	</select>
 
-
-
-
-	<select id="selectCode1One"
-		parameterType="String"
-		resultType="main.java.admin.satelite.kr.Member1VO">
+	<select id="selectCode1One"	parameterType="String"	resultType="main.java.admin.satelite.kr.Member1VO">
 		SELECT sn,code1,code2,title,memo
 		from tcode
 		where sn=#{sn}
@@ -205,7 +200,7 @@ from tuser
 
 
 	<sql id="includeCode1">
-		WHERE sn != 0
+		WHERE sn != 0  and code1 != 'USER'
 		<if
 			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
 			<foreach item="item" index="index" collection="searchTypeArr"
@@ -235,19 +230,62 @@ from tuser
 		<include refid="includeCode1" />
 	</select>
 
-	<select id="selectCode1List"
-		resultType="main.java.admin.satelite.kr.Member1VO"
-		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn,code1,code2,title,memo from tcode
-		<include refid="includeCode1" />
+	<sql id="includeCodeM">
+		WHERE sn != 0 and code1 = 'USER'
+		<if	test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
+			<foreach item="item" index="index" collection="searchTypeArr"
+					 separator=" OR " open="AND (" close=")">
+				${item} LIKE CONCAT('%',
+				#{searchKeyword},'%' )
+			</foreach>
+		</if>
+		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
+		<if test='code2 != null and code2 != "" '>and code2 = #{code2}</if>
+
+		<if test="orderKeyword=='1'">
+			order by regdate desc
+		</if>
+		<if test="orderKeyword=='2'">
+			order by regdate asc
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			order by regdate desc
+		</if>
+
+
+	</sql>
+
+
+	<select id="selectMemberCodeCount" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tcode
+		<include refid="includeCodeM" />
+	</select>
+
+
+	<select id="selectMemberCode"	resultType="main.java.admin.satelite.kr.Member1VO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn,code1,code2,title,memo,state,regdate,regid from tcode
+		<include refid="includeCodeM" />
 
 		LIMIT ${rowStart-1}, 10
 	</select>
-	
+
+	<insert id="insertUserType"
+			parameterType="main.java.admin.satelite.kr.Member1VO">
+		insert into tcode (
+		code1,code2,title,memo,code1memo,regid )
+		values (
+		#{code1},#{code2},#{title},#{memo},#{code1memo},#{userid})
+	</insert>
 	
 	<select id="selectCode1SelList"	resultType="main.java.admin.satelite.kr.Member1VO">
 		SELECT distinct code1,code1memo from tcode
 		
+	</select>
+
+	<select id="selectCode2SelList"	resultType="main.java.admin.satelite.kr.Member1VO">
+		SELECT distinct code2,title from tcode where code1='USER'
+
 	</select>
 
 	<select id="selectCodetype"	resultType="main.java.admin.satelite.kr.Member1VO">

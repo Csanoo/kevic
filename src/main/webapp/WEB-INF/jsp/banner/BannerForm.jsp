@@ -257,7 +257,7 @@
                                         return false;
                                     }
                                     if(frm.title.value == ''){
-                                        alert('프로젝트명을 확인해주세요.');
+                                        alert('타이틀을 확인해주세요.');
                                         frm.title.focus();
                                         return false;
                                     }

@@ -122,11 +122,47 @@ public class Member1Svc {
 
 		return sqlSession.selectList("selectCode1List", param);
 	}
-	
+
+
+	public Integer selectMemberCodeCount(SearchVO param) {
+		return sqlSession.selectOne("selectCode1Count", param);
+	}
+
+	public List<Member1VO> selectMemberCode(SearchVO param) {
+
+		return sqlSession.selectList("selectMemberCode", param);
+	}
+
+	public void insertUserType(Member1VO param) {
+		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+		TransactionStatus status = txManager.getTransaction(def);
+
+		try {
+
+			if (param.getSn().equals("")) {
+				sqlSession.insert("insertUserType", param);
+			} else {
+				sqlSession.insert("updateCode1One", param);
+			}
+
+			txManager.commit(status);
+		} catch (TransactionException ex) {
+			txManager.rollback(status);
+
+		}
+	}
+
 	public List<?> selectCode1SelList() {
 
 		return sqlSession.selectList("selectCode1SelList");
 	}
+
+	public List<?> selectCode2SelList() {
+
+		return sqlSession.selectList("selectCode2SelList");
+	}
+
 	public List<?> selectCodetype() {
 
 		return sqlSession.selectList("selectCodetype");
