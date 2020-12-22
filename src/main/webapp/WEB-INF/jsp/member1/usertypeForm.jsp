@@ -12,7 +12,7 @@
                         <div class="page-title">
 
                             <div class="pull-left">
-                                <h1 class="title">Code View</h1>                            
+                                <h1 class="title">Code Regist</h1>                            
                             </div>
 
 
@@ -23,7 +23,7 @@
 		<div class="col-lg-12">
 			<section class="box ">
 				<header class="panel_header">
-					<h2 class="title pull-left">Code Info</h2>
+					<h2 class="title pull-left">권한 등록</h2>
 					<div class="actions panel_actions pull-right">
 						<i class="box_toggle fa fa-chevron-down"></i> <i
 							class="box_setting fa fa-cog" data-toggle="modal"
@@ -36,9 +36,11 @@
 					
 					
 
-							<form name="form1" action="usertypeSave" method="post"	enctype="multipart/form-data">
-								
-							<input name="sn" type="hidden"	value="${mvo.sn}">
+							<form name="form1" action="usertypeSave" method="post"
+								enctype="multipart/form-data">
+
+
+
 
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
@@ -48,24 +50,27 @@
 									<tr>
 
 										<td class="tdl" style="width: 15%">코드</td>
-										<td style="width: 35%"><input name="code2" type="text"	class="form-control" style="width: 100px" value="${mvo.code2}">
+										<td style="width: 35%"><input name="code2" type="text"	class="form-control" style="width: 100px" value="">
 											<input name="code1" type="hidden" style="width: 100px" value="USER">
 										</td>
 										<td class="tdl" style="width: 15%">등급</td>
 										<td style="width: *" colspan="3">
-										<input name="title" type="text" class="form-control"
-										value="${mvo.title}"></td>
+											<input name="title" type="text" class="form-control"
+												   value=""></td>
 									</tr>
 									<tr>
 										<td class="tdl" style="width: 15%">설명</td>
 										<td style="width: *" colspan="3">
-										<input name="memo" type="text" class="form-control"	value="${mvo.memo}"></td>
+											<input name="memo" type="text" class="form-control"	value=""></td>
 									</tr>
 								</table>
 
 							</div>
 
 						</div>
+
+					
+
 
 
 										<div class="form-group" style="display:none">
@@ -94,31 +99,29 @@
 												onclick="fn_formRtn()">목록</button>
 											<button type="button" class="btn btn-orange"
 												onclick="fn_formSv()">저장</button>
-											<button type="button" class="btn btn-purple"
-												onclick="fn_formDel()">삭제</button>
 										</div>
 
 									
 							
 							
 							</form>
-					<script>
+							<script>
 						function fn_formSv() {
-							document.form1.submit();
+							if ( document.form1.code2.value == '' ) {
+								alert("해당 정보 입력 정확히 해주세요.");
+								document.form1.code2.focus();
+								
+							}else{document.form1.submit();}
+							
 
 						}
 						function fn_formRtn() {
 							document.formList.submit();
 
 						}
-						function fn_formDel() {
-							document.form1.action = "userTypeDelete";
-							document.form1.submit();
-
-						}
 					</script>
 
-				</div>
+						</div>
 					</div>
 				</div>
 			</section>

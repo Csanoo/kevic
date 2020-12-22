@@ -131,7 +131,9 @@
 										</c:forEach>
 									</tbody>
 								</table>
-
+								<div class="form-group" style="margin-top: 20px;float:right">
+									<button type="button" class="btn btn-orange" onclick="fn_formGo()">권한/등급 등록</button>
+								</div>
 							</div>
 
 
@@ -161,12 +163,7 @@
 		document.form1.submit();
 	}
 	function fn_formGo() {
-		if ( document.getElementById("searchType").value != '' && 
-				document.getElementById("searchKeyword").value != '' ) {
-			location.href = "codeForm?code1=" + document.getElementById("searchKeyword").value;
-		}else{
-			location.href = "codeForm";
-		}
+			location.href = "userTypeForm";
 	}
 
 	function fn_readGo(_a) {

@@ -107,9 +107,9 @@ public class Member1Ctr {
 
 		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
 
-		//List<?> listview  = member1Svc.selectCode1List(searchVO);
+		List<?> listview  = member1Svc.selectCode1List(searchVO);
 
-		//modelMap.addAttribute("listview", listview);
+		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 
 		return "member1/CodeList";
@@ -520,8 +520,7 @@ public class Member1Ctr {
 		}
 	}
 	@RequestMapping(value = "/memberList")
-	public String member1List(
-			HttpServletRequest request, SearchVO searchVO, ModelMap modelMap){
+	public String member1List(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap){
 
 
 
@@ -530,9 +529,6 @@ public class Member1Ctr {
 
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-
-
-
 		return "member1/MemberList";
 	}
 
@@ -717,6 +713,20 @@ public class Member1Ctr {
 
 	}
 
+	@RequestMapping(value = "/loginList")
+	public String loginList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, Member1VO member1VO) {
+
+		String userid = "";
+		userid = request.getParameter("userid");
+		searchVO.setUserid(userid);
+		searchVO.pageCalculate( member1Svc.selectLoginCount(searchVO) );
+		List<Member1VO> loginlist = member1Svc.loginHistory(searchVO);
+		modelMap.addAttribute("loginlist", loginlist);
+		modelMap.addAttribute("searchVO", searchVO);
+		return "member1/loginhistory";
+
+	}
+
 	@RequestMapping(value = "/usertypeSave")
 	public String usertypeSave(Member1VO mvo,HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 		mvo.setCode1("USER");
@@ -725,8 +735,9 @@ public class Member1Ctr {
 		if ( request.getSession().getAttribute("USERID") != null ) {
 			USERID = (String)request.getSession().getAttribute("USERID");
 		}
+		System.out.println(USERID);
 		mvo.setUserid(USERID);
-		member1Svc.insertCode1One(mvo);
+		member1Svc.insertUserType(mvo);
 
 		return "redirect:usertypeList";
 
@@ -747,7 +758,7 @@ public class Member1Ctr {
 		modelMap.addAttribute("code1", code1);
 
 
-		return "member1/userTypeForm";
+		return "member1/usertypeForm";
 
 	}
 
@@ -760,6 +771,7 @@ public class Member1Ctr {
 		}
 		member1Svc.deleteCode1One(sn);
 		return "redirect:usertypeList";
+
 
 	}
 

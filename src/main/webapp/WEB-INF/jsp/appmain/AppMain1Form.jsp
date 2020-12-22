@@ -213,18 +213,23 @@
         });
         //----- OPEN
         $('[data-popup-open]').on('click', function(e)  {
-            var frm = document.form1;
-
-            if(frm.title.value == '0'){
-                alert('팝업 타이틀명을 확인해주세요.');
-                frm.title.focus();
-                return false;
-            }
             var xposition = $("input[name=positionX]").val();
             var yposition = $("input[name=positionY]").val();
             $("#popup-title").html($("input[name=title]").val());
             oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
             $("#popup-content").html($("#umemo").val());
+            var closetype = '';
+
+            if($("input[name='closeType']:checked").val()=='100'){
+                closetype='오늘 이창을 열지 않음';
+            }
+            if($("input[name='closeType']:checked").val()=='200'){
+                closetype='이 창을 7일간 열지 않음';
+            }
+            if($("input[name='closeType']:checked").val()=='300'){
+                closetype='이 창을 다시 열지 않음';
+            }
+            $("#chkTxt").html(closetype);
             $(".popup-inner").height($("input[name=sHeight]").val());
             $(".popup-inner").width($("input[name=sWidth]").val());
             $(".popup-inner").css("top",yposition+"px");
@@ -356,12 +361,17 @@
         });
     });
 </script>
+
 <div class="popup" data-popup="example">
 	<div class="popup-inner">
 		<div class="popup-contents"> <a class="popup-close" data-popup-close="example" href="#">X</a>
 			<span id="popup-title"></span>
 			<div id="popup-content">
 
+			</div>
+			<div style="position:absolute;bottom:0;">
+				<input type="checkbox" value="Y">
+				<span id="chkTxt"></span>
 			</div>
 		</div>
 	</div>

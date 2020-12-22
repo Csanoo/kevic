@@ -38,7 +38,7 @@
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<table id="customers">
 											<tr>
-												<td class="tdl" style="width: 25%">검색어</td>
+												<td class="tdl" style="width: 25%">검색어(키워드)</td>
 												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
 											</tr>
 											<tr>
@@ -251,8 +251,8 @@
             alert("크롤링할 SNS을 선택해주세요.");
             return false;
         }
-        if ( document.form2.title.value == ""){
-            alert("검색어를 입력해주세요.");
+        if ( document.form2.CountCt.value == ""){
+            alert("검색할 컨텐츠 수를 입력해주세요.");
             return false;
         }
         $("#loading").show();

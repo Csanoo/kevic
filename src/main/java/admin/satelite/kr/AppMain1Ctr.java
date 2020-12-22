@@ -255,20 +255,13 @@ public class AppMain1Ctr {
 	
 	@RequestMapping(value = "/appmain1Delete")
 	public String appmain1Delete(HttpServletRequest request, SearchVO searchVO , AppMain1VO appmain1Info, ModelMap modelMap) {
-		
-		
+
 		String sn = request.getParameter("sn");
-
 		appmain1Svc.appmain1Delete(sn);
-
-		
 		searchVO.pageCalculate( appmain1Svc.selectAppMain1Count(searchVO) ); // startRow, endRow
-
 		List<?> listview  = appmain1Svc.selectAppMain1List(searchVO);
-
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
-
 		return "appmain/AppMain1List";
 	}
 	

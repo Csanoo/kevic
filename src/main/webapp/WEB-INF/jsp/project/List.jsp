@@ -54,7 +54,7 @@
                                             <td class="tdl" style="width: 25%">컨텐츠 타입</td>
                                             <td style="width: 75%">
                                                 <select name="stype"  class="form-control" >
-                                                    <option value="">컨텐츠타입</option>
+                                                    <option value="">전체</option>
                                                     <c:forEach var="cateview" items="${cateview}"   varStatus="status">
                                                         <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
                                                     </c:forEach>

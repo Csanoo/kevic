@@ -125,13 +125,21 @@ public class Member1Svc {
 
 
 	public Integer selectMemberCodeCount(SearchVO param) {
-		return sqlSession.selectOne("selectCode1Count", param);
+		return sqlSession.selectOne("selectMemberCodeCount", param);
 	}
 
 	public List<Member1VO> selectMemberCode(SearchVO param) {
 
 		return sqlSession.selectList("selectMemberCode", param);
 	}
+
+    public List<Member1VO> loginHistory(SearchVO param) {
+
+        return sqlSession.selectList("selectLogin", param);
+    }
+    public Integer selectLoginCount(SearchVO param) {
+        return sqlSession.selectOne("selectLoginCount", param);
+    }
 
 	public void insertUserType(Member1VO param) {
 		DefaultTransactionDefinition def = new DefaultTransactionDefinition();

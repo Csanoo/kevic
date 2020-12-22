@@ -39,7 +39,7 @@
 											<td class="tdl" style="width: 25%">프로젝트</td>
 											<td style="width: 75%">
 												<select name="sproject">
-													<option value="">프로젝트</option>
+													<option value="">전체</option>
 													<c:forEach var="projectview" items="${projectview}"   varStatus="status">
 														<option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
 													</c:forEach>

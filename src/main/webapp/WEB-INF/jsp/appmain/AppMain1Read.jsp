@@ -244,6 +244,18 @@
 			$("#popup-title").html($("input[name=title]").val());
             oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
             $("#popup-content").html($("#umemo").val());
+            var closetype = '';
+
+            if($("input[name='closeType']:checked").val()=='100'){
+                closetype='오늘 이창을 열지 않음';
+			}
+            if($("input[name='closeType']:checked").val()=='200'){
+                closetype='이 창을 7일간 열지 않음';
+            }
+            if($("input[name='closeType']:checked").val()=='300'){
+                closetype='이 창을 다시 열지 않음';
+            }
+            $("#chkTxt").html(closetype);
             $(".popup-inner").height($("input[name=sHeight]").val());
             $(".popup-inner").width($("input[name=sWidth]").val());
             $(".popup-inner").css("top",yposition+"px");
@@ -288,6 +300,10 @@
 			<span id="popup-title"></span>
 			<div id="popup-content">
 
+			</div>
+			<div style="position:absolute;bottom:0;">
+				<input type="checkbox" value="Y">
+				<span id="chkTxt"></span>
 			</div>
 		</div>
 	</div>

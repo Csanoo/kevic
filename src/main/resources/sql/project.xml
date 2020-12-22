@@ -179,7 +179,7 @@
 		SELECT code2,title from tcode where code1 = 'TYPE'
 	</select>
 	<select id="selectMemoSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
-		SELECT sn, title, memo, regDate, userId from tbl_project_memo where projectSn = #{sn}
+		SELECT sn, title, memo, regDate, userId from tbl_project_memo where projectSn = #{sn} order by sn Desc
 	</select>
 
 

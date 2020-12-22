@@ -113,11 +113,6 @@
                                         frm.title.focus();
                                         return false;
                                     }
-                                    if(frm.basicTitle.value == ''){
-                                        alert('기본 페이지 타이틀을 확인해주세요.');
-                                        frm.basicTitle.focus();
-                                        return false;
-                                    }
                                     if(frm.uploadfile.value == ''){
                                         alert('기본로고를 입력해주세요.');
                                         frm.title.focus();

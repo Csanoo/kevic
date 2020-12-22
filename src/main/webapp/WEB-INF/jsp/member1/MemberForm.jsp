@@ -31,60 +31,30 @@
 					</div>
 				</header>
 				<div class="content-body">
-							<form name="form1" action="memberSave" method="post"
-								enctype="multipart/form-data">
+							<form name="form1" action="memberSave" method="post" enctype="multipart/form-data">
 								
 								<input name="userid" type="hidden" value="${mvo.userid}">
-
-
-
-
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
-
-
-								<table id="customers">
-									<tr>
-
-
-										<td class="tdl" style="width: 15%">아이디</td>
-
-										<td style="width: 35%">
-												${mvo.userid}
-										</td>
-
-
-										<td class="tdl" style="width: 15%">이름</td>
-										<td style="width: 35%"><input name="username" type="text"
-											value="${mvo.username}"
-											class="form-control" style="width: 200px"></td>
-									</tr>
-									
-									<tr>
-
-
-										<td class="tdl" style="width: 15%">비밀번호</td>
-										<td style="width: 35%" >
-										<input name="userpw" type="password" 
-										value="${mvo.userpw}"
-										class="form-control" style="width: 200px"></td>
-
-										<td class="tdl" style="width: 15%">비밀번호</td>
-										<td style="width: 35%" >
-											<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px"></td>
-
-
-
-								
-								</tr>
-								
+							<table id="customers">
 								<tr>
-
-
+									<td class="tdl" style="width: 15%">아이디</td>
+									<td style="width: 35%">${mvo.userid}</td>
+									<td class="tdl" style="width: 15%">이름</td>
+									<td style="width: 35%"><input name="username" type="text"	value="${mvo.username}"	class="form-control" style="width: 200px"></td>
+								</tr>
+								<tr>
+									<td class="tdl" style="width: 15%">비밀번호</td>
+									<td style="width: 35%" >
+									<input name="userpw" type="password" value="${mvo.userpw}"	class="form-control" style="width: 200px"></td>
+									<td class="tdl" style="width: 15%">비밀번호</td>
+									<td style="width: 35%" >
+										<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px">
+									</td>
+								</tr>
+								<tr>
 									<td class="tdl" style="width: 15%">회원타입</td>
 									<td style="width: 35%" >
-
-
 										<select name="usertype" class="form-control" style="width: 100px">
 											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
 												<option value='${listsel.code2}' <c:if test="${mvo.usertype eq listsel.code2}">selected</c:if>>${listsel.title}</option>
@@ -92,16 +62,10 @@
 										</select>
 
 									</td>
-								
-								
-
-
-										<td class="tdl" style="width: 15%">Email</td>
-										<td style="width: 35%" >
-										<input name="email" type="text" 
-										value="${mvo.email}"
-										class="form-control" style="width: 250px"></td>
-								
+									<td class="tdl" style="width: 15%">Email</td>
+									<td style="width: 35%" >
+										<input name="email" type="text"	value="${mvo.email}" class="form-control" style="width: 250px">
+									</td>
 								</tr>
 								</table>
 
@@ -183,7 +147,7 @@
 							<script>
 						function fn_formSv() {
                             if ( f.userpw.value != f.userpw1.value ) {
-                                alert("비번 확인 바랍니다.");
+                                alert("비밀번호를 확인해주세요.");
                             } else {
 
                                 document.form1.submit();

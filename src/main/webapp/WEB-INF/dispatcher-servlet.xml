@@ -48,6 +48,7 @@
 			<mvc:mapping path="/memberList"/>
 			<mvc:mapping path="/regist"/>
 			<mvc:mapping path="/excelForm"/>
+			<mvc:mapping path="/usertypeList"/>
 
 			<bean class="main.java.common.satelite.kr.AuthLoginInterceptor"/>
 		</mvc:interceptor>

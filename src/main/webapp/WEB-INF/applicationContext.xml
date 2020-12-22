@@ -17,16 +17,13 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		  destroy-method="close"
-
 		  p:driverClassName="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"
 		  p:url="jdbc:log4jdbc:mysql://localhost:3306/motiva?serverTimezone=UTC"
 		  p:username="crdb" p:password="admin123"
 		  p:initialSize="21"
-		  p:maxActive="120"
-		  p:maxIdle="120"
+		  p:maxActive="50"
+		  p:maxIdle="50"
 		  p:maxWait="30000"
-		  p:removeAbandoned="false"
-		  p:removeAbandonedTimeout="60"
 		  p:validationQuery="SELECT 1" />
 
 

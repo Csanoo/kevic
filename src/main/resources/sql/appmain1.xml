@@ -59,9 +59,7 @@
 		<if	test="sdate!='' and edate !=''">
 			,sdate=#{sdate}, edate=#{edate}
 		</if>
-		<if	test="stime!='' and etime !=''">
-			,stime=#{stime}, etime=#{etime}
-		</if>
+		,stime=#{stime}, etime=#{etime}
 		where sn=#{sn}
 	</update>
 	

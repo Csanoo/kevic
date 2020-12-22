@@ -107,7 +107,7 @@
 												<td><c:out value="${listview.userid}" /></td>
 												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
 												<td>${listview.projectct}</td>
-												<td>${listview.mxwdt}</td>
+												<td data-toggle="modal" data-target="#myModal" onclick="fn_history('${listview.userid}');">${listview.mxwdt}</td>
 												<td><c:out value="${listview.wdate}" /></td>
 											</tr>
 										</c:forEach>
@@ -131,39 +131,48 @@
 
 
 </form>
-<script>
-	function fn_formSubmit() {
-		document.form1.submit();
-	}
-</script>
 
-<script>
-	function fn_orderKey(_a) {
-		document.form1.orderKeyword.value = _a;
-		document.form1.submit();
-	}
-</script>
-
-<script>
-	function fn_formGo() {
-		location.href = "/mdvs/member1Form";
-	}
-</script>
-
-<script>
-	function fn_readGo(_a) {
-		document.form1.userid.value = _a;
-		document.form1.action = "member1Read";
-		document.form1.submit();
-	}
-</script>
-
-
-<script>
-	function fn_formExSubmit() {
-		document.form1.action = "/mdvs/member1Excel";
-		document.form1.target = "_new";
-		document.form1.submit();
-	}
-</script>
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
+<script>
+    function fn_formSubmit() {
+        document.form1.submit();
+    }
+    function fn_orderKey(_a) {
+        document.form1.orderKeyword.value = _a;
+        document.form1.submit();
+    }
+
+    function fn_formGo() {
+        location.href = "/mdvs/member1Form";
+    }
+
+    function fn_readGo(_a) {
+        document.form1.userid.value = _a;
+        document.form1.action = "member1Read";
+        document.form1.submit();
+    }
+
+
+    function fn_history(userid) {
+        $.get("/admin/loginList?userid="+userid, function(data){
+            $( "#loginlist" ).html( data );
+        });
+    }
+</script>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+	<div class="modal-dialog" role="document">
+		<div class="modal-content" style="width:320px">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="myModalLabel">로그인 기록</h4>
+			</div>
+			<div class="modal-body" id="loginlist">
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			</div>
+		</div>
+	</div>
+</div>

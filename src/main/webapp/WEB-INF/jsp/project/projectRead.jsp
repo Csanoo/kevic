@@ -409,7 +409,7 @@
                     if (jdata != 'TRUE') {
                         alert(" 오류");
                     } else {
-                        alert("정상 처리되었니다.");
+                        alert("정상 처리되었습니다.");
                         location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
                     }
                 },

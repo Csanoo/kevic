@@ -203,7 +203,7 @@
             alert("필수 정보 모두 입력 바랍니다.");
         }else{
             if ( f.userpw.value != f.userpw1.value ) {
-                alert("비번 확인 바랍니다.");
+                alert("비밀번호를 확인해주세요.");
             } else {
 
                 f.submit();
