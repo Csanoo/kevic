@@ -104,7 +104,7 @@ public class Member1Ctr {
 	@RequestMapping(value = "/codeList")
 	public String Code1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
-
+		searchVO.setOrderKeyword(request.getParameter("orderKeyword"));
 		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
 
 		List<?> listview  = member1Svc.selectCode1List(searchVO);
@@ -148,9 +148,9 @@ public class Member1Ctr {
 
 
 			searchVO.pageCalculate( member1Svc.selectContents1Count(searchVO) ); // startRow, endRow
-
 			List<?> listview  = member1Svc.selectContents1List(searchVO);
 
+			Integer QuataSum = member1Svc.sumYtbQuata();
 			modelMap.addAttribute("listview", listview);
 			modelMap.addAttribute("searchVO", searchVO);
 
@@ -159,7 +159,7 @@ public class Member1Ctr {
 		List<?> cateview  = member1Svc.selectCodetype();
 
 		modelMap.addAttribute("cateview", cateview);
-
+		modelMap.addAttribute("QuataSum",QuataSum);
 
 		return "posts/Ytbform";
 
@@ -362,6 +362,7 @@ public class Member1Ctr {
 		String email = "";
 		String mobile = "";
 		String usertype = "";
+		String state = "";
 		if (request.getParameter("userid") != null) {
 			userid = request.getParameter("userid");
 		}
@@ -382,6 +383,10 @@ public class Member1Ctr {
 			usertype = request.getParameter("usertype");
 		}
 
+		if (request.getParameter("state") != null) {
+			state = request.getParameter("state");
+		}
+
 		Member1VO param = new Member1VO();
 		param.setUserid(userid);
 		param.setUserpw(userpw);
@@ -389,6 +394,7 @@ public class Member1Ctr {
 		param.setMobile(mobile);
 		param.setUsername(username);
 		param.setUsertype(usertype);
+		param.setState(state);
 
 		member1Svc.insertMember1One(param);
 
@@ -489,7 +495,7 @@ public class Member1Ctr {
 				modelMap.addAttribute("mvo", mvo);
 
 				LeftMenuUtil lmu = new LeftMenuUtil();
-				lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
+//				lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
 
 
 				String USERID = "";
@@ -524,9 +530,12 @@ public class Member1Ctr {
 
 
 
+
 		searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
 		List<?> listview  = member1Svc.selectMember1List(searchVO);
+		List<?> listsel  = member1Svc.selectCode2SelList();
 
+		modelMap.addAttribute("listsel", listsel);
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
 		return "member1/MemberList";

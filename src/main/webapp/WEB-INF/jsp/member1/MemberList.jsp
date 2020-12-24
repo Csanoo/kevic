@@ -21,7 +21,7 @@
 			<div class="page-title">
 
 				<div class="pull-left">
-					<h1 class="title">UserList</h1>
+					<h1 class="title">관리자 계정 관리</h1>
 				</div>
 
 
@@ -40,8 +40,11 @@
 									<td style="width: 25%">
 										<select name="usertype">
 											<option value="">전체</option>
-											<option value="SA">통합관리자</option>
-											<option value="CP">일반관리자</option>
+											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
+
+												<option value='${listsel.code2}' <c:if test="${searchVo.code2 eq listsel.code2}">selected</c:if>>${listsel.title}</option>
+
+											</c:forEach>
 										</select>
 									</td>
 									<td class="tdl" style="width: 25%">사용여부</td>

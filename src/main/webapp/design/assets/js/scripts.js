@@ -3691,4 +3691,18 @@ function fn_scInit(){
     $("#form1 input[type='text']").val('');
     $("table select").val('').prop("selected","true");
     $("input[name='state']:radio[value='']").prop("checked","true");
+    $("#form1 input[type='number']").val('');
+}
+
+function fn_scInit2(){
+    $("#form2 input[type='text']").val('');
+    $("table select option").eq(0).prop("selected","true");
+    $("input[name='state']:radio[value='']").prop("checked","true");
+    $("#form2 input[type='number']").val('');
+    $("select[name='snsType']").val('').prop("selected","true");
+}
+
+function validateEmail(email) {
+    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+    return re.test(email);
 }

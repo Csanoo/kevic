@@ -113,6 +113,13 @@ public class ProjectVO {
         this.regDate = regDate;
     }
 
+    private String regUser="";
+    public String getRegUser() {
+        return regUser;
+    }
+    public void setRegUser(String regUser) {
+        this.regUser = regUser;
+    }
 
     private String code1="";
     public String getCode1() {

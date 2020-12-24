@@ -146,7 +146,7 @@
 												<td>${listview.edate}</td>
 												<td>${listview.updateDate}</td>
 												<td>${listview.regDate}</td>
-												<td>${listview.userid}</td>
+												<td>${listview.regid}</td>
 												<td><a href="javascript:fn_readGo('${listview.sn}')">수정</a></td>
 											</tr>
 										</c:forEach>

@@ -113,16 +113,16 @@ public class ProjectCtr {
 
     @RequestMapping(value = "/projectDetail")
     public String projectDetail(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
-
+        ProjectVO pinfo = new ProjectVO();
         String sn = request.getParameter("sn");
-        projectInfo = projectSvc.selectProjectDetail(sn);
+        pinfo = projectSvc.selectProjectDetail(sn);
 
         List<?> memolist  = projectSvc.selectMemoSelList(sn);
         modelMap.addAttribute("memolist", memolist);
         Integer psn = Integer.parseInt(request.getParameter("sn"));
         List<?> mlist  = projectSvc.categoryMember(psn);
         modelMap.addAttribute("mlist", mlist);
-        modelMap.addAttribute("projectInfo", projectInfo);
+        modelMap.addAttribute("projectInfo", pinfo);
 
         return "project/projectRead";
     }
@@ -148,31 +148,9 @@ public class ProjectCtr {
     }
 
     @RequestMapping(value = "/projectSave")
-    public String projectSave(SearchVO searchVO,
-                               HttpServletRequest request, ProjectVO projectInfo,
-                               ModelMap modelMap) {
+    public String projectSave(ProjectVO projectInfo) {
         projectSvc.insertProjectOne(projectInfo);
-
-        searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
-
-        List<?> listview  = projectSvc.selectProjectList(searchVO);
-
-        String title = request.getParameter("title");
-        String imageUrl = request.getParameter("imageUrl");
-        String videoUrl = request.getParameter("videoUrl");
-        String category = request.getParameter("category");
-        String ctSource = request.getParameter("ctSource");
-
-        projectInfo.setTitle(title);
-        projectInfo.setImageUrl(imageUrl);
-        projectInfo.setVideoUrl(videoUrl);
-        projectInfo.setCtSource(ctSource);
-        projectInfo.setCategory(category);
-
-
-        modelMap.addAttribute("listview", listview);
-        modelMap.addAttribute("searchVO", searchVO);
-
+        projectSvc.insertPublish(projectInfo);
         return "redirect:project";
     }
 

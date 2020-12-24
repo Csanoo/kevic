@@ -291,6 +291,15 @@
                 $("input[name='etime']").attr("disabled",false);
             }
         });
+        $("input[name='linkState']").on("change",function(){
+            if($(this).val()=='200'){
+                $("input[name='url']").attr("disabled",true);
+                $("select[name='linkTarget']").attr("disabled",true);
+            }else{
+                $("input[name='link']").attr("disabled",false);
+                $("select[name='linkTarget']").attr("disabled",false);
+            }
+        })
     });
 </script>
 

@@ -31,7 +31,7 @@
 					<div class="row">
 						<div class="col-md-12 col-sm-12 col-xs-12">
 
-							<form name="form2" action="ytbPost" method="post" >
+							<form name="form2" id="form2" action="ytbPost" method="post" >
 								<input type="hidden" name="sn" id="sn" value="" />
 								<input type="hidden" name="srch" id="srch" value="SRCH" />
 								<div class="row">
@@ -54,14 +54,15 @@
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
-													<input type="number" name="CountCt"class="form-control">
+													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.">
 												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 25%">SNS</td>
+												<td class="tdl" style="width: 25%">출처</td>
 												<td style="width: 75%">
+													<div style="width:200px;display: inline-block">
 													<select name="snsType" id="snsType" class="form-control" >
-														<option value="">크롤링할 SNS를 선택해주세요.</option>
+														<option value="">출처를 선택해주세요.</option>
 														<option value="ytb">유튜브</option>
 														<!--
 														<option value="insta">인스타</option>
@@ -69,11 +70,17 @@
 														<option value="twi">트위터</option>
 														-->
 													</select>
+													</div>
+													<div id="ytbQua" style="display:none;width: 100%;max-width: 150px;height: 30px;margin-left: 20px;border: 1px solid #EEE;background: gray;box-sizing: border-box;">
+														<div style="width: ${QuataSum}%;height: 28px;background: #DD1212;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
+															할당량:${QuataSum}%
+														</div>
+													</div>
 												</td>
 											</tr>
 										</table>
 										<div class="form-group" style="margin-top: 20px">
-											<button type="button" class="btn btn-gray" onclick="fn_scInit()">초기화</button>
+											<button type="button" class="btn btn-gray" onclick="fn_scInit2()">초기화</button>
 											<button type="button" class="btn btn-orange" onclick="fn_formSv()">크롤링 시작</button>
 										</div>
 									</div>
@@ -106,10 +113,12 @@
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
 												<button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
-												<button type="button" class="btn btn-gray" onclick="deletePost()">일괄 삭제</button>
+												<button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
 											</li>
 											<li style="float: left;">
 												<select name="orderKeyword" id="orderKeyword"  >
+                                                    <option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="1">등록 내림차순</option>
+                                                    <option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="2">등록일 오름차순</option>
 													<option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
 													<option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
 													<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
@@ -247,12 +256,17 @@
             alert("검색어를 입력해주세요.");
             return false;
         }
-        if ( $("#snsType option:selected").val() == ""){
-            alert("크롤링할 SNS을 선택해주세요.");
+
+        if (document.form2.CountCt.value == ""){
+            alert("검색할 컨텐츠 수를 입력해주세요.");
             return false;
         }
-        if ( document.form2.CountCt.value == ""){
-            alert("검색할 컨텐츠 수를 입력해주세요.");
+        if(document.form2.CountCt.value >= 1000){
+            alert("1000건이상 조회되지 않습니다.");
+            return false;
+		}
+        if ( $("#snsType option:selected").val() == ""){
+            alert("크롤링할 SNS을 선택해주세요.");
             return false;
         }
         $("#loading").show();
@@ -266,6 +280,15 @@
             } else {
                 $("input[name='chkSn']").prop('checked', false);
             }
+        });
+
+        $("select[name='snsType']").on("change",function(){
+			var valType = $("select[name='snsType'] option:selected").val();
+			if(valType=='ytb'){
+				$("#ytbQua").css('display','inline-block');
+			}else{
+                $("#ytbQua").css('display','none');
+			}
         });
 	});
     function excelDownload() {

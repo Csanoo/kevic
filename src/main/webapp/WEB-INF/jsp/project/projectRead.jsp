@@ -80,7 +80,8 @@
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
                                                             <!--<input type="checkbox" name="modi" value="Y"/>-->
-                                                            <input type="file" name="uploadfile" multiple="" />
+                                                            <input type="file" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+
                                                             <br /><c:out value="${projectInfo.logoimg}" />
                                                         </div>
                                                     </div>
@@ -92,8 +93,8 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>
-                                                <td style="width: 35%"><input name="userid" type="hidden" value="admin" >
-                                                   admin
+                                                <td style="width: 35%">
+                                                  ${projectInfo.regUser}
                                                 </td>
                                                 <td class="tdl" style="width: 15%">프로젝트 운영자</td>
                                                 <td style="width: 35%" >
@@ -128,11 +129,6 @@
                                     if(frm.projectcdCk.value == '0'){
                                         alert('프로젝트코드를 확인해주세요.');
                                         frm.projectcd.focus();
-                                        return false;
-                                    }
-                                    if(frm.basictitle.value == ''){
-                                        alert('기본 페이지 타이틀을 확인해주세요.');
-                                        frm.basictitle.focus();
                                         return false;
                                     }
 
@@ -206,7 +202,7 @@
                                         <td>admin</td>
                                         <td>${memolist.regDate}</td>
                                         <td>
-                                            <button type="button" class="btn btn-gray" onclick="modifyMemo('${memolist.sn}')">수정</button>
+                                            <button type="button" class="btn btn-gray modifyMemo" >수정</button>
                                             <button type="button" class="btn btn-orange" onclick="delMemo('${memolist.sn}')">X</button>
                                         </td>
                                     </tr>
@@ -253,6 +249,10 @@
                 alert("프로젝트명을 입력해주세요");
                 return false;
             }
+            if(title == "${projectInfo.title}"){
+                alert("수정 후 확인해주세요");
+                return false;
+            }
             $.ajax({
                 type: "POST",
                 url: "/admin/selPrjTitCt",
@@ -277,6 +277,10 @@
                 alert("프로젝트코드를 입력해주세요");
                 return false;
             }
+            if(projectcd == "${projectInfo.projectcd}"){
+                alert("수정 후 확인해주세요");
+                return false;
+            }
             $.ajax({
                 type: "POST",
                 url: "/admin/selPrjCd",
@@ -297,6 +301,14 @@
         });
         $("#saveMemo").on("click",function(){
             var $frm = $("#form2");
+            if(document.form2.title.value == ''){
+                alert("메모 제목을 입력해주세요");
+                return false;
+            }
+            if(document.form2.memo.value == ''){
+                alert("메모 내용을 입력해주세요");
+                return false;return false;
+            }
              $.ajax({
                 type: "POST",
                 url: "/admin/saveMemo",
@@ -311,6 +323,14 @@
         });
         $("#updateMemo").on("click",function(){
             var $frm = $("#form2");
+            if(document.form2.title.value == ''){
+                alert("메모 제목을 입력해주세요");
+                return false;
+            }
+            if(document.form2.memo.value == ''){
+                alert("메모 내용을 입력해주세요");
+                return false;return false;
+            }
             $.ajax({
                 type: "POST",
                 url: "/admin/updateMemo",
@@ -331,15 +351,17 @@
                 $("input[name='chkSn']").prop('checked', false);
             }
         });
+        $(".modifyMemo").on("click",function(){
+            $("#mtitle").val($(this).parent().parent().children("#tblTitle").text());
+            $("#mmemo").val($(this).parent().parent().children("#tblMemo").text());
+            $("#tableSn").val($(this).parent().parent().children("#tblSn").text());
+            $("#saveMemo").hide();
+            $("#updateMemo").show();
+        });
     })
-    function modifyMemo(){
-        $("#mtitle").val($("#tblTitle").text());
-        $("#mmemo").val($("#tblMemo").text());
-        $("#tableSn").val($("#tblSn").text());
-        $("#saveMemo").hide();
-        $("#updateMemo").show();
 
-    }
+
+
     function delMemo(sn){
         if(confirm("메모를 삭제하겠습니까?")){
 
@@ -385,7 +407,7 @@
         arr.push(id);
 
         $.get("/admin/cmInsert?RPRT_ODR="+arr+"&CNT=1&sn=${projectInfo.sn}",function(data){
-            alert("정상 처리되었니다.");
+            alert("정상 처리되었습니다.");
             location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
         });
     }

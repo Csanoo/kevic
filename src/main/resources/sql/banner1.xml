@@ -188,7 +188,7 @@
 		displayType,
 		state,
 		regDate,
-		updateDate,
+		updateDate, regid,
 		linkTarget from tbanner
 		<include refid="includeBanner1" />
 

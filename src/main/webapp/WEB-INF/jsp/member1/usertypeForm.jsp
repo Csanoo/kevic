@@ -12,7 +12,7 @@
                         <div class="page-title">
 
                             <div class="pull-left">
-                                <h1 class="title">Code Regist</h1>                            
+                                <h1 class="title">권한/등급 등록</h1>
                             </div>
 
 
@@ -108,10 +108,17 @@
 							<script>
 						function fn_formSv() {
 							if ( document.form1.code2.value == '' ) {
-								alert("해당 정보 입력 정확히 해주세요.");
+								alert("코드를 입력 해주세요.");
 								document.form1.code2.focus();
-								
-							}else{document.form1.submit();}
+								return false;
+							}
+
+                            if ( document.form1.title.value == '' ) {
+                                alert("등급을 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
+							document.form1.submit();
 							
 
 						}
@@ -128,7 +135,7 @@
 		</div>
 
 
-<form name="formList" action="codeList" method="post">
+<form name="formList" action="usertypeList" method="post">
 		<input type="hidden" name="searchType"
 			value="<c:out value="${searchVO.searchType}"/>"> <input
 			type="hidden" name="searchKeyword"

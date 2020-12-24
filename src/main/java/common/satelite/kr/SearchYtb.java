@@ -66,8 +66,12 @@ public class SearchYtb {
             query = youtube.search().list("id,snippet");
             query.setMaxResults(Long.parseLong("50"));
             query.setKey(KEY);
+            query.setOrder("date");
+           // query.setPublishedAfter('');
+         //   query.setPublishedBefore('');
             query.setType("video");
-            query.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url),nextPageToken");
+            //query.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url),nextPageToken");
+            query.setFields("items(id/kind,id/videoId,snippet/title),nextPageToken");
             query.setQ(keywords);
             Connection con = null;
             PreparedStatement pstmt = null;
@@ -90,9 +94,10 @@ public class SearchYtb {
                         qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
                         + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
                         + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
-                        System.out.print(qry);
+
                         pstmt = con.prepareStatement(qry);
-                          pstmt.executeUpdate();
+                        pstmt.executeUpdate();
+
                         vNum ++;
                     }
                     nextToken = response.getNextPageToken();
@@ -101,7 +106,11 @@ public class SearchYtb {
                     System.out.println("vNum="+vNum);
                     //System.out.println("nextToken :  "+ nextToken);
                 //} while (i < 1);
+                    String qry2 = "insert into tbl_ytbquota (price) values (-100)";
+                    pstmt = con.prepareStatement(qry2);
+                    pstmt.executeUpdate();
                 } while (nextToken != null && i < 20 && vNum < CountCt);
+
                 pstmt.close();
                 con.close();
                // return items;

@@ -82,16 +82,7 @@ public class BannerSvc {
 	}
 
 	public void insertBanner1(BannerVO param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = txManager.getTransaction(def);
-
-		try {
 			sqlSession.insert("insertBanner1One", param);
-			txManager.commit(status);
-		} catch (TransactionException ex) {
-			txManager.rollback(status);
-		}
 	}
 
 	public void insertBannerDetail(BannerVO param) {

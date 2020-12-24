@@ -32,7 +32,7 @@
                                             <td style="width: 75%">
                                                 <input type="radio" name="state" value="" <c:if test="${searchVO.state eq ''}"> checked</c:if>><label>전체</label>
                                                 <input type="radio" name="state" value="100" <c:if test="${searchVO.state eq '100'}"> checked</c:if>><label>사용</label>
-                                                <input type="radio" name="state" value="200" <c:if test="${searchVO.state eq '200'}"> checked</c:if>><label>중지</label>
+                                                <input type="radio" name="state" value="200" <c:if test="${searchVO.state eq '200'}"> checked</c:if>><label>사용안함</label>
                                             </td>
                                         </tr>
                                         <tr>

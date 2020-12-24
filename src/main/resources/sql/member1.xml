@@ -39,15 +39,18 @@ from dual
 	<insert id="insertMember1One"
 		parameterType="main.java.admin.satelite.kr.Member1VO">
 		insert into tuser (
-		userid,userpw,username,usertype,mobile,email,wdate )
+		userid,userpw,username,usertype,mobile,email,wdate,state )
 		values ( #{userid}
-		, #{userpw} , #{username},#{usertype},#{mobile},#{email},current_timestamp)
+		, #{userpw} , #{username},#{usertype},#{mobile},#{email},current_timestamp,#{state})
 	</insert>
 	
 	<update id="updateMember1One"
 		parameterType="main.java.admin.satelite.kr.Member1VO">
 		update tuser set
-		userpw=#{userpw},username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
+		<if test='userpw != null and userpw != "" '>
+			userpw=#{userpw},
+		</if>
+		username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
 		,imgfile=#{imgfile}
 		where userid = #{userid}
 	</update>
@@ -211,13 +214,13 @@ from tuser
 		</if>
 
 		<if test="orderKeyword=='1'">
-			order by code1,code2,title
+			order by title asc
 		</if>
 		<if test="orderKeyword=='2'">
-			order by code1,code2,title
+			order by title desc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			order by code1,code2,title
+			order by title
 		</if>
 
 
@@ -398,8 +401,14 @@ from tuser
 		<if test='orderKeyword=="4"'>
 			ORDER BY keyword asc
 		</if>
+		<if test='orderKeyword=="5"'>
+			ORDER BY sn DESC
+		</if>
+		<if test='orderKeyword=="6"'>
+			ORDER BY sn asc
+		</if>
 		<if test='orderKeyword=="" or orderKeyword==" "'>
-			ORDER BY title DESC
+			ORDER BY sn DESC
 		</if>
 	</sql>
 
@@ -554,6 +563,9 @@ else '-' end as category,imgfile,
 		from edumgtfunclist
 		where userid=#{userid}
 
+	</select>
+	<select id="ytbQuata" resultType="Integer" >
+		SELECT SUM(price)/10000 * 100 from tbl_ytbquota
 	</select>
 </mapper>
 

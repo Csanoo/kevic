@@ -338,5 +338,9 @@ public class Member1Svc {
 	public Integer selDupUserid(String param) {
 		return sqlSession.selectOne("selDupUserid", param);
 	}
+	public Integer sumYtbQuata() {
+		return sqlSession.selectOne("ytbQuata");
+	}
+
 
 }

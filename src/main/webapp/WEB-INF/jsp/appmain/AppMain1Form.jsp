@@ -164,7 +164,7 @@
 			</section>
 		</div>
 
-		<form name="formList" action="AppMain1List" method="post">
+		<form name="formList" action="AppMain1" method="post">
 			<input type="hidden" name="searchType" value="<c:out value="${searchVO.searchType}"/>">
 			<input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
 			<input type="hidden" name="orderKeyword" value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>">
@@ -343,23 +343,7 @@
 
 
 	}
-    $(function() {
-        //----- OPEN
-        $('[data-popup-open]').on('click', function(e)  {
-            var targeted_popup_class = jQuery(this).attr('data-popup-open');
-            $('[data-popup="' + targeted_popup_class + '"]').fadeIn(350);
 
-            e.preventDefault();
-        });
-
-        //----- CLOSE
-        $('[data-popup-close]').on('click', function(e)  {
-            var targeted_popup_class = jQuery(this).attr('data-popup-close');
-            $('[data-popup="' + targeted_popup_class + '"]').fadeOut(350);
-
-            e.preventDefault();
-        });
-    });
 </script>
 
 <div class="popup" data-popup="example">

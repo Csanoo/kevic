@@ -72,14 +72,15 @@
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
                                                             <c:forEach var="listview" items="${listview}" varStatus="status">
-                                                                <input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>">
+                                                                <input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>" >
+
                                                                 <a href="fileDownload?filename=<c:out value="${listview.filename}"/>&downname=<c:out value="${listview.realname }"/>">
                                                                     <c:out value="${listview.filename}" />
                                                                 </a>
                                                                 <c:out value="${listview.size2String()}" />
                                                                 <br />
                                                             </c:forEach>
-                                                            <input type="file" name="uploadfile" multiple="" accept="image/*" />
+                                                            <input type="file" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -110,12 +111,12 @@
                                     }
                                     if(frm.projectcdCk.value == '0'){
                                         alert('프로젝트코드를 확인해주세요.');
-                                        frm.title.focus();
+                                        frm.projectcd.focus();
                                         return false;
                                     }
                                     if(frm.uploadfile.value == ''){
                                         alert('기본로고를 입력해주세요.');
-                                        frm.title.focus();
+                                        frm.uploadfile.focus();
                                         return false;
                                     }
                                     document.form1.submit();

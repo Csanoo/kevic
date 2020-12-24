@@ -12,7 +12,7 @@
                         <div class="page-title">
 
                             <div class="pull-left">
-                                <h1 class="title">Member Regist</h1>                            
+                                <h1 class="title">관리자 계정 관리</h1>
                             </div>
 
 
@@ -23,7 +23,7 @@
 		<div class="col-lg-12">
 			<section class="box ">
 				<header class="panel_header">
-					<h2 class="title pull-left">Member Info</h2>
+					<h2 class="title pull-left">관리자 계정 수</h2>
 					<div class="actions panel_actions pull-right">
 						<i class="box_toggle fa fa-chevron-down"></i> <i
 							class="box_setting fa fa-cog" data-toggle="modal"
@@ -46,10 +46,12 @@
 								<tr>
 									<td class="tdl" style="width: 15%">비밀번호</td>
 									<td style="width: 35%" >
-									<input name="userpw" type="password" value="${mvo.userpw}"	class="form-control" style="width: 200px"></td>
-									<td class="tdl" style="width: 15%">비밀번호</td>
+										<input type="checkbox" name="passCk" id="passCk" value="Y" />비밀번호 변경
+										<input name="userpw" type="password" value="${mvo.userpw}"	class="form-control" style="width: 200px" disabled>
+									</td>
+									<td class="tdl" style="width: 15%">비밀번호중복확인</td>
 									<td style="width: 35%" >
-										<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px">
+										<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px" disabled>
 									</td>
 								</tr>
 								<tr>
@@ -120,7 +122,7 @@
 									<c:forEach var="plist" items="${plist}" varStatus="status">
 										<tr>
 											<td>${status.index}</td>
-											<td><c:if test="${plist.state} =='100'">사용</c:if><c:if test="${plist.state} =='200'">점검</c:if></td>
+											<td><c:if test="${plist.state} =='Y'">사용</c:if><c:if test="${plist.state} =='N'">사용 안함</c:if></td>
 											<td>${plist.title}</td>
 											<td><img src="/upload/images/${plist.logoimg}" width="110"></td>
 											<td><a href="/admin/projectDetail?sn=${plist.sn}">/admin/projectDetail?sn=${plist.sn}</a></td>
@@ -146,13 +148,14 @@
 					</div>
 							<script>
 						function fn_formSv() {
-                            if ( f.userpw.value != f.userpw1.value ) {
-                                alert("비밀번호를 확인해주세요.");
-                            } else {
-
-                                document.form1.submit();
+                            var f =document.form1;
+                            if($("#passCk").prop("checked")==true){
+								if ( f.userpw.value != f.userpw1.value ) {
+									alert("비밀번호를 확인해주세요.");
+									return false;
+								}
                             }
-
+                            document.form1.submit();
 
 						}
 						function fn_formRtn() {
@@ -173,6 +176,7 @@
                                 }
                             });
                         }
+
 					</script>
 
 						</div>
@@ -201,3 +205,14 @@
             <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 
 
+<script type="text/javascript">
+    $(function(){
+        $("#passCk").on("change",function(){
+            if($(this).prop("checked")==true){
+                $("input[type='password']").prop("disabled",false);
+            }else{
+                $("input[type='password']").prop("disabled",true);
+            }
+        });
+    });
+</script>

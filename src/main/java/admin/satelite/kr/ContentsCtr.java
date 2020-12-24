@@ -400,7 +400,7 @@ public class ContentsCtr {
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(5);
-            objCell.setCellValue(""+list.getMemo());
+            objCell.setCellValue(""+list.getKeyword());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(6);

@@ -261,12 +261,14 @@
                                         frm.title.focus();
                                         return false;
                                     }
+                                    $("input[name='uploadfile']:enabled").each(function(){
+                                        if($(this).val()==''){
+                                            alert('이미지를 등록해주세요.');
+                                            frm.uploadfile.focus();
+                                            return false;
+                                        }
+                                    });
 
-                                    if(frm.uploadfile[0].value == ''){
-                                        alert('이미지를 등록해주세요.');
-                                        frm.uploadfile.focus();
-                                        return false;
-                                    }
                                     document.form1.submit();
 
                                 }
@@ -337,6 +339,7 @@
             });
         });
         $(".removeRow").on("click",function(){
+            alert($("#dTable tr:visible").length);
             $(this).parent().parent().find("input").attr("disabled", true);
             $(this).parent().parent("tr").hide();
         });

@@ -46,11 +46,11 @@
 									id="searchType"
 									name="searchType" value="code1"
 									<c:if test="${fn:indexOf(searchVO.searchType, 'code1')!= -1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType1">코드1</label>&nbsp;&nbsp;
+									<label class="chkselect" for="searchType1">분류</label>&nbsp;&nbsp;
 
 									<input type="checkbox" name="searchType" value="code2"
 									<c:if test="${fn:indexOf(searchVO.searchType, 'code2')!=-1}">checked="checked"</c:if> />
-									<label class="chkselect" for="searchType2">코드2</label>&nbsp;&nbsp;
+									<label class="chkselect" for="searchType2">코드</label>&nbsp;&nbsp;
 								</li>
 								<li style="float: left;"><input type="text"
 									style="width: 150px; height: 28px" 

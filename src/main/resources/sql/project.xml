@@ -53,13 +53,20 @@
 		values ( #{title}, #{projectcd}, #{comment} , #{state},#{logoimg},#{basicTitle},#{userid},#{mnguser} )
 	</insert>
 
-	<insert id="insertprojectOne"
-		parameterType="main.java.admin.satelite.kr.ProjectVO">
+	<insert id="insertprojectOne" parameterType="main.java.admin.satelite.kr.ProjectVO" >
 		insert into tbl_contents (project,
-		category01, category02, type, imageUrl, videoUrl, ctSource, title )
-		values ( #{project}, #{category01}, #{category02}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title} )
-	</insert>
+		category01, category02, type, imageUrl, videoUrl, ctSource, title, state )
+		values ( #{project}, #{category01}, #{category02}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title},#{state} )
+		 <selectKey keyProperty="sn" resultType="Integer" order="AFTER">
+		SELECT LAST_INSERT_ID()
+		</selectKey>
 
+	</insert>
+	<insert id="insertPublish"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+	insert into tbl_mapping_contents (projectSn, category01, category02, contentsSn )
+	values ( #{project}, #{category01}, #{category02},#{sn});
+	</insert>
 	<update id="updateproject"
 		parameterType="main.java.admin.satelite.kr.ProjectVO">
 		update tbl_contents set

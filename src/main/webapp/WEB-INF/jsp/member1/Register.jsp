@@ -11,7 +11,7 @@
             <div class="page-title">
 
                 <div class="pull-left">
-                    <h1 class="title">프로젝트 관리</h1>
+                    <h1 class="title">관리자 계정 관리</h1>
                 </div>
 
 
@@ -22,7 +22,7 @@
         <div class="col-lg-12">
             <section class="box ">
                 <header class="panel_header">
-                    <h2 class="title pull-left">프로젝트 등록</h2>
+                    <h2 class="title pull-left">관리자 계정 등록</h2>
 
                 </header>
                 <div class="content-body">
@@ -30,6 +30,7 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
 
                             <form name="form1" action="regist2" method="post"	enctype="multipart/form-data">
+
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <table id="customers">
@@ -46,7 +47,7 @@
                                                 <td class="tdl" style="width: 15%">사용여부</td>
                                                 <td style="width: 35%">
                                                     <input type="radio" name="state" value="Y" checked><label>사용</label>
-                                                    <input type="radio" name="state" value="N"><label>점검</label>
+                                                    <input type="radio" name="state" value="N"><label>사용안함</label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -65,7 +66,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">이메일</td>
-                                                <td style="width: 35%"><input name="email" type="text" class="form-control"></td>
+                                                <td style="width: 35%"><input name="email" type="email" class="form-control"></td>
                                                 <td class="tdl" style="width: 15%">마지막 로그인</td>
                                                 <td style="width: 35%"></td>
                                             </tr>
@@ -91,55 +92,14 @@
 
                                 </div>
                             </form>
-                            <script>
-                                function fn_formSv() {
-                                    var f =document.form1;
-                                    if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == "" || f.email.value == "" ) {
-                                        if ( f.userid.value == ""){
-                                            alert("아이디 입력 바랍니다.");
-                                            return false;
-                                        }
-                                        if ( f.userpw.value == "" ){
-                                            alert("비밀번호를 입력 바랍니다.");
-                                            return false;
-                                        }
-                                        if ( f.userpw1.value == "" ){
-                                            alert("비밀번호 확인을 입력 바랍니다.");
-                                            return false;
-                                        }
-                                        if ( f.username.value == "" ){
-                                            alert("회원이름을 입력 바랍니다.");
-                                            return false;
-                                        }
 
-                                        if (f.email.value == "" ){
-                                            alert("이메일을 모두 입력 바랍니다.");
-                                            return false;
-                                        }
-
-
-
-                                    }else{
-                                        if ( f.userpw.value != f.userpw1.value ) {
-                                            alert("비번 확인 바랍니다.");
-                                        } else {
-                                            f.submit();
-                                        }
-                                    }
-
-                                }
-                                function fn_formRtn() {
-                                    document.formList.submit();
-
-                                }
-                            </script>
                         </div>
                     </div>
                 </div>
             </section>
         </div>
 
-        <form name="formList" action="AppMain1List" method="post">
+        <form name="formList" action="memberList" method="post">
             <input type="hidden" name="searchType"
                    value="<c:out value="${searchVO.searchType}"/>"> <input
                 type="hidden" name="searchKeyword"
@@ -183,10 +143,10 @@
             success: function (jdata) {
                 if(jdata<1){
                     alert("사용할 수 있는 아이디입니다..");
-                    $("#projectcdCk").val(1);
+                    $("#useridCk").val(1);
                 }else{
                     alert("중복 된 아이디입니다.");
-                    $("#projectcdCk").val(0);
+                    $("#useridCk").val(0);
                 }
             },
             error: function (data) {
@@ -210,6 +170,63 @@
             }
         }
     }
+</script>
+<script>
+    function fn_formSv() {
+        var f =document.form1;
+        if(f.useridCk.value == '0'){
+            alert("아이디 중복 확인해주세요.");
+            f.userid.focus();
+            return false;
+        }
+        if ( f.userid.value == "" || f.userpw.value == "" || f.userpw1.value == "" || f.username.value == "" || f.email.value == "" ) {
+            if ( f.userid.value == ""){
+                alert("아이디 입력 바랍니다.");
+                return false;
+            }
+            if ( f.userpw.value == "" ){
+                alert("비밀번호를 입력 바랍니다.");
+                return false;
+            }
+            if ( f.userpw1.value == "" ){
+                alert("비밀번호 확인을 입력 바랍니다.");
+                return false;
+            }
+            if ( f.username.value == "" ){
+                alert("회원이름을 입력 바랍니다.");
+                return false;
+            }
+
+            if (f.email.value == "" ){
+                alert("이메일을 모두 입력 바랍니다.");
+                return false;
+            }
+            if (validateEmail(f.email.value)){
+                alert('이메일 형식을 확인해 주세요.');
+                f.email.focus();
+                return false;
+            }
+
+
+        }else{
+            if ( f.userpw.value != f.userpw1.value ) {
+                alert("비밀번호를 확인해주세요.");
+            } else {
+                f.submit();
+            }
+        }
+
+    }
+    function fn_formRtn() {
+        document.formList.submit();
+
+    }
+
+    $(function(){
+        $("input[name='userid']").on("propertychange change keyup paste input", function() {
+            $("input[name='useridCk']").val(0);
+        });
+    });
 </script>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

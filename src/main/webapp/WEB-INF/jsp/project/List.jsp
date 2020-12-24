@@ -189,7 +189,7 @@
                                             <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:180px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
-                                            <td><div style="width:50px;overflow:hidden"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
+                                            <td><div style="width:100%;overflow:hidden;text-overflow: ellipsis"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>
                                             <td>${listview.regDate}<br>${listview.userid}</td>

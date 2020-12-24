@@ -208,6 +208,13 @@
 							</form>
 							<script>
                                 function fn_formSv() {
+                                    $("input[name='uploadfile']:enabled").each(function(){
+                                        if($(this).val()==''){
+                                            alert('이미지를 등록해주세요.');
+                                            frm.uploadfile.focus();
+                                            return false;
+                                        }
+                                    });
 
                                     document.form1.submit();
 
