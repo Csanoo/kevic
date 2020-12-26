@@ -378,22 +378,22 @@ from tuser
 		<if test='stype != null and stype != "" '><![CDATA[  AND type = #{stype} ]]></if>
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 
-		<if test='orderKeyword=="1"'>
+		<if test='orderKeyword=="3"'>
 			ORDER BY title DESC
 		</if>
-		<if test='orderKeyword=="2"'>
+		<if test='orderKeyword=="4"'>
 			ORDER BY title asc
 		</if>
-		<if test='orderKeyword=="3"'>
+		<if test='orderKeyword=="5"'>
 			ORDER BY keyword DESC
 		</if>
-		<if test='orderKeyword=="4"'>
+		<if test='orderKeyword=="6"'>
 			ORDER BY keyword asc
 		</if>
-		<if test='orderKeyword=="5"'>
+		<if test='orderKeyword=="1"'>
 			ORDER BY sn DESC
 		</if>
-		<if test='orderKeyword=="6"'>
+		<if test='orderKeyword=="2"'>
 			ORDER BY sn asc
 		</if>
 		<if test='orderKeyword=="" or orderKeyword==" "'>

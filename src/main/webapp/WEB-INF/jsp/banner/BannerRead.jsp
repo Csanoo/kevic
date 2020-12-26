@@ -132,7 +132,7 @@
 															<td><img src="/upload/images/${bannerDetaillist.imgBanner}" width="120" height="80"></td>
 															<td>
 																<div class="imgChk">
-																	<input type="file" name="uploadfile${status.index+1}" multiple="" value=""/>
+																	<input type="file" name="uploadfile" multiple="" value=""/>
 																	<input type="hidden" name="uploadfileOld" multiple="" value="${bannerDetaillist.imgBanner}"/>
 																	<input type="hidden" class="chkFile" name="uploadfileck">
 																</div>
@@ -162,7 +162,7 @@
 																<td></td>
 																<td>
 																	<div class="imgChk">
-																		<input type="file" name="uploadfile${status2.index+1}" multiple="" value="" accept="image/*"  disabled/>
+																		<input type="file" name="uploadfile" multiple="" value="" accept="image/*"  disabled/>
 																		<input type="hidden" name="uploadfileOld" multiple="" value=""  disabled/>
 																		<input type="hidden" class="chkFile" name="uploadfileck" value="F"  disabled>
 																	</div>
@@ -220,13 +220,21 @@
                                         return false;
                                     }
                                     $("input[name='uploadfile']:enabled").each(function(){
-                                        if($(this).val()==''){
+                                        var chkImg = $(this).parent().children(".chkFile").val();
+                                        if($(this).val()=='' && chkImg == 'T'){
                                             alert('이미지를 등록해주세요.');
                                             frm.uploadfile.focus();
                                             return false;
                                         }
                                     });
-
+                                    if(frm.displaytype.value=="N"){
+                                        var sDate = new Date(document.form1.sdate.value);
+                                        var eDate = new Date(document.form1.edate.value);
+                                        if(eDate < sDate){
+                                            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+                                            return false;
+                                        }
+                                    }
                                     document.form1.submit();
 
                                 }

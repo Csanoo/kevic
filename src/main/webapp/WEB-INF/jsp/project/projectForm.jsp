@@ -126,6 +126,27 @@
                                     document.formList.submit();
 
                                 }
+                                function ckTitle(){
+
+                                    var str = document.form1.title;
+
+                                    var blank_pattern = /^\s+|\s+$/g;
+                                    if( str.value.replace( blank_pattern, '' ) == "" ){
+                                        alert(' 공백만 입력되었습니다 ');
+                                        return false;
+                                    }
+
+
+                                    var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+
+                                    if( special_pattern.test(str.value) == true ){
+                                        alert('특수문자는 사용할 수 없습니다.');
+                                        return false;
+                                    }
+
+
+                                    return true;
+                                }
                             </script>
                         </div>
                     </div>
@@ -186,6 +207,9 @@
         var title = $("#title").val();
         if(title==""){
             alert("프로젝트명을 입력해주세요");
+            return false;
+        }
+        if(!ckTitle()){
             return false;
         }
         $.ajax({

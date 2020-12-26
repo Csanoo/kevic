@@ -267,6 +267,14 @@
                 frm.sdate.focus();
                 return false;
             }
+
+			var sDate = new Date(document.form1.sdate.value);
+			var eDate = new Date(document.form1.edate.value);
+			if(eDate < sDate){
+				alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+				return false;
+			}
+
         }
         if(frm.dtimetype.value == 'N' ){
             if( frm.stime.value == '' || frm.etime.value == '') {

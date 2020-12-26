@@ -404,10 +404,13 @@
         });
         $("#pubproject").on("change",function(){
             var sn = $("#pubproject option:selected").val();
+            $( "#category2" ).html('<option value="0">카테고리</option>');
+            $( "#category1" ).html('<option value="0">카테고리</option>');
             $.get("/admin/category01?sn="+sn+"&sel=${searchVO.category01}",function(data){
                 $( "#category1" ).html( data );
                 //alert( "Load was performed." );
             });
+
         });
         $("#category1").on("change",function(){
             var sn = $("#category1 option:selected").val();

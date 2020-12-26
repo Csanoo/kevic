@@ -5,7 +5,7 @@
 <form name="form2">
 <ul>
     <li style="display: flex;justify-content: flex-start">
-        <span style="width:50px;">순번</span>
+        <span style="width:50px;">No</span>
         <span>로그인 일시</span>
     </li>
 <c:forEach var="loginlist" items="${loginlist}" varStatus="status">

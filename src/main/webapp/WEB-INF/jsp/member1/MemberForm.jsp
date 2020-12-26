@@ -157,6 +157,10 @@
 						function fn_formSv() {
                             var f =document.form1;
                             if($("#passCk").prop("checked")==true){
+                                if (f.userpw.value == ""){
+                                    alert("비밀번호를 입력해주세요.");
+                                    return false;
+								}
 								if ( f.userpw.value != f.userpw1.value ) {
 									alert("비밀번호를 확인해주세요.");
 									return false;

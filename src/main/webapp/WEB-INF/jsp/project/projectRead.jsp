@@ -86,7 +86,7 @@
                                                             <input type="file" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
 
                                                             <br />
-                                                            <img src="/upload/images/${listview.logoimg}" width="110">
+                                                            <img src="/upload/images/${projectInfo.logoimg}" width="110">
                                                             <br>
                                                             <c:out value="${projectInfo.logoimg}" />
                                                         </div>
@@ -259,6 +259,9 @@
                 alert("수정 후 확인해주세요");
                 return false;
             }
+            if(!ckTitle()){
+                return false;
+            }
             $.ajax({
                 type: "POST",
                 url: "/admin/selPrjTitCt",
@@ -416,6 +419,27 @@
             alert("정상 처리되었습니다.");
             location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
         });
+    }
+    function ckTitle(){
+
+        var str = document.form1.title;
+
+        var blank_pattern = /^\s+|\s+$/g;
+        if( str.value.replace( blank_pattern, '' ) == "" ){
+            alert(' 공백만 입력되었습니다 ');
+            return false;
+        }
+
+
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+
+        if( special_pattern.test(str.value) == true ){
+            alert('특수문자는 사용할 수 없습니다.');
+            return false;
+        }
+
+
+        return true;
     }
     function fn_mngChkSave(){
 

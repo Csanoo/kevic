@@ -152,7 +152,7 @@
 	</select>
 
 	<sql id="includeMsg">
-		WHERE m.sn = #{psn} ORDER BY c.sn desc
+		WHERE c.contentSn = #{psn} ORDER BY c.sn desc
 	</sql>
 
 

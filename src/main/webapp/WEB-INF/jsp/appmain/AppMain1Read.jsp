@@ -173,6 +173,73 @@
 
                                 function fn_formSv() {
                                     oEditors.getById["umemo"].exec("UPDATE_CONTENTS_FIELD", []);
+                                    var frm = document.form1;
+                                    if($("select[name='project']").val()==''){
+                                        alert('프로젝트를 선택해주세요.');
+                                        frm.project.focus();
+                                        return false;
+                                    }
+                                    if(frm.title.value == ''){
+                                        alert('팝업 타이틀을 확인해주세요.');
+                                        frm.title.focus();
+                                        return false;
+                                    }
+                                    if(frm.displaytype.value == 'N' ){
+                                        if( frm.sdate.value == '' || frm.edate.value == '') {
+                                            alert('기간노출시 시작일과 종료일을 모두 입력해주세요.');
+                                            frm.sdate.focus();
+                                            return false;
+                                        }
+
+                                        var sDate = new Date(document.form1.sdate.value);
+                                        var eDate = new Date(document.form1.edate.value);
+                                        if(eDate < sDate){
+                                            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+                                            return false;
+                                        }
+
+                                    }
+                                    if(frm.dtimetype.value == 'N' ){
+                                        if( frm.stime.value == '' || frm.etime.value == '') {
+                                            alert('시간제한시 시작시간과 종료시간을 모두 입력해주세요.');
+                                            frm.stime.focus();
+                                            return false;
+                                        }
+                                    }
+                                    if(frm.positionY.value == ''){
+                                        alert('팝업위치를 확인해주세요.');
+                                        frm.positionY.focus();
+                                        return false;
+                                    }
+                                    if(frm.positionX.value == ''){
+                                        alert('팝업위치를 확인해주세요.');
+                                        frm.positionX.focus();
+                                        return false;
+                                    }
+                                    if(frm.sHeight.value == ''){
+                                        alert('팝업 크기를 확인해주세요.');
+                                        frm.sHeight.focus();
+                                        return false;
+                                    }
+                                    if(frm.sWidth.value == ''){
+                                        alert('팝업 크기를  확인해주세요.');
+                                        frm.sWidth.focus();
+                                        return false;
+                                    }
+                                    if(frm.linkState.value == '100' ){
+                                        if( frm.url.value == '' ) {
+                                            alert('링크 타겟 사용시 URL을 입력해주세요)');
+                                            frm.url.focus();
+                                            return false;
+                                        }
+                                    }
+
+                                    var umemo = $("#umemo").val();
+                                    if( umemo == ""  || umemo == null || umemo == '&nbsp;' || umemo == '<p>&nbsp;</p>')  {
+                                        alert("상세디자인 입력하세요.");
+                                        oEditors.getById["umemo"].exec("FOCUS"); //포커싱
+                                        return;
+                                    }
                                     document.form1.submit();
 
                                 }
