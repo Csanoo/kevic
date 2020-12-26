@@ -38,11 +38,11 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			<span class="title">운영 관리</span> <span class="arrow "></span>
 		</a>
 		<ul class="sub-menu">
-			<li>
+			<!--li>
 				<a href="/admin/PostList" class="<%=btr.CLASSACTIVE(HEADERURL, "posts/PostsList")%>">
 					<span class="title">공지사항-알림</span>
 				</a>
-			</li>
+			</li-->
 			<li><a href="/admin/AppMain1" class="<%=btr.CLASSACTIVE(HEADERURL, "appmain/AppMain1List")%>"> <span class="title">팝업 관리</span></a></li>
 			<li><a href="/admin/appmain1Form" class="<%=btr.CLASSACTIVE(HEADERURL, "appmain/AppMain1Form")%>"> <span class="title">팝업 등록</span></a></li>
 			<li><a href="/admin/BannerList"	class="<%=btr.CLASSACTIVE(HEADERURL, "BannerList")%>"> <span

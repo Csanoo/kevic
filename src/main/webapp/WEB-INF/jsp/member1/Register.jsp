@@ -136,6 +136,9 @@
             alert("아이디 입력해주세요");
             return false;
         }
+        if(!checkId()){
+            return false;
+        }
         $.ajax({
             type: "POST",
             url: "/admin/dupUserid",
@@ -174,6 +177,9 @@
 <script>
     function fn_formSv() {
         var f =document.form1;
+
+
+
         if(f.useridCk.value == '0'){
             alert("아이디 중복 확인해주세요.");
             f.userid.focus();
@@ -198,17 +204,17 @@
             }
 
             if (f.email.value == "" ){
-                alert("이메일을 모두 입력 바랍니다.");
-                return false;
-            }
-            if (validateEmail(f.email.value)){
-                alert('이메일 형식을 확인해 주세요.');
-                f.email.focus();
+                alert("이메일을 입력 바랍니다.");
                 return false;
             }
 
 
         }else{
+            if (!validateEmail(f.email.value)){
+                alert('이메일 형식을 확인해 주세요.');
+                f.email.focus();
+                return false;
+            }
             if ( f.userpw.value != f.userpw1.value ) {
                 alert("비밀번호를 확인해주세요.");
             } else {
@@ -227,6 +233,48 @@
             $("input[name='useridCk']").val(0);
         });
     });
+
+    function checkId(){
+
+        var str = document.getElementById('userid');
+
+        if( str.value == '' || str.value == null ){
+            alert( '값을 입력해주세요' );
+            return false;
+        }
+
+        var blank_pattern = /^\s+|\s+$/g;
+        if( str.value.replace( blank_pattern, '' ) == "" ){
+            alert(' 공백만 입력되었습니다 ');
+            return false;
+        }
+
+
+        var blank_pattern = /[\s]/g;
+        if( blank_pattern.test( str.value) == true){
+            alert(' 공백은 사용할 수 없습니다. ');
+            return false;
+        }
+
+
+        var special_pattern = /[`~!@#$%^&*|\\\'\";:\/?]/gi;
+
+        if( special_pattern.test(str.value) == true ){
+            alert('특수문자는 사용할 수 없습니다.');
+            return false;
+        }
+        var korean = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+        if( korean.test(str.value) == true ){
+            alert('한글은 사용할 수 없습니다.');
+            return false;
+        }
+
+        return true;
+    }
+    function validateEmail(email) {
+        var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+        return re.test(email);
+    }
 </script>
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

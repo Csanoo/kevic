@@ -43,7 +43,7 @@
                                                     <input type="hidden" name="titleCk" id="titleCk" value="0">
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <!--tr>
                                                 <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
 
                                                 <td style="width: 35%" colspan="3">
@@ -51,7 +51,7 @@
                                                     <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
                                                     <input type="hidden" name="projectcdCk" id="projectcdCk" value="0">
                                                 </td>
-                                            </tr>
+                                            </tr-->
                                             <tr>
                                                 <td class="tdl" style="width: 15%">설명</td>
 
@@ -109,11 +109,11 @@
                                         frm.title.focus();
                                         return false;
                                     }
-                                    if(frm.projectcdCk.value == '0'){
-                                        alert('프로젝트코드를 확인해주세요.');
-                                        frm.projectcd.focus();
-                                        return false;
-                                    }
+                                //    if(frm.projectcdCk.value == '0'){
+                                 //       alert('프로젝트코드를 확인해주세요.');
+                                 //       frm.projectcd.focus();
+                                 //       return false;
+                               //     }
                                     if(frm.uploadfile.value == ''){
                                         alert('기본로고를 입력해주세요.');
                                         frm.uploadfile.focus();

@@ -8,8 +8,7 @@
 
 
 <form id="form1" name="form1" method="post">
-	<input type="hidden" name="orderKeyword" id="orderKeyword"
-		value="${searchVO.orderKeyword}" /> 
+	<input type="hidden" name="orderKeyword" id="orderKeyword" value="${searchVO.orderKeyword}" />
 		<input type="hidden" name="userid" id="userid" value="" /> 
 		<input type="hidden" name="srch" id="srch" value="SRCH" />
 
@@ -42,7 +41,7 @@
 											<option value="">전체</option>
 											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
 
-												<option value='${listsel.code2}' <c:if test="${searchVo.code2 eq listsel.code2}">selected</c:if>>${listsel.title}</option>
+												<option value='${listsel.code2}' <c:if test="${searchVO.usertype eq listsel.code2}">selected</c:if>>${listsel.title}</option>
 
 											</c:forEach>
 										</select>
@@ -116,10 +115,9 @@
 										</c:forEach>
 									</tbody>
 								</table>
-
+</form>
 							</div>
-							<div class="col-md-12 col-sm-12 col-xs-12"
-								style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
+							<div class="col-md-12 col-sm-12 col-xs-12"	style='border-top: 2px solid #d8d8d8; padding-top: 20px;'>
 								<jsp:include page="/WEB-INF/jsp/common/Paging.jsp" />
 							</div>
 						</div>
@@ -133,7 +131,7 @@
 	</section>
 
 
-</form>
+
 
 <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script>
@@ -156,11 +154,17 @@
     }
 
 
-    function fn_history(userid) {
-        $.get("/admin/loginList?userid="+userid, function(data){
+    function fn_history(userid, page) {
+
+        if(page =='' || page == undefined){
+            page = 1;
+		}
+        var ppage = page;
+        $.get("/admin/loginList?userid="+userid+"&page="+ppage , function(data){
             $( "#loginlist" ).html( data );
         });
     }
+
 </script>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
 	<div class="modal-dialog" role="document">

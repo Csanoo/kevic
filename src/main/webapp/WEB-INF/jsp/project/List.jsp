@@ -97,6 +97,7 @@
                             </div>
                             <script>
                                 function fn_formSv() {
+
                                     $("#loading").show();
                                     document.form1.submit();
                                 }
@@ -155,16 +156,7 @@
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <table class="table" id="dTable">
                                     <thead>
-                                    <colgroup>
-                                        <col width="5%">
-                                        <col width="5%">
-                                        <col width="5%">
-                                        <col width="5%">
-                                        <col width="5%">
-                                        <col width="20%">
-                                        <col width="15%">
-                                        <col width="10%">
-                                    </colgroup>
+
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
@@ -188,13 +180,13 @@
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:180px;overflow:hidden;text-overflow: ellipsis">${listview.imageUrl}</div></td>
-                                            <td><div style="width:100%;overflow:hidden;text-overflow: ellipsis"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
+                                            <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
+                                            <td><div style="width:150px;word-break:break-all;"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>
                                             <td>${listview.regDate}<br>${listview.userid}</td>
-                                            <td>0</td>
-                                            <td>0</td>
+                                            <td data-toggle="modal" data-target="#myModal" onClick="javascript:fn_list('${listview.sn}',1)" style="cursor:pointer">${listview.msgCt}</td>
+                                            <td >${listview.like}</td>
                                             <td>
                                                 이동
                                                 <input type="hidden" value="${listview.sn}" name="sort">
@@ -226,6 +218,12 @@
 </form>
 <script>
     function fn_formSubmit() {
+        var sDate = new Date(document.form1.startDate.value);
+        var eDate = new Date(document.form1.endDate.value);
+        if(eDate < sDate){
+            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+            return false;
+        }
         document.form1.action='';
         document.form1.submit();
     }
@@ -438,6 +436,14 @@
 
     categorySet();
 
+    function fn_list(sn, page) {
+        page = 1;
+        var ppage = page;
+        $.get("/admin/msgList?sn="+sn+"&page="+page , function(data){
+            $( "#msgList" ).html( data );
+        });
+    }
+
 </script>
 <style>
     .dragRow{
@@ -450,10 +456,10 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal 제목</h4>
+                <h4 class="modal-title" id="myModalLabel">메세지 목록</h4>
             </div>
-            <div class="modal-body">
-                Modal 내용
+            <div class="modal-body" id="msgList">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal" onClick="publishPost();">닫기</button>

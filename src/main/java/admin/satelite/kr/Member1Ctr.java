@@ -103,10 +103,11 @@ public class Member1Ctr {
 
 	@RequestMapping(value = "/codeList")
 	public String Code1(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+		System.out.println(request.getParameter("orderKeyword"));
+		searchVO.setDisplayRowCount(10);
 
-		searchVO.setOrderKeyword(request.getParameter("orderKeyword"));
+		//searchVO.setOrderKeyword(request.getParameter("orderKeyword"));
 		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
-
 		List<?> listview  = member1Svc.selectCode1List(searchVO);
 
 		modelMap.addAttribute("listview", listview);
@@ -437,7 +438,7 @@ public class Member1Ctr {
 		if (request.getParameter("mobile") != null) {
 			mobile = request.getParameter("mobile");
 		}
-
+		String state = request.getParameter("state");
 		Member1VO param = new Member1VO();
 		param.setUserid(userid);
 		param.setUserpw(userpw);
@@ -445,7 +446,7 @@ public class Member1Ctr {
 		param.setMobile(mobile);
 		param.setUsername(username);
 		param.setUsertype(usertype);
-		
+		param.setState(state);
 
 		member1Svc.updateMember1One(param);
 
@@ -530,10 +531,12 @@ public class Member1Ctr {
 
 
 
+		List<?> listsel  = member1Svc.selectCode2SelList();
 
+		searchVO.setDisplayRowCount(10);
 		searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
 		List<?> listview  = member1Svc.selectMember1List(searchVO);
-		List<?> listsel  = member1Svc.selectCode2SelList();
+
 
 		modelMap.addAttribute("listsel", listsel);
 		modelMap.addAttribute("listview", listview);
@@ -542,13 +545,9 @@ public class Member1Ctr {
 	}
 
 	@RequestMapping(value = "/memberExcel")
-	public String member1Ex(
-			HttpServletRequest request,SearchVO searchVO, ModelMap modelMap) {
-
-
+	public String member1Ex(HttpServletRequest request,SearchVO searchVO, ModelMap modelMap) {
 
 		List<?> listview  = member1Svc.selectMember1Excel(searchVO);
-
 		modelMap.addAttribute("listview", listview);
 
 
@@ -690,20 +689,13 @@ public class Member1Ctr {
 	@RequestMapping(value = "/usertypeList")
 	public String usertypeList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
-		String code1 = "";
-		if ( request.getParameter("code1") != null) {
-			code1 = request.getParameter("code1");
-		}
 		searchVO.pageCalculate( member1Svc.selectMemberCodeCount(searchVO) );
 		List<?> listGrade  = member1Svc.selectMemberCode(searchVO);
-
-		modelMap.addAttribute("listGrade", listGrade);
-		modelMap.addAttribute("code1", code1);
 		List<?> listsel  = member1Svc.selectCode2SelList();
-
+		modelMap.addAttribute("listGrade", listGrade);
+		modelMap.addAttribute("searchVO", searchVO);
 		modelMap.addAttribute("listsel", listsel);
 		return "member1/usertypelist";
-
 	}
 
 	@RequestMapping(value = "/usertypeRead")
@@ -728,9 +720,11 @@ public class Member1Ctr {
 		String userid = "";
 		userid = request.getParameter("userid");
 		searchVO.setUserid(userid);
+
+		searchVO.setDisplayRowCount(10);
 		searchVO.pageCalculate( member1Svc.selectLoginCount(searchVO) );
-		List<Member1VO> loginlist = member1Svc.loginHistory(searchVO);
-		modelMap.addAttribute("loginlist", loginlist);
+		List<Member1VO> msglist = member1Svc.loginHistory(searchVO);
+		modelMap.addAttribute("msglist", msglist);
 		modelMap.addAttribute("searchVO", searchVO);
 		return "member1/loginhistory";
 

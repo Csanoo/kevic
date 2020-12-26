@@ -127,7 +127,7 @@ public class SearchVO extends  PageVO  {
 
     private String schCode;
 
-    private String orderKeyword = "4";
+    private String orderKeyword = "1";
 
     private String schSubCode = "";
 
@@ -314,6 +314,15 @@ public class SearchVO extends  PageVO  {
 		this.code2 = code2;
 	}
 
+	public Integer psn;
+
+	public Integer getPsn() {
+		return psn;
+	}
+
+	public void setPsn(Integer psn) {
+		this.psn = psn;
+	}
 
 }
  

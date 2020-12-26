@@ -78,6 +78,12 @@
 								</div>
 								<script>
                                     function fn_formSv() {
+                                        var sDate = new Date(document.form1.startDate.value);
+                                        var eDate = new Date(document.form1.endDate.value);
+                                        if(eDate < sDate){
+                                            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+                                            return false;
+										}
                                         $("#loading").show();
                                         document.form1.submit();
                                     }

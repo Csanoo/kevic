@@ -129,7 +129,7 @@
                                             <td>${listview.title}</td>
                                             <td><div style="width:230px;overflow:hidden"><a href="/admin/projectDetail?sn=${listview.sn}">http://test.comwihus.com/admin/projectDetail?sn=${listview.sn}</a></div></td>
                                             <td><div style="width:20px;overflow:hidden">${listview.ct}</div></td>
-                                            <td>${listview.regDate}</td>
+                                            <td>${listview.regDate}<br>${listview.regUser}</td>
                                             <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button></td>
                                         </tr>
                                     </c:forEach>

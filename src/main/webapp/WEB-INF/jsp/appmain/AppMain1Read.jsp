@@ -135,7 +135,7 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="200" name="linkState" <c:if test="${appmain1Info.linkState eq '200'}">checked</c:if>><label>사용안함</label>
 													<input type="radio" value="100" name="linkState" <c:if test="${appmain1Info.linkState eq '100'}">checked</c:if>><label>사용</label>
-													<select name="linkTarget">
+													<select name="linkTarget" <c:if test="${appmain1Info.linkState eq '200'}">disabled</c:if>>
 														<option value="100" <c:if test="${appmain1Info.linkTarget eq '100'}">selected</c:if>>부모창</option>
 														<option value="200" <c:if test="${appmain1Info.linkTarget eq '200'}">selected</c:if>>새창열기</option>
 													</select>
@@ -145,7 +145,7 @@
 												<td class="tdl" style="width: 15%">URL</td>
 
 												<td style="width: 35%" colspan="3">
-													<input type="text" value="${appmain1Info.link}" name="link" >
+													<input type="text" value="${appmain1Info.link}" name="link" <c:if test="${appmain1Info.linkState eq '200'}">disabled</c:if>>
 												</td>
 											</tr>
 										</table>
@@ -293,7 +293,7 @@
         });
         $("input[name='linkState']").on("change",function(){
             if($(this).val()=='200'){
-                $("input[name='url']").attr("disabled",true);
+                $("input[name='link']").attr("disabled",true);
                 $("select[name='linkTarget']").attr("disabled",true);
             }else{
                 $("input[name='link']").attr("disabled",false);
@@ -310,11 +310,13 @@
 			<div id="popup-content">
 
 			</div>
-			<div style="position:absolute;bottom:0;">
+			<div style="position: absolute;bottom: 10px;width: 98%;box-sizing: border-box;height: 40px;line-height: 40px;padding: 10px 20px;border-top: 1px solid #999999;">
 				<input type="checkbox" value="Y">
 				<span id="chkTxt"></span>
+				<button type="button" class="btn btn-gray pull-right" data-popup-close="example">닫기</button>
 			</div>
 		</div>
+
 	</div>
 </div>
 <style>
@@ -322,5 +324,6 @@
 		z-index: 2000;}
 	.popup-inner { /* 열렸을 때 팝업창 크기와 색상을 지정합니다. */ position:absolute; width: 50%; height: 50%; padding : 10px; background:#fff; z-index:2001}
 	.popup-close{ /* 팝업창 내 닫기 버튼의 위치를 지정합니다. */ position: absolute; display: block; top:10px; right: 10px; }
+	#popup-content{margin:20px 0 0 0;border-top:1px solid #999999}
 
 </style>

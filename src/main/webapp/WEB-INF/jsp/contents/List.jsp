@@ -33,11 +33,10 @@
                                             <td class="tdl" style="width: 25%">출처</td>
                                             <td style="width: 75%">
                                                 <select name="ctSource">
-                                                    <option value="">출처</option>
-                                                    <option value="YTB">유튜브</option>
-                                                    <option value="TWT">트위터</option>
-                                                    <option value="FB">페이스북</option>
-
+                                                    <option value="" >출처</option>
+                                                    <option value="YTB"  <c:if test="${searchVO.ctSource eq 'YTB'}">selected</c:if>>유튜브</option>
+                                                    <option value="TWT"  <c:if test="${searchVO.ctSource eq 'TWT'}">selected</c:if>>트위터</option>
+                                                    <option value="FB"  <c:if test="${searchVO.ctSource eq 'FB'}">selected</c:if>>페이스북</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -88,6 +87,12 @@
                             </div>
                             <script>
                                 function fn_formSv() {
+                                    var sDate = new Date(document.form1.startDate.value);
+                                    var eDate = new Date(document.form1.endDate.value);
+                                    if(eDate < sDate){
+                                        alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+                                        return false;
+                                    }
                                     $("#loading").show();
                                     document.form1.action="";
                                     document.form1.submit();
@@ -169,8 +174,8 @@
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.type}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
-                                            <td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+                                            <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
+                                            <td><div style="width:150px;word-break:break-all;">${listview.videoUrl}</div></td>
                                             <td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
                                             <td>${listview.keyword}</td>
                                             <td>

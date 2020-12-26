@@ -104,6 +104,17 @@
 							</form>
 					<script>
 						function fn_formSv() {
+                            if ( document.form1.code2.value == '' ) {
+                                alert("코드를 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
+
+                            if ( document.form1.title.value == '' ) {
+                                alert("등급을 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
 							document.form1.submit();
 
 						}

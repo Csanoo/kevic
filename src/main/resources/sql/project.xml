@@ -96,10 +96,10 @@
 		<if test='category01 != null and category01 != "" and category01 != "0" '><![CDATA[  AND m.category01 = #{category01} ]]></if>
 		<if test='category02 != null and category02 != "" and category02 != "0" '><![CDATA[  AND m.category02 = #{category02} ]]></if>
 		<if test='orderKeyword == "1"'>
-			ORDER BY sn Desc
+			ORDER BY m.sn Desc
 		</if>
 		<if test='orderKeyword == "2"'>
-			ORDER BY sn Asc
+			ORDER BY m.sn Asc
 		</if>
 		<if test='orderKeyword == "3"'>
 			ORDER BY keyword ASC
@@ -108,7 +108,7 @@
 			ORDER BY keyword Desc
 		</if>
 		<if test='orderKeyword=="" or orderKeyword==" " '>
-			ORDER BY sort ASC
+			ORDER BY m.sn Desc
 		</if>
 	</sql>
 
@@ -125,7 +125,7 @@
 			ORDER BY ct asc
 		</if>
 		<if test="orderKeyword=='' or orderKeyword==' '">
-			ORDER BY sn asc
+			ORDER BY sn desc
 		</if>
 	</sql>
 
@@ -133,7 +133,8 @@
 	<select id="selectprojectList"
 		resultType="main.java.admin.satelite.kr.ProjectVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT m.sn, m.projectSn, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', title, keyword, regDate, userid
+		SELECT m.sn, m.projectSn, m.like, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', title, keyword, regDate, userid,
+		(select count(*) from tbl_msg where contentSn = m.sn) as msgCt
 		From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
 		<include refid="includeproject" />
 		<if test="rowStart > 0">
@@ -148,6 +149,30 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT COUNT(*) FROM tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
 		<include refid="includeproject" />
+	</select>
+
+	<sql id="includeMsg">
+		WHERE m.sn = #{psn} ORDER BY c.sn desc
+	</sql>
+
+
+	<select id="selectMsgList"
+			resultType="main.java.admin.satelite.kr.ProjectVO"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT m.sn, m.projectSn, m.like, c.msg, c.regDate, c.regId
+		From tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
+		<include refid="includeMsg" />
+		<if test="rowStart > 0">
+			LIMIT ${rowStart-1}, 10
+		</if>
+	</select>
+
+
+
+	<select id="selectMsgCount" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbl_msg c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		<include refid="includeMsg" />
 	</select>
 
 
@@ -218,8 +243,8 @@
 
 	<insert id="insertProjectMemo"
 			parameterType="main.java.admin.satelite.kr.ProjectVO">
-		insert into tbl_project_memo (title, projectSn, memo )
-		values ( #{title}, #{sn}, #{memo} )
+		insert into tbl_project_memo (title, projectSn, memo, userid )
+		values ( #{title}, #{sn}, #{memo}, #{userid} )
 	</insert>
 
 

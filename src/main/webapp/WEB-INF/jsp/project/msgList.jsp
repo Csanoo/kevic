@@ -5,16 +5,21 @@
 <form name="form2">
 <ul>
     <li style="display: flex;justify-content: flex-start">
-        <span style="width:50px;">순번</span>
-        <span>로그인 일시</span>
+        <div></div>
     </li>
-<c:forEach var="loginlist" items="${loginlist}" varStatus="status">
+<c:forEach var="msglist" items="${msglist}" varStatus="status">
 
-<li style="display: flex;justify-content: flex-start">
-    <span style="width:50px;"><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></span>
-    <span>${loginlist.wdate}</span>
+<li style="">
+    <div>${msglist.regid} <span aria-hidden="true">×</span></div>
+    <div>${msglist.msg}</div>
+    <div>${msglist.regDate}</div>
 </li>
 </c:forEach>
+<c:if test="${searchVO.totRow <= 0}">
+    <li>
+        검색결과가 없습니다.
+    </li>
+</c:if>
 </ul>
 </form>
 
@@ -37,7 +42,7 @@
                                     <c:out value="${i}" /></a>
                             </c:when>
                             <c:otherwise>
-                                <a class="page-link" href="javascript:fn_history('${searchVO.userid}','${i}');">
+                                <a class="page-link" href="javascript:fn_list('${searchVO.psn}','${i}');">
                                     <c:out value="${i}" /></a>
                             </c:otherwise>
                         </c:choose>
@@ -55,14 +60,14 @@
 </c:if>
 </div>
 <script type="text/javascript">
-    function fn_history(userid, page) {
+    function fn_list(sn, page) {
 
         if(page ==''){
             page = 1;
         }
         var ppage = page;
-        $.get("/admin/loginList?userid="+userid+"&page="+page , function(data){
-            $( "#loginlist" ).html( data );
+        $.get("/admin/msgList?sn="+sn+"&page="+page , function(data){
+            $( "#msgList" ).html( data );
         });
     }
 </script>

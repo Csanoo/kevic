@@ -37,12 +37,12 @@
 							<table id="customers">
 								<tr>
 									<td class="tdl" style="width: 25%">등급</td>
-									<td style="width: 25%">
+									<td style="width: 25%">${searchVo.state}
 										<select name="code2">
 											<option value="">전체</option>
 											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
 
-												<option value='${listsel.code2}' <c:if test="${searchVo.code2 eq listsel.code2}">selected</c:if>>${listsel.title}</option>
+												<option value='${listsel.code2}' <c:if test="${searchVO.code2 == listsel.code2}">selected</c:if>>${listsel.title}</option>
 
 											</c:forEach>
 

@@ -353,9 +353,10 @@
 			<div id="popup-content">
 
 			</div>
-			<div style="position:absolute;bottom:0;">
+			<div style="position: absolute;bottom: 10px;width: 98%;box-sizing: border-box;height: 40px;line-height: 40px;padding: 10px 20px;border-top: 1px solid #999999;">
 				<input type="checkbox" value="Y">
 				<span id="chkTxt"></span>
+				<button type="button" class="btn btn-gray pull-right" data-popup-close="example">닫기</button>
 			</div>
 		</div>
 	</div>
@@ -365,5 +366,6 @@
 		z-index: 2000;}
 	.popup-inner { /* 열렸을 때 팝업창 크기와 색상을 지정합니다. */ position:absolute; width: 50%; height: 50%; padding : 10px; background:#fff; z-index:2001}
 	.popup-close{ /* 팝업창 내 닫기 버튼의 위치를 지정합니다. */ position: absolute; display: block; top:10px; right: 10px; }
+	#popup-content{margin:20px 0 0 0;border-top:1px solid #999999}
 
 </style>

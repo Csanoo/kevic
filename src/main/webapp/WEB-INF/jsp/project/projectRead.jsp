@@ -52,12 +52,15 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="tdl" style="width: 15%">프로트젝트 코드 *</td>
+                                                <td class="tdl" style="width: 15%">프로트젝트 코드</td>
 
                                                 <td style="width: 35%" colspan="3">
+                                                    <!--
                                                     <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}">
                                                     <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
                                                     <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
+                                                    -->
+                                                    ${projectInfo.sn}
                                                 </td>
                                             </tr>
                                             <tr>
@@ -82,7 +85,10 @@
                                                             <!--<input type="checkbox" name="modi" value="Y"/>-->
                                                             <input type="file" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
 
-                                                            <br /><c:out value="${projectInfo.logoimg}" />
+                                                            <br />
+                                                            <img src="/upload/images/${listview.logoimg}" width="110">
+                                                            <br>
+                                                            <c:out value="${projectInfo.logoimg}" />
                                                         </div>
                                                     </div>
                                                 </td>
@@ -126,11 +132,11 @@
                                         frm.title.focus();
                                         return false;
                                     }
-                                    if(frm.projectcdCk.value == '0'){
-                                        alert('프로젝트코드를 확인해주세요.');
-                                        frm.projectcd.focus();
-                                        return false;
-                                    }
+                                 //   if(frm.projectcdCk.value == '0'){
+                                //        alert('프로젝트코드를 확인해주세요.');
+                                  //      frm.projectcd.focus();
+                                  //      return false;
+                                 //   }
 
                                     document.form1.submit();
 
@@ -199,7 +205,7 @@
                                         <td id="tblSn">${memolist.sn}</td>
                                         <td id="tblTitle">${memolist.title}</td>
                                         <td id="tblMemo">${memolist.memo}</td>
-                                        <td>admin</td>
+                                        <td>${memolist.userid}</td>
                                         <td>${memolist.regDate}</td>
                                         <td>
                                             <button type="button" class="btn btn-gray modifyMemo" >수정</button>
@@ -441,18 +447,21 @@
                 }
             });
         }
+
+    }
+
+    $(function(){
         var oldTitle = "${projectInfo.title}";
-        $("input[name='title']").on("propertychange change keyup paste input", function() {
+        $("#title").on("propertychange change keyup paste input", function() {
             var currentVal = $(this).val();
             if(currentVal == oldTitle) {
                 return;
             }
-
             oldTitle = currentVal;
             $("#titleCk").val(0);
         });
         var oldProjectcd = "${projectInfo.projectcd}";
-        $("input[name='projectcd']").on("propertychange change keyup paste input", function() {
+        $("#projectcd").on("propertychange change keyup paste input", function() {
             var currentVal = $(this).val();
             if(currentVal == oldProjectcd) {
                 return;
@@ -461,7 +470,7 @@
             oldProjectcd = currentVal;
             $("#projectcdCk").val(0);
         });
-    }
+    });
 </script>
 
 <!-- Modal -->

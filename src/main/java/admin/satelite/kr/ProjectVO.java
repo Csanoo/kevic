@@ -399,4 +399,16 @@ public class ProjectVO {
     public Integer getAdNum(){return adNum;}
     public void setAdNum(Integer adNum){this.adNum = adNum;}
 
+    private Integer like;
+    public Integer getLike(){return like;}
+    public void setLike(Integer like){this.like = like;}
+
+    private String msg;
+    public String getMsg(){return msg;}
+    public void setMsg(String msg){this.msg = msg;}
+
+    private Integer msgCt;
+    public Integer getMsgCt(){return msgCt;}
+    public void setMsgCt(Integer msgCt){this.msgCt = msgCt;}
+
 }

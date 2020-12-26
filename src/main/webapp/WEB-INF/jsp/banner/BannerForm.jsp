@@ -339,7 +339,6 @@
             });
         });
         $(".removeRow").on("click",function(){
-            alert($("#dTable tr:visible").length);
             $(this).parent().parent().find("input").attr("disabled", true);
             $(this).parent().parent("tr").hide();
         });

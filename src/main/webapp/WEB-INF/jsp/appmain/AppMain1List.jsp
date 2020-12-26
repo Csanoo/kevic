@@ -234,8 +234,14 @@
     }
 
     function fn_formSv() {
-
         var frm = document.searchFrm;
+        var sDate = new Date(frm.startDate.value);
+        var eDate = new Date(frm.endDate.value);
+        if(eDate < sDate){
+            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+            return false;
+        }
+
 
         if ( frm.title.value == ""){
             alert("검색어를 입력해주세요.");
@@ -243,5 +249,27 @@
             return false;
         }
         frm.submit();
+    }
+    function dateperiod(day){
+
+        if(day == 30) {
+            var sDate = moment().add(-1, 'months').format('YYYY-MM-DD');
+            var eDate = moment().format('YYYY-MM-DD');
+        }else if(day == 180){
+            var sDate = moment().add(-6, 'months').format('YYYY-MM-DD');
+            var eDate = moment().format('YYYY-MM-DD');
+
+        }else if(day == 999){
+            var sDate = ''
+            var eDate = ''
+
+        }else{
+            var sDate = moment().add(-day, 'days').format('YYYY-MM-DD');
+            var eDate = moment().format('YYYY-MM-DD');
+        }
+
+        document.searchFrm.startDate.value=sDate;
+        document.searchFrm.endDate.value=eDate;
+
     }
 </script>

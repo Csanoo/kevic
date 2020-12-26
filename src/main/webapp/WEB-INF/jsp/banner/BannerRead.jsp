@@ -208,6 +208,17 @@
 							</form>
 							<script>
                                 function fn_formSv() {
+                                    var frm =document.form1;
+                                    if($("select[name='project']").val()==''){
+                                        alert('프로젝트를 선택해주세요.');
+                                        frm.project.focus();
+                                        return false;
+                                    }
+                                    if(frm.title.value == ''){
+                                        alert('타이틀을 확인해주세요.');
+                                        frm.title.focus();
+                                        return false;
+                                    }
                                     $("input[name='uploadfile']:enabled").each(function(){
                                         if($(this).val()==''){
                                             alert('이미지를 등록해주세요.');

@@ -156,6 +156,11 @@ public class ProjectCtr {
 
     @RequestMapping(value = "/projectRegSave")
     public String projectRegSave(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+        projectInfo.setUserid(USERID);
         String[] fileno = request.getParameterValues("fileno");
         FileUtil fs = new FileUtil();
         List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
@@ -168,13 +173,16 @@ public class ProjectCtr {
     @ResponseBody
     @RequestMapping(value = "/saveMemo")
     public String saveMemo(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
-
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
         String title = request.getParameter("title");
         String memo = request.getParameter("memo");
 
         projectInfo.setTitle(title);
         projectInfo.setMemo(memo);
-
+        projectInfo.setUserid(USERID);
         projectSvc.insertProjectMemo(projectInfo);
         return "True";
     }
@@ -773,6 +781,20 @@ throws Exception{
 
         response.getOutputStream().flush();
         response.getOutputStream().close();
+    }
+
+    @RequestMapping(value = "/msgList")
+    public String msgList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, ProjectVO projectVO) {
+
+        Integer Sn = Integer.parseInt(request.getParameter("sn"));
+        searchVO.setPsn(Sn);
+        searchVO.setDisplayRowCount(10);
+        searchVO.pageCalculate( projectSvc.selectMsgCount(searchVO) );
+        List<ProjectVO> loginlist = projectSvc.selectMsgList(searchVO);
+        modelMap.addAttribute("loginlist", loginlist);
+        modelMap.addAttribute("searchVO", searchVO);
+        return "project/msgList";
+
     }
 
 }

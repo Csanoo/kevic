@@ -39,9 +39,16 @@
 							<table id="customers">
 								<tr>
 									<td class="tdl" style="width: 15%">아이디</td>
-									<td style="width: 35%">${mvo.userid}</td>
+									<td style="width: 35%" colspan="3">${mvo.userid}</td>
+								</tr>
+								<tr>
 									<td class="tdl" style="width: 15%">이름</td>
 									<td style="width: 35%"><input name="username" type="text"	value="${mvo.username}"	class="form-control" style="width: 200px"></td>
+									<td class="tdl" style="width: 15%">사용여부</td>
+									<td style="width: 35%">
+										<input type="radio" name="state" value="Y" <c:if test="${mvo.state eq 'Y'}">checked</c:if> ><label>사용</label>
+										<input type="radio" name="state" value="N" <c:if test="${mvo.state eq 'N'}">checked</c:if> ><label>사용안함</label>
+									</td>
 								</tr>
 								<tr>
 									<td class="tdl" style="width: 15%">비밀번호</td>
@@ -122,7 +129,7 @@
 									<c:forEach var="plist" items="${plist}" varStatus="status">
 										<tr>
 											<td>${status.index}</td>
-											<td><c:if test="${plist.state} =='Y'">사용</c:if><c:if test="${plist.state} =='N'">사용 안함</c:if></td>
+											<td><c:if test="${plist.state} =='Y'">사용</c:if><c:if test="${plist.state} =='N'">점검</c:if></td>
 											<td>${plist.title}</td>
 											<td><img src="/upload/images/${plist.logoimg}" width="110"></td>
 											<td><a href="/admin/projectDetail?sn=${plist.sn}">/admin/projectDetail?sn=${plist.sn}</a></td>
@@ -155,6 +162,12 @@
 									return false;
 								}
                             }
+                            if (!validateEmail(f.email.value)){
+                                alert('이메일 형식을 확인해 주세요.');
+                                f.email.focus();
+                                return false;
+                            }
+
                             document.form1.submit();
 
 						}
@@ -176,7 +189,10 @@
                                 }
                             });
                         }
-
+                        function validateEmail(email) {
+                            var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                            return re.test(email);
+                        }
 					</script>
 
 						</div>

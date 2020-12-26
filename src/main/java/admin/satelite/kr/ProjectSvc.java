@@ -50,6 +50,9 @@ public class ProjectSvc {
     }
 
 
+
+
+
     public void insertProjectOne(ProjectVO param) {
         sqlSession.insert("insertprojectOne", param);
     }
@@ -146,6 +149,12 @@ public class ProjectSvc {
         return sqlSession.selectList("selectprojectList", param);
     }
 
+    public Integer selectMsgCount(SearchVO param) {
+        return sqlSession.selectOne("selectMsgCount", param);
+    }
+
+    public List<ProjectVO> selectMsgList(SearchVO param) { return sqlSession.selectList("selectMsgList", param); }
+
     public Integer selectProjectCount2(SearchVO param) {
         return sqlSession.selectOne("selectprojectCount2", param);
     }
@@ -154,17 +163,6 @@ public class ProjectSvc {
 
         return sqlSession.selectList("selectprojectList2", param);
     }
-
-
-    public Integer selectAppMain2Count(SearchVO param) {
-        return sqlSession.selectOne("selectAppMain2Count", param);
-    }
-
-    public List<?> selectAppMain2List(SearchVO param) {
-
-        return sqlSession.selectList("selectAppMain2List", param);
-    }
-
 
     public List<?> selectCateSelList(SearchVO param) {
 
@@ -194,16 +192,8 @@ public class ProjectSvc {
 
 
     public void notProjectPublish(ProjectVO param) {
-       // DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-    //    def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-      //  TransactionStatus status = txManager.getTransaction(def);
 
-     //   try {
             sqlSession.delete("notProjectPublish", param);
-      //      txManager.commit(status);
-     //   } catch (TransactionException ex) {
-      //      txManager.rollback(status);
-      //  }
     }
 
 
