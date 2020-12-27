@@ -119,19 +119,19 @@
 		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 
-		<if test="orderKeyword=='1'">
+		<if test='orderKeyword=="1"'>
 			ORDER BY sdate DESC
 		</if>
-		<if test="orderKeyword=='2'">
+		<if test='orderKeyword=="2"'>
 			ORDER BY sdate asc
 		</if>
-		<if test="orderKeyword=='3'">
+		<if test='orderKeyword=="3"'>
 			ORDER BY updateDate desc
 		</if>
-		<if test="orderKeyword=='4'">
+		<if test='orderKeyword=="4"'>
 			ORDER BY updateDate asc
 		</if>
-		<if test="orderKeyword=='' or orderKeyword==' '">
+		<if test='orderKeyword=="" or orderKeyword==" "'>
 			ORDER BY sdate DESC
 		</if>
 

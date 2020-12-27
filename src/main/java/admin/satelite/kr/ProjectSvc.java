@@ -32,6 +32,10 @@ public class ProjectSvc {
         return sqlSession.selectOne("selectprojectOne", param);
     }
 
+    public ProjectVO selectContentsOne(Integer param) {
+        return sqlSession.selectOne("selectMsgDetailOne", param);
+    }
+
     public ProjectVO selectProjectDetail(String param) {
         return sqlSession.selectOne("selectProjectDetail", param);
     }
@@ -67,6 +71,10 @@ public class ProjectSvc {
     public void categoryDelete(Integer param) {
 
         sqlSession.delete("categoryDelete", param);
+    }
+    public void msgDelete(Integer param) {
+
+        sqlSession.delete("msgDelete", param);
     }
 
     public void updateproject(ProjectVO param, List<FileVO> filelist,  String[] fileno) {

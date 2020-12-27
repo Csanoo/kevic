@@ -138,6 +138,7 @@ public class Member1Ctr {
 	
 	@RequestMapping(value = "/ytbForm")
 	public String ytb1Form(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+		searchVO.setDisplayRowCount(searchVO.getPageNo());
 		String USERTYPE = "";
 		if ( request.getSession().getAttribute("USERTYPE") != null ) {
 			USERTYPE = (String)request.getSession().getAttribute("USERTYPE");
@@ -723,8 +724,8 @@ public class Member1Ctr {
 
 		searchVO.setDisplayRowCount(10);
 		searchVO.pageCalculate( member1Svc.selectLoginCount(searchVO) );
-		List<Member1VO> msglist = member1Svc.loginHistory(searchVO);
-		modelMap.addAttribute("msglist", msglist);
+		List<Member1VO> loginlist = member1Svc.loginHistory(searchVO);
+		modelMap.addAttribute("loginlist", loginlist);
 		modelMap.addAttribute("searchVO", searchVO);
 		return "member1/loginhistory";
 

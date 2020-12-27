@@ -411,4 +411,7 @@ public class ProjectVO {
     public Integer getMsgCt(){return msgCt;}
     public void setMsgCt(Integer msgCt){this.msgCt = msgCt;}
 
+    private String regid;
+    public String getRegid(){return regid;}
+    public void setRegid(String regid){this.regid = regid;}
 }

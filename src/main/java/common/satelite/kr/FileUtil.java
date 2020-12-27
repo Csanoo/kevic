@@ -32,7 +32,32 @@ public class FileUtil {
 		}
 		return filelist;
 	}
-	
+
+	public List<FileVO> saveAllFiles(List<MultipartFile> upfiles) {
+		String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
+		List<FileVO> filelist = new ArrayList<FileVO>();
+
+		for (MultipartFile uploadfile : upfiles ) {
+			FileVO filedo = new FileVO();
+			if (uploadfile.getSize() == 0) {
+				filedo.setFilename("");
+				filedo.setRealname("");
+				filelist.add(filedo);
+				continue;
+			}
+
+			String newName = uploadfile.getOriginalFilename();
+			saveFile2(uploadfile, filePath + "/" , newName);
+
+			filedo.setFilename(uploadfile.getOriginalFilename());
+			filedo.setRealname(uploadfile.getOriginalFilename());
+			filedo.setFilesize(uploadfile.getSize());
+			filelist.add(filedo);
+		}
+		return filelist;
+	}
+
 	public String saveFile2(MultipartFile file, String basePath, String fileName){
 		if (file == null || file.getName().equals("") || file.getSize() < 1) {
 			return null;

@@ -9,11 +9,15 @@
 		where sn=#{sn} 
 	</delete>
 
-	<select id="selectprojectOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
-		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
-		where sn=#{sn} 
+	<select id="selectMsgDetailOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT m.sn, c.project, c.category, c.type, c.imageUrl, c.videoUrl, ctSource, c.title From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		where m.sn=#{sn}
 	</select>
 
+	<select id="selectprojectOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
+		where sn=#{sn}
+	</select>
 
 	<select id="selectProjectDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
 		SELECT  sn, title, projectcd, comment, state, logoimg, basictitle, regUser, mngUser, regDate  from tbl_project
@@ -102,10 +106,16 @@
 			ORDER BY m.sn Asc
 		</if>
 		<if test='orderKeyword == "3"'>
-			ORDER BY keyword ASC
+			ORDER BY c.title Desc
 		</if>
 		<if test='orderKeyword == "4"'>
+			ORDER BY c.title Asc
+		</if>
+		<if test='orderKeyword == "5"'>
 			ORDER BY keyword Desc
+		</if>
+		<if test='orderKeyword == "6"'>
+			ORDER BY keyword Asc
 		</if>
 		<if test='orderKeyword=="" or orderKeyword==" " '>
 			ORDER BY m.sn Desc
@@ -159,7 +169,7 @@
 	<select id="selectMsgList"
 			resultType="main.java.admin.satelite.kr.ProjectVO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT m.sn, m.projectSn, m.like, c.msg, c.regDate, c.regId
+		SELECT c.sn, m.projectSn, m.like, c.msg, c.regDate, c.regId
 		From tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
 		<include refid="includeMsg" />
 		<if test="rowStart > 0">
@@ -298,6 +308,11 @@
 		insert into tbl_member_project (userid, projectSn)
 		values ( #{userid}, #{sn} )
 	</insert>
+
+	<delete id="msgDelete"	parameterType="Integer">
+		delete from tbl_msg
+		where sn=#{sn}
+	</delete>
 
 
 </mapper>

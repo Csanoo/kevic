@@ -133,7 +133,6 @@ public class BannerCtr {
 	@RequestMapping(value = "/bannerUp")
 	public String bannerUp(SearchVO searchVO, HttpServletRequest request, BannerVO banner1Info, ModelMap modelMap) {
 		Integer sn = Integer.parseInt(request.getParameter("sn"));
-		System.out.println(sn);
 		bannerSvc.deleteBannerDetail(sn);
 		String project = request.getParameter("project");
 		String title = request.getParameter("title");
@@ -150,28 +149,41 @@ public class BannerCtr {
 		banner1Info.setSn(sn);
 
 		bannerSvc.updateBanner1(banner1Info);
+
 		FileUtil fs = new FileUtil();
-	//	List<FileVO> filelist = fs.saveAllFilesBB(banner1Info.getUploadfile());
+		List<FileVO> filelist = fs.saveAllFiles(banner1Info.getUploadfile());
+		//System.out.println("test="+filelist.size());
+
 
 
 		String[] arrayLink = request.getParameterValues("link");
 		String[] arrayLinkTaget = request.getParameterValues("linkTarget");
 		String[] arrayImgOld = request.getParameterValues("uploadfileOld");
 		String[] arrayImgCk = request.getParameterValues("uploadfileck");
+		String[] arrayImg = new String[arrayLink.length];
 
-		//String[] arrayImg = new String[arrayImgCk.length];
-
+		int size = 0;
+		for(FileVO temp : filelist){
+			arrayImg[size++] = temp.getFilename();
+		}
 
 		String bannerImg = "";
+
 		for (int i = 0; i < arrayLink.length; i++) {
-			if (arrayImgCk[i] == "T") {
-				bannerImg = arrayImgOld[i];
+			System.out.println(arrayImgCk[i].equals("T"));
+
+			if (arrayImgCk[i].equals("T")) {
+
+				System.out.println(arrayImg[i]);
+				bannerImg = arrayImg[i];
 			} else {
 				bannerImg = arrayImgOld[i];
 			}
+			banner1Info.setImgfile(bannerImg);
+
 			banner1Info.setLink(arrayLink[i]);
 			banner1Info.setLinkTarget(arrayLinkTaget[i]);
-			banner1Info.setImgfile(bannerImg);
+
 			banner1Info.setSort(i);
 			banner1Info.setBannersn(sn);
 			if (bannerImg != "" && arrayLink[i] != ""){

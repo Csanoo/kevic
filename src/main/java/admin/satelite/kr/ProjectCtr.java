@@ -209,6 +209,15 @@ public class ProjectCtr {
         return "True";
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/msgDelete")
+    public String msgDelete(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        projectSvc.msgDelete(sn);
+        return "True";
+    }
+
+
     @RequestMapping(value = "/projectUp")
     public String projectUp(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
 
@@ -787,11 +796,14 @@ throws Exception{
     public String msgList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, ProjectVO projectVO) {
 
         Integer Sn = Integer.parseInt(request.getParameter("sn"));
+        projectVO = projectSvc.selectContentsOne(Sn);
         searchVO.setPsn(Sn);
         searchVO.setDisplayRowCount(10);
         searchVO.pageCalculate( projectSvc.selectMsgCount(searchVO) );
-        List<ProjectVO> loginlist = projectSvc.selectMsgList(searchVO);
-        modelMap.addAttribute("loginlist", loginlist);
+        List<ProjectVO> msglist = projectSvc.selectMsgList(searchVO);
+
+        modelMap.addAttribute("projectInfo", projectVO);
+        modelMap.addAttribute("msglist", msglist);
         modelMap.addAttribute("searchVO", searchVO);
         return "project/msgList";
 

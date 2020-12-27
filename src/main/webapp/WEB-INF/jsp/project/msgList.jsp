@@ -3,23 +3,37 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <form name="form2">
-<ul>
+<div style="display: flex;justify-content: flex-start">
+    <div>
+    <img src="${projectInfo.imageUrl}" width="140" height="60">
+    </div>
+    <div style="margin-left:20px">
+        <div>
+            ${projectInfo.title}
+        </div>
+        <div>
+            <c:if test="${projectInfo.ctSource eq 'YTB'}">유튜브</c:if>
+        </div>
+    </div>
+</div>
+<ul style="padding:10px 0;margin:10px 0 0 0;border-top:1px solid #CCCCCC">
     <li style="display: flex;justify-content: flex-start">
         <div></div>
     </li>
 <c:forEach var="msglist" items="${msglist}" varStatus="status">
 
-<li style="">
-    <div>${msglist.regid} <span aria-hidden="true">×</span></div>
+<li style="list-style: none">
+    <div>${msglist.regid} <span aria-hidden="true" class="pull-right" style="cursor:pointer" onclick="deletemsg('${msglist.sn}','${searchVO.psn}','${searchVO.page}')">×</span></div>
     <div>${msglist.msg}</div>
-    <div>${msglist.regDate}</div>
+    <div style="font-size:13px;color:#999;">${msglist.regDate}</div>
 </li>
+    <c:if test="${status.end <= 0}">
+        <li style="list-style: none">
+            메세지가 없습니다.
+        </li>
+    </c:if>
 </c:forEach>
-<c:if test="${searchVO.totRow <= 0}">
-    <li>
-        검색결과가 없습니다.
-    </li>
-</c:if>
+
 </ul>
 </form>
 
@@ -69,5 +83,25 @@
         $.get("/admin/msgList?sn="+sn+"&page="+page , function(data){
             $( "#msgList" ).html( data );
         });
+    }
+    function deletemsg(sn,psn,page) {
+        $.ajax({
+            type: "POST",
+            url: "/admin/msgDelete",
+            data: "sn=" + sn,
+            success: function(jdata){
+
+                if(jdata != 'True') {
+                    alert("삭제 오류");
+                }else{
+                    fn_list(psn, page)
+                    $("#msg_" + psn).html(parseInt($("#msg_" + psn).text()) - 1);
+                    alert("삭제 성공");
+
+                }
+            },
+            error: function(data){location.href = "/admin/project";}
+        });
+
     }
 </script>

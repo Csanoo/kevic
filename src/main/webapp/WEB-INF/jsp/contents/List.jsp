@@ -130,10 +130,12 @@
                                 </li>
                                 <li style="float: left;">
                                     <select name="orderKeyword" id="orderKeyword"  >
-                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">타이틀 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">타이틀 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">키워드 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">키워드 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">등록일 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">등록일 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">타이틀 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">타이틀 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">키워드 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">키워드 오름차순</option>
                                     </select>
                                     <select name="pageNo" id="pageNo"  >
                                         <option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>

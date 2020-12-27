@@ -162,7 +162,7 @@ table{font-size:14px}
                         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
 
                             <h3>
-                                <a href="ui-profile.html">관리</a>
+                                관리
 
                                 <!-- Available statuses: online, idle, busy, away and offline -->
 

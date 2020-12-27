@@ -46,10 +46,16 @@
 			ORDER BY sn Asc
 		</if>
 		<if test='orderKeyword == "3"'>
-			ORDER BY keyword ASC
+			ORDER BY title Desc
 		</if>
 		<if test='orderKeyword == "4"'>
+			ORDER BY title Asc
+		</if>
+		<if test='orderKeyword == "5"'>
 			ORDER BY keyword Desc
+		</if>
+		<if test='orderKeyword == "6"'>
+			ORDER BY keyword Asc
 		</if>
 		<if test='orderKeyword=="" or orderKeyword==" " '>
 			ORDER BY sort ASC
