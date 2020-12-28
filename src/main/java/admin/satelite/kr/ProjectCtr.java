@@ -163,7 +163,7 @@ public class ProjectCtr {
         projectInfo.setUserid(USERID);
         String[] fileno = request.getParameterValues("fileno");
         FileUtil fs = new FileUtil();
-        List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
+        List<FileVO> filelist = fs.saveAllFileslogo(projectInfo.getUploadfile());
 
         projectSvc.insertProject(projectInfo, filelist, fileno);
 

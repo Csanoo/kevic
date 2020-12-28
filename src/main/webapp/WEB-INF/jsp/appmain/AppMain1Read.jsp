@@ -88,8 +88,8 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'Y'}">checked</c:if>><label>상시 노출</label>
 													<input type="radio" value="N" name="dtimetype" <c:if test="${appmain1Info.dtimetype eq 'N'}">checked</c:if>><label>기간 노출</label>
-														<input name="stime" type="text" class="form-control" value="${appmain1Info.stime}" placeholder="24:00:00" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
-														<input name="etime" type="text" class="form-control" value="${appmain1Info.etime}" placeholder="01:00:00" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
+														<input name="stime" type="time" class="form-control" value="${appmain1Info.stime}" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
+														<input name="etime" type="time" class="form-control" value="${appmain1Info.etime}" <c:if test="${appmain1Info.dtimetype eq 'Y'}">disabled</c:if>>
 
 												</td>
 
@@ -98,8 +98,8 @@
 
 												<td class="tdl" style="width: 15%">노출 위치</td>
 
-												<td style="width: 35%" colspan="3">상단<input name="positionY" type="text" class="form-control" value="${appmain1Info.positionY}">
-													좌측<input name="positionX" type="text" class="form-control" value="${appmain1Info.positionX}">
+												<td style="width: 35%" colspan="3">상단<input name="positionY" type="number" class="form-control" value="${appmain1Info.positionY}">
+													좌측<input name="positionX" type="number" class="form-control" value="${appmain1Info.positionX}">
 												</td>
 
 											</tr>
@@ -108,8 +108,8 @@
 												<td class="tdl" style="width: 15%">팝업 크기</td>
 
 												<td style="width: 35%" colspan="3">
-													가로(pixel)<input name="sWidth" type="text" class="form-control" value="${appmain1Info.sWidth}">
-													세로(pixel)<input name="sHeight" type="text" class="form-control" value="${appmain1Info.sHeight}">
+													가로(pixel)<input name="sWidth" type="number" class="form-control" value="${appmain1Info.sWidth}">
+													세로(pixel)<input name="sHeight" type="number" class="form-control" value="${appmain1Info.sHeight}">
 												</td>
 
 											</tr>
@@ -353,9 +353,12 @@
             if($(this).val()=='Y'){
                 $("input[name='stime']").attr("disabled",true);
                 $("input[name='etime']").attr("disabled",true);
+                $("input[name='stime']").val('');
+                $("input[name='etime']").val('');
             }else{
                 $("input[name='stime']").attr("disabled",false);
                 $("input[name='etime']").attr("disabled",false);
+
             }
         });
         $("input[name='linkState']").on("change",function(){

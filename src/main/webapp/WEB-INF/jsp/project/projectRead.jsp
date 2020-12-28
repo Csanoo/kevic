@@ -83,7 +83,7 @@
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
                                                             <!--<input type="checkbox" name="modi" value="Y"/>-->
-                                                            <input type="file" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+                                                            <input type="file" name="uploadfile"  id="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
 
                                                             <br />
                                                             <img src="/upload/images/${projectInfo.logoimg}" width="110">
@@ -106,7 +106,7 @@
                                                 <td style="width: 35%" >
                                                     <c:forEach var="mlist" items="${mlist}" varStatus="status">
                                                         <c:if test="${mlist.puse eq '1'}">
-                                                        <span>${mlist.username}<span style="cursor:pointer" onClick="mDel('${mlist.userid}')">X</span></span>
+                                                        <span>${mlist.username}<a style="cursor:pointer;margin-left:5px;" onClick="mDel('${mlist.userid}')">X</a></span>
                                                         </c:if>
                                                     </c:forEach>
                                                     <button type="button" class="btn btn-gray pull-right" data-toggle="modal" onclick="memberList(${projectInfo.sn});" data-target="#myModal">추가</button>
@@ -495,6 +495,51 @@
             $("#projectcdCk").val(0);
         });
     });
+    function checkImgSize(obj, size) {
+        var check = false;
+        if(window.ActiveXObject) {
+            var fso = new ActiveXObject("Scripting.FileSystemObject");
+            var filepath = obj[0].value;
+            var thefile = fso.getFile(filepath); sizeinbytes = thefile.size;
+        } else {//IE 외 //sizeinbytes = document.getElementById(obj).files[0].size;
+            sizeinbytes = obj[0].files[0].size;
+        }
+        var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
+        var i = 0;
+        var checkSize = size;
+
+        while(checkSize>900) { checkSize/=1024; i++; }
+
+        checkSize = (Math.round(checkSize*100)/100)+' '+fSExt[i];
+        var fSize = sizeinbytes;
+        if(fSize > size) { alert("첨부파일은 "+ checkSize + " 이하로 등록가능합니다."); $("input[id=uploadfile]").val(""); check = false; } else { check = true; }
+
+        var file  = obj
+        var _URL = window.URL || window.webkitURL;
+        var img = new Image();
+
+        img.src = _URL.createObjectURL(file);
+        img.onload = function() {
+
+            if(img.width != 200) {
+                alert("이미지 가로 200px 맞춰서 올려주세요.");
+                $("input[id=uploadfile]").val("");
+                check = false;
+            }
+        }
+
+        return check;
+    }
+    document.getElementById("uploadfile").onchange = function () {
+        if(this.value != "") {
+            var extPlan = "JPG, PNG";
+            var checkSize = 1024*1024*2; // 2MB
+            if(!checkImgSize($('#uploadfile'), checkSize)) {
+                this.value = "";
+                return;
+            }
+        }
+    };
 </script>
 
 <!-- Modal -->

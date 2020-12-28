@@ -23,7 +23,9 @@
 <c:forEach var="msglist" items="${msglist}" varStatus="status">
 
 <li style="list-style: none;border-bottom: 1px solid #CCCCCC">
-    <div>${msglist.regid} <span aria-hidden="true" class="pull-right" style="cursor:pointer" onclick="deletemsg('${msglist.sn}','${searchVO.psn}','${searchVO.page}')">×</span></div>
+    <div>${msglist.regid}
+        <button type="button" class="btn btn-orange pull-right" onclick="deletemsg('${msglist.sn}','${searchVO.psn}','${searchVO.page}')">X</button>
+    </div>
     <div>${msglist.msg}</div>
     <div style="font-size:13px;color:#999;">${msglist.regDate}</div>
 </li>

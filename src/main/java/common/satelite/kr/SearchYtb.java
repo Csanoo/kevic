@@ -15,7 +15,8 @@ import com.google.api.services.youtube.model.Thumbnail;
 import com.google.api.services.youtube.model.*;
 import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
-
+import java.io.PrintWriter;
+import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,7 +56,7 @@ public class SearchYtb {
     public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
     //public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
 
-    public void execute(String keywords, String sType, Integer CountCt, String userid) {
+    public void execute(String keywords, String sType, Integer CountCt, String userid, HttpServletResponse response) {
         youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
             @Override
             public void initialize(HttpRequest httpRequest) throws IOException {
@@ -104,7 +105,8 @@ public class SearchYtb {
                     i ++;
                     System.out.println("i="+i);
                     System.out.println("vNum="+vNum);
-                    //System.out.println("nextToken :  "+ nextToken);
+                    System.out.println("CountCt="+CountCt);
+                    System.out.println("nextToken :  "+ nextToken);
                 //} while (i < 1);
                     String qry2 = "insert into tbl_ytbquota (price) values (-100)";
                     pstmt = con.prepareStatement(qry2);
@@ -115,8 +117,12 @@ public class SearchYtb {
                 con.close();
                // return items;
             } catch (IOException e) {
-                System.out.println("Could not search1: " + e.getMessage());
+               // System.out.println("Could not search1: " + e.getMessage());
                // return null;
+                response.setContentType("text/html; charset=UTF-8");
+                PrintWriter out = response.getWriter();
+                out.println("<script>alert('계정이 등록 되었습니다'); location.href='이동주소';</script>");
+                out.flush();
             }catch (Exception er) {
                 System.out.println("Could not search2: " + er.getMessage());
                // return null;

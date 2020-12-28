@@ -193,7 +193,7 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, ct from (
 			SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, (select count(*)
-			from tbl_contents where project = tbl_project.sn) as 'ct' from tbl_project
+			from tbl_mapping_contents where projectSn = tbl_project.sn) as 'ct' from tbl_project
 		) A
 		<include refid="includeproject2" />
 

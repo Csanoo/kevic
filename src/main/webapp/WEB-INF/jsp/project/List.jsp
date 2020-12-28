@@ -129,7 +129,7 @@
                                     <button type="button" class="btn btn-orange" onclick="fn_formGo()">직접저장</button>
                                     <button type="button" class="btn btn-gray"   onclick="publishNotPost()">노출중지</button>
                                     <button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
-                                    <button type="button" class="btn btn-orange" onclick="fn_postsortConfirm()">순서 저장</button>
+                                    <!--<button type="button" class="btn btn-orange" onclick="fn_postsortConfirm()">순서 저장</button>-->
 
                                 </li>
                                 <li style="float: left;">
@@ -171,7 +171,7 @@
                                         <th>등록일</th>
                                         <th>메시지</th>
                                         <th>좋아요</th>
-                                        <th>순서</th>
+                                      <!--  <th>순서</th>-->
                                         <th>노출</th>
                                     </tr>
                                     </thead>
@@ -189,10 +189,10 @@
                                             <td>${listview.regDate}<br>${listview.userid}</td>
                                             <td data-toggle="modal" data-target="#myModal" onClick="javascript:fn_list('${listview.sn}',1)" style="cursor:pointer" id="msg_${listview.sn}">${listview.msgCt}</td>
                                             <td >${listview.like}</td>
-                                            <td>
+                                           <!-- <td>
                                                 이동
                                                 <input type="hidden" value="${listview.sn}" name="sort">
-                                            </td>
+                                            </td>-->
                                             <td>
                                                 <div onclick="fn_notPublish(${listview.sn})">X</div>
                                             </td>
@@ -403,9 +403,9 @@
             }
         });
 
-        $("#dTable").tableDnD({
-            onDragClass: "dragRow"
-        });
+     //   $("#dTable").tableDnD({
+       //     onDragClass: "dragRow"
+        //});
         $("#pubproject").on("change",function(){
             var sn = $("#pubproject option:selected").val();
             $( "#category2" ).html('<option value="0">카테고리</option>');

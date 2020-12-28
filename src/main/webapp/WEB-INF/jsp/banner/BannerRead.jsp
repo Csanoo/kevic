@@ -64,8 +64,8 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="displaytype" <c:if test="${banner1Info.displayType eq 'Y'}">checked</c:if>><label>상시 노출</label>
 													<input type="radio" value="N" name="displaytype" <c:if test="${banner1Info.displayType eq 'N'}">checked</c:if>><label>기간 노출</label>
-													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.sdate}">
-													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.edate}">
+													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.sdate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
+													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.edate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
 												</td>
 											</tr>
 										</table>
@@ -275,6 +275,17 @@
 <script type="text/javascript">
 
     $(function(){
+        $("input[name='displaytype']").on("change",function(){
+            if($(this).val()=='Y'){
+                $("input[name='sdate']").attr("disabled",true);
+                $("input[name='edate']").attr("disabled",true);
+                $("input[name='sdate']").val('');
+                $("input[name='edate']").val('');
+            }else{
+                $("input[name='sdate']").attr("disabled",false);
+                $("input[name='edate']").attr("disabled",false);
+            }
+        });
         $(".target input[type='radio']").on("change",function(){
             if ($(this).is(':checked')) {
                 $(this).parent().children("input[name='linkTarget']").val($(this).val());

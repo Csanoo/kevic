@@ -72,7 +72,7 @@
 													</select>
 													</div>
 													<div id="ytbQua" style="display:none;position:relative;width: 100%;max-width: 150px;height: 30px;margin-left: 20px;border: 1px solid #EEE;background: #999999;box-sizing: border-box;">
-														<div style="width: 40%;height: 28px;background: #1b2;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
+														<div style="width: ${QuataSum}%;height: 28px;background: #1b2;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
 
 														</div>
 														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">남은 할당량:${QuataSum}%</div>
@@ -165,8 +165,8 @@
 															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
 															<td> ${listview.type}</td>
 															<td><img src="${listview.imageUrl}" width="110"></td>
-															<td><div style="width:100px;overflow:hidden">${listview.imageUrl}</div></td>
-															<td><div style="width:100px;overflow:hidden">${listview.videoUrl}</div></td>
+															<td><div style="width:100px;word-break:break-all;white-space: normal">${listview.imageUrl}</div></td>
+															<td><div style="width:100px;word-break:break-all;white-space: normal">${listview.videoUrl}</div></td>
 															<td><div style="width:100px;overflow:hidden">${listview.ctSource}</div></td>
 															<td class="title" style="display: flex">${listview.title}</td>
 															<td>${listview.keyword}</td>
@@ -263,12 +263,25 @@
             alert("검색할 컨텐츠 수를 입력해주세요.");
             return false;
         }
-        if(document.form2.CountCt.value >= 1000){
+        var numChk = "/^(\\-|\\+)?([0-9]+)$/";
+
+		var cCt = document.form2.CountCt.value;
+		var cCtChk = /^(\-|\+)?([0-9]+)$/.test(cCt/50)
+		if(!cCtChk){
+            alert("50건 단위로 입력해주세요.");
+		    return false;
+		}
+
+        if(cCt > 1000){
             alert("1000건이상 조회되지 않습니다.");
             return false;
 		}
         if ( $("#snsType option:selected").val() == ""){
             alert("크롤링할 SNS을 선택해주세요.");
+            return false;
+        }
+        if (${QuataSum} <= 0 ){
+            alert("금일 유튜브 API사용량이 소진되었습니다. 16시에 초기화 됩니다.");
             return false;
         }
         $("#loading").show();
