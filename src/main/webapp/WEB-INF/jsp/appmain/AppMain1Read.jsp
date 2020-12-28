@@ -227,9 +227,9 @@
                                         return false;
                                     }
                                     if(frm.linkState.value == '100' ){
-                                        if( frm.url.value == '' ) {
+                                        if( frm.link.value == '' ) {
                                             alert('링크 타겟 사용시 URL을 입력해주세요)');
-                                            frm.url.focus();
+                                            frm.link.focus();
                                             return false;
                                         }
                                     }

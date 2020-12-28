@@ -258,12 +258,12 @@ public class ProjectCtr {
         String projectcd = request.getParameter("projectcd");
         String comment = request.getParameter("comment");
         String state = request.getParameter("state");
-        String basictitle = request.getParameter("basictitle");
+        String basicTitle = request.getParameter("basicTitle");
 
         projectInfo.setTitle(title);
         projectInfo.setComment(comment);
         projectInfo.setProjectcd(projectcd);
-        projectInfo.setBasictitle(basictitle);
+        projectInfo.setBasicTitle(basicTitle);
         projectInfo.setState(state);
         projectInfo.setSn(sn);
 
@@ -767,11 +767,11 @@ throws Exception{
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(7);
-            objCell.setCellValue("0");
+            objCell.setCellValue(""+list.getMsgCt());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(8);
-            objCell.setCellValue("0");
+            objCell.setCellValue(""+list.getLike());
             objCell.setCellStyle(styleHd);
 
         }
@@ -799,6 +799,7 @@ throws Exception{
         projectVO = projectSvc.selectContentsOne(Sn);
         searchVO.setPsn(Sn);
         searchVO.setDisplayRowCount(10);
+
         searchVO.pageCalculate( projectSvc.selectMsgCount(searchVO) );
         List<ProjectVO> msglist = projectSvc.selectMsgList(searchVO);
 

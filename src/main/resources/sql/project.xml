@@ -85,7 +85,7 @@
 		<if test='logoimg != null and logoimg != "" '>
 		,logoimg=#{logoimg}
 		</if>
-		,basictitle=#{basictitle}
+		,basicTitle=#{basicTitle}
 		where sn=#{sn}
 	</update>
 
@@ -161,8 +161,9 @@
 		<include refid="includeproject" />
 	</select>
 
+
 	<sql id="includeMsg">
-		WHERE c.contentSn = #{psn} ORDER BY c.sn desc
+		WHERE c.contentSn = #{psn}
 	</sql>
 
 
@@ -172,16 +173,16 @@
 		SELECT c.sn, m.projectSn, m.like, c.msg, c.regDate, c.regId
 		From tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
 		<include refid="includeMsg" />
-		<if test="rowStart > 0">
-			LIMIT ${rowStart-1}, 10
-		</if>
+		ORDER BY c.sn desc
+
+		LIMIT ${rowStart-1}, 10
 	</select>
 
 
 
 	<select id="selectMsgCount" resultType="Integer"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT COUNT(*) FROM tbl_msg c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		SELECT COUNT(*) FROM tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
 		<include refid="includeMsg" />
 	</select>
 

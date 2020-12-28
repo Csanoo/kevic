@@ -545,6 +545,9 @@ else '-' end as category,imgfile,
 		SELECT wdate
 		from edumgtfunclist
 		where userid=#{userid}
+
+		ORDER BY wdate desc
+
 		LIMIT ${rowStart-1}, 10
 	</select>
 	<select id="selectLoginCount" resultType="Integer"	parameterType="String">

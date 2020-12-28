@@ -63,7 +63,7 @@
                                                 <td class="tdl" style="width: 15%">사용여부</td>
                                                 <td style="width: 35%" colspan="3">
                                                     <input type="radio" name="state" value="100" checked><label>사용</label>
-                                                    <input type="radio" name="state" value="200"><label>점검</label>
+                                                    <input type="radio" name="state" value="200"><label>사용안함</label>
                                                 </td>
                                             </tr>
                                             <tr>

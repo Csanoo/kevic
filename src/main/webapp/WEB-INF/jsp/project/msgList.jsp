@@ -16,13 +16,13 @@
         </div>
     </div>
 </div>
-<ul style="padding:10px 0;margin:10px 0 0 0;border-top:1px solid #CCCCCC">
+<ul style="padding:10px 20px 0 0;margin:10px 0 0 0;border-top:1px solid #CCCCCC;overflow-y: auto;height: 500px;">
     <li style="display: flex;justify-content: flex-start">
         <div></div>
     </li>
 <c:forEach var="msglist" items="${msglist}" varStatus="status">
 
-<li style="list-style: none">
+<li style="list-style: none;border-bottom: 1px solid #CCCCCC">
     <div>${msglist.regid} <span aria-hidden="true" class="pull-right" style="cursor:pointer" onclick="deletemsg('${msglist.sn}','${searchVO.psn}','${searchVO.page}')">×</span></div>
     <div>${msglist.msg}</div>
     <div style="font-size:13px;color:#999;">${msglist.regDate}</div>
@@ -37,8 +37,8 @@
 </ul>
 </form>
 
-<div style="width:100%;overflow-y:scroll;text-align: center">
-<c:if test="${searchVO.totPage>1}">
+<div style="width:90%;overflow-x:scroll;text-align: center">
+<c:if test="${searchVO.totPage>0}">
     <div>
 
 

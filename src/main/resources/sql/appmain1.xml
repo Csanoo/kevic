@@ -13,19 +13,19 @@
 
 	<insert id="insertAppMain1One"	parameterType="main.java.admin.satelite.kr.AppMain1VO">
 		insert into tbanner2 (code2, imgfile,	link, title, umemo,	type1, text1, text2, appkind, creatorimg
-		<if	test="sdate!='' and edate !=''">
+		<if	test='sdate!="" and edate !="" and displaytype !="Y"'>
 			,sdate,edate
 		</if>
-		<if	test="stime!='' and etime !=''">
+		<if	test='stime!="" and etime !="" and dtimetype !="Y"'>
 			, stime, etime
 		</if>
 		 ,sWidth, sHeight, state, positionX, positionY, closeType, project, linkState,linkTarget, displaytype, dtimetype )
 		values ( #{code2}, #{imgfile} , #{link} ,#{title} ,#{umemo} ,#{type1} ,#{text1} ,#{text2} ,#{appkind} ,#{creatorimg}
 
-		<if	test="sdate!='' and edate !=''">
+		<if	test='sdate!="" and edate !="" and displaytype !="Y"'>
 			, #{sdate}, #{edate}
 		</if>
-		<if	test="stime!='' and etime !=''">
+		<if	test='stime!="" and etime !="" and dtimetype !="Y"'>
 			, #{stime}, #{etime}
 		</if>
 		,#{sWidth}, #{sHeight}, #{state}, #{positionX}, #{positionY}, #{closeType} ,#{project},#{linkState}, #{linkTarget}, #{displaytype} ,#{dtimetype})
@@ -56,10 +56,12 @@
 		,linkTarget=#{linkTarget}
 		,displaytype=#{displaytype}
 		,dtimetype=#{dtimetype}
-		<if	test="sdate!='' and edate !=''">
+		<if	test='sdate!="" and edate !="" and displaytype !="Y"'>
 			,sdate=#{sdate}, edate=#{edate}
 		</if>
+		<if	test='stime!="" and etime !="" and dtimetype !="Y"'>
 		,stime=#{stime}, etime=#{etime}
+		</if>
 		where sn=#{sn}
 	</update>
 	

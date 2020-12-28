@@ -54,7 +54,7 @@
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
-													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.(1000건 이상 검색이 불가합니다.)">
+													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.(1000건 이상 검색이 불가합니다.)" step="50">
 												</td>
 											</tr>
 											<tr>
@@ -71,10 +71,12 @@
 														-->
 													</select>
 													</div>
-													<div id="ytbQua" style="display:none;width: 100%;max-width: 150px;height: 30px;margin-left: 20px;border: 1px solid #EEE;background: gray;box-sizing: border-box;">
-														<div style="width: ${QuataSum}%;height: 28px;background: #DD1212;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
-															할당량:${QuataSum}%
+													<div id="ytbQua" style="display:none;position:relative;width: 100%;max-width: 150px;height: 30px;margin-left: 20px;border: 1px solid #EEE;background: #999999;box-sizing: border-box;">
+														<div style="width: 40%;height: 28px;background: #1b2;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
+
 														</div>
+														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">남은 할당량:${QuataSum}%</div>
+
 													</div>
 												</td>
 											</tr>

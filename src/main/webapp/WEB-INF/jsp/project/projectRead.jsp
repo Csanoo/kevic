@@ -74,7 +74,7 @@
                                                 <td class="tdl" style="width: 15%">사용여부</td>
                                                 <td style="width: 35%" colspan="3">
                                                     <input type="radio" name="state" value="100" <c:if test="${projectInfo.state eq '100'}">checked</c:if> ><label>사용</label>
-                                                    <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>점검</label>
+                                                    <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>사용안함</label>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -95,7 +95,7 @@
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                                                <td style="width: 35%" colspan="3"><input name="basictitle" type="text" value="${projectInfo.basicTitle}" class="form-control"></td>
+                                                <td style="width: 35%" colspan="3"><input name="basicTitle" type="text" value="${projectInfo.basictitle}" class="form-control"></td>
                                             </tr>
                                             <tr>
                                                 <td class="tdl" style="width: 15%">프로젝트 등록자</td>

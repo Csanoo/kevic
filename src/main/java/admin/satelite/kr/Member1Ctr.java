@@ -497,7 +497,8 @@ public class Member1Ctr {
 				modelMap.addAttribute("mvo", mvo);
 
 				LeftMenuUtil lmu = new LeftMenuUtil();
-//				lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
+
+				lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
 
 
 				String USERID = "";

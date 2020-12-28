@@ -337,18 +337,21 @@ public class ContentsCtr {
         objCell = objRow.createCell(0);
         objCell.setCellValue("No");
         objCell.setCellStyle(styleHd);
-
         objCell = objRow.createCell(1);
-        objCell.setCellValue("이미지URL");
+        objCell.setCellValue("컨텐츠 타입");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("비디URL");
+        objCell.setCellValue("출처 이미지URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);
-        objCell.setCellValue("출처");
+        objCell.setCellValue("영상URL");
         objCell.setCellStyle(styleHd);
+
+     //   objCell = objRow.createCell(4);
+    //   objCell.setCellValue("출처");
+      //  objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(4);
         objCell.setCellValue("타이틀");
@@ -384,16 +387,20 @@ public class ContentsCtr {
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(1);
-            objCell.setCellValue(""+list.getImageUrl());
+            objCell.setCellValue(""+list.getType());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(2);
-            objCell.setCellValue(""+list.getVideoUrl());
+            objCell.setCellValue(""+list.getImageUrl());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(3);
-            objCell.setCellValue(""+list.getCtSource());
+            objCell.setCellValue(""+list.getVideoUrl());
             objCell.setCellStyle(styleHd);
+
+          //  objCell = objRow.createCell(4);
+          //  objCell.setCellValue(""+list.getCtSource());
+         //  objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(4);
             objCell.setCellValue(""+str);

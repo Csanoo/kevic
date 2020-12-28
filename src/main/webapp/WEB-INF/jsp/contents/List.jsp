@@ -162,6 +162,7 @@
                                         <th>이미지</th>
                                         <th>출처이미지URL</th>
                                         <th>영상URL</th>
+
                                         <th>타이틀</th>
                                         <th>키워드</th>
                                         <th>등록일</th>
@@ -178,6 +179,7 @@
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
                                             <td><div style="width:150px;word-break:break-all;">${listview.videoUrl}</div></td>
+
                                             <td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
                                             <td>${listview.keyword}</td>
                                             <td>
