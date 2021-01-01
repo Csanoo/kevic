@@ -103,11 +103,11 @@ public class ExcelCtr {
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(1);
-        objCell.setCellValue("이미지URL");
+        objCell.setCellValue("출처이미지URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("비디URL");
+        objCell.setCellValue("영상URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);

@@ -91,6 +91,10 @@
                                 <input type="hidden" name="projectSn" value="${projectInfo.projectSn}">
 
                                 <div class="form-group">
+                                    <label class="form-label" for="categoryTitle">경로</label>
+                                        <div id="path"></div>
+                                </div>
+                                <div class="form-group">
                                     <label class="form-label" for="categoryTitle">카테고리명*</label>
                                     <input type="text" name="title" class="form-control" id="categoryTitle" >
                                 </div>
@@ -102,7 +106,7 @@
 
                                 <div class="form-group">
                                     <label class="form-label" for="icon">아이콘*</label>
-                                    <input type="file" class="form-control" name="uploadfile" id="iconImg" >
+                                    <input type="file" class="form-control" name="uploadfile" id="iconImg" accept=".jpg,.png">
                                     <input type="text" class="form-control" name="iconImgOld" id="iconImgOld" style="border:0">
                                 </div>
 
@@ -317,13 +321,13 @@
 
             var Sn =$(this).children("input[name='Sn']").val();
             $("input[name='key1']").val(Sn);
-            $(".table tr td").removeClass("active");
+            $("#1depthT tr td").removeClass("active");
             $(this).addClass("active");
             $("#sn").val(Sn);
             $("#categoryTitle").val($(this).children("input[name='title']").val());
             $("#bannerImgOld").val($(this).children("input[name='bannerImg']").val());
             $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
-
+            $("#path").text($(this).children("input[name='title']").val());
             if($(this).children("input[name='adInfo']").val() =='Y'){
                 $("minimal-radio-2").attr("checked",true);
                 //  $("#CateUp").show();
@@ -351,7 +355,7 @@
             //alert($(this).children("input[name='adtime']").val());
             var Sn =$(this).children("input[name='Sn']").val();
             $("input[name='key2']").val(Sn);
-            $(".table tr td").removeClass("active");
+            $("#2depthT tr td").removeClass("active");
             $(this).addClass("active");
             $("#sn").val(Sn);
             $("#pCate").val($("#key1").val());
@@ -360,7 +364,7 @@
             $("#iconImgOld").val($(this).children("input[name='iconImg']").val());
             $("#time").val($(this).children("input[name='adtime']").val());
             var adInfo = $(this).children("input[name='adinfo']").val();
-
+            $("#path").text($("#1depthT tr td.active").children("input[name='title']").val()+'>'+$(this).children("input[name='title']").val());
             $("input:radio[name='adinfo']:radio[value='"+adInfo+"']").prop('checked', true);
             $("#field-6").val($(this).children("input[name='adTag']").val());
             $("#CateUp").show();

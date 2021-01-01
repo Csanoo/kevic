@@ -185,6 +185,8 @@ public class Member1Ctr {
 		stype = request.getParameter("type");
 		snsType = request.getParameter("snsType");
 		CountCt = Integer.parseInt(request.getParameter("CountCt"));
+		String sdate = request.getParameter("sdate");
+		String edate = request.getParameter("edate");
 
 		//System.out.println(snsType);
 		Search srch = new Search();
@@ -194,12 +196,12 @@ public class Member1Ctr {
 		if(snsType.equals("ytb")) {
 			try {
 				//srch.execute(title);
-				searchYtb.execute(title, stype,CountCt,USERID);
+				searchYtb.execute(title, stype,CountCt,USERID, sdate, edate);
 			} catch(Exception e) {
 				System.out.println("test="+e.getMessage());
 			}
 		}else if(snsType.equals("twi")){
-			crawler.searchTwit(title, stype);
+			crawler.searchTwit(title, stype, CountCt, USERID, sdate, edate);
 		}else if(snsType.equals("fb")){
 			crawler.searchFb(title, stype);
 		}else if(snsType.equals("insta")){

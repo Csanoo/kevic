@@ -146,7 +146,7 @@
 											<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
 											<td>${listview.project}</td>
 											<td>${listview.title}</td>
-											<td>${listview.sdate}</td><td>${listview.edate}</td>
+											<td><c:if test="${listview.displaytype eq 'Y'}">-</c:if>${listview.sdate}</td><td><c:if test="${listview.displaytype eq 'Y'}">-</c:if>${listview.edate}</td>
 											<td>${listview.regDate}</td>
 											<td>
 												<button type="button" class="btn btn-gray" onclick="fn_readGo(${listview.sn})">수정</button>

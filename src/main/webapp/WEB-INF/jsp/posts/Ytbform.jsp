@@ -64,10 +64,11 @@
 													<select name="snsType" id="snsType" class="form-control" >
 														<option value="">출처를 선택해주세요.</option>
 														<option value="ytb">유튜브</option>
+														<option value="twi">트위터</option>
 														<!--
 														<option value="insta">인스타</option>
 														<option value="fb">페이스북</option>
-														<option value="twi">트위터</option>
+
 														-->
 													</select>
 													</div>
@@ -78,6 +79,13 @@
 														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">남은 할당량:${QuataSum}%</div>
 
 													</div>
+												</td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 25%">크롤링 대상기간</td>
+												<td style="width: 75%">
+													<input name="sdate" type="text" autocomplete="off" class="form-control datepicker" data-format="yyyy-mm-dd" value="" >
+													<input name="edate" type="text" autocomplete="off" class="form-control datepicker" data-format="yyyy-mm-dd" value="" >
 												</td>
 											</tr>
 										</table>
@@ -170,14 +178,8 @@
 															<td><div style="width:100px;overflow:hidden">${listview.ctSource}</div></td>
 															<td class="title" style="display: flex">${listview.title}</td>
 															<td>${listview.keyword}</td>
-															<td>
-																	${listview.regDate}<br>
-																			${listview.userid}
-
-															</td>
-															<td>
-																<button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button>
-															</td>
+															<td>${listview.regDate}<br>${listview.userid}</td>
+															<td><button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button></td>
 														</tr>
 													</c:forEach>
 													</tbody>
@@ -273,9 +275,17 @@
 		}
 
         if(cCt > 1000){
-            alert("1000건이상 조회되지 않습니다.");
+            alert("1000건 초과 조회되지 않습니다.");
             return false;
 		}
+		if(document.form2.sdate.value != '' && document.form2.edate.value != ''){
+			var sDate = new Date(document.form2.sdate.value);
+			var eDate = new Date(document.form2.edate.value);
+			if(eDate < sDate){
+				alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+				return false;
+			}
+        }
         if ( $("#snsType option:selected").val() == ""){
             alert("크롤링할 SNS을 선택해주세요.");
             return false;

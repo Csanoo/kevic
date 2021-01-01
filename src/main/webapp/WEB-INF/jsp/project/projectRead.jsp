@@ -83,7 +83,7 @@
                                                     <div class="form-group" style="display:block">
                                                         <div class="controls">
                                                             <!--<input type="checkbox" name="modi" value="Y"/>-->
-                                                            <input type="file" name="uploadfile"  id="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+                                                            <input type="file" name="uploadfile"  id="uploadfile" multiple="" accept=".jpg,.png" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
 
                                                             <br />
                                                             <img src="/upload/images/${projectInfo.logoimg}" width="110">

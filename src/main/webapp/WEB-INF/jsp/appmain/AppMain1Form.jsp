@@ -188,6 +188,8 @@
             if($(this).val()=='Y'){
                 $("input[name='sdate']").attr("disabled",true);
                 $("input[name='edate']").attr("disabled",true);
+                $("input[name='sdate']").val('');
+                $("input[name='edate']").val('');
             }else{
                 $("input[name='sdate']").attr("disabled",false);
                 $("input[name='edate']").attr("disabled",false);

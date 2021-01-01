@@ -7,6 +7,7 @@ import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
@@ -24,6 +25,8 @@ import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Calendar;
+import java.text.*;
 
 import java.sql.*;
 import javax.sql.*;
@@ -35,6 +38,7 @@ public class SearchYtb {
     private DataSource ds = null;
     private Statement stmt = null;
     private PreparedStatement psmt = null;
+
 
     /** Global instance properties filename. */
     private static String PROPERTIES_FILENAME = "youtube.properties";
@@ -53,23 +57,35 @@ public class SearchYtb {
 
     private YouTube.Search.List query;
 
-    public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
-    //public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
+    //public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
+    public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
 
-    public void execute(String keywords, String sType, Integer CountCt, String userid, HttpServletResponse response) {
+    public void execute(String keywords, String sType, Integer CountCt, String userid, String sdate, String edate) {
         youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
             @Override
             public void initialize(HttpRequest httpRequest) throws IOException {
             }
         }).setApplicationName("youtube-search").build();
 
+
         try {
+
             query = youtube.search().list("id,snippet");
             query.setMaxResults(Long.parseLong("50"));
             query.setKey(KEY);
             query.setOrder("date");
-           // query.setPublishedAfter('');
-         //   query.setPublishedBefore('');
+
+            if(!sdate.equals("") && !edate.equals("")){
+                sdate = sdate + "T00:00:00Z";
+                edate = edate + "T23:59:59Z";
+                DateTime sDate = DateTime.parseRfc3339(sdate);
+                DateTime eDate = DateTime.parseRfc3339(edate);
+                System.out.println(sDate);
+                System.out.println(eDate);
+                query.setPublishedAfter(sDate);
+                query.setPublishedBefore(eDate);
+            }
+
             query.setType("video");
             //query.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url),nextPageToken");
             query.setFields("items(id/kind,id/videoId,snippet/title),nextPageToken");
@@ -83,10 +99,12 @@ public class SearchYtb {
                 String nextToken = "";
                 int i = 0;
                 int vNum = 0;
+
                 do {
                     query.setPageToken(nextToken);
                     SearchListResponse response = query.execute();
                     List<SearchResult> results = response.getItems();
+                    qry = "";
                     for (SearchResult result : results) {
                         ResourceId rId = result.getId();
                         String videoId = rId.getVideoId();
@@ -96,33 +114,35 @@ public class SearchYtb {
                         + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
                         + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
 
+                        System.out.println(vNum+":"+qry);
                         pstmt = con.prepareStatement(qry);
                         pstmt.executeUpdate();
-
                         vNum ++;
                     }
+
                     nextToken = response.getNextPageToken();
                     i ++;
-                    System.out.println("i="+i);
-                    System.out.println("vNum="+vNum);
-                    System.out.println("CountCt="+CountCt);
+                  //  System.out.println("i="+i);
+                //    System.out.println("vNum="+vNum);
+                 //   System.out.println("CountCt="+CountCt);
                     System.out.println("nextToken :  "+ nextToken);
                 //} while (i < 1);
                     String qry2 = "insert into tbl_ytbquota (price) values (-100)";
                     pstmt = con.prepareStatement(qry2);
                     pstmt.executeUpdate();
-                } while (nextToken != null && i < 20 && vNum < CountCt);
+                } while (nextToken != null && i < 20 && vNum < CountCt && !qry.equals(""));
 
                 pstmt.close();
                 con.close();
                // return items;
             } catch (IOException e) {
-               // System.out.println("Could not search1: " + e.getMessage());
+                System.out.println("Could not search1: " + e.getMessage());
                // return null;
-                response.setContentType("text/html; charset=UTF-8");
-                PrintWriter out = response.getWriter();
-                out.println("<script>alert('계정이 등록 되었습니다'); location.href='이동주소';</script>");
-                out.flush();
+                //HttpServletResponse response = (HttpServletResponse) res;
+                //res.setContentType("text/html; charset=UTF-8");
+                //PrintWriter out = res.getWriter();
+                //out.println("<script>alert('계정이 등록 되었습니다'); location.href='이동주소';</script>");
+                //out.flush();
             }catch (Exception er) {
                 System.out.println("Could not search2: " + er.getMessage());
                // return null;

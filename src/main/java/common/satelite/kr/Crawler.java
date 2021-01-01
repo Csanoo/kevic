@@ -42,192 +42,70 @@ public class Crawler {
         }
     }
 
-    public static void main(String[] args) {
+    private Connection con = null;
+    private DataSource ds = null;
+    private Statement stmt = null;
+    private PreparedStatement psmt = null;
+
+
+    public static void searchTwit(String keywords, String sType, Integer CountCt, String userid, String sdate, String edate) throws Exception {
+
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("yourConsumeKey")
-                .setOAuthConsumerSecret("yourConsumerSecret")
-                .setOAuthAccessToken("yourAccessToken")
-                .setOAuthAccessTokenSecret("yourTokenSecret");
+                .setOAuthConsumerKey("TOjS07ytmheXJsEnmQSXJo3IJ")
+                .setOAuthConsumerSecret("vPxSLLCcGODo7qn9pCtbU7AMSRWzvXkK8Hy0mDrhappeU3u7c7")
+                .setOAuthAccessToken("1328206592253120514-bD55VlbHa8j2lZxwPCgdhBLzCVbfRQ")
+                .setOAuthAccessTokenSecret("ppCWmzr9uCWGDxql4dX7yE09m6ipnoKkN55061n2OrgN5");
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
-        try {
-            Query query = new Query("query");
-            QueryResult result;
-            result = twitter.search(query);
-            List<Status> tweets = result.getTweets();
-            for (Status tweet : tweets) {
-                System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
-            }
+        String thumbnailURL;
+        String videoUrl;
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        String qry = "";
 
-            System.exit(0);
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
+            Query query = new Query(keywords);
+            query.setResultType(Query.RECENT);
+            query.setCount(CountCt);
+            QueryResult result;
+            query.setSince(sdate);
+            query.setUntil(edate);
+            int i = 0;
+            int vNum = 0;
+            String title;
+            String txt ="";
+            do {
+                result = twitter.search(query);
+                List<Status> tweets = result.getTweets();
+                for (Status tweet : tweets) {
+                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    if(tweet.getMediaEntities().length!=0){
+                        System.out.println(tweet.getMediaEntities()[0].getMediaURL());
+                        thumbnailURL = tweet.getMediaEntities()[0].getMediaURL();
+
+                        videoUrl = tweet.getMediaEntities()[0].getMediaURL();
+                        title = tweet.getUser().getScreenName().replaceAll("'","''");
+                        txt = tweet.getText().replaceAll("'","''");
+                        qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title, sText ,state, keyword, userid)"
+                                + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','TWT', '"+ title +"', '" + txt + "', '000', '"+keywords+"','"+userid+"'  from dual "
+                                + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE sText = '" + txt + "')";
+                        System.out.println(vNum+":"+qry);
+                        pstmt = con.prepareStatement(qry);
+                        pstmt.executeUpdate();
+                        vNum ++;
+                    }
+                }
+            } while ((query = result.nextQuery()) != null && vNum < CountCt );
+          //  System.exit(0);
+            pstmt.close();
+            con.close();
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to search tweets: " + te.getMessage());
-            System.exit(-1);
+         //   System.exit(-1);
         }
-    }
-
-    public static void searchTwit(String keyword, String _kind) throws Exception {
-
-     //  }
-      // public static void main(String[] args) throws  Exception {
-      //   String keyword = "Music";
-     //    String _kind = "Music";
-        // 1. WebDriver 경로 설정
-        String URL = "https://twitter.com/search?q="+keyword+"&src=typed_query";
-       //URL = "https://mobile.twitter.com/hashtag/"+keyword;
-        Path path = Paths.get(System.getProperty("user.dir"), "src/main/resources/driver/chromedriver");
-        System.setProperty("webdriver.chrome.driver", path.toString());
-
-
-        // 2. WebDriver 옵션 설정
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");          // 최대크기로
-        options.addArguments("--headless");                 // Browser를 띄우지 않음
-        options.addArguments("--disable-gpu");              // GPU를 사용하지 않음, Linux에서 headless를 사용하는 경우 필요함.
-        options.addArguments("--enable-javascript");
-        options.addArguments("--allowed-ips");
-        options.addArguments("--no-sandbox");               // Sandbox 프로세스를 사용하지 않음, Linux에서 headless를 사용하는 경우 필요함.
-      //  options.addArguments("user-agent=Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15");
-        //options.addArguments("lang=ko_KR");
-        options.setPageLoadStrategy(PageLoadStrategy.NONE);
-        ChromeDriver driver = new ChromeDriver(options);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        TakesScreenshot screenshot = (TakesScreenshot)driver;
-        byte[] imageByte = screenshot.getScreenshotAs(OutputType.BYTES);
-
-      //  driver.findElement(By.xpath("//button[text()='Not Now']")).click();
-     //   driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        Thread.sleep(5000);
-
-
-        try {
-            //  driver.manage().timeouts().pageLoadTimeout(10, TimeUnit.SECONDS);
-            driver.get(URL);
-            driver.manage().window().maximize();
-            Thread.sleep(3000);
-
-            WebDriverWait wait = new WebDriverWait(driver, 30);
-            WebElement composes = wait
-                    .until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//button[text()='Try Again']")));
-            composes.click();
-          //  driver.findElement(By.xpath("//button[text()='Try Again']")).click();
-            Thread.sleep(30000);
-            try (FileOutputStream fos = new FileOutputStream( System.getProperty("user.dir") + "/capture00.png")) {
-                fos.write(imageByte);
-                fos.close();
-
-            } catch (TimeoutException e) {
-                System.out.println(e.getMessage());
-            }
-
-            //  System.out.println(driver.getCurrentUrl());
-            int ctContents = 0;
-
-            // 6. 트윗 목록 Block 조회, 로드될 때까지 최대 30초간 대기
-            driver.navigate().to(URL);
-            Thread.sleep(13000);
-
-            WebElement parent = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("section[aria-labelledby*=\"accessible-list\"]")));
-           // parent = driver.findElement(By.cssSelector("section[aria-labelledby*=\"accessible-list\"]"));
-            //WebElement parent = wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("body")));
-            //*[@id="react-root"]/div/div/div[2]/main/div/div/div/div/div/div[2]/div/div/section
-            //WebElement parent = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id=\"react-root\"]/div/div/div[2]/main/div/div/div/div[1]/div/div[2]/div/div/section")));
-          //  System.out.println(parent.getAttribute("innerHTML"));
-            System.out.println(System.getProperty("user.dir") + "/capture00.png");
-            js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-            Thread.sleep(13000);
-
-
-
-            while (true) {
-                // 7. 트윗 콘텐츠 조회
-
-                List<WebElement> contents = parent.findElements(By.cssSelector("article"));
-
-                // List<WebElement> contents = parent.findElements(By.cssSelector("div.timeline > table"));
-                System.out.println("조회된 콘텐츠 수 : " + contents.size());
-                if (contents.size() > 0) {
-                    ctContents += contents.size();
-                    // 8. 트윗 상세 내용 탐색
-                    Connection con = null;
-                    PreparedStatement pstmt = null;
-                    String qry = "";
-                    try {
-
-                        con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8", "crdb", "admin123");
-                        for (WebElement content : contents) {
-                            try {
-
-                                String username = content.findElement(By.cssSelector("span > span.css-901oao.css-16my406.r-1qd0xha.r-ad9z0x.r-bcqeeo.r-qvutc0")).getText();
-
-                                String id = content.findElement(By.cssSelector("span.css-901oao.css-16my406.r-1qd0xha.r-ad9z0x.r-bcqeeo.r-qvutc0")).getText();
-                                List<WebElement> eleText = content.findElements(By.cssSelector("div.css-901oao.r-hkyrab.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-bcqeeo.r-bnwqim.r-qvutc0"));
-                                String text = "";
-                                if (eleText.size() > 0) {
-                                     text = content.findElement(By.cssSelector("div.css-901oao.r-hkyrab.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-bcqeeo.r-bnwqim.r-qvutc0")).getText();
-                                }
-
-                                List<WebElement> eleImg = content.findElements(By.cssSelector("div.css-1dbjc4n.r-1p0dtai.r-1mlwlqe.r-1d2f490.r-11wrixw.r-61z16t.r-1udh08x.r-u8s1d.r-zchlnj.r-ipm5af.r-417010 > .css-9pa8cd"));
-                                String img = "";
-                                if (eleImg.size() > 0) {
-                                    img = content.findElement(By.cssSelector("div.css-1dbjc4n.r-1p0dtai.r-1mlwlqe.r-1d2f490.r-11wrixw.r-61z16t.r-1udh08x.r-u8s1d.r-zchlnj.r-ipm5af.r-417010 > .css-9pa8cd")).getAttribute("src");
-                                }
-
-
-                                List<WebElement> eleLink = content.findElements(By.cssSelector("div.css-1dbjc4n.r-1d09ksm.r-18u37iz.r-1wbh5a2 > a"));
-                                System.out.println(eleLink.size());
-                                String url = "";
-                                if (eleLink.size() > 0) {
-                                    url = content.findElement(By.cssSelector("div.css-1dbjc4n.r-1d09ksm.r-18u37iz.r-1wbh5a2 > a")).getAttribute("href");
-                                }else{
-                                    url = content.findElement(By.cssSelector("div.css-901oao.r-111h2gw.r-1qd0xha.r-a023e6.r-16dba41.r-ad9z0x.r-zso239.r-bcqeeo.r-qvutc0 > a:nth-child(1)")).getAttribute("href");
-                                }
-
-
-                                System.out.println("========================");
-                                System.out.println(username + " " + id);
-                                System.out.println(text);
-                                System.out.println(img);
-                                System.out.println("========================");
-                                qry = "insert into tcontents ( title, memo, url, userid, code2, imgfile, category)"
-                                        + " values ('" + username + " " + id
-                                        + "','" + text + "','" + url
-                                        + "','cp0001','TWT','" + img + "','" + _kind + "') ";
-
-
-                                System.out.println(qry);
-                                System.out.println("========================");
-                                pstmt = con.prepareStatement(qry);
-                                pstmt.executeUpdate();
-
-                            } catch (NoSuchElementException e) {
-                                // pass
-                                System.out.println(e.getMessage());
-                            }
-                        }
-                        pstmt.close();
-                        con.close();
-                    } catch (Exception e) {
-                        System.out.println(e.getMessage());
-                    }
-                }
-
-                js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
-                Thread.sleep(3000);
-                if (ctContents > 30) {
-                    break;
-                }
-            }
-        } catch (TimeoutException e) {
-            System.out.println(e.getMessage());
-            System.out.println("목록을 찾을 수 없습니다.");
-        } finally {
-
-        }
-        // WebDriver 종료
-        driver.quit();
     }
       public static void searchInsta(String keyword, String _kind) throws Exception {
       //public static void main(String[] args) throws  Exception {

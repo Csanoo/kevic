@@ -80,7 +80,7 @@
                                                                 <c:out value="${listview.size2String()}" />
                                                                 <br />
                                                             </c:forEach>
-                                                            <input type="file" id="uploadfile" name="uploadfile" multiple="" accept="image/*" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+                                                            <input type="file" id="uploadfile" name="uploadfile" multiple="" accept=".jpg,.png" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
                                                         </div>
                                                     </div>
                                                 </td>

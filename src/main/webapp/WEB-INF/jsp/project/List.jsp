@@ -187,14 +187,14 @@
                                             <td>${listview.title}</td>
                                             <td>${listview.keyword}</td>
                                             <td>${listview.regDate}<br>${listview.userid}</td>
-                                            <td data-toggle="modal" data-target="#myModal" onClick="javascript:fn_list('${listview.sn}',1)" style="cursor:pointer" id="msg_${listview.sn}">${listview.msgCt}</td>
+                                            <td onClick="javascript:fn_list('${listview.sn}',1)" id="msg_${listview.sn}" data-toggle="modal" data-target="#myModal" ><a>${listview.msgCt}</a></td>
                                             <td >${listview.like}</td>
                                            <!-- <td>
                                                 이동
                                                 <input type="hidden" value="${listview.sn}" name="sort">
                                             </td>-->
                                             <td>
-                                                <div onclick="fn_notPublish(${listview.sn})">X</div>
+                                                <button type="button" class="btn btn-orange"  onclick="fn_notPublish(${listview.sn})">X</button>
                                             </td>
                                         </tr>
                                     </c:forEach>

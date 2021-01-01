@@ -148,8 +148,8 @@
 												<td>${listview.project}</td>
 												<td><img src="/upload/images/${listview.imgfile}" width="110"></td>
 												<td>${listview.title}</td>
-												<td>${listview.sdate}</td>
-												<td>${listview.edate}</td>
+												<td><c:if test="${listview.displayType eq 'Y'}">-</c:if>${listview.sdate}</td>
+												<td><c:if test="${listview.displayType eq 'Y'}">-</c:if>${listview.edate}</td>
 												<td>${listview.updateDate}</td>
 												<td>${listview.regDate}</td>
 												<td>${listview.regid}</td>

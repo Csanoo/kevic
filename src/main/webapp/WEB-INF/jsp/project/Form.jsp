@@ -46,7 +46,7 @@
 												<td style="width: 35%" colspan="3">
 													<select name="project"  id="project" class="form-control">
 
-														<option>프로젝트</option>
+
 														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
 															<option value="${projectview.sn}" <c:if test="${projectInfo.project eq projectview.sn}">selected</c:if>>${projectview.title}</option>
 														</c:forEach>
@@ -187,6 +187,11 @@
 <script>
 
     $(function(){
+        var sn = $("#project option:selected").val();
+        $.get("/admin/category01?sn="+sn,function(data){
+            $( "#category1" ).html( data );
+            //alert( "Load was performed." );
+        });
         $("#preview").on("click",function(){
 			$("#preview-img").attr("src",$("input[name='imageUrl']").val());
             $("#preview-keyword").html('('+$("input[name='keyword']").val()+')');
@@ -195,6 +200,8 @@
         });
 		$("#project").on("change",function(){
             var sn = $("#project option:selected").val();
+            $( "#category2" ).html('<option value="0">카테고리</option>');
+            $( "#category1" ).html('<option value="0">카테고리</option>');
             $.get("/admin/category01?sn="+sn,function(data){
                 $( "#category1" ).html( data );
                 //alert( "Load was performed." );

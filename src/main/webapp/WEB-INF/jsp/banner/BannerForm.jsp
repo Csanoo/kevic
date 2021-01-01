@@ -173,7 +173,7 @@
                                                         <tr  id="banner3" class="banner">
                                                             <td>3</td>
                                                             <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
+                                                            <td><input type="file" name="uploadfile" multiple="" accept=".jpg,.png" disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget3" class="target">
                                                                 <input type="radio" class="target" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
@@ -325,6 +325,8 @@
            if($(this).val()=='Y'){
                $("input[name='sdate']").attr("disabled",true);
                $("input[name='edate']").attr("disabled",true);
+               $("input[name='sdate']").val('');
+               $("input[name='edate']").val('');
            }else{
                $("input[name='sdate']").attr("disabled",false);
                $("input[name='edate']").attr("disabled",false);
