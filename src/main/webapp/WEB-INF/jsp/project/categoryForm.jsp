@@ -267,6 +267,7 @@
             $("input[name='title']").focus();
             $("#bannerImgOld").val();
             $("#iconImgOld").val();
+            alert("카테고리명을 입력해주세요.");
         });
 
         $("#Cate2DethReg").on("click",function(){
@@ -280,6 +281,7 @@
             $("input[name='pCate']").val(pCate);
             $("input[name='sn']").val('0');
             $("input[name='title']").focus();
+            alert("카테고리명을 입력해주세요.");
         });
         $("#Cate1DethDel").on("click",function(){
             var sn =  $("input[name='key1']").val();

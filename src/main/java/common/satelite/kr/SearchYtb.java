@@ -57,8 +57,8 @@ public class SearchYtb {
 
     private YouTube.Search.List query;
 
-    //public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
-    public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
+   public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
+   // public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
 
     public void execute(String keywords, String sType, Integer CountCt, String userid, String sdate, String edate) {
         youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
@@ -88,7 +88,7 @@ public class SearchYtb {
 
             query.setType("video");
             //query.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url),nextPageToken");
-            query.setFields("items(id/kind,id/videoId,snippet/title),nextPageToken");
+            query.setFields("items(id/kind,id/videoId,snippet/title),nextPageToken,pageInfo");
             query.setQ(keywords);
             Connection con = null;
             PreparedStatement pstmt = null;
@@ -99,38 +99,32 @@ public class SearchYtb {
                 String nextToken = "";
                 int i = 0;
                 int vNum = 0;
+                int iNum = 0;
 
                 do {
                     query.setPageToken(nextToken);
+                    query.setQ(keywords);
                     SearchListResponse response = query.execute();
                     List<SearchResult> results = response.getItems();
-                    qry = "";
-                    for (SearchResult result : results) {
-                        ResourceId rId = result.getId();
-                        String videoId = rId.getVideoId();
-                        String thumbnailURL = "http://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
-                        String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
-                        qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
-                        + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
-                        + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
-
-                        System.out.println(vNum+":"+qry);
-                        pstmt = con.prepareStatement(qry);
-                        pstmt.executeUpdate();
-                        vNum ++;
+                    System.out.println("Printed " +  response.getPageInfo().getResultsPerPage() + " out of " + response.getPageInfo().getTotalResults() + ". Current page token: " + query.getPageToken() + "Next page token: " + response.getNextPageToken() + ". Prev page token" + response.getPrevPageToken());
+                    if (results != null) {
+                        iNum = prettyPrint(results.iterator(), keywords, sType, userid );
+                        vNum += iNum;
                     }
+
 
                     nextToken = response.getNextPageToken();
                     i ++;
-                  //  System.out.println("i="+i);
-                //    System.out.println("vNum="+vNum);
-                 //   System.out.println("CountCt="+CountCt);
+                    System.out.println("i="+i);
+                    System.out.println("vNum="+vNum);
+                    System.out.println("iNum="+iNum);
+                    System.out.println("CountCt="+CountCt);
                     System.out.println("nextToken :  "+ nextToken);
                 //} while (i < 1);
                     String qry2 = "insert into tbl_ytbquota (price) values (-100)";
                     pstmt = con.prepareStatement(qry2);
                     pstmt.executeUpdate();
-                } while (nextToken != null && i < 20 && vNum < CountCt && !qry.equals(""));
+                } while (nextToken != null && i < 19 && vNum < CountCt && iNum != 0);
 
                 pstmt.close();
                 con.close();
@@ -155,4 +149,62 @@ public class SearchYtb {
         }
     }
 
+    private static Integer prettyPrint(Iterator<SearchResult> iteratorSearchResults, String keywords, String sType, String userid) {
+
+
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        String qry = "";
+
+        int vNum = 0;
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
+
+            while (iteratorSearchResults.hasNext()) {
+
+                SearchResult singleVideo = iteratorSearchResults.next();
+                ResourceId rId = singleVideo.getId();
+                System.out.println(singleVideo.getSnippet().getTitle());
+
+
+                // Double checks the kind is video.
+                if (rId.getKind().equals("youtube#video")) {
+                    String videoId = rId.getVideoId();
+                    String thumbnailURL = "http://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
+                    String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
+                    qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
+                            + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + singleVideo.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
+                            + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
+
+                    System.out.println(vNum+":"+qry);
+                    pstmt = con.prepareStatement(qry);
+                    pstmt.executeUpdate();
+                    vNum ++;
+                }
+            }
+            pstmt.close();
+            con.close();
+
+        }catch(Exception e) {
+            System.out.println( e.getMessage() );
+        }finally {
+            return vNum;
+        }
+    }
+
 }
+
+//      for (SearchResult result : results) {
+//         ResourceId rId = result.getId();
+//         String videoId = rId.getVideoId();
+//         String thumbnailURL = "http://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
+//         String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
+//          qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
+//           + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + result.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
+//          + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
+
+//           System.out.println(vNum+":"+qry);
+//           pstmt = con.prepareStatement(qry);
+//           pstmt.executeUpdate();
+//           vNum ++;
+//       }

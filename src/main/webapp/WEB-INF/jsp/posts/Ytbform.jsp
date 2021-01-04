@@ -54,7 +54,7 @@
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
-													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.(1000건 이상 검색이 불가합니다.)" step="50">
+													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.(1000건 초과 검색이 불가합니다.)" step="50">
 												</td>
 											</tr>
 											<tr>

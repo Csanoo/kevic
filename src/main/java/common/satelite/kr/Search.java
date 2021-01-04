@@ -79,9 +79,9 @@ public class Search {
       SearchListResponse searchResponse = search.execute();
 
       List<SearchResult> searchResultList = searchResponse.getItems();
-
+      Integer vNum = 0;
       if (searchResultList != null) {
-        prettyPrint(searchResultList.iterator(), queryTerm);
+         prettyPrint(searchResultList.iterator(), queryTerm);
       }
 
     } catch (GoogleJsonResponseException e) {

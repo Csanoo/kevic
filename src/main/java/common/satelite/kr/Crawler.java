@@ -80,7 +80,7 @@ public class Crawler {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
                 for (Status tweet : tweets) {
-                    System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                  //  System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     if(tweet.getMediaEntities().length!=0){
                         System.out.println(tweet.getMediaEntities()[0].getMediaURL());
                         thumbnailURL = tweet.getMediaEntities()[0].getMediaURL();
@@ -91,7 +91,8 @@ public class Crawler {
                         qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title, sText ,state, keyword, userid)"
                                 + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','TWT', '"+ title +"', '" + txt + "', '000', '"+keywords+"','"+userid+"'  from dual "
                                 + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE sText = '" + txt + "')";
-                        System.out.println(vNum+":"+qry);
+                        System.out.println(vNum+":"+title);
+                        System.out.println();
                         pstmt = con.prepareStatement(qry);
                         pstmt.executeUpdate();
                         vNum ++;
