@@ -109,7 +109,7 @@
 												<td><c:out value="${listview.userid}" /></td>
 												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
 												<td>${listview.projectct}</td>
-												<td data-toggle="modal" data-target="#myModal" onclick="fn_history('${listview.userid}');">${listview.mxwdt}</td>
+												<td data-toggle="modal" data-target="#myModal" onclick="fn_history('${listview.userid}');"><a>${listview.mxwdt}</a></td>
 												<td><c:out value="${listview.wdate}" /></td>
 											</tr>
 										</c:forEach>

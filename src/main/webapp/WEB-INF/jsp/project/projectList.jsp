@@ -130,7 +130,9 @@
                                             <td><div style="width:230px;overflow:hidden"><a href="/admin/projectDetail?sn=${listview.sn}">http://test.comwihus.com/admin/projectDetail?sn=${listview.sn}</a></div></td>
                                             <td><div style="width:20px;overflow:hidden">${listview.ct}</div></td>
                                             <td>${listview.regDate}<br>${listview.regUser}</td>
-                                            <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button></td>
+                                            <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button>
+                                                <button type="button" class="btn btn-gray" onclick="deletePost('${listview.sn}')">삭제</button>
+                                            </td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${searchVO.totRow <= 0}">
@@ -177,96 +179,27 @@
 
 
 
-    function deletePost(){
-        var cnt = $("input[name='chkSn']:checked").length;
-        var arr = new Array();
-        $("input[name='chkSn']:checked").each(function() {
-            arr.push($(this).attr('value'));
-        });
-        if(cnt == 0){
-            alert("선택된 글이 없습니다.");
-        }
-        else{
-            $.ajax({
-                type: "POST",
-                url: "/admin/prtChkDelete",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                success: function(jdata){
+    function deletePost(_a){
 
-                    if(jdata != 'TRUE') {
-                        alert("삭제 오류");
-                    }else{
-                        alert("삭제 성공");
-                        location.href = "/admin/project";
-                    }
-                },
-                error: function(data){location.href = "/admin/project";}
-            });
-        }
-    }
+        $.ajax({
+            type: "POST",
+            url: "/admin/prtDelete",
+            data: "sn=" + _a,
+            success: function(jdata){
 
-    function publishNotPost(){
-        if(confirm('선택한 컨텐츠의 노출을 중지하시겠습니까?')){
-            var cnt = $("input[name='chkSn']:checked").length;
-            var arr = new Array();
-            $("input[name='chkSn']:checked").each(function () {
-                arr.push($(this).attr('value'));
-            });
-            if (cnt == 0) {
-                alert("컨텐츠를 선택해주세요.");
-            }
-            else {
-                $.ajax({
-                    type: "POST",
-                    url: "/admin/prtChkNotPublish",
-                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-
-                    success: function (jdata) {
-
-                        if (jdata != 'TRUE') {
-                            alert(" 오류");
-                        } else {
-                            alert("정상 처리되었니다.");
-                            location.href = "/admin/project";
-                        }
-                    },
-                    error: function (data) {
-                        alert(삭제완료);
-                        location.href = "/admin/project";
-                    }
-                });
-            }
-        }else{
-            return false;
-        }
-    }
-    function fn_notPublish(_sn){
-        if(confirm('컨텐츠의 노출을 중지하시겠습니까?')){
-            var arr = new Array();
-            arr.push(_sn);
-            var cnt = 1;
-            $.ajax({
-                type: "POST",
-                url: "/admin/prtChkNotPublish",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                success: function (jdata) {
-
-                    if (jdata != 'TRUE') {
-                        alert("오류");
-                    } else {
-                        alert("정상 처리되었니다.");
-                        location.href = "/admin/project";
-                    }
-                },
-                error: function (data) {
-                    alert(삭제완료);
-                    location.href = "/admin/project";
+                if(jdata != 'True') {
+                    alert("삭제 오류");
+                }else{
+                    alert("삭제 성공");
+                    location.href = "/admin/projectList";
                 }
-            });
-        }else{
-            return false;
-        }
+            },
+            error: function(data){location.href = "/admin/projectList";}
+        });
+
     }
+
+
 
 </script>
 

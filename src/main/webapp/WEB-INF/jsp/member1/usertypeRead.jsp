@@ -12,7 +12,7 @@
                         <div class="page-title">
 
                             <div class="pull-left">
-                                <h1 class="title">Code View</h1>                            
+                                <h1 class="title">권한/등급 수정</h1>
                             </div>
 
 
@@ -23,7 +23,7 @@
 		<div class="col-lg-12">
 			<section class="box ">
 				<header class="panel_header">
-					<h2 class="title pull-left">Code Info</h2>
+					<h2 class="title pull-left">권한 수정</h2>
 					<div class="actions panel_actions pull-right">
 						<i class="box_toggle fa fa-chevron-down"></i> <i
 							class="box_setting fa fa-cog" data-toggle="modal"

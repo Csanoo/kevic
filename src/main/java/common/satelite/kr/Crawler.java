@@ -70,8 +70,10 @@ public class Crawler {
             query.setResultType(Query.RECENT);
             query.setCount(CountCt);
             QueryResult result;
-            query.setSince(sdate);
-            query.setUntil(edate);
+            if(sdate !="" && edate !="") {
+                query.setSince(sdate);
+                query.setUntil(edate);
+            }
             int i = 0;
             int vNum = 0;
             String title;
@@ -80,22 +82,25 @@ public class Crawler {
                 result = twitter.search(query);
                 List<Status> tweets = result.getTweets();
                 for (Status tweet : tweets) {
-                  //  System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
+                    //System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     if(tweet.getMediaEntities().length!=0){
                         System.out.println(tweet.getMediaEntities()[0].getMediaURL());
                         thumbnailURL = tweet.getMediaEntities()[0].getMediaURL();
 
-                        videoUrl = tweet.getMediaEntities()[0].getMediaURL();
+                        videoUrl = "https://twitter.com/" + tweet.getUser().getScreenName() + "/status/" + tweet.getId();
                         title = tweet.getUser().getScreenName().replaceAll("'","''");
                         txt = tweet.getText().replaceAll("'","''");
                         qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title, sText ,state, keyword, userid)"
-                                + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','TWT', '"+ title +"', '" + txt + "', '000', '"+keywords+"','"+userid+"'  from dual "
-                                + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE sText = '" + txt + "')";
-                        System.out.println(vNum+":"+title);
-                        System.out.println();
+                                + "select  0, 0, 0, 'FO' , '" + thumbnailURL + "','" + videoUrl + "','TWT', '"+ title +"', '" + txt + "', '000', '"+keywords+"','"+userid+"'  from dual "
+                                + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE imageUrl = '" + thumbnailURL + "' and title = '"+title +"')";
+                        System.out.println(vNum+":"+qry);
+                      //  System.out.println();
                         pstmt = con.prepareStatement(qry);
                         pstmt.executeUpdate();
                         vNum ++;
+                        if ( vNum >= CountCt ) {
+                            break;
+                        }
                     }
                 }
             } while ((query = result.nextQuery()) != null && vNum < CountCt );
@@ -137,8 +142,8 @@ public class Crawler {
 
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
-        driver.findElement(By.name("username")).sendKeys("sasa@kakao.com");
-        driver.findElement(By.name("password")).sendKeys("1024Csw!@");
+        driver.findElement(By.name("username")).sendKeys("@.com");
+        driver.findElement(By.name("password")).sendKeys("!@");
         driver.findElement(By.xpath("//div[text()='Log In']")).click();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.findElement(By.xpath("//button[text()='Not Now']")).click();

@@ -160,7 +160,7 @@ from tuser
 	</select>
 
 	<select id="selectCode1One"	parameterType="String"	resultType="main.java.admin.satelite.kr.Member1VO">
-		SELECT sn,code1,code2,title,memo
+		SELECT sn,code1,code2,title,memo,code1memo
 		from tcode
 		where sn=#{sn}
 	</select>
@@ -216,7 +216,7 @@ from tuser
 	</sql>
 
 	<select id="selectCode1List"	resultType="main.java.admin.satelite.kr.Member1VO"	parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn,code1,code2,title,memo,state,regdate,regid from tcode
+		SELECT sn,code1,code2,title,memo,state,regdate,regid, code1memo from tcode
 		<include refid="includeCode1" />
 
 		LIMIT ${rowStart-1}, 10
@@ -274,7 +274,7 @@ from tuser
 	</insert>
 	
 	<select id="selectCode1SelList"	resultType="main.java.admin.satelite.kr.Member1VO">
-		SELECT distinct code1,code1memo from tcode
+		SELECT distinct code1,code1memo from tcode where code1 != 'USER'
 		
 	</select>
 
@@ -559,5 +559,12 @@ else '-' end as category,imgfile,
 	<select id="ytbQuata" resultType="Integer" >
 		SELECT SUM(price)/10000 * 100 from tbl_ytbquota
 	</select>
+	<select id="selCodeTitCt" resultType="Integer"	parameterType="String">
+		SELECT count(*)
+		from tcode
+		where code2=#{code2}
+
+	</select>
+
 </mapper>
 

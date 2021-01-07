@@ -41,6 +41,7 @@
 												<td class="tdl" style="width: 25%">검색어(키워드)</td>
 												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
 											</tr>
+											<!--
 											<tr>
 												<td class="tdl" style="width: 25%">컨텐츠 타입</td>
 												<td style="width: 75%">
@@ -51,12 +52,15 @@
 												</select>
 												</td>
 											</tr>
+											-->
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
-													<input type="number" name="CountCt"class="form-control" placeholder="50건 단위로 입력해주세요.(1000건 초과 검색이 불가합니다.)" step="50">
+													<input type="number" name="CountCt" class="form-control" placeholder="50건 단위로 입력해주세요." step="50" min="0" max="1000" style="width:170px;display:inline-block">
+													<br><span>*"크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다."</span>
 												</td>
 											</tr>
+
 											<tr>
 												<td class="tdl" style="width: 25%">출처</td>
 												<td style="width: 75%">
@@ -76,7 +80,12 @@
 														<div style="width: ${QuataSum}%;height: 28px;background: #1b2;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
 
 														</div>
-														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">남은 할당량:${QuataSum}%</div>
+														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">
+															<c:if test="${QuataSum < 1}" >
+																<c:set var = "QuataSum" value = "0"/>
+															</c:if>
+															남은 할당량:${QuataSum}%
+														</div>
 
 													</div>
 												</td>
@@ -157,7 +166,7 @@
 														<th>컨텐츠타입</th>
 														<th>이미지</th>
 														<th>출처이미지URL</th>
-														<th>영상URL</th>
+														<th>원본URL</th>
 														<th>출처</th>
 														<th>타이틀</th>
 														<th>키워드</th>
@@ -174,12 +183,12 @@
 															<td> ${listview.type}</td>
 															<td><img src="${listview.imageUrl}" width="110"></td>
 															<td><div style="width:100px;word-break:break-all;white-space: normal">${listview.imageUrl}</div></td>
-															<td><div style="width:100px;word-break:break-all;white-space: normal">${listview.videoUrl}</div></td>
+															<td><div style="width:100px;word-break:break-all;white-space: normal"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
 															<td><div style="width:100px;overflow:hidden">${listview.ctSource}</div></td>
 															<td class="title" style="display: flex">${listview.title}</td>
 															<td>${listview.keyword}</td>
 															<td>${listview.regDate}<br>${listview.userid}</td>
-															<td><button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete2?sn=${listview.sn}'">삭제</button></td>
+															<td><button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">삭제</button></td>
 														</tr>
 													</c:forEach>
 													</tbody>
@@ -268,16 +277,22 @@
         var numChk = "/^(\\-|\\+)?([0-9]+)$/";
 
 		var cCt = document.form2.CountCt.value;
-		var cCtChk = /^(\-|\+)?([0-9]+)$/.test(cCt/50)
-		if(!cCtChk){
-            alert("50건 단위로 입력해주세요.");
-		    return false;
-		}
 
+		var cCtChk = /^(\-|\+)?([0-9]+)$/.test(cCt/50)
+		if ($("select[name='snsType'] option:selected").val() =='ytb'){
+			if(!cCtChk){
+				alert("50건 단위로 입력해주세요.");
+				return false;
+			}
+        }
         if(cCt > 1000){
             alert("1000건 초과 조회되지 않습니다.");
             return false;
 		}
+        if(cCt <= 0){
+            alert("1건 이상 조회 해야합니다..");
+            return false;
+        }
 		if(document.form2.sdate.value != '' && document.form2.edate.value != ''){
 			var sDate = new Date(document.form2.sdate.value);
 			var eDate = new Date(document.form2.edate.value);
@@ -287,15 +302,29 @@
 			}
         }
         if ( $("#snsType option:selected").val() == ""){
-            alert("크롤링할 SNS을 선택해주세요.");
+            alert("크롤링할 출처를 선택해주세요.");
             return false;
         }
-        if (${QuataSum} <= 0 ){
+        if (${QuataSum}<=0 ){
             alert("금일 유튜브 API사용량이 소진되었습니다. 16시에 초기화 됩니다.");
             return false;
         }
+
         $("#loading").show();
-        document.form2.submit();
+        $.ajax({
+            type: "POST",
+            url: "/admin/ytbPost",
+            data: $("form[name=form2]").serialize(),
+            success: function(jdata){
+                if(jdata != 'TRUE') {
+                    alert("수집 오류");
+                }else{
+                    alert("수집 성공");
+                    location.href = "/admin/ytbForm";
+                }
+            },
+            error: function(data){alert("수집 오류");}
+        });
     }
 
 	$(function(){
@@ -310,8 +339,14 @@
         $("select[name='snsType']").on("change",function(){
 			var valType = $("select[name='snsType'] option:selected").val();
 			if(valType=='ytb'){
+                $("input[name='CountCt']").attr("placeholder","50건 단위로 입력해주세요.(1000건 초과 검색이 불가합니다.)");
+                $("input[name='CountCt']").attr("step","50");
+                $("input[name='CountCt']").val();
 				$("#ytbQua").css('display','inline-block');
 			}else{
+				$("input[name='CountCt']").attr("placeholder","1000건 초과 검색이 불가합니다.");
+				$("input[name='CountCt']").attr("step","1");
+                $("input[name='CountCt']").val();
                 $("#ytbQua").css('display','none');
 			}
         });
@@ -321,6 +356,25 @@
         document.form1.submit();
         document.form1.action='';
     }
+
+
+    function delContents(sn){
+        $.ajax({
+            type: "POST",
+            url: "/admin/contentsChkDelete",
+            data: "RPRT_ODR=" + sn + "&CNT=1",
+            success: function(jdata){
+                if(jdata != 'TRUE') {
+                    alert("삭제 오류");
+                }else{
+                    alert("삭제 성공");
+                    location.href = "/admin/ytbForm";
+                }
+            },
+            error: function(data){alert(data);location.href = "/admin/ytbForm";}
+        });
+    }
+
     function deletePost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();

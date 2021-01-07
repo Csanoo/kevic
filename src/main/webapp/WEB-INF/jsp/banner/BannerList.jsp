@@ -153,7 +153,9 @@
 												<td>${listview.updateDate}</td>
 												<td>${listview.regDate}</td>
 												<td>${listview.regid}</td>
-												<td><a href="javascript:fn_readGo('${listview.sn}')">수정</a></td>
+												<td>
+													<button type="button" class="btn btn-gray" onclick="javascript:fn_readGo('${listview.sn}')">수정</button>
+												</td>
 											</tr>
 										</c:forEach>
 										<c:if test="${searchVO.totRow <= 0}">

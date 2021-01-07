@@ -414,4 +414,17 @@ public class ProjectVO {
     private String regid;
     public String getRegid(){return regid;}
     public void setRegid(String regid){this.regid = regid;}
+
+
+    private String projectTitle;
+    public String getProjectTitle(){return projectTitle;}
+    public void setProjectTitle(String projectTitle){this.projectTitle = projectTitle;}
+
+    private String category01Title;
+    public String getCategory01Title(){return category01Title;}
+    public void setCategory01Title(String category01Title){this.category01Title = category01Title;}
+
+    private String category02Title;
+    public String getCategory02Title(){return category02Title;}
+    public void setCategory02Title(String category02Title){this.category02Title = category02Title;}
 }

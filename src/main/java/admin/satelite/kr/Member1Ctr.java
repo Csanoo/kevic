@@ -166,7 +166,8 @@ public class Member1Ctr {
 		return "posts/Ytbform";
 
 	}
-	
+
+	@ResponseBody
 	@RequestMapping(value = "/ytbPost")
 	public String ytb1Post(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) throws Exception {
 
@@ -208,15 +209,9 @@ public class Member1Ctr {
 			crawler.searchInsta(title, stype);
 		}
 
-		searchVO.pageCalculate( member1Svc.selectContents1Count(searchVO) ); // startRow, endRow
 
-		List<?> listview  = member1Svc.selectContents1List(searchVO);
-
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
-
-		return "redirect:ytbForm";
-
+		//return "redirect:ytbForm";
+		return "TRUE";
 	}
 
 	@RequestMapping(value = "/postDelete")
@@ -263,11 +258,11 @@ public class Member1Ctr {
 
 
 		//상위 코드 하드 코딩
-		if ( mvo.getCode1().equals("USER")) {mvo.setCode1memo("회원");}
-		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("콘텐츠");}
+		if ( mvo.getCode1().equals("USER")) {mvo.setCode1memo("관리자 회원");}
+		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
 		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
 		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
-
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
 		member1Svc.insertCode1One(mvo);
 
 
@@ -277,11 +272,29 @@ public class Member1Ctr {
 
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
+		return "redirect:codeList";
 
-		return "member1/CodeList";
 
 	}
-	
+	@ResponseBody
+	@RequestMapping(value = "/codeUp")
+	public String Code1UP(Member1VO mvo,HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+
+
+		//상위 코드 하드 코딩
+		if ( mvo.getCode1().equals("USER")) {mvo.setCode1memo("관리자 회원");}
+		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
+		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
+		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
+		member1Svc.insertCode1One(mvo);
+
+		return "TRUE";
+
+
+	}
+
+	@ResponseBody
 	@RequestMapping(value = "/codeDelete")
 	public String Code1Del(Member1VO mvo,HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
@@ -291,22 +304,16 @@ public class Member1Ctr {
 			sn = request.getParameter("sn");
 		}
 		
-		if ( mvo.getCode1().equals("USER")) {mvo.setCode1memo("회원");}
-		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("콘텐츠");}
+		if ( mvo.getCode1().equals("USER")) {mvo.setCode1memo("관리자 회원");}
+		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
 		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
 		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
 
 		member1Svc.deleteCode1One(sn);
 
 
-		searchVO.pageCalculate( member1Svc.selectCode1Count(searchVO) ); // startRow, endRow
-
-		List<?> listview  = member1Svc.selectCode1List(searchVO);
-
-		modelMap.addAttribute("listview", listview);
-		modelMap.addAttribute("searchVO", searchVO);
-
-		return "member1/CodeList";
+		return "TRUE";
 
 	}
 
@@ -928,6 +935,20 @@ public class Member1Ctr {
 		response.getOutputStream().close();
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "/selCodeTitCt")
+	public Integer selCodeTitCt(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo, ModelMap modelMap) throws Exception{
+
+		try {
+			String code2 = request.getParameter("code2");
+			return member1Svc.selCodeTitCt(code2);
+
+		} catch (Exception e) {
+			//System.out.println(e.getMessage());
+			return 0;
+		}
+
+	}
 }
 
 

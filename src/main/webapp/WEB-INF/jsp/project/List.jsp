@@ -163,9 +163,10 @@
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
                                         <th>컨텐츠타입</th>
+                                        <th>노출위치</th>
                                         <th >이미지</th>
                                         <th style="200px">출처이미지URL</th>
-                                        <th style="150px">영상URL</th>
+                                        <th style="150px">원본 URL</th>
                                         <th>타이틀</th>
                                         <th>키워드</th>
                                         <th>등록일</th>
@@ -179,8 +180,9 @@
                                     <c:forEach var="listview" items="${listview}" varStatus="status">
                                         <tr>
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
-                                            <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
+                                            <td ><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.type}</td>
+                                            <td style="width:150px;">${listview.projectTitle}<br>${listview.category01Title}<br>${listview.category02Title}</td>
                                             <td><img src="${listview.imageUrl}" width="110"></td>
                                             <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
                                             <td><div style="width:150px;word-break:break-all;"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>

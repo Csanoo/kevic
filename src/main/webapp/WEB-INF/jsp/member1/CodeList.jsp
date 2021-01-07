@@ -82,16 +82,16 @@
 										<tr>
 											<th style="width:5%">#</th>
 											<th style="width:10%">분류</th>
-											<th style='width: 20%'>명칭 [ <a
+											<th style='width: 20%'>코드 [ <a
 												href="javascript:fn_orderKey('1')">▲</a> <a
 												href="javascript:fn_orderKey('2')">▼</a> ]
 											</th>
 
 
 
-											<th style="width:10%">코드</th>
+											<th style="width:10%">코드</th>명
 
-											<th style="width:*">메모</th>
+											<th style="width:*">설명</th>
 											
 
 

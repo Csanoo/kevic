@@ -96,14 +96,14 @@
 		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND m.projectSn =  #{sproject} ]]></if>
 		<if test='stype != null and stype != "" '><![CDATA[  AND type = #{stype} ]]></if>
-		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
+		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND m.regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
 		<if test='category01 != null and category01 != "" and category01 != "0" '><![CDATA[  AND m.category01 = #{category01} ]]></if>
 		<if test='category02 != null and category02 != "" and category02 != "0" '><![CDATA[  AND m.category02 = #{category02} ]]></if>
 		<if test='orderKeyword == "1"'>
-			ORDER BY m.sn Desc
+			ORDER BY m.regDate Desc
 		</if>
 		<if test='orderKeyword == "2"'>
-			ORDER BY m.sn Asc
+			ORDER BY m.regDate Asc
 		</if>
 		<if test='orderKeyword == "3"'>
 			ORDER BY c.title Desc
@@ -143,7 +143,11 @@
 	<select id="selectprojectList"
 		resultType="main.java.admin.satelite.kr.ProjectVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT m.sn, m.projectSn, m.like, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', title, keyword, regDate, userid,
+		SELECT m.sn, m.projectSn,
+		(select title from tbl_project where sn = m.projectSn) projectTitle,
+		(select title from tbl_category where sn = m.category01) as 'category01Title',
+		(select title from tbl_category where sn = m.category02) as 'category02Title',
+		m.like, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', title, keyword, m.regDate, userid,
 		(select count(*) from tbl_msg where contentSn = m.sn) as msgCt
 		From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
 		<include refid="includeproject" />
@@ -315,6 +319,14 @@
 		where sn=#{sn}
 	</delete>
 
+	<delete id="prtDelete"	parameterType="Integer">
+		delete from tbl_project
+		where sn=#{sn}
+	</delete>
+	<delete id="prtManDelete"	parameterType="Integer">
+		delete from tbl_member_project
+		where projectSn=#{sn}
+	</delete>
 
 </mapper>
 

@@ -76,6 +76,14 @@ public class ProjectSvc {
 
         sqlSession.delete("msgDelete", param);
     }
+    public void prtDelete(Integer param) {
+
+        sqlSession.delete("prtDelete", param);
+        sqlSession.delete("prtManDelete", param);
+    }
+
+
+
 
     public void updateproject(ProjectVO param, List<FileVO> filelist,  String[] fileno) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();

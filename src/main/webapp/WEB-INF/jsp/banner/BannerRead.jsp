@@ -129,10 +129,10 @@
 														<c:forEach var="bannerDetaillist" items="${bannerDetaillist}" varStatus="status">
 														<tr id="banner${status.index+1}" class="banner">
 															<td>${status.index+1}</td>
-															<td><img src="/upload/images/${bannerDetaillist.imgBanner}" width="120" height="80"></td>
+															<td><div class="imgcon"></div><img src="/upload/images/${bannerDetaillist.imgBanner}" width="120" height="80" class="oldImg"></td>
 															<td>
 																<div class="imgChk">
-																	<input type="file" name="uploadfile" multiple="" value=""/>
+																	<input type="file" name="uploadfile" multiple="" value="" accept="image/jpeg, image/png"/>
 																	<input type="hidden" name="uploadfileOld" multiple="" value="${bannerDetaillist.imgBanner}"/>
 																	<input type="hidden" class="chkFile" name="uploadfileck">
 																</div>
@@ -159,10 +159,10 @@
 														<c:forEach var="cnt" begin="${ss}" end="4" varStatus="status2">
 															<tr id="banner${status2.index+1}" style="display:none"  class="banner">
 																<td>${status2.index+1}</td>
-																<td></td>
+																<td><div class="imgcon"></div></td>
 																<td>
 																	<div class="imgChk">
-																		<input type="file" name="uploadfile" multiple="" value="" accept="image/*"  disabled/>
+																		<input type="file" name="uploadfile" multiple="" value="" accept="image/jpeg, image/png"  disabled/>
 																		<input type="hidden" name="uploadfileOld" multiple="" value=""  disabled/>
 																		<input type="hidden" class="chkFile" name="uploadfileck" value="F"  disabled>
 																	</div>
@@ -310,6 +310,37 @@
             $(this).parent().parent("tr").hide();
         });
 
+    });
+
+    $(document).on('change', 'input[type=file]', function(){
+        var $width = 200;
+        var $target = $(this);
+        if($target.val()==''){
+            $target.parent().parent().prev().children('.imgcon').children('#temp_img').attr('src', '');
+            $target.parent().parent().prev().children('.oldImg').show();
+            return false;
+
+        }
+        var ext = $target.val().match(/\.(.+)$/)[1];
+        if(ext != 'jpg' && ext != 'png' && ext != 'jpeg'){
+            alert('jpg,png 파일을 입력해주세요.');
+            $target.val('');
+            $target.parent().parent().prev('.oldImg').show();
+            return false;
+        }
+        if(window.FileReader){
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $target.parent().parent().prev().children('.oldImg').hide();
+                $target.parent().parent().prev().children('.imgcon').html('<img src="" id="temp_img" style="display:inline-block;width:100px" />');
+                $img = $target.parent().parent().prev().children('.imgcon').children('#temp_img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL($(this)[0].files[0]);  //파일을 img 태그에 보여줄 수 있도록 base64로 url을 생성합니다.
+        } else {                                               //FileReader를 지원하지 않는 브라우저의 경우 IE 9 이하
+            $(this)[0].select();
+            var src = document.selection.createRange().text;
+            $target.parent().prev('.imgcon').html('<img src="" id="temp_img" style="display:inline-block;width:100px" />');
+        }
     });
 
 </script>

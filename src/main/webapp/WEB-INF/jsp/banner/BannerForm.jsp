@@ -131,8 +131,10 @@
 
                                                         <tr id="banner1" class="banner">
                                                             <td>1</td>
-                                                            <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" /></td>
+                                                            <td class="imgcon"></td>
+                                                            <td><input type="file" name="uploadfile" multiple=""   accept="image/jpeg, image/png"  />
+
+                                                            </td>
                                                             <td><input type="text" name="link"/>
                                                                 <div id="linkTarget1" class="target">
                                                                 <input type="radio"  name="linkTarget1" value="100" checked/><labe>현재창</labe>
@@ -151,8 +153,8 @@
                                                         </tr>
                                                         <tr  id="banner2" class="banner">
                                                             <td>2</td>
-                                                            <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
+                                                            <td class="imgcon"></td>
+                                                            <td><input type="file" name="uploadfile" multiple=""  accept="image/jpeg, image/png"  disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget2" class="target">
                                                                 <input type="radio" class="target" name="linkTarget2" value="100" checked disabled/><labe>현재창</labe>
@@ -172,8 +174,8 @@
                                                         </tr>
                                                         <tr  id="banner3" class="banner">
                                                             <td>3</td>
-                                                            <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept=".jpg,.png" disabled/></td>
+                                                            <td class="imgcon"></td>
+                                                            <td><input type="file" name="uploadfile" multiple=""  accept="image/jpeg, image/png"  disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget3" class="target">
                                                                 <input type="radio" class="target" name="linkTarget3" value="100" checked disabled/><labe>현재창</labe>
@@ -191,8 +193,8 @@
                                                         </tr>
                                                         <tr  id="banner4" class="banner">
                                                             <td>4</td>
-                                                            <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
+                                                            <td class="imgcon"></td>
+                                                            <td><input type="file" name="uploadfile" multiple=""  accept="image/jpeg, image/png"  disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget4" class="target">
                                                                 <input type="radio" class="target" name="linkTarget4" value="100" checked disabled/><label>현재창</label>
@@ -210,8 +212,8 @@
                                                         </tr>
                                                         <tr  id="banner5" class="banner">
                                                             <td>5</td>
-                                                            <td></td>
-                                                            <td><input type="file" name="uploadfile" multiple="" accept="image/*" disabled/></td>
+                                                            <td class="imgcon"></td>
+                                                            <td><input type="file" name="uploadfile" multiple=""  accept="image/jpeg, image/png"  disabled/></td>
                                                             <td><input type="text" name="link" disabled/>
                                                                 <div id="linkTarget5" class="target">
                                                                 <input type="radio" class="target" name="linkTarget5" value="100" disabled checked/><label>현재창</label>
@@ -352,6 +354,38 @@
             $(this).parent().parent().find("input").attr("disabled", true);
             $(this).parent().parent("tr").hide();
         });
+
+    });
+
+    $(document).on('change', 'input[type=file]', function(){
+        var $width = 200;
+        var $target = $(this);
+        if($target.val()==''){
+            $target.parent().prev('.imgcon').children('#temp_img').attr('src', '');
+            return false;
+        }
+        var ext = $target.val().match(/\.(.+)$/)[1];
+        if(ext != 'jpg' && ext != 'png' && ext != 'jpeg'){
+            alert('jpg,png 파일을 입력해주세요.');
+            $target.val('');
+            return false;
+        }
+
+        if(window.FileReader){
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $target.parent().prev('.imgcon').html('<img src="" id="temp_img" style="display:inline-block;width:100px" />');
+                $img = $target.parent().prev('.imgcon').children('#temp_img').attr('src', e.target.result);
+            };
+            reader.readAsDataURL($(this)[0].files[0]);  //파일을 img 태그에 보여줄 수 있도록 base64로 url을 생성합니다.
+        } else {                                               //FileReader를 지원하지 않는 브라우저의 경우 IE 9 이하
+            $(this)[0].select();
+            var src = document.selection.createRange().text;
+            $target.parent().prev('.imgcon').html('<img src="" id="temp_img" style="display:inline-block;width:100px" />');
+            $img = $target.parent().prev('.imgcon').children('#temp_img').attr('src', e.target.result);
+
+        }
+
 
     });
 

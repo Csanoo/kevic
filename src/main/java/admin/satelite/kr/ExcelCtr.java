@@ -107,7 +107,7 @@ public class ExcelCtr {
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("영상URL");
+        objCell.setCellValue("원본URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);

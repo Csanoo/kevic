@@ -31,16 +31,8 @@
 					</div>
 				</header>
 				<div class="content-body">
-					
-					
-					
-					
-
 							<form name="form1" action="codeSave" method="post"
 								enctype="multipart/form-data">
-
-
-
 
 						<div class="row">
 							<div class="col-md-12 col-sm-12 col-xs-12">
@@ -68,23 +60,26 @@
 
 
 										<td class="tdl" style="width: 15%">코드</td>
-										<td style="width: 35%"><input name="code2" type="text"
-											class="form-control" style="width: 100px"></td>
+										<td style="width: 35%"><input name="code2" type="text"  maxlength="3"	class="form-control" style="width: 100px;ime-mode:disabled;display:inline-block">
+											<input type="hidden" name="titleCk" id="titleCk" value="0">
+											<button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>
+											<br>*3자이하, 영문, 숫자만 입력가능, 대소문자 구분 안함
+										</td>
 									</tr>
 									
 									<tr>
 
 
-										<td class="tdl" style="width: 15%">코드설명</td>
+										<td class="tdl" style="width: 15%">코드명</td>
 										<td style="width: *" colspan="3">
 										<input name="title" type="text" class="form-control"></td>
 								
 								</tr>
 								
-								<tr>
+								<tr>명
 
 
-										<td class="tdl" style="width: 15%">메모</td>
+										<td class="tdl" style="width: 15%">설</td>
 										<td style="width: *" colspan="3">
 										<input name="memo" type="text" class="form-control"></td>
 								
@@ -94,9 +89,6 @@
 							</div>
 
 						</div>
-
-					
-
 
 
 										<div class="form-group" style="display:none">
@@ -134,10 +126,26 @@
 							<script>
 						function fn_formSv() {
 							if ( document.form1.code2.value == '' ) {
-								alert("해당 정보 입력 정확히 해주세요.");
-								document.form1.code2.focus();
-								
-							}else{document.form1.submit();}
+                                alert("코드를 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
+                            if(document.form1.titleCk.value == '0'){
+                                alert('코드 중복을 확인해주세요.');
+                                frm.code2.focus();
+                                return false;
+                            }
+                            if ( document.form1.title.value == '' ) {
+                                alert("코드설명 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
+                            if ( document.form1.memo.value == '' ) {
+                                alert("메모를 입력 해주세요.");
+                                document.form1.code2.focus();
+                                return false;
+                            }
+							document.form1.submit();
 							
 
 						}
@@ -145,6 +153,7 @@
 							document.formList.submit();
 
 						}
+
 					</script>
 
 						</div>
@@ -173,3 +182,58 @@
             <jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 
 
+<script>
+
+    $(document).ready(function(){
+
+        //한글입력 안되게 처리
+
+        $("input[name=code2]").on("propertychange change keyup paste input",function(event){
+
+            if (!(event.keyCode >=37 && event.keyCode<=40)) {
+
+                var inputVal = $(this).val();
+
+                $(this).val(inputVal.replace(/[^a-z0-9]/gi,''));
+
+            }
+          //  $("#titleCk").val(0);
+        });
+        var oldTitle="";
+        $("input[name='code2']").on("propertychange change keyup paste input", function() {
+            var currentVal = $(this).val();
+            if(currentVal == oldTitle) {
+                return;
+            }
+            oldTitle = currentVal;
+            $("#titleCk").val(0);
+        });
+        $("#dupTit").on("click",function(){
+            var title = $("input[name='code2']").val();
+            if(title==""){
+                alert("코드를 입력해주세요");
+                return false;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/admin/selCodeTitCt",
+                data: "code2=" + title,
+                success: function (jdata) {
+                    if(jdata<1){
+                        alert("사용할 수 있는 코드입니다.");
+                        $("#titleCk").val(1);
+                    }else{
+                        alert("중복 된 코드입니다.");
+                        $("#titleCk").val(0);
+                    }
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+        });
+
+    });
+
+</script>

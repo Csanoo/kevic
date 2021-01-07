@@ -50,15 +50,15 @@ public class SearchYtb {
     private static final JsonFactory JSON_FACTORY = new JacksonFactory();
 
     /** Global instance of the max number of videos we want returned (50 = upper limit per page). */
-    private static final long NUMBER_OF_VIDEOS_RETURNED = 30;
+    private static final long NUMBER_OF_VIDEOS_RETURNED = 50;
 
     /** Global instance of Youtube object to make all API requests. */
     private static YouTube youtube;
 
     private YouTube.Search.List query;
 
-   public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
-   // public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
+   //public static final String KEY = "AIzaSyBdo-Z_S4HF4XuAShH7fFbl2a19yj6BrpA"; //test
+    public static final String KEY = "AIzaSyDA0poSdJ3z3R487Nk1shSsHIJkegHzdfs"; //real
 
     public void execute(String keywords, String sType, Integer CountCt, String userid, String sdate, String edate) {
         youtube = new YouTube.Builder(new NetHttpTransport(), new JacksonFactory(), new HttpRequestInitializer() {
@@ -80,8 +80,6 @@ public class SearchYtb {
                 edate = edate + "T23:59:59Z";
                 DateTime sDate = DateTime.parseRfc3339(sdate);
                 DateTime eDate = DateTime.parseRfc3339(edate);
-                System.out.println(sDate);
-                System.out.println(eDate);
                 query.setPublishedAfter(sDate);
                 query.setPublishedBefore(eDate);
             }
@@ -124,7 +122,7 @@ public class SearchYtb {
                     String qry2 = "insert into tbl_ytbquota (price) values (-100)";
                     pstmt = con.prepareStatement(qry2);
                     pstmt.executeUpdate();
-                } while (nextToken != null && i < 19 && vNum < CountCt && iNum != 0);
+                } while (nextToken != null && i < 19 && vNum < CountCt && iNum > 1);
 
                 pstmt.close();
                 con.close();
@@ -164,7 +162,7 @@ public class SearchYtb {
 
                 SearchResult singleVideo = iteratorSearchResults.next();
                 ResourceId rId = singleVideo.getId();
-                System.out.println(singleVideo.getSnippet().getTitle());
+
 
 
                 // Double checks the kind is video.
@@ -173,7 +171,7 @@ public class SearchYtb {
                     String thumbnailURL = "http://img.youtube.com/vi/" + videoId + "/hqdefault.jpg";
                     String videoUrl = "https://www.youtube.com/watch?v=" + videoId;
                     qry = "insert into tbl_contents (project, category01, category02, type, imageUrl, videoUrl, ctSource, title ,state, keyword, userid)"
-                            + "select  0, 0, 0, '"+sType+"' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + singleVideo.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
+                            + "select  0, 0, 0, 'CV' , '" + thumbnailURL + "','" + videoUrl + "','YTB', '" + singleVideo.getSnippet().getTitle() + "', '000', '"+keywords+"','"+userid+"'  from dual "
                             + " WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = '" + videoUrl + "')";
 
                     System.out.println(vNum+":"+qry);

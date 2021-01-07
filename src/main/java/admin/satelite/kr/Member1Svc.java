@@ -181,39 +181,19 @@ public class Member1Svc {
 	}
 	
 	public void insertCode1One(Member1VO param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = txManager.getTransaction(def);
-
-		try {
-
 			if (param.getSn().equals("")) {
 				sqlSession.insert("insertCode1One", param);
 			} else {
 				sqlSession.insert("updateCode1One", param);
 			}
 
-			txManager.commit(status);
-		} catch (TransactionException ex) {
-			txManager.rollback(status);
-
-		}
 	}
 	
 	public void deleteCode1One(String param) {
-		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-		TransactionStatus status = txManager.getTransaction(def);
 
-		try {
 
 			sqlSession.insert("deleteCode1One", param);
 
-			txManager.commit(status);
-		} catch (TransactionException ex) {
-			txManager.rollback(status);
-
-		}
 	}
 
 	public void deletePost1One(String param) {
@@ -340,6 +320,9 @@ public class Member1Svc {
 	}
 	public Integer sumYtbQuata() {
 		return sqlSession.selectOne("ytbQuata");
+	}
+	public Integer selCodeTitCt(String param) {
+		return sqlSession.selectOne("selCodeTitCt", param);
 	}
 
 

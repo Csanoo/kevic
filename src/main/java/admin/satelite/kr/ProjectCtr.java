@@ -281,6 +281,15 @@ public class ProjectCtr {
         return "redirect:projectList";
     }
 
+
+    @ResponseBody
+    @RequestMapping(value = "/prtDelete")
+    public String prtDelete(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        projectSvc.prtDelete(sn);
+        return "True";
+    }
+
     @RequestMapping(value = "/projectDelete")
     public String projectDelete(HttpServletRequest request, SearchVO searchVO , ProjectVO projectInfo,
                                  ModelMap modelMap) {
@@ -696,7 +705,7 @@ throws Exception{
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);
-        objCell.setCellValue("영상URL");
+        objCell.setCellValue("원본URL");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(4);

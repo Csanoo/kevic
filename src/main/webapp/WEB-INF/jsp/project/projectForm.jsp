@@ -70,7 +70,7 @@
                                                 <td class="tdl" style="width: 15%">기본 로고*</td>
                                                 <td style="width: 35%" colspan="3">
                                                     <div class="form-group" style="display:block">
-                                                        <div class="controls">
+                                                        <div >
                                                             <c:forEach var="listview" items="${listview}" varStatus="status">
                                                                 <input type="checkbox" name="fileno" value="<c:out value="${listview.fileno}"/>" >
 
@@ -80,7 +80,10 @@
                                                                 <c:out value="${listview.size2String()}" />
                                                                 <br />
                                                             </c:forEach>
-                                                            <input type="file" id="uploadfile" name="uploadfile" multiple="" accept=".jpg,.png" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+                                                            <input type="file" id="uploadfile" name="uploadfile" multiple="" accept="image/jpeg, image/png"  style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
+                                                            <div id="imgcon"class="controls" >
+
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -263,6 +266,7 @@
             var thefile = fso.getFile(filepath); sizeinbytes = thefile.size;
         } else {//IE 외 //sizeinbytes = document.getElementById(obj).files[0].size;
             sizeinbytes = obj[0].files[0].size;
+
         }
         var fSExt = new Array('Bytes', 'KB', 'MB', 'GB');
         var i = 0;
@@ -274,32 +278,93 @@
         var fSize = sizeinbytes;
         if(fSize > size) { alert("첨부파일은 "+ checkSize + " 이하로 등록가능합니다."); $("input[id=uploadfile]").val(""); check = false; } else { check = true; }
 
-        var file  = obj
-        var _URL = window.URL || window.webkitURL;
-        var img = new Image();
-
-        img.src = _URL.createObjectURL(file);
-        img.onload = function() {
-
-            if(img.width != 200) {
-                alert("이미지 가로 200px 맞춰서 올려주세요.");
-                $("input[id=uploadfile]").val("");
-                check = false;
-            }
-        }
-
         return check;
     }
+
+
+
     document.getElementById("uploadfile").onchange = function () {
         if(this.value != "") {
             var extPlan = "JPG, PNG";
             var checkSize = 1024*1024*2; // 2MB
-            if(!checkImgSize($('#uploadfile'), checkSize)) {
+           if(!checkImgSize($('#uploadfile'), checkSize)) {
                 this.value = "";
                 return;
             }
+          //  LoadImg(this.value);
         }
+
     };
+    $(document).on('change', 'input[type=file]', function(){
+
+        var $width = 200;
+        var $target = $(this);
+        if($target.val()==''){
+            $('#imgcon').children('#temp_img').attr('src', '');
+            return false;
+        }
+        var ext = $target.val().match(/\.(.+)$/)[1];
+        if(ext != 'jpg' && ext != 'png' && ext != 'jpeg'){
+            alert('jpg,png 파일을 입력해주세요.');
+            $target.val('');
+            return false;
+        }
+
+        if(window.FileReader){ //FileReader를 지원하는 브라우저의 경우 IE 10이상, 크롬..
+
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+
+                $('#imgcon').append('<img src="" id="temp_img" style="display:inline-block" />');  //보이지 않는 임시 img 태그를 생성.
+
+                $img = $('#temp_img').attr('src', e.target.result);                          //파일을 선택했을 경우 정보를 $img 객체에 저장
+               $("#temp_img").load(function(){
+                //$(document).on('change', '#temp_img', function(){
+                  //  alert($('#temp_img').width());
+                    if($img.width() != $width ){                  //가로 세로 사이즈 비교 후 반환
+
+                        alert('지정된 크기와 맞지 않습니다.('+$width + 'px)');
+
+                        $target.val('');
+
+                        $('#temp_img').remove(); //위에서 생성한 임시 img 태그 삭제
+
+                        return;
+
+                    }
+                });
+
+            };
+
+            reader.readAsDataURL($(this)[0].files[0]);  //파일을 img 태그에 보여줄 수 있도록 base64로 url을 생성합니다.
+
+        } else {                                               //FileReader를 지원하지 않는 브라우저의 경우 IE 9 이하
+
+            $(this)[0].select();
+
+            var src = document.selection.createRange().text;
+
+            $('body').append('<img src="" id="temp_img" style="display:none;" />');
+
+            $img = $('#temp_img').attr('src', src);
+
+            $('#temp_img').remove();
+
+            if($img.width() != $width){
+
+                alert('지정된 크기와 맞지 않습니다.('+$width + 'px)');
+
+                $(this).val('');
+
+                return;
+
+            }
+
+        }
+        $('#temp_img').remove();
+
+    });
 
 
 </script>
