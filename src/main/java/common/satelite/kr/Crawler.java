@@ -11,8 +11,12 @@ import java.util.Properties;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import java.util.Arrays;
+
+
 
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -63,24 +67,40 @@ public class Crawler {
         Connection con = null;
         PreparedStatement pstmt = null;
         String qry = "";
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
+        java.util.Date stdate = format.parse(edate);
+
+
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.setTime(stdate);
+
+        cal.add(Calendar.DATE, 1);
+
+
+        edate = String.valueOf(cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DATE));
+        System.out.println(edate);
         try {
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
             Query query = new Query(keywords);
             query.setResultType(Query.RECENT);
             query.setCount(CountCt);
             QueryResult result;
-            if(sdate !="" && edate !="") {
+           // if(sdate !="" && edate !="") {
                 query.setSince(sdate);
                 query.setUntil(edate);
-            }
+          //  }
             int i = 0;
             int vNum = 0;
             String title;
             String txt ="";
             do {
                 result = twitter.search(query);
+
                 List<Status> tweets = result.getTweets();
+                System.out.println(tweets.size());
                 for (Status tweet : tweets) {
                     //System.out.println("@" + tweet.getUser().getScreenName() + " - " + tweet.getText());
                     if(tweet.getMediaEntities().length!=0){
@@ -101,11 +121,12 @@ public class Crawler {
                         if ( vNum >= CountCt ) {
                             break;
                         }
+                        pstmt.close();
                     }
                 }
             } while ((query = result.nextQuery()) != null && vNum < CountCt );
           //  System.exit(0);
-            pstmt.close();
+
             con.close();
         } catch (TwitterException te) {
             te.printStackTrace();

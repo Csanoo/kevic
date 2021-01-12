@@ -54,7 +54,7 @@
 
 												<td style="width: 35%"><input name="imageUrl" type="text"  class="form-control"></td>
 
-												<td class="tdl" style="width: 15%">영상 URL</td>
+												<td class="tdl" style="width: 15%">원본 URL</td>
 
 												<td style="width: 35%"><input name="videoUrl" type="text"  class="form-control"></td>
 											</tr>

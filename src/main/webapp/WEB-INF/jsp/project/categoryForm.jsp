@@ -268,6 +268,9 @@
             $("#bannerImgOld").val();
             $("#iconImgOld").val();
             alert("카테고리명을 입력해주세요.");
+            var offset = $("#uploadForm").offset();
+            $('html, body').animate({scrollTop : offset.top}, 400);
+
         });
 
         $("#Cate2DethReg").on("click",function(){
@@ -282,6 +285,8 @@
             $("input[name='sn']").val('0');
             $("input[name='title']").focus();
             alert("카테고리명을 입력해주세요.");
+            var offset = $("#uploadForm").offset();
+            $('html, body').animate({scrollTop : offset.top}, 400);
         });
         $("#Cate1DethDel").on("click",function(){
             var sn =  $("input[name='key1']").val();

@@ -207,6 +207,17 @@ public class ProjectSvc {
     }
 
 
+    public void prtChkSuggest(ProjectVO projectVO) {
+
+        sqlSession.update("prtChkSuggest", projectVO);
+    }
+
+
+    public Integer selectSuggetsCt(ProjectVO projectVO) {
+       return sqlSession.selectOne("suggetsCt", projectVO);
+    }
+
+
     public void notProjectPublish(ProjectVO param) {
 
             sqlSession.delete("notProjectPublish", param);

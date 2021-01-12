@@ -38,7 +38,7 @@
                                     <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
 
-                                        <div></div>
+
                                         <table id="customers">
                                             <tr>
                                                 <td class="tdl" style="width: 15%">엑셀파일 업로드</td>
@@ -55,7 +55,50 @@
                                         </div>
 
                                     </div>
+                                    <div style="padding:0 15px">
+                                        <div>
+                                            <p>상품 업로드 방법</p>
+                                            <p>1. 아래 항목 설명되어 있는 것을 기준으로 엑셀 파일을 작성을 합니다.</p>
+                                            <p>2. "샘플 파일 다운로드"에서 받은 엑셀을 기준으로 파일을 작성을 합니다.</p>
+                                            <p>3. 컨텐츠 타입, 출처는 하단에 코드 테이블을 참조하여 코드로 입력을 합니다.</p>
+                                            <p>3. 작성된 엑셀 파일을 업로드 합니다.</p>
+                                            <p>*. 코드목록과 다른값이 입력되면 빈값 처리됩니다.</p>
 
+                                        </div>
+                                        <div style="display:inline-flex;width:420px;justify-content: space-between">
+                                            <div style="width:200px">
+                                                <h5>컨텐츠타입코드 목록</h5>
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>코드</th>
+                                                        <th>명칭</th>
+                                                    </tr>
+                                                    <c:forEach var="codelistone" items="${codelistone}" varStatus="status">
+                                                        <tr>
+                                                            <td>${codelistone.code2}</td>
+                                                            <td>${codelistone.title}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </table>
+                                            </div>
+                                            <div style="width:200px">
+
+                                            <h5>출처코드 목록</h5>
+                                                <table class="table">
+                                                    <tr>
+                                                        <th>코드</th>
+                                                        <th>명칭</th>
+                                                    </tr>
+                                                    <c:forEach var="codelisttwo" items="${codelisttwo}" varStatus="status">
+                                                        <tr>
+                                                            <td>${codelisttwo.code2}</td>
+                                                            <td>${codelisttwo.title}</td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </form>
                         </div>

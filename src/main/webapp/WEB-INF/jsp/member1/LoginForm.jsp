@@ -62,28 +62,46 @@
                         <label for="user_pass">관리자 비번<br />
                             <input type="password" name="userpw" id="user_pass" class="input" value="" size="20" /></label>
                     </p>
-                    
 
+                </form>
 
 
                     <p class="submit">
-                        <input type="submit" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" 
-						style="background-color:#999;color:#fff"
-						value="로그인" />
+                        <button name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" onClick="login()"
+						style="background-color:#999;color:#fff">로그인
+                        </button>
                     </p>
 					
 					
 					
 					
-                </form>
+
                 
                 
                 <script>
                 function login(){
-                	if ( document.loginform.userid.value == '' || 
-                			document.loginform.userpw.value == '' ) {alert("아이디/비번 입력 바랍니다.");}else{
-                	document.loginform.action = "login";
-                	document.loginform.submit();}
+                	if ( document.loginform.userid.value == '' || document.loginform.userpw.value == '' ) {alert("아이디/비번을 입력해 주세요.");}else{
+                	    var frm = $("form[name='loginform']");
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/login",
+                            data: frm.serialize(),
+                            dataType:'html',
+                            success: function (jdata) {
+                                if (jdata == 'FALSE') {
+                                    alert("승인되지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+                                    return false;
+                                } else {
+                                    location.href= '/admin/project';
+                                }
+                            },
+                            error: function (data) {
+                               // alert('오류');
+                                //return false;
+                                location.href = "/admin/project";
+                            }
+                        });
+                	}
                 	
                 }
                 

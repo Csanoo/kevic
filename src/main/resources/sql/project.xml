@@ -91,7 +91,7 @@
 
 
 	<sql id="includeproject">
-		WHERE 1 = 1
+		WHERE 1 = 1 AND p.state = '100'
 		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
 		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND m.projectSn =  #{sproject} ]]></if>
@@ -112,10 +112,10 @@
 			ORDER BY c.title Asc
 		</if>
 		<if test='orderKeyword == "5"'>
-			ORDER BY keyword Desc
+			ORDER BY c.keyword Desc
 		</if>
 		<if test='orderKeyword == "6"'>
-			ORDER BY keyword Asc
+			ORDER BY c.keyword Asc
 		</if>
 		<if test='orderKeyword=="" or orderKeyword==" " '>
 			ORDER BY m.sn Desc
@@ -126,7 +126,7 @@
 		WHERE 1 = 1
 		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
 
-		<if test='state != null and state != "" '><![CDATA[  AND state = #{state} ]]></if>
+		<if test='state != null and state != "" '><![CDATA[  AND c.state = #{state} ]]></if>
 
 		<if test='orderKeyword=="1"'>
 			ORDER BY ct desc
@@ -147,9 +147,9 @@
 		(select title from tbl_project where sn = m.projectSn) projectTitle,
 		(select title from tbl_category where sn = m.category01) as 'category01Title',
 		(select title from tbl_category where sn = m.category02) as 'category02Title',
-		m.like, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', title, keyword, m.regDate, userid,
-		(select count(*) from tbl_msg where contentSn = m.sn) as msgCt
-		From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		m.like, (select title from tcode where code1='TYPE' and code2=c.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=c.ctSource) as 'ctSource', c.title, c.keyword, m.regDate, c.userid,
+		(select count(*) from tbl_msg where contentSn = m.sn) as msgCt, m.suggest
+		From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn LEFT JOIN tbl_project p on m.projectSn = p.sn
 		<include refid="includeproject" />
 		<if test="rowStart > 0">
 			LIMIT ${rowStart-1}, #{pageNo}
@@ -161,7 +161,7 @@
 
 	<select id="selectprojectCount" resultType="Integer"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT COUNT(*) FROM tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		SELECT COUNT(*) FROM tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn LEFT JOIN tbl_project p on m.projectSn = p.sn
 		<include refid="includeproject" />
 	</select>
 
@@ -197,12 +197,13 @@
 			parameterType="main.java.common.satelite.kr.SearchVO">
 		SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, ct from (
 			SELECT sn, title, projectcd, comment, state, logoimg, basicTitle, regUser, mngUser, regDate, (select count(*)
-			from tbl_mapping_contents where projectSn = tbl_project.sn) as 'ct' from tbl_project
+		from tbl_mapping_contents where projectSn = tbl_project.sn) as 'ct' from tbl_project
 		) A
 		<include refid="includeproject2" />
 
 		LIMIT ${rowStart-1}, #{pageNo}
 	</select>
+
 
 
 
@@ -255,6 +256,20 @@
 	</delete>
 
 
+	<update id="prtChkSuggest" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_mapping_contents set
+		suggest = #{state}
+		where sn=#{sn}
+	</update>
+
+	<select id="suggetsCt" resultType="Integer"	parameterType="main.java.admin.satelite.kr.ProjectVO">
+		select count(*) from tbl_mapping_contents c inner join
+		(select projectSn, category01, category02 from tbl_mapping_contents where  sn = #{sn} ) A
+		on c.projectSn = A.projectSn and c.category01 = A.category01 and c.category02 = A.category02
+		where c.suggest = 'Y'
+		group by c.projectSn, c.category01, c.category02
+	</select>
+
 
 	<insert id="insertProjectMemo"
 			parameterType="main.java.admin.satelite.kr.ProjectVO">
@@ -265,7 +280,7 @@
 
 	<select id="selectBoxproject"
 			resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, title  from tbl_project order by sn asc
+		SELECT sn, title  from tbl_project WHERE state = '100' order by sn asc
 	</select>
 
 	<update id="prtConfirm" parameterType="main.java.admin.satelite.kr.ProjectVO">

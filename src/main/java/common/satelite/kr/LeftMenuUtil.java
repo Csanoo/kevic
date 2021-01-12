@@ -141,7 +141,7 @@ public class LeftMenuUtil {
 
 		DBConnect dbcon = new DBConnect();
 		String sql1 = "insert into edumgtfunclist ( funcname , wdate,userid ) values ('"+_h+"',current_timestamp,'"+_userid+"')";
-		System.out.println(sql1);
+		//System.out.println(sql1);
 		try {
 			con = dbcon.connect();
 			stmt = con.createStatement();

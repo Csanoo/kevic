@@ -296,6 +296,14 @@
 		if(document.form2.sdate.value != '' && document.form2.edate.value != ''){
 			var sDate = new Date(document.form2.sdate.value);
 			var eDate = new Date(document.form2.edate.value);
+            if ($("select[name='snsType'] option:selected").val() =='twi'){
+                if((Date.now() - sDate) > 691200000){
+                    alert("금일부터 최대 7일전까지 검색할 수 있습니다.");
+                    return false;
+                }
+            }
+
+
 			if(eDate < sDate){
 				alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
 				return false;

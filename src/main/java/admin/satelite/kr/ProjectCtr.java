@@ -309,6 +309,26 @@ public class ProjectCtr {
         return "project/List";
     }
 
+
+
+    @ResponseBody
+    @RequestMapping(value = "/prtChkSuggest")
+    public String prtChkSuggest(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo,
+                               ModelMap modelMap) throws Exception{
+        String result = "TRUE";
+        try {
+            Integer sn = Integer.parseInt(request.getParameter("sn"));
+            String state = request.getParameter("state");
+            projectInfo.setSn(sn);
+            projectInfo.setState(state);
+            projectSvc.prtChkSuggest(projectInfo);
+        } catch (Exception e) {
+            //System.out.println(e.getMessage());
+            result = "FALSE";
+        }
+        return "TRUE";
+    }
+
     @ResponseBody
     @RequestMapping(value = "/prtChkDelete")
     public String prtChkDelete(HttpServletRequest request, SearchVO searchVO , Map<String,Object> commandMap,ProjectVO projectInfo,
@@ -536,6 +556,21 @@ throws Exception{
         } catch (Exception e) {
             System.out.println(e.getMessage());
             result = "FALSE";
+        }
+        return result;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/selectSuggetsCt")
+    public Integer selectSuggetsCt(HttpServletRequest request, ProjectVO projectInfo) throws Exception{
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        projectInfo.setSn(sn);
+        Integer result = 0;
+        try {
+            result = projectSvc.selectSuggetsCt(projectInfo);
+        } catch (Exception e) {
+           // System.out.println(e.getMessage());
+            result = 0;
         }
         return result;
     }
@@ -818,5 +853,23 @@ throws Exception{
         return "project/msgList";
 
     }
+
+    @RequestMapping(value = "/listLoadC")
+    public String listLoad(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+        String pageNo = request.getParameter("pageNo");
+        if ( pageNo == null ){
+            pageNo = "50";
+        }
+        searchVO.setDisplayRowCount(Integer.parseInt(pageNo));
+        searchVO.setDisplayRowCount(searchVO.getPageNo());
+        searchVO.pageCalculate( projectSvc.selectProjectCount(searchVO) ); // startRow, endRow
+
+        List<?> listview  = projectSvc.selectProjectList(searchVO);
+        modelMap.addAttribute("listview", listview);
+        modelMap.addAttribute("searchVO", searchVO);
+
+        return "project/ListLoad";
+    }
+
 
 }

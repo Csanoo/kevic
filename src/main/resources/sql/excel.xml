@@ -20,5 +20,13 @@
 		</foreach>
 	</insert>
 
+	<select id="selectCodeListOne"  resultType="main.java.admin.satelite.kr.ExcelVO">
+		select code2, title from tcode where code1 = 'TYPE'
+	</select>
+
+	<select id="selectCodeListTwo" resultType="main.java.admin.satelite.kr.ExcelVO">
+		select code2, title from tcode where code1 = 'CONT'
+	</select>
+
 </mapper>
 

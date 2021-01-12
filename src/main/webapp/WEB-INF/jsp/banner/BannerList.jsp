@@ -20,8 +20,6 @@
 			</div>
 		</div>
 		<div class="clearfix"></div>
-
-
 			<div class="col-lg-12">
 				<section class="box ">
 					<div class="content-body">

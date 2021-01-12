@@ -45,6 +45,7 @@
 										<td class="tdl" style="width: 15%">상위코드</td>
 
 										<td style="width: 35%">
+											${mvo.code1}
 											<c:forEach var="listsel" items="${listsel}"	   varStatus="status">
 
 												<c:if test="${mvo.code1 eq listsel.code1}">${listsel.code1memo}</c:if></c:forEach>
@@ -64,7 +65,7 @@
 									<tr>
 
 
-										<td class="tdl" style="width: 15%">코드</td>
+										<td class="tdl" style="width: 15%">코드명</td>
 										<td style="width: *" colspan="3">
 										<input name="title" type="text" class="form-control" value="${mvo.title}"></td>
 								
@@ -133,12 +134,12 @@
                                 return false;
                             }
                             if ( document.form1.title.value == '' ) {
-                                alert("코드설명 입력 해주세요.");
+                                alert("코드명 입력 해주세요.");
                                 document.form1.code2.focus();
                                 return false;
                             }
                             if ( document.form1.memo.value == '' ) {
-                                alert("메모를 입력 해주세요.");
+                                alert("설명을 입력 해주세요.");
                                 document.form1.code2.focus();
                                 return false;
                             }
@@ -163,20 +164,22 @@
 
 						}
                         function fn_formDel() {
-                            $.ajax({
-                                type: "POST",
-                                url: "/admin/codeDelete",
-                                data: "sn=${mvo.sn}",
-                                success: function(jdata){
-                                    if(jdata != 'TRUE') {
-                                        alert("삭제 오류");
-                                    }else{
-                                        alert("삭제 성공");
-                                        location.href = "/admin/codeList";
-                                    }
-                                },
-                                error: function(data){alert(data);location.href = "/admin/codeList";}
-                            });
+						    if(confirm('삭제하겠습니까?')){
+								$.ajax({
+									type: "POST",
+									url: "/admin/codeDelete",
+									data: "sn=${mvo.sn}",
+									success: function(jdata){
+										if(jdata != 'TRUE') {
+											alert("삭제 오류");
+										}else{
+											alert("삭제 성공");
+											location.href = "/admin/codeList";
+										}
+									},
+									error: function(data){alert(data);location.href = "/admin/codeList";}
+								});
+                            }
                         }
 
 

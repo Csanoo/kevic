@@ -25,7 +25,7 @@ from dual
 		resultType="main.java.admin.satelite.kr.Member1VO">
 		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile
 		from tuser
-		where userid=#{userid} and userpw=#{userpw}
+		where userid=#{userid} and userpw=#{userpw} and state = 'Y'
 	</select>
 	
 	<select id="selectMember1Read"
@@ -51,14 +51,14 @@ from dual
 			userpw=#{userpw},
 		</if>
 		username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
-		,imgfile=#{imgfile},state=#{state}
+		,imgfile=#{imgfile},state=#{state}, uptDate=now(), uptuser = #{uptuser}
 		where userid = #{userid}
 	</update>
 	
 	<update id="updateMember11One"
 		parameterType="main.java.admin.satelite.kr.Member1VO">
 		update tuser set
-		userpw=#{userpw},username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
+		userpw=#{userpw},username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}, uptDate=now(), uptuser = #{uptuser}
 		
 		where userid = #{userid}
 	</update>
@@ -93,7 +93,7 @@ from dual
 		SELECT tuser.userid,userpw,username, state,
 		(select title from tcode where code2 = tuser.usertype and code1 = 'USER') as 'usertype'
 ,mobile,email,wdate,ifnull(ccnt,0) ccnt 
-,ifnull(mxwdt,'-') mxwdt
+,ifnull(mxwdt,'-') mxwdt ,uptuser,uptDate
 ,(select count(sn) from tbl_member_project where userid = tuser.userid group by userid) as 'projectct'
 from tuser
 		left outer join 
@@ -192,7 +192,7 @@ from tuser
 
 
 	<sql id="includeCode1">
-		WHERE sn != 0  and code1 != 'USER'
+		WHERE sn != 0  and code1 != 'USER' and state = 'Y'
 		<if
 			test="searchKeyword!=null and searchKeyword!='' and searchType!=''">
 			<foreach item="item" index="index" collection="searchTypeArr"

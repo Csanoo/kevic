@@ -210,6 +210,22 @@ public class Member1VO {
 		this.regdate = regdate;
 	}
 
+	private String uptDate;
+	public String getUptDate() {
+		return uptDate;
+	}
+	public void setUptDate(String uptDate) {
+		this.uptDate = uptDate;
+	}
+
+	private String uptuser;
+	public String getUptuser() {
+		return uptuser;
+	}
+	public void setUptuser(String uptuser) {
+		this.uptuser = uptuser;
+	}
+
 	private String state ="";
 	public String getState() {
 		return state;

@@ -25,6 +25,8 @@ import java.io.IOException;
 
 import org.springframework.web.bind.annotation.ResponseBody;
 import java.io.OutputStream;
+import java.util.List;
+
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import main.java.common.satelite.kr.SearchVO;
 
@@ -44,6 +46,11 @@ public class ExcelCtr {
 
     @RequestMapping(value = "/excelForm")
     public String excelForm(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+
+        List<?> codelistOne  = excelSvc.selectCodelistOne();
+        List<?> codelistTwo  = excelSvc.selectCodelistTwo();
+        modelMap.addAttribute("codelistone", codelistOne);
+        modelMap.addAttribute("codelisttwo", codelistTwo);
         return "excel/Form";
     }
 
@@ -72,6 +79,7 @@ public class ExcelCtr {
       //  view.setViewName("");
         return "redirect:contents";
     }
+
     @RequestMapping(value="/ExcelSample")
     public void ExcelPoi(HttpServletResponse response, Model model) throws Exception {
 
@@ -136,5 +144,7 @@ public class ExcelCtr {
         response.getOutputStream().flush();
         response.getOutputStream().close();
     }
+
+
 }
 

@@ -103,34 +103,28 @@ public class ContentsSvc {
 
     public List<?> selectSourceSelList(SearchVO param) {
 
-        return sqlSession.selectList("selectSourceSelList", param);
+        return sqlSession.selectList("selectSourceSelListC", param);
     }
 
     public void contentsDelete(String param) {
 
         sqlSession.delete("contentsDelete", param);
+        sqlSession.delete("contentsMappingDelete", param);
+
     }
 
     public void chkContentsDelete(String param) {
 
         sqlSession.delete("chkContentsDelete", param);
+        sqlSession.delete("contentsMappingDelete", param);
     }
 
 
 
     public void ContentsPublish(ContentsVO param) {
-       // DefaultTransactionDefinition def = new DefaultTransactionDefinition();
-      //  def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
-      // TransactionStatus status = txManager.getTransaction(def);
 
-     //   try {
-          //  sqlSession.update("ContentsPublish", param);
             sqlSession.insert("insertContentsPublish", param);
-      //      txManager.commit(status);
-      //  } catch (TransactionException ex) {
-      //      txManager.rollback(status);
 
-      //  }
 
 
     }

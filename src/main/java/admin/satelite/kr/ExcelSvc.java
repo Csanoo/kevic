@@ -54,4 +54,12 @@ public class ExcelSvc {
             txManager.rollback(status);
         }
     }
+
+    public List<?>  selectCodelistOne() {
+        return sqlSession.selectList("selectCodeListOne");
+    }
+
+    public List<?>  selectCodelistTwo() {
+        return sqlSession.selectList("selectCodeListTwo");
+    }
 }

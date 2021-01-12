@@ -199,7 +199,7 @@ public class Member1Ctr {
 				//srch.execute(title);
 				searchYtb.execute(title, stype,CountCt,USERID, sdate, edate);
 			} catch(Exception e) {
-				System.out.println("test="+e.getMessage());
+				System.out.println(e.getMessage());
 			}
 		}else if(snsType.equals("twi")){
 			crawler.searchTwit(title, stype, CountCt, USERID, sdate, edate);
@@ -262,7 +262,7 @@ public class Member1Ctr {
 		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
 		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
 		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
-		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠 타입");}
 		member1Svc.insertCode1One(mvo);
 
 
@@ -286,7 +286,7 @@ public class Member1Ctr {
 		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
 		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
 		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
-		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠 타입");}
 		member1Svc.insertCode1One(mvo);
 
 		return "TRUE";
@@ -308,7 +308,7 @@ public class Member1Ctr {
 		if ( mvo.getCode1().equals("CONT")) {mvo.setCode1memo("출처");}
 		if ( mvo.getCode1().equals("CMS")) {mvo.setCode1memo("홈페이지");}
 		if ( mvo.getCode1().equals("CATE")) {mvo.setCode1memo("카테고리");}
-		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠타입");}
+		if ( mvo.getCode1().equals("TYPE")) {mvo.setCode1memo("컨텐츠 타입");}
 
 		member1Svc.deleteCode1One(sn);
 
@@ -424,6 +424,7 @@ public class Member1Ctr {
 		String email = "";
 		String mobile = "";
 		String usertype = "";
+		String uptuser = (String)request.getSession().getAttribute("USERID");
 
 		if (request.getParameter("userid") != null) {
 			userid = request.getParameter("userid");
@@ -457,6 +458,7 @@ public class Member1Ctr {
 		param.setUsername(username);
 		param.setUsertype(usertype);
 		param.setState(state);
+		param.setUptuser(uptuser);
 
 		member1Svc.updateMember1One(param);
 
@@ -475,7 +477,7 @@ public class Member1Ctr {
 		return "redirect:memberList";
 
 	}
-
+	@ResponseBody
 	@RequestMapping(value = "/login")
 	public String MainLogin2(Member1VO mvo, HttpServletRequest request, SearchVO searchVO, ModelMap modelMap,
 			HttpSession session) {
@@ -527,16 +529,17 @@ public class Member1Ctr {
 
 				modelMap.addAttribute("mvo", mvo);
 
-				return "redirect:project";
+				return "True";
 
 			} else {
-				return "redirect:project";
+				return "FALSE";
 			}
 
 		} else {
-			return "member1/LoginForm";
+			return "FALSE";
 		}
 	}
+
 	@RequestMapping(value = "/memberList")
 	public String member1List(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap){
 

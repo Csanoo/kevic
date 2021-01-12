@@ -131,7 +131,7 @@
                                             <td><div style="width:20px;overflow:hidden">${listview.ct}</div></td>
                                             <td>${listview.regDate}<br>${listview.regUser}</td>
                                             <td><button type="button" class="btn btn-orange" onclick="readPost('${listview.sn}')">관리</button>
-                                                <button type="button" class="btn btn-gray" onclick="deletePost('${listview.sn}')">삭제</button>
+                                             <!--   <button type="button" class="btn btn-gray" onclick="deletePost('${listview.sn}')">삭제</button>-->
                                             </td>
                                         </tr>
                                     </c:forEach>

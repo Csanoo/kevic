@@ -172,11 +172,12 @@
                                         <th>등록일</th>
                                         <th>메시지</th>
                                         <th>좋아요</th>
+                                        <th>추천</th>
                                       <!--  <th>순서</th>-->
                                         <th>노출</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="cList">
                                     <c:forEach var="listview" items="${listview}" varStatus="status">
                                         <tr>
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
@@ -191,6 +192,7 @@
                                             <td>${listview.regDate}<br>${listview.userid}</td>
                                             <td onClick="javascript:fn_list('${listview.sn}',1)" id="msg_${listview.sn}" data-toggle="modal" data-target="#myModal" ><a>${listview.msgCt}</a></td>
                                             <td >${listview.like}</td>
+                                            <td ><input type="checkbox" name="suggest" value="${listview.sn}" <c:if test="${listview.suggest eq 'Y'}" >checked </c:if></td>
                                            <!-- <td>
                                                 이동
                                                 <input type="hidden" value="${listview.sn}" name="sort">
@@ -270,13 +272,23 @@
                         alert("삭제 오류");
                     }else{
                         alert("삭제 성공");
-                        location.href = "/admin/project";
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/listLoadC",
+                            data: $("#form1").serialize(),
+                            success: function(data){
+                                $("#cList").html(data);
+                            },
+                            error: function(data){alert(data);}
+                        });
                     }
                 },
                 error: function(data){location.href = "/admin/project";}
             });
         }
     }
+
+
 
 
 
@@ -300,13 +312,21 @@
                         if (jdata != 'TRUE') {
                             alert(" 오류");
                         } else {
-                            alert("정상 처리되었니다.");
-                            location.href = "/admin/project";
+                            alert("정상 처리되었습니다.");
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/listLoadC",
+                                data: $("#form1").serialize(),
+                                success: function(data){
+                                    $("#cList").html(data);
+                                },
+                                error: function(data){alert(data);}
+                            });
                         }
                     },
                     error: function (data) {
-                        alert(삭제완료);
-                        location.href = "/admin/project";
+                        alert('오류');
+                        //location.href = "/admin/project";
                     }
                 });
             }
@@ -314,6 +334,9 @@
             return false;
         }
     }
+
+
+
     function fn_notPublish(_sn){
         if(confirm('컨텐츠의 노출을 중지하시겠습니까?')){
             var arr = new Array();
@@ -328,13 +351,29 @@
                     if (jdata != 'TRUE') {
                         alert("오류");
                     } else {
-                        alert("정상 처리되었니다.");
-                        location.href = "/admin/project";
+                        alert("정상 처리되었습니다.");
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/listLoadC",
+                            data: $("#form1").serialize(),
+                            success: function(data){
+                                $("#cList").html(data);
+                            },
+                            error: function(data){alert(data);}
+                        });
                     }
                 },
                 error: function (data) {
-                    alert(삭제완료);
-                    location.href = "/admin/project";
+                    alert('삭제오류');
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/listLoadC",
+                        data: $("#form1").serialize(),
+                        success: function(data){
+                            $("#cList").html(data);
+                        },
+                        error: function(data){alert(data);}
+                    });
                 }
             });
         }else{
@@ -361,7 +400,7 @@
                     if (jdata != 'TRUE') {
                         alert("오류");
                     } else {
-                        alert("정상 처리되었니다.");
+                        alert("정상 처리되었습니다.");
                         location.href = "/admin/project";
                     }
                 },
@@ -427,7 +466,74 @@
             });
         });
 
+        $("input[name='suggest']").on("change",function(){
 
+            var sn = $(this).val();
+            var state = 'N';
+            var $obj = $(this);
+            if($(this).is(":checked") == true){
+                state = 'Y';
+            }
+
+            if(state=='Y'){
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/selectSuggetsCt",
+                    data: "sn=" + sn ,
+                    success: function (jdata) {
+                        var ct = parseInt(jdata);
+
+                        if (ct == 10) {
+                            alert('추천 컨텐츠는 10개 이상 설정할 수 없습니다.');
+                            $obj.prop("checked", false);
+                            return false;
+                        }else{
+                            $.ajax({
+                                type: "POST",
+                                url: "/admin/prtChkSuggest",
+                                data: "sn=" + sn +"&state="+state,
+                                success: function (jdata) {
+
+                                    if (jdata != 'TRUE') {
+                                        alert(" 오류");
+                                    } else {
+                                        //  alert("정상 처리되었니다.");
+                                        //  location.href = "/admin/project";
+                                    }
+                                },
+                                error: function (data) {
+                                    // alert(삭제완료);
+                                    location.href = "/admin/project";
+                                }
+                            });
+                        }
+                    },
+                    error: function (data) {
+                        // alert(삭제완료);
+                    }
+                });
+            }else{
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/prtChkSuggest",
+                    data: "sn=" + sn +"&state="+state,
+                    success: function (jdata) {
+
+                        if (jdata != 'TRUE') {
+                            alert(" 오류");
+                        } else {
+                            //  alert("정상 처리되었니다.");
+                            //  location.href = "/admin/project";
+                        }
+                    },
+                    error: function (data) {
+                        // alert(삭제완료);
+                        location.href = "/admin/project";
+                    }
+                });
+                //alert(state);
+            }
+        });
     })
 
     function categorySet(){

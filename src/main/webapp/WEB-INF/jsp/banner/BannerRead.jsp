@@ -64,8 +64,8 @@
 												<td style="width: 35%" colspan="3">
 													<input type="radio" value="Y" name="displaytype" <c:if test="${banner1Info.displayType eq 'Y'}">checked</c:if>><label>상시 노출</label>
 													<input type="radio" value="N" name="displaytype" <c:if test="${banner1Info.displayType eq 'N'}">checked</c:if>><label>기간 노출</label>
-													<input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.sdate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
-													<input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" value="${banner1Info.edate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
+													<input name="sdate" type="text" class="form-control datepicker" autocomplete="off"  data-format="yyyy-mm-dd" value="${banner1Info.sdate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
+													<input name="edate" type="text" class="form-control datepicker" autocomplete="off"  data-format="yyyy-mm-dd" value="${banner1Info.edate}" <c:if test="${banner1Info.displayType eq 'Y'}">disabled</c:if>>
 												</td>
 											</tr>
 										</table>
@@ -206,44 +206,7 @@
 
 								</div>
 							</form>
-							<script>
-                                function fn_formSv() {
-                                    var frm =document.form1;
-                                    if($("select[name='project']").val()==''){
-                                        alert('프로젝트를 선택해주세요.');
-                                        frm.project.focus();
-                                        return false;
-                                    }
-                                    if(frm.title.value == ''){
-                                        alert('타이틀을 확인해주세요.');
-                                        frm.title.focus();
-                                        return false;
-                                    }
-                                    $("input[name='uploadfile']:enabled").each(function(){
-                                        var chkImg = $(this).parent().children(".chkFile").val();
-                                        if($(this).val()=='' && chkImg == 'T'){
-                                            alert('이미지를 등록해주세요.');
-                                            frm.uploadfile.focus();
-                                            return false;
-                                        }
-                                    });
-                                    if(frm.displaytype.value=="N"){
-                                        var sDate = new Date(document.form1.sdate.value);
-                                        var eDate = new Date(document.form1.edate.value);
-                                        if(eDate < sDate){
-                                            alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
-                                            return false;
-                                        }
-                                    }
-                                    document.form1.submit();
 
-                                }
-
-                                function fn_formRtn() {
-                                    document.formList.submit();
-
-                                }
-							</script>
 
 						</div>
 					</div>
@@ -273,7 +236,46 @@
 	}
 </style>
 <script type="text/javascript">
+    function fn_formSv() {
+        if ($("#bannerList tr").css("display") =='none') {
+        	alert('배너 이미지를 등록해주세요.');
+        	return false;
+        }
+        var frm =document.form1;
+        if($("select[name='project']").val()==''){
+            alert('프로젝트를 선택해주세요.');
+            frm.project.focus();
+            return false;
+        }
+        if(frm.title.value == ''){
+            alert('타이틀을 확인해주세요.');
+            frm.title.focus();
+            return false;
+        }
+        $("input[name='uploadfile']:enabled").each(function(){
+            var chkImg = $(this).parent().children(".chkFile").val();
+            if($(this).val()=='' && chkImg == 'T'){
+                alert('이미지를 등록해주세요.');
+                frm.uploadfile.focus();
+                return false;
+            }
+        });
+        if(frm.displaytype.value=="N"){
+            var sDate = new Date(document.form1.sdate.value);
+            var eDate = new Date(document.form1.edate.value);
+            if(eDate < sDate){
+                alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
+                return false;
+            }
+        }
+        document.form1.submit();
 
+    }
+
+    function fn_formRtn() {
+        document.formList.submit();
+
+    }
     $(function(){
         $("input[name='displaytype']").on("change",function(){
             if($(this).val()=='Y'){

@@ -47,7 +47,9 @@ public class ContentsCtr {
 
         List<?> listview  = contentsSvc.selectContentsList(searchVO);
         List<?> cateview  = contentsSvc.selectCateSelList(searchVO);
+        List<?> sourceview  = contentsSvc.selectSourceSelList(searchVO);
 
+        modelMap.addAttribute("sourceview", sourceview);
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
         modelMap.addAttribute("cateview", cateview);
@@ -56,6 +58,22 @@ public class ContentsCtr {
 
     }
 
+    @RequestMapping(value = "/listLoad")
+    public String listLoad(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
+        String pageNo = request.getParameter("pageNo");
+        if ( pageNo == null ){
+            pageNo = "50";
+        }
+        searchVO.setDisplayRowCount(Integer.parseInt(pageNo));
+        searchVO.setDisplayRowCount(searchVO.getPageNo());
+        searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow
+
+        List<?> listview  = contentsSvc.selectContentsList(searchVO);
+        modelMap.addAttribute("listview", listview);
+        modelMap.addAttribute("searchVO", searchVO);
+
+        return "contents/ListLoad";
+    }
 
 
     @RequestMapping(value = "/contentsForm")

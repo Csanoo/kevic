@@ -427,4 +427,9 @@ public class ProjectVO {
     private String category02Title;
     public String getCategory02Title(){return category02Title;}
     public void setCategory02Title(String category02Title){this.category02Title = category02Title;}
+
+    private String suggest;
+    public String getSuggest(){return suggest;}
+    public void setSuggest(String suggest){this.suggest = suggest;}
+
 }

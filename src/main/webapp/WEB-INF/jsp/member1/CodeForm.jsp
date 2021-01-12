@@ -76,10 +76,10 @@
 								
 								</tr>
 								
-								<tr>명
+								<tr>
 
 
-										<td class="tdl" style="width: 15%">설</td>
+										<td class="tdl" style="width: 15%">설명</td>
 										<td style="width: *" colspan="3">
 										<input name="memo" type="text" class="form-control"></td>
 								
@@ -136,12 +136,12 @@
                                 return false;
                             }
                             if ( document.form1.title.value == '' ) {
-                                alert("코드설명 입력 해주세요.");
+                                alert("코드명을 입력 해주세요.");
                                 document.form1.code2.focus();
                                 return false;
                             }
                             if ( document.form1.memo.value == '' ) {
-                                alert("메모를 입력 해주세요.");
+                                alert("설명을 입력 해주세요.");
                                 document.form1.code2.focus();
                                 return false;
                             }

@@ -34,9 +34,9 @@
                                             <td style="width: 75%">
                                                 <select name="ctSource">
                                                     <option value="" >출처</option>
-                                                    <option value="YTB"  <c:if test="${searchVO.ctSource eq 'YTB'}">selected</c:if>>유튜브</option>
-                                                    <option value="TWT"  <c:if test="${searchVO.ctSource eq 'TWT'}">selected</c:if>>트위터</option>
-                                                    <option value="FB"  <c:if test="${searchVO.ctSource eq 'FB'}">selected</c:if>>페이스북</option>
+                                                    <option value="YTB">유튜브</option>
+                                                    <option value="RSS">RSS</option>
+                                                    <option value="TWT">트위터</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -169,7 +169,7 @@
                                         <th>관리</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="cList">
 
                                     <c:forEach var="listview" items="${listview}" varStatus="status">
                                         <tr>
@@ -187,7 +187,7 @@
                                                             ${listview.userid}
                                             </td>
                                             <td>
-                                                <button type="button" class="btn btn-orange" onclick="window.location.href='/admin/contentsDelete?sn=${listview.sn}'">삭제</button>
+                                                <button type="button"  class="btn btn-orange" onclick="delContent(${listview.sn});">삭제</button>
                                             </td>
                                         </tr>
                                     </c:forEach>
@@ -233,30 +233,35 @@
 
 
     function deletePost(){
-        var cnt = $("input[name='chkSn']:checked").length;
-        var arr = new Array();
-        $("input[name='chkSn']:checked").each(function() {
-            arr.push($(this).attr('value'));
-        });
-        if(cnt == 0){
-            alert("선택된 글이 없습니다.");
-            return false;
-        }
-        else{
-            $.ajax({
-                type: "POST",
-                url: "/admin/contentsChkDelete",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                success: function(jdata){
-                    if(jdata != 'TRUE') {
-                        alert("삭제 오류");
-                    }else{
-                        alert("삭제 성공");
+        if(confirm('삭제시 컨텐츠가 영구 삭제되며 프로젝트에 진열된 컨텐츠도 삭제됩니다.')) {
+            var cnt = $("input[name='chkSn']:checked").length;
+            var arr = new Array();
+            $("input[name='chkSn']:checked").each(function () {
+                arr.push($(this).attr('value'));
+            });
+            if (cnt == 0) {
+                alert("선택된 글이 없습니다.");
+                return false;
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/contentsChkDelete",
+                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                    success: function (jdata) {
+                        if (jdata != 'TRUE') {
+                            alert("삭제 오류");
+                        } else {
+                            alert("삭제 성공");
+                            location.href = "/admin/contents";
+                        }
+                    },
+                    error: function (data) {
+                        alert(data);
                         location.href = "/admin/contents";
                     }
-                },
-                error: function(data){alert(data);location.href = "/admin/contents";}
-            });
+                });
+            }
         }
     }
 
@@ -284,7 +289,15 @@
                         alert("삭제 오류");
                     } else {
                         alert("노출 성공");
-                        location.href = "/admin/project";
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/listLoad",
+                            data: $("#form1").serialize(),
+                            success: function(data){
+                                $("#cList").html(data);
+                            },
+                            error: function(data){alert(data);}
+                        });
                     }
                 },
                 error: function (data) {
@@ -296,6 +309,25 @@
     function excelDownload() {
         document.form1.action='ExcelDownload';
         document.form1.submit();
+        document.form1.action='';
+    }
+
+    function delContent(_sn) {
+        if(confirm('삭제시 컨텐츠가 영구 삭제되며 프로젝트에 진열된 컨텐츠도 삭제됩니다.')) {
+            $.get("/admin/contentsDelete?sn=" + _sn, function (data) {
+                alert("삭제완료");
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/listLoad",
+                    data: $("#form1").serialize(),
+                    success: function(data){
+                            $("#cList").html(data);
+                    },
+                    error: function(data){alert(data);}
+                });
+            });
+
+        }
     }
 
 </script>

@@ -64,8 +64,8 @@
                                                     <input type="radio" value="Y" name="displaytype" checked><label>상시 노출</label>
                                                     <input type="radio" value="N" name="displaytype"><label>기간 노출</label>
                                                     <div style="width:220px;display:inline-flex">
-                                                    <input name="sdate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled> ~
-                                                    <input name="edate" type="text" class="form-control datepicker" data-format="yyyy-mm-dd" disabled>
+                                                    <input name="sdate" type="text" class="form-control datepicker" autocomplete="off" data-format="yyyy-mm-dd" disabled> ~
+                                                    <input name="edate" type="text" class="form-control datepicker" autocomplete="off" data-format="yyyy-mm-dd" disabled>
                                                     </div>
                                                 </td>
                                             </tr>
