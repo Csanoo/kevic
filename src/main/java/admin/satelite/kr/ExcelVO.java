@@ -160,4 +160,19 @@ public class ExcelVO {
         this.state = state;
     }
 
+    private String keyword="";
+    public String getKeyword() {
+        return keyword;
+    }
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
+    }
+
+    private String userid="";
+    public String getUserid() {
+        return userid;
+    }
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 }

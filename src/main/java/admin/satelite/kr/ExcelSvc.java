@@ -30,7 +30,7 @@ public class ExcelSvc {
     @Autowired
     private DataSourceTransactionManager txManager;
 
-    public void excelUpload(File destFile) {
+    public void excelUpload(File destFile, String userid) {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
@@ -46,6 +46,10 @@ public class ExcelSvc {
 
         Map<String, Object> paramMap = new HashMap<String, Object>();
         paramMap.put("excelContent", excelContent);
+        paramMap.put("userid",userid);
+
+
+
 
         try {
             sqlSession.insert("insertExcel", paramMap);

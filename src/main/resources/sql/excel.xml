@@ -6,7 +6,7 @@
 	<insert id="insertExcel" parameterType="Map" >
 
 		insert into tbl_contents(
-		type, imageUrl, videoUrl, ctSource, title, keyword
+		type, imageUrl, videoUrl, ctSource, title, keyword, userid, regDate, pubDate
 		)values
 		<foreach collection="excelContent" item="item" separator=",">
 			(
@@ -15,7 +15,9 @@
 			#{item.C},
 			#{item.D},
 			#{item.E},
-			#{item.F}
+			#{item.F},
+			#{userid},
+			now(),now()
 			)
 		</foreach>
 	</insert>

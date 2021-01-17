@@ -53,11 +53,13 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			</a></li>
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/ytbForm")%> <%=btr.CLASSOPEN(HEADERURL, "codeList")%>">
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/ytbForm")%> <%=btr.CLASSOPEN(HEADERURL, "codeList")%> <%=btr.CLASSOPEN(HEADERURL, "reserveForm")%>">
 		<a	href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">크롤링 관리</span> <span class="arrow "></span>
 		</a>
-		<ul class="sub-menu"><li><a href="/admin/ytbForm" class="<%=btr.CLASSACTIVE(HEADERURL, "ytbForm")%>"> <span class="title">크롤링</span></a></li>
+		<ul class="sub-menu">
+			<li><a href="/admin/ytbForm" class="<%=btr.CLASSACTIVE(HEADERURL, "ytbForm")%>"> <span class="title">크롤링</span></a></li>
+			<li><a href="/admin/reserveForm" class="<%=btr.CLASSACTIVE(HEADERURL, "reserveForm")%>"> <span class="title">크롤링</span></a></li>
 			<li><a href="/admin/codeList" class="<%=btr.CLASSACTIVE(HEADERURL, "codeList")%>"> <span class="title">코드목록</span></a></li>
 		</ul>
 	</li>

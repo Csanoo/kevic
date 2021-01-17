@@ -92,8 +92,8 @@
 
 	<sql id="includeproject">
 		WHERE 1 = 1 AND p.state = '100'
-		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
-		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
+		<if test='searchKeyword != null and searchKeyword != "" '><![CDATA[  AND c.keyword LIKE CONCAT('%', #{searchKeyword}, '%') ]]></if>
+		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND c.title LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
 		<if test='sproject != null and sproject != "" '><![CDATA[  AND m.projectSn =  #{sproject} ]]></if>
 		<if test='stype != null and stype != "" '><![CDATA[  AND type = #{stype} ]]></if>
 		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND m.regDate between date(#{startDate}) and date(#{endDate})+1]]></if>

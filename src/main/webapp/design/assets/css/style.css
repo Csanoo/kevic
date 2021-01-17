@@ -803,7 +803,6 @@ a:hover, a:focus {
     margin-right: 41px;
 }
 
-
 .page-sidebar.chat_shift #main-menu-wrapper li .label,
 .page-sidebar.collapseit #main-menu-wrapper li .label{
     display: none;
@@ -941,6 +940,7 @@ section header {
     border-bottom: 2px solid rgba(31, 181, 172, 1.0);
     vertical-align: top;
     position: relative;
+    min-width:1400px;
 }
 section header .title {
     margin-top: 10px;
@@ -962,6 +962,7 @@ section .content-body {
     -moz-transition: 800ms;
     -o-transition: 800ms;
     transition: 800ms;
+    min-width:1400px;
 }
 section.box.nobox {
     background-color: transparent;
@@ -978,6 +979,7 @@ section.nobox .content-body {
     background-color: transparent;
     border: 0px solid transparent;
     padding: 0 0px 0px 0px;
+    min-width:1400px;
 }
 section.box .actions {
     margin: 0 15px;
@@ -1111,6 +1113,7 @@ section.box.primary .actions i:hover, section.box.purple .actions i:hover, secti
 }
 .sort_panel .panel_header {
     cursor: move;
+    min-width:1400px;
 }
 /*------------------------------
     FORM ELEMENTS
@@ -4588,11 +4591,13 @@ code {
   Page Layout - Sidebar, Chat API toggle interactions
 -----------------------------------------------------------*/
 
+
 #main-content, .page-chatapi, .page-topbar, .page-sidebar, .page-topbar .logo-area, .page-topbar .quick-area .pull-right, .collapse-wraplist, .profile-info, .wraplist, .chatapi-windows {
     -webkit-transition: 600ms;
     -moz-transition: 600ms;
     -o-transition: 600ms;
     transition: 600ms;
+
 }
 .page-sidebar.collapseit {
     width: 60px;
@@ -4607,6 +4612,7 @@ code {
 #main-content {
     margin-left: 300px;
     display: block;
+    overflow:scroll;
 }
 #main-content.hor_menu {
     margin-left: 0px;

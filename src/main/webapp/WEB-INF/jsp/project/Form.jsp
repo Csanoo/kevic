@@ -46,7 +46,6 @@
 												<td style="width: 35%" colspan="3">
 													<select name="project"  id="project" class="form-control">
 
-
 														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
 															<option value="${projectview.sn}" <c:if test="${projectInfo.project eq projectview.sn}">selected</c:if>>${projectview.title}</option>
 														</c:forEach>
@@ -92,7 +91,7 @@
 												<td style="width: 35%" colspan="3"><input name="imageUrl" type="text"  class="form-control"></td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">영상 URL</td>
+												<td class="tdl" style="width: 15%">원 URL</td>
 
 												<td style="width: 35%" colspan="3"><input name="videoUrl" type="text"  class="form-control"></td>
 											</tr>

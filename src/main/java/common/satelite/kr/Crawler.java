@@ -67,21 +67,16 @@ public class Crawler {
         Connection con = null;
         PreparedStatement pstmt = null;
         String qry = "";
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
-        java.util.Date stdate = format.parse(edate);
-
-
-
-        Calendar cal = Calendar.getInstance();
-
-        cal.setTime(stdate);
-
-        cal.add(Calendar.DATE, 1);
+       // SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+       // if(edate != "") {
+         //   java.util.Date stdate = format.parse(edate);
+           // Calendar cal = Calendar.getInstance();
+           // cal.setTime(stdate);
+            //cal.add(Calendar.DATE, 1);
+            //edate = String.valueOf(cal.get(Calendar.YEAR) + "-" + (cal.get(Calendar.MONTH) + 1) + "-" + cal.get(Calendar.DATE));
+        //}
 
 
-        edate = String.valueOf(cal.get(Calendar.YEAR)+"-"+(cal.get(Calendar.MONTH)+1) + "-" + cal.get(Calendar.DATE));
-        System.out.println(edate);
         try {
             con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
             Query query = new Query(keywords);

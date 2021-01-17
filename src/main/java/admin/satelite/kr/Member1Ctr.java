@@ -167,6 +167,8 @@ public class Member1Ctr {
 
 	}
 
+
+
 	@ResponseBody
 	@RequestMapping(value = "/ytbPost")
 	public String ytb1Post(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) throws Exception {
@@ -847,7 +849,7 @@ public class Member1Ctr {
 		objCell.setCellStyle(styleHd);
 
 		objCell = objRow.createCell(3);
-		objCell.setCellValue("영상URL");
+		objCell.setCellValue("원본URL");
 		objCell.setCellStyle(styleHd);
 
 		objCell = objRow.createCell(4);
@@ -866,6 +868,9 @@ public class Member1Ctr {
 		objCell.setCellValue("등록일");
 		objCell.setCellStyle(styleHd);
 
+		objCell = objRow.createCell(8);
+		objCell.setCellValue("등록자");
+		objCell.setCellStyle(styleHd);
 
 
 		List<Member1VO> listview  = member1Svc.selectexcelList(searchVO);
@@ -918,6 +923,9 @@ public class Member1Ctr {
 			objCell.setCellValue(""+list.getCrtdate());
 			objCell.setCellStyle(styleHd);
 
+			objCell = objRow.createCell(8);
+			objCell.setCellValue(""+list.getUserid());
+			objCell.setCellStyle(styleHd);
 
 
 		}

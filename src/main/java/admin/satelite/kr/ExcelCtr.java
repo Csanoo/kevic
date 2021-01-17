@@ -57,6 +57,7 @@ public class ExcelCtr {
    // @ResponseBody
     @RequestMapping(value = "/excelUploadAjax", method = RequestMethod.POST)
     public String excelUploadAjax(MultipartHttpServletRequest request)  throws Exception{
+        String USERID = "";
         MultipartFile excelFile =request.getFile("excelFile");
         System.out.println("엑셀 파일 업로드 컨트롤러");
         if(excelFile==null || excelFile.isEmpty()){
@@ -70,8 +71,11 @@ public class ExcelCtr {
         }catch(IllegalStateException | IOException e){
             throw new RuntimeException(e.getMessage(),e);
         }
+        if ( request.getSession().getAttribute("USERID") != null ) {
+             USERID = (String)request.getSession().getAttribute("USERID");
+        }
 
-        excelSvc.excelUpload(destFile);
+        excelSvc.excelUpload(destFile, USERID);
 
         //FileUtils.delete(destFile.getAbsolutePath());
 

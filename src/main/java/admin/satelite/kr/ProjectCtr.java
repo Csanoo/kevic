@@ -755,11 +755,16 @@ throws Exception{
         objCell.setCellValue("등록일");
         objCell.setCellStyle(styleHd);
 
+
         objCell = objRow.createCell(7);
-        objCell.setCellValue("메시지");
+        objCell.setCellValue("등록자");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(8);
+        objCell.setCellValue("메시지");
+        objCell.setCellStyle(styleHd);
+
+        objCell = objRow.createCell(9);
         objCell.setCellValue("좋아요");
         objCell.setCellStyle(styleHd);
 
@@ -811,10 +816,14 @@ throws Exception{
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(7);
-            objCell.setCellValue(""+list.getMsgCt());
+            objCell.setCellValue(""+list.getUserid());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(8);
+            objCell.setCellValue(""+list.getMsgCt());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(9);
             objCell.setCellValue(""+list.getLike());
             objCell.setCellStyle(styleHd);
 

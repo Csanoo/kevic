@@ -383,6 +383,10 @@ public class ContentsCtr {
         objCell.setCellValue("등록일");
         objCell.setCellStyle(styleHd);
 
+        objCell = objRow.createCell(7);
+        objCell.setCellValue("등록자");
+        objCell.setCellStyle(styleHd);
+
         List<ContentsVO> listview  = contentsSvc.selectexcelList(searchVO);
        // listview.forEach(s -> );
         int rowNo = 1;
@@ -430,6 +434,10 @@ public class ContentsCtr {
 
             objCell = objRow.createCell(6);
             objCell.setCellValue(""+list.getRegDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(7);
+            objCell.setCellValue(""+list.getUserid());
             objCell.setCellStyle(styleHd);
 
         }

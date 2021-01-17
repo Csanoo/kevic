@@ -39,7 +39,7 @@
 										<table id="customers">
 											<tr>
 												<td class="tdl" style="width: 25%">검색어(키워드)</td>
-												<td style="width: 75%"><input name="title" type="text"	value="" class="form-control"></td>
+												<td style="width: 75%"><input name="keyword" type="text"	value="" class="form-control"></td>
 											</tr>
 											<!--
 											<tr>
@@ -56,7 +56,7 @@
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
-													<input type="number" name="CountCt" class="form-control" placeholder="50건 단위로 입력해주세요." step="50" min="0" max="1000" style="width:170px;display:inline-block">
+													<input type="number" name="searchNum" class="form-control" placeholder="50건 단위로 입력해주세요." step="50" min="0" max="1000" style="width:170px;display:inline-block">
 													<br><span>*"크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다."</span>
 												</td>
 											</tr>
@@ -65,7 +65,7 @@
 												<td class="tdl" style="width: 25%">출처</td>
 												<td style="width: 75%">
 													<div style="width:200px;display: inline-block">
-													<select name="snsType" id="snsType" class="form-control" >
+													<select name="ctSource" id="snsType" class="form-control" >
 														<option value="">출처를 선택해주세요.</option>
 														<option value="ytb">유튜브</option>
 														<option value="twi">트위터</option>
@@ -76,31 +76,35 @@
 														-->
 													</select>
 													</div>
-													<div id="ytbQua" style="display:none;position:relative;width: 100%;max-width: 150px;height: 30px;margin-left: 20px;border: 1px solid #EEE;background: #999999;box-sizing: border-box;">
-														<div style="width: ${QuataSum}%;height: 28px;background: #1b2;display: inline-block;box-sizing: border-box;color:#FFFFFF;text-align: center;vertical-align: middle;line-height: 28px;">
 
-														</div>
-														<div style="top:3px;left: 25px;position: absolute;color: #FFFFFF;">
-															<c:if test="${QuataSum < 1}" >
-																<c:set var = "QuataSum" value = "0"/>
-															</c:if>
-															남은 할당량:${QuataSum}%
-														</div>
-
-													</div>
 												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 25%">크롤링 대상기간</td>
+												<td class="tdl" style="width: 25%">예약 정보</td>
 												<td style="width: 75%">
-													<input name="sdate" type="text" autocomplete="off" class="form-control datepicker" data-format="yyyy-mm-dd" value="" >
-													<input name="edate" type="text" autocomplete="off" class="form-control datepicker" data-format="yyyy-mm-dd" value="" >
+													<input type="radio" value="N" name="state" id="state2"><label for="state2" checked>사용안함</label>
+													<input type="radio" value="Y" name="state" id="state1"><label for="state1">사용</label>
+													<select name="day">
+														<option valie="0">매일</option>
+														<option valie="1">월</option>
+														<option valie="2">화</option>
+														<option valie="3">수</option>
+														<option valie="4">목</option>
+														<option valie="5">금</option>
+														<option valie="6">토</option>
+														<option valie="7">일</option>
+													</select>
+													<input type="number" maxlength="2" name="time" style="width: 50px" min="0" max="23">
+
+													<label>시</label>
+													<input type="checkbox" value="Y" name="repeat">
+													<label>반복</label>
 												</td>
 											</tr>
 										</table>
 										<div class="form-group" style="margin-top: 20px">
 											<button type="button" class="btn btn-gray" onclick="fn_scInit2()">초기화</button>
-											<button type="button" class="btn btn-orange" onclick="fn_formSv()">크롤링 시작</button>
+											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
 										</div>
 									</div>
 								</div>
@@ -110,7 +114,7 @@
 				</div>
 			</section>
 		</div>
-		<form name="form1" method="post" >
+<form name="form1" method="post" >
 
 							<div class='col-lg-12 col-md-12 col-sm-12 col-xs-12'>
 								<div class="page-title">
@@ -126,6 +130,8 @@
 									<h2 class="title pull-left">콘텐츠 </h2>
 									<div class="pull-right" style="padding-top: 10px">
 										<ul class="list-unstyled">
+
+
 											<li style="float: left;">
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
@@ -258,23 +264,20 @@
 		});
 
 	});
-	function fn_write(){
-        location.href = "/admin/ContentsForm";
-	}
     function fn_formSv() {
 
-        if ( document.form2.title.value == ""){
+        if ( document.form2.keyword.value == ""){
             alert("검색어를 입력해주세요.");
             return false;
         }
 
-        if (document.form2.CountCt.value == ""){
+        if (document.form2.searchNum.value == ""){
             alert("검색할 컨텐츠 수를 입력해주세요.");
             return false;
         }
         var numChk = "/^(\\-|\\+)?([0-9]+)$/";
 
-		var cCt = document.form2.CountCt.value;
+		var cCt = document.form2.searchNum.value;
 
 		var cCtChk = /^(\-|\+)?([0-9]+)$/.test(cCt/50)
 		if ($("select[name='snsType'] option:selected").val() =='ytb'){
@@ -291,45 +294,33 @@
             alert("1건 이상 조회 해야합니다..");
             return false;
         }
-		if(document.form2.sdate.value != '' && document.form2.edate.value != ''){
-			var sDate = new Date(document.form2.sdate.value);
-			var eDate = new Date(document.form2.edate.value);
-            if ($("select[name='snsType'] option:selected").val() =='twi'){
-                if((Date.now() - sDate) > 691200000){
-                    alert("금일부터 최대 7일전까지 검색할 수 있습니다.");
-                    return false;
-                }
-            }
 
+		var iTime = document.form2.time.value;
+		if(iTime > 23 && iTime < 0 ){
+		    alert("0시부터 23시까지 입력가능합니다.");
+            document.form2.time.focus();
+		    return false;
+		}
 
-			if(eDate < sDate){
-				alert("검색 시작일이 종료일보다 늦을수는 없습니다.");
-				return false;
-			}
-        }
         if ( $("#snsType option:selected").val() == ""){
             alert("크롤링할 출처를 선택해주세요.");
-            return false;
-        }
-        if (${QuataSum}<=0 ){
-            alert("금일 유튜브 API사용량이 소진되었습니다. 16시에 초기화 됩니다.");
             return false;
         }
 
         $("#loading").show();
         $.ajax({
             type: "POST",
-            url: "/admin/ytbPost",
+            url: "/admin/reserveSave",
             data: $("form[name=form2]").serialize(),
             success: function(jdata){
                 if(jdata != 'TRUE') {
-                    alert("수집 오류");
+                    alert("저장 오류");
                 }else{
-                    alert("수집 성공");
-                    location.href = "/admin/ytbForm";
+                    alert("저장 성공");
+                    location.href = "/admin/reserveForm";
                 }
             },
-            error: function(data){alert("수집 오류");}
+            error: function(data){alert("저장 오류");}
         });
     }
 
