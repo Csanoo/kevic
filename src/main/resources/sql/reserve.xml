@@ -4,8 +4,8 @@
 <mapper namespace="satelite.kr">
 
 	<insert id="insertSchedule"	parameterType="main.java.common.satelite.kr.ScheduleVO">
-		insert into tbl_reserve (keyword,	searchNum, 	ctSource, day, time, state, use, repeat, regUser)
-		values ( #{keyword}, #{searchNum}, #{ctSource}, #{day}, #{time}, #{state}, #{use}, #{repeat} #{userid} )
+		insert into tbl_reserve (keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regUser)
+		values ( #{keyword}, #{searchNum}, #{ctSource}, #{day}, #{time}, #{state}, #{use}, #{repeat}, #{regUser} )
 	</insert>
 
 
@@ -25,7 +25,7 @@
 
 
 	<select id="selectReserveList"	resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state, use, repeat, regDate, regUser
+		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser
 		FROM tbl_reserve
 		<include refid="includeReserve" />
 		<if test="rowStart > 0">
@@ -42,5 +42,16 @@
 		<include refid="includeReserve" />
 	</select>
 
+
+	<select id="selectReserve"	resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="main.java.common.satelite.kr.ScheduleVO">
+		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser
+		FROM tbl_reserve
+		WHERE state = 'Y' and `use` = 'N' and time = #{time} and day = #{day}
+	</select>
+
+	<update id="updateUse" parameterType="Integer">
+		update tbl_reserve set
+		`use` = 'Y'
+		where sn=#{sn}
 </mapper>
 

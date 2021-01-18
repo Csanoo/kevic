@@ -85,17 +85,17 @@
 													<input type="radio" value="N" name="state" id="state2"><label for="state2" checked>사용안함</label>
 													<input type="radio" value="Y" name="state" id="state1"><label for="state1">사용</label>
 													<select name="day">
-														<option valie="0">매일</option>
-														<option valie="1">월</option>
-														<option valie="2">화</option>
-														<option valie="3">수</option>
-														<option valie="4">목</option>
-														<option valie="5">금</option>
-														<option valie="6">토</option>
-														<option valie="7">일</option>
+														<option value="0">매일</option>
+														<option value="2">월</option>
+														<option value="3">화</option>
+														<option value="4">수</option>
+														<option value="5">목</option>
+														<option value="6">금</option>
+														<option value="7">토</option>
+														<option value="1">일</option>
 													</select>
 													<input type="number" maxlength="2" name="time" style="width: 50px" min="0" max="23">
-
+													<input type="hidden" name="use" value="N">
 													<label>시</label>
 													<input type="checkbox" value="Y" name="repeat">
 													<label>반복</label>
@@ -133,19 +133,15 @@
 
 
 											<li style="float: left;">
-												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
+												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
 												<button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
-												<button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>
+												<button type="button" class="btn btn-gray" onclick="deletePost()">선택 삭제</button>-->
 											</li>
 											<li style="float: left;">
 												<select name="orderKeyword" id="orderKeyword"  >
                                                     <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">등록일 내림차순</option>
                                                     <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">등록일 오름차순</option>
-													<option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">타이틀 내림차순</option>
-													<option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">타이틀 오름차순</option>
-													<option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">키워드 내림차순</option>
-													<option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">키워드 오름차순</option>
 												</select>
 												<select name="pageNo" id="pageNo"  >
 													<option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
@@ -165,34 +161,31 @@
 
 													<thead>
 													<tr>
-														<th><input type="checkbox" id="allChk" ></th>
+
 														<th>No</th>
-														<th>컨텐츠타입</th>
-														<th>이미지</th>
-														<th>출처이미지URL</th>
-														<th>원본URL</th>
-														<th>출처</th>
-														<th>타이틀</th>
-														<th>키워드</th>
-														<th>등록일</th>
-														<th>관리</th>
+														<th>등록일자</th>
+														<th>크롤링 정보</th>
+														<th>반복여부</th>
+														<th>등록ID</th>
+														<th>운영상태</th>
 													</tr>
 													</thead>
 													<tbody>
 
 													<c:forEach var="listview" items="${listview}" varStatus="status">
 														<tr>
-															<td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
+
 															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
-															<td> ${listview.type}</td>
-															<td><img src="${listview.imageUrl}" width="110"></td>
-															<td><div style="width:100px;word-break:break-all;white-space: normal">${listview.imageUrl}</div></td>
-															<td><div style="width:100px;word-break:break-all;white-space: normal"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
-															<td><div style="width:100px;overflow:hidden">${listview.ctSource}</div></td>
-															<td class="title" style="display: flex">${listview.title}</td>
-															<td>${listview.keyword}</td>
-															<td>${listview.regDate}<br>${listview.userid}</td>
-															<td><button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">삭제</button></td>
+															<td>${listview.regDate}</td>
+															<td>${listview.day}<br>${listview.time}</td>
+															<td>${listview.repeat}</td>
+															<td>${listview.regUser}</td>
+															<td>
+																<c:if test="${listview.use eq 'N'}">
+																<button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">삭제</button>
+																</c:if>
+
+															</td>
 														</tr>
 													</c:forEach>
 													</tbody>

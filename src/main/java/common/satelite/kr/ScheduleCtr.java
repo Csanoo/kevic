@@ -38,7 +38,7 @@ public class ScheduleCtr {
         List<?> cateview  = member1Svc.selectCodetype();
 
         modelMap.addAttribute("cateview", cateview);
-
+        modelMap.addAttribute("listview", listview);
 
         return "posts/Reserveform";
 
@@ -54,6 +54,7 @@ public class ScheduleCtr {
         if ( request.getSession().getAttribute("USERID") != null ) {
             USERID = (String)request.getSession().getAttribute("USERID");
         }
+
         scheduleVO.setRegUser(USERID);
 
         String keyword = "";

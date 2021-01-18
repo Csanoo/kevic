@@ -58,7 +58,5 @@
 
 
 	<context:component-scan base-package="main.java.common.satelite.kr" />
-	<task:scheduler id="scheduleCron" pool-size="10"/>
-	<task:annotation-driven scheduler="scheduleCron" />
 
 </beans>

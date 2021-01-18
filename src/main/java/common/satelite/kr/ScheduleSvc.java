@@ -28,6 +28,11 @@ public class ScheduleSvc {
 
         return sqlSession.selectList("selectReserveList", param);
     }
+    public List<ScheduleVO> selectReserve(ScheduleVO param) {
+
+        return sqlSession.selectList("selectReserve", param);
+    }
+
 
     public void insertSchedule(ScheduleVO param) {
         sqlSession.insert("insertSchedule", param);
