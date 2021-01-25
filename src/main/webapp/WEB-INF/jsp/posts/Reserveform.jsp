@@ -177,14 +177,31 @@
 
 															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
 															<td>${listview.regDate}</td>
-															<td>${listview.day}<br>${listview.time}</td>
-															<td>${listview.repeat}</td>
+															<td>
+																<c:if test="${listview.day eq '0'}">매일</c:if>
+																<c:if test="${listview.day eq '2'}">월</c:if>
+																<c:if test="${listview.day eq '3'}">화</c:if>
+																<c:if test="${listview.day eq '4'}">수</c:if>
+																<c:if test="${listview.day eq '5'}">목</c:if>
+																<c:if test="${listview.day eq '6'}">금</c:if>
+																<c:if test="${listview.day eq '7'}">토</c:if>
+																<c:if test="${listview.day eq '1'}">알</c:if>
+																<br>${listview.time}시</td>
+															<td><c:if test="${listview.repeat eq 'N'}">
+																사용안함
+																</c:if>
+																<c:if test="${listview.repeat eq 'Y'}">
+																	사용
+																</c:if>
+															</td>
 															<td>${listview.regUser}</td>
 															<td>
 																<c:if test="${listview.use eq 'N'}">
-																<button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">삭제</button>
+																<button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">중단</button>
 																</c:if>
-
+																<c:if test="${listview.use eq 'Y'}">
+																	크롤링 완료
+																</c:if>
 															</td>
 														</tr>
 													</c:forEach>
@@ -351,17 +368,17 @@
     function delContents(sn){
         $.ajax({
             type: "POST",
-            url: "/admin/contentsChkDelete",
-            data: "RPRT_ODR=" + sn + "&CNT=1",
+            url: "/admin/reserveUse",
+            data: "sn=" + sn ,
             success: function(jdata){
                 if(jdata != 'TRUE') {
                     alert("삭제 오류");
                 }else{
                     alert("삭제 성공");
-                    location.href = "/admin/ytbForm";
+                    location.href = "/admin/reserveForm";
                 }
             },
-            error: function(data){alert(data);location.href = "/admin/ytbForm";}
+            error: function(data){alert(data);location.href = "/admin/reserveForm";}
         });
     }
 
@@ -378,7 +395,7 @@
         else{
             $.ajax({
                 type: "POST",
-                url: "/admin/contentsChkDelete",
+                url: "/admin/reserveUse",
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
                 success: function(jdata){
                     if(jdata != 'TRUE') {

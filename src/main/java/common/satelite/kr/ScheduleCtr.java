@@ -71,4 +71,11 @@ public class ScheduleCtr {
 
         return "TRUE";
     }
+
+    @ResponseBody
+    @RequestMapping(value = "/reserveUse")
+    public String reserveUse(HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap, HttpSession session) throws Exception {
+        scheduleSvc.updateUse(scheduleVO);
+        return "TRUE";
+    }
 }

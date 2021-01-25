@@ -54,8 +54,8 @@ public class ScheduleQ {
 
 
 
-    @Scheduled(cron = "0 0 0/1 * * *")
-    public void CronQue(){
+    @Scheduled(cron = "0 */1 * * * *")
+    public void cronTest1(){
         try { //일정시간이 되면 DAO를 통하여 DB에 쿼리문 조회
             Date date = new Date();
             SimpleDateFormat dateDD = new SimpleDateFormat("d");
@@ -73,7 +73,7 @@ public class ScheduleQ {
              *         execute() method 에 로직 추가
              */
             System.out.println("========= execute() method Start !!! =========");
-            System.out.println("Start Time >>> "+ currentDay + " " + currentTime + " "  + currentTime);
+            System.out.println("Start Time >>> "+ currentDay + " " + currentTime + " "  + currentE);
             //try {
             ScheduleVO scheduleVO = new ScheduleVO();
             scheduleVO.setDay(currentE);
@@ -109,7 +109,7 @@ public class ScheduleQ {
                         System.out.println(e.getMessage());
                     }
                 }
-                if (repeat != "Y"){
+                if (repeat.equals("N")){
                     sqlSession.update("updateUse", list.getSn());
                 }
             }
@@ -122,6 +122,4 @@ public class ScheduleQ {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -32,7 +32,9 @@ public class ScheduleSvc {
 
         return sqlSession.selectList("selectReserve", param);
     }
-
+    public void updateUse(ScheduleVO param) {
+        sqlSession.update("updateUse", param);
+    }
 
     public void insertSchedule(ScheduleVO param) {
         sqlSession.insert("insertSchedule", param);

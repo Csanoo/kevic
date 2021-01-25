@@ -46,7 +46,7 @@
 	<select id="selectReserve"	resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="main.java.common.satelite.kr.ScheduleVO">
 		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser
 		FROM tbl_reserve
-		WHERE state = 'Y' and `use` = 'N' and time = #{time} and day = #{day}
+		WHERE state = 'Y' and `use` = 'N' and time = #{time} and (day = #{day} or day = '0')
 	</select>
 
 	<update id="updateUse" parameterType="Integer">

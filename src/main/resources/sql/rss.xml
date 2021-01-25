@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<insert id="insertRss" parameterType="main.java.admin.satelite.kr.RssVO" >
+
+		insert into tbl_rss (title, url )
+		values ( #{title}, #{url})
+	</insert>
+
+	<sql id="includerss">
+		WHERE 1 = 1
+
+		<if test='orderKeyword=="1"'>
+			ORDER BY sn desc
+		</if>
+		<if test='orderKeyword=="2"'>
+			ORDER BY sn asc
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+			ORDER BY sn desc
+		</if>
+	</sql>
+
+
+	<select id="selectrssCount"  resultType="Integer" parameterType="main.java.common.satelite.kr.SearchVO">
+		select count(*) from tbl_rss
+		<include refid="includerss" />
+	</select>
+
+	<select id="selectrssList" resultType="main.java.admin.satelite.kr.RssVO" parameterType="main.java.common.satelite.kr.SearchVO">
+		select sn, title, url, regDate from tbl_rss
+		<include refid="includerss" />
+		<if test="rowStart > 0">
+			LIMIT ${rowStart-1}, #{pageNo}
+		</if>
+	</select>
+
+	<delete id="chkRssDelete"	parameterType="String">
+		delete from tbl_rss
+		where sn=#{sn}
+	</delete>
+
+
+	<select id="selUrlCt"  resultType="Integer" parameterType="main.java.admin.satelite.kr.RssVO">
+		SELECT COUNT(*) FROM tbl_rss where url = #{url}
+	</select>
+
+
+
+	<select id="selectRssOne"
+			parameterType="main.java.admin.satelite.kr.RssVO"
+			resultType="main.java.admin.satelite.kr.RssVO">
+		SELECT sn, title, url
+		from tbl_rss
+		where sn=#{sn}
+	</select>
+
+	<update id="updateRss" parameterType="main.java.admin.satelite.kr.RssVO">
+		update tbl_rss set
+		title = #{title}, url = #{url}
+		where sn=#{sn}
+	</update>
+</mapper>
+
