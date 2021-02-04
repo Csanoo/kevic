@@ -169,7 +169,7 @@ table{font-size:14px}
                             </h3>
 
 
-                            <p class="profile-title"> ${sessionUTYPE}</p>
+                            <p class="profile-title"> ${session.UTYPE}</p>
 
                         </div>
 

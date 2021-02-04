@@ -451,6 +451,12 @@ public class Member1Ctr {
 		if (request.getParameter("mobile") != null) {
 			mobile = request.getParameter("mobile");
 		}
+
+		String menu01 = request.getParameter("menu01");
+		String menu02 = request.getParameter("menu02");
+		String menu03 = request.getParameter("menu03");
+		String menu04 = request.getParameter("menu04");
+
 		String state = request.getParameter("state");
 		Member1VO param = new Member1VO();
 		param.setUserid(userid);
@@ -461,6 +467,10 @@ public class Member1Ctr {
 		param.setUsertype(usertype);
 		param.setState(state);
 		param.setUptuser(uptuser);
+		param.setMenu01(menu01);
+		param.setMenu02(menu02);
+		param.setMenu03(menu03);
+		param.setMenu04(menu04);
 
 		member1Svc.updateMember1One(param);
 
@@ -506,7 +516,10 @@ public class Member1Ctr {
 				session.setAttribute("USERNAME", mvo.getUsername());
 				session.setAttribute("USERTYPE", mvo.getUsertype());
 				session.setAttribute("USERID", mvo.getUserid());
-
+				session.setAttribute("menu01", mvo.getMenu01());
+				session.setAttribute("menu02", mvo.getMenu02());
+				session.setAttribute("menu03", mvo.getMenu03());
+				session.setAttribute("menu04", mvo.getMenu04());
 				modelMap.addAttribute("mvo", mvo);
 
 				LeftMenuUtil lmu = new LeftMenuUtil();
@@ -524,7 +537,7 @@ public class Member1Ctr {
 				}
 
 				if ( USERTYPE.equals("SA") ) {USERID="";
-				mvo = member1Svc.selectMainStat(USERID);
+					mvo = member1Svc.selectMainStat(USERID);
 				}else {
 					mvo = member1Svc.selectMainStat2(USERID);
 				}

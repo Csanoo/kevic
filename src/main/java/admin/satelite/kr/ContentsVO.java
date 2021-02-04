@@ -219,4 +219,13 @@ public class ContentsVO {
         this.userid = regid;
     }
 
+
+    private String sText="";;
+    public String getSText() {
+        return sText;
+    }
+    public void setSText(String sText) {
+        this.sText = sText;
+    }
+
 }

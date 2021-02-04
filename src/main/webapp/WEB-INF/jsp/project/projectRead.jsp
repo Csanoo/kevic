@@ -331,6 +331,7 @@
                     alert("오류 관리자에게 문의해주세요");
                 }
             });
+
         });
         $("#updateMemo").on("click",function(){
             var $frm = $("#form2");
@@ -353,6 +354,8 @@
                     alert("오류 관리자에게 문의해주세요");
                 }
             });
+            var offset = $("#dTable").offset();
+            $('html, body').animate({scrollTop : offset.top}, 400);
         });
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {

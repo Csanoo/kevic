@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public class Member1VO {
-	
+
 	private List<MultipartFile> uploadfile;
 
 	public List<MultipartFile> getUploadfile() {
@@ -15,11 +15,11 @@ public class Member1VO {
 	public void setUploadfile(List<MultipartFile> uploadfile) {
 		this.uploadfile = uploadfile;
 	}
-	
+
 	private String contcnt = "";
-	
+
 	private String mxwdt = "";
-	
+
 	public String getMxwdt() {
 		return mxwdt;
 	}
@@ -29,7 +29,7 @@ public class Member1VO {
 	}
 
 	private String fucheck = "";
-	
+
 	public String getFucheck() {
 		return fucheck;
 	}
@@ -78,9 +78,9 @@ public class Member1VO {
 	private String todaycnt = "";
 	private String usercnt = "";
 
-	
+
 	private String looktime = "";
-	
+
 	public String getLooktime() {
 		return looktime;
 	}
@@ -88,7 +88,7 @@ public class Member1VO {
 		this.looktime = looktime;
 	}
 	private String code1memo="";
-	
+
 	public String getCode1memo() {
 		return code1memo;
 	}
@@ -96,9 +96,9 @@ public class Member1VO {
 		this.code1memo = code1memo;
 	}
 	private String userid="";
-	
+
 	private String ccnt="";
-	
+
 	public String getCcnt() {
 		return ccnt;
 	}
@@ -139,7 +139,7 @@ public class Member1VO {
 	private String code1="";
 
 	private String url="";
-	
+
 	public String getUrl() {
 		return url;
 	}
@@ -149,8 +149,8 @@ public class Member1VO {
 	private String code2="";
 	private String title="";
 	private String memo="";
-	
-	
+
+
 	private String mobile="";
 	public String getMobile() {
 		return mobile;
@@ -172,7 +172,7 @@ public class Member1VO {
 	}
 	private String email="";
 	private String wdate="";
-	
+
 	public String getUserid() {
 		return userid;
 	}
@@ -297,4 +297,37 @@ public class Member1VO {
 	public String getRegid() {
 		return regid;
 	}
+
+	private String menu01 = "N";
+	public void setMenu01(String menu01) {
+		this.menu01 = menu01;
+	}
+	public String getMenu01() {
+		return menu01;
+	}
+
+	private String menu02 = "N";
+	public void setMenu02(String menu02) {
+		this.menu02 = menu02;
+	}
+	public String getMenu02() {
+		return menu02;
+	}
+
+	private String menu03 = "N";
+	public void setMenu03(String menu03) {
+		this.menu03 = menu03;
+	}
+	public String getMenu03() {
+		return menu03;
+	}
+
+	private String menu04 = "N";
+	public void setMenu04(String menu04) {
+		this.menu04 = menu04;
+	}
+	public String getMenu04() {
+		return menu04;
+	}
+
 }

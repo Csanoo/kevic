@@ -1,5 +1,6 @@
 package main.java.admin.satelite.kr;
 
+
 public class RssVO {
 
     private Integer sn;
@@ -29,5 +30,9 @@ public class RssVO {
     private String regDate;
     public String getRegDate(){return regDate;}
     public void setRegDate(String regDate){this.regDate = regDate;}
+
+
+
+
 
 }

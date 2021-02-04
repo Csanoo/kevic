@@ -23,7 +23,7 @@ from dual
 	<select id="selectMember1One"
 		parameterType="main.java.admin.satelite.kr.Member1VO"
 		resultType="main.java.admin.satelite.kr.Member1VO">
-		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile
+		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile, menu01, menu02, menu03, menu04
 		from tuser
 		where userid=#{userid} and userpw=#{userpw} and state = 'Y'
 	</select>
@@ -31,7 +31,7 @@ from dual
 	<select id="selectMember1Read"
 		parameterType="String"
 		resultType="main.java.admin.satelite.kr.Member1VO">
-		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile,state
+		SELECT userid,userpw,username,usertype,mobile,email,wdate,imgfile,state, menu01, menu02, menu03, menu04
 		from tuser
 		where userid=#{userid} 
 	</select>
@@ -39,9 +39,9 @@ from dual
 	<insert id="insertMember1One"
 		parameterType="main.java.admin.satelite.kr.Member1VO">
 		insert into tuser (
-		userid,userpw,username,usertype,mobile,email,wdate,state )
+		userid,userpw,username,usertype,mobile,email,wdate,state,menu01, menu02, menu03, menu04 )
 		values ( #{userid}
-		, #{userpw} , #{username},#{usertype},#{mobile},#{email},current_timestamp,#{state})
+		, #{userpw} , #{username},#{usertype},#{mobile},#{email},current_timestamp,#{state},#{menu01}, #{menu02}, #{menu03}, #{menu04})
 	</insert>
 	
 	<update id="updateMember1One"
@@ -51,7 +51,7 @@ from dual
 			userpw=#{userpw},
 		</if>
 		username=#{username},usertype=#{usertype},mobile=#{mobile},email=#{email}
-		,imgfile=#{imgfile},state=#{state}, uptDate=now(), uptuser = #{uptuser}
+		,imgfile=#{imgfile},state=#{state}, uptDate=now(), uptuser = #{uptuser}, menu01 = #{menu01}, menu02 = #{menu02}, menu03 = #{menu03}, menu04 = #{menu04}
 		where userid = #{userid}
 	</update>
 	

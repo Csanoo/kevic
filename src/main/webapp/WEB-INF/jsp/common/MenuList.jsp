@@ -10,7 +10,7 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 
 
 <ul class='wraplist'>
-
+	<c:if test="${menu01 eq 'Y'}">
 	<li class="<%=btr.CLASSOPEN(HEADERURL, "project/list")%> <%=btr.CLASSOPEN(HEADERURL, "contents")%> <%=btr.CLASSOPEN(HEADERURL, "excel/Form")%>">
 		<a href="javascript:;">
 			<i class="fa fa-folder-open"></i> <span class="title">컨텐츠 관리</span><span class="arrow "></span>
@@ -33,6 +33,8 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			</li>
 		</ul>
 	</li>
+	</c:if>
+	<c:if test="${menu02 eq 'Y'}">
 	<li class="<%=btr.CLASSOPEN(HEADERURL, "PostsList")%>  <%=btr.CLASSOPEN(HEADERURL, "appmain/AppMain1List")%> <%=btr.CLASSOPEN(HEADERURL, "appmain1Form")%><%=btr.CLASSOPEN(HEADERURL, "BannerList")%><%=btr.CLASSOPEN(HEADERURL, "banner/BannerForm")%>">
 		<a href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">운영 관리</span> <span class="arrow "></span>
@@ -53,18 +55,23 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			</a></li>
 		</ul>
 	</li>
-	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/ytbForm")%> <%=btr.CLASSOPEN(HEADERURL, "codeList")%> <%=btr.CLASSOPEN(HEADERURL, "reserveForm")%>">
+	</c:if>
+	<c:if test="${menu03 eq 'Y'}">
+	<li class="<%=btr.CLASSOPEN(HEADERURL, "posts/ytbForm")%> <%=btr.CLASSOPEN(HEADERURL, "codeList")%> <%=btr.CLASSOPEN(HEADERURL, "reserveForm")%> <%=btr.CLASSOPEN(HEADERURL, "rssReg")%>">
 		<a	href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">크롤링 관리</span> <span class="arrow "></span>
 		</a>
 		<ul class="sub-menu">
 			<li><a href="/admin/ytbForm" class="<%=btr.CLASSACTIVE(HEADERURL, "ytbForm")%>"> <span class="title">크롤링</span></a></li>
 			<li><a href="/admin/reserveForm" class="<%=btr.CLASSACTIVE(HEADERURL, "reserveForm")%>"> <span class="title">크롤링 예약</span></a></li>
+			<li><a href="/admin/rssReg" class="<%=btr.CLASSACTIVE(HEADERURL, "rssReg")%>"> <span class="title">rss주소 관리</span></a></li>
 			<li><a href="/admin/codeList" class="<%=btr.CLASSACTIVE(HEADERURL, "codeList")%>"> <span class="title">코드목록</span></a></li>
 		</ul>
 	</li>
-
+	</c:if>
+	<c:if test="${menu04 eq 'Y'}">
 	<li class="<%=btr.CLASSOPEN(HEADERURL, "project/projectList")%><%=btr.CLASSOPEN(HEADERURL, "project/projectForm")%>">
+
 		<a	href="javascript:;"> <i class="fa fa-folder-open"></i>
 			<span class="title">프로젝트 관리</span> <span class="arrow "></span>
 		</a>
@@ -73,6 +80,8 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 			<li><a href="/admin/projectReg" class="<%=btr.CLASSACTIVE(HEADERURL, "project/projectForm")%>"> <span class="title">프로젝트 등록</span></a></li>
 		</ul>
 	</li>
+	</c:if>
+	<c:if test="${USERTYPE eq 'SA'}">
 	<li class="<%=btr.CLASSOPEN(HEADERURL, "member1/Member")%> <%=btr.CLASSOPEN(HEADERURL, "member1/Register")%> <%=btr.CLASSOPEN(HEADERURL, "member1/usertypelist")%>">
 
 		<a href="javascript:;"> <i
@@ -82,7 +91,8 @@ main.java.common.satelite.kr.LeftMenuUtil btr = new main.java.common.satelite.kr
 		<ul class="sub-menu">
 			<li><a href="/admin/memberList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Member")%>"> <span class="title">관리자 계정 관리</span></a></li>
 			<li><a href="/admin/regist"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/Register")%>"> <span class="title">관리자 계정 등록</span>	</a></li>
-			<li><a href="/admin/usertypeList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/usertypelist")%>"> <span class="title">관리/등급 관리</span>	</a></li>
+			<li><a href="/admin/usertypeList"	class="<%=btr.CLASSACTIVE(HEADERURL, "member1/usertypelist")%>"> <span class="title">권한 등급 관리</span>	</a></li>
 		</ul>
 	</li>
+	</c:if>
 </ul>

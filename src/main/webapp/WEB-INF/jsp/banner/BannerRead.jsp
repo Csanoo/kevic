@@ -12,7 +12,7 @@
 			<div class="page-title">
 
 				<div class="pull-left">
-					<h1 class="title">프로젝트 배너등록</h1>
+					<h1 class="title">프로젝트 배너수</h1>
 				</div>
 
 
@@ -20,7 +20,7 @@
 		</div>
 		<div class="clearfix"></div>
 
-		<div class="col-lg-12">
+		<div class="col-lg-12">정
 			<section class="box ">
 				<header class="panel_header">
 					<h2 class="title pull-left">기본 설정</h2>

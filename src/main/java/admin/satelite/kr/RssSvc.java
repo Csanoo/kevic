@@ -6,7 +6,7 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 
 import main.java.common.satelite.kr.SearchVO;
-
+import java.util.Map;
 import java.util.List;
 
 @Service
@@ -14,8 +14,7 @@ public class RssSvc {
 
     @Autowired
     private SqlSessionTemplate sqlSession;
-    @Autowired
-    private DataSourceTransactionManager txManager;
+
 
     public Integer selectrssCount(SearchVO param) {
         return sqlSession.selectOne("selectrssCount", param);
@@ -46,6 +45,11 @@ public class RssSvc {
 
     public void updateRss(RssVO param) {
             sqlSession.update("updateRss", param);
+    }
+
+
+    public List<RssVO> selectRssFeedSave() {
+        return sqlSession.selectList("selectRssFeedSave");
     }
 
 }

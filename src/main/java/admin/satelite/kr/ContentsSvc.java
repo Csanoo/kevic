@@ -52,6 +52,12 @@ public class ContentsSvc {
     }
 
 
+    public void insertrssContentsOne(ContentsVO param) {
+
+
+            sqlSession.insert("insertrsscontentsOne", param);
+
+    }
 
     public void updatecontents(ContentsVO param, List<FileVO> filelist,
                               String[] fileno) {

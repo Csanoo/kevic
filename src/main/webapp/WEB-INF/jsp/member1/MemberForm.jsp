@@ -32,78 +32,79 @@
 				</header>
 				<div class="content-body">
 							<form name="form1" action="memberSave" method="post" enctype="multipart/form-data">
-								
 								<input name="userid" type="hidden" value="${mvo.userid}">
-						<div class="row">
-							<div class="col-md-12 col-sm-12 col-xs-12">
-							<table id="customers">
-								<tr>
-									<td class="tdl" style="width: 15%">아이디</td>
-									<td style="width: 35%" colspan="3">${mvo.userid}</td>
-								</tr>
-								<tr>
-									<td class="tdl" style="width: 15%">이름</td>
-									<td style="width: 35%"><input name="username" type="text"	value="${mvo.username}"	class="form-control" style="width: 200px"></td>
-									<td class="tdl" style="width: 15%">사용여부</td>
-									<td style="width: 35%">
-										<input type="radio" name="state" value="Y" <c:if test="${mvo.state eq 'Y'}">checked</c:if> ><label>사용</label>
-										<input type="radio" name="state" value="N" <c:if test="${mvo.state eq 'N'}">checked</c:if> ><label>사용안함</label>
-									</td>
-								</tr>
-								<tr>
-									<td class="tdl" style="width: 15%">비밀번호</td>
-									<td style="width: 35%" >
-										<input type="checkbox" name="passCk" id="passCk" value="Y" />비밀번호 변경
-										<input name="userpw" type="password" value="${mvo.userpw}"	class="form-control" style="width: 200px" disabled>
-									</td>
-									<td class="tdl" style="width: 15%">비밀번호중복확인</td>
-									<td style="width: 35%" >
-										<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px" disabled>
-									</td>
-								</tr>
-								<tr>
-									<td class="tdl" style="width: 15%">회원타입</td>
-									<td style="width: 35%" >
-										<select name="usertype" class="form-control" style="width: 100px">
-											<c:forEach var="listsel" items="${listsel}"   varStatus="status">
-												<option value='${listsel.code2}' <c:if test="${mvo.usertype eq listsel.code2}">selected</c:if>>${listsel.title}</option>
-											</c:forEach>
-										</select>
+								<div class="row">
+									<div class="col-md-12 col-sm-12 col-xs-12">
+									<table id="customers">
+										<tr>
+											<td class="tdl" style="width: 15%">아이디</td>
+											<td style="width: 35%" colspan="3">${mvo.userid}</td>
+										</tr>
+										<tr>
+											<td class="tdl" style="width: 15%">이름</td>
+											<td style="width: 35%"><input name="username" type="text"	value="${mvo.username}"	class="form-control" style="width: 200px"></td>
+											<td class="tdl" style="width: 15%">사용여부</td>
+											<td style="width: 35%">
+												<input type="radio" name="state" value="Y" <c:if test="${mvo.state eq 'Y'}">checked</c:if> ><label>사용</label>
+												<input type="radio" name="state" value="N" <c:if test="${mvo.state eq 'N'}">checked</c:if> ><label>사용안함</label>
+											</td>
+										</tr>
+										<tr>
+											<td class="tdl" style="width: 15%">비밀번호</td>
+											<td style="width: 35%" >
+												<input type="checkbox" name="passCk" id="passCk" value="Y" />비밀번호 변경
+												<input name="userpw" type="password" value="${mvo.userpw}"	class="form-control" style="width: 200px" disabled>
+											</td>
+											<td class="tdl" style="width: 15%">비밀번호중복확인</td>
+											<td style="width: 35%" >
+												<input name="userpw1" type="password"   value=""   class="form-control" style="width: 200px" disabled>
+											</td>
+										</tr>
+										<tr>
+											<td class="tdl" style="width: 15%">회원타입</td>
+											<td style="width: 35%" >
+												<select name="usertype" class="form-control" style="width: 100px">
+													<c:forEach var="listsel" items="${listsel}"   varStatus="status">
+														<option value='${listsel.code2}' <c:if test="${mvo.usertype eq listsel.code2}">selected</c:if>>${listsel.title}</option>
+													</c:forEach>
+												</select>
 
-									</td>
-									<td class="tdl" style="width: 15%">Email</td>
-									<td style="width: 35%" >
-										<input name="email" type="text"	value="${mvo.email}" class="form-control" style="width: 250px">
-									</td>
-								</tr>
-								</table>
-
-							</div>
-
-						</div>
-
-
-
+											</td>
+											<td class="tdl" style="width: 15%">Email</td>
+											<td style="width: 35%" >
+												<input name="email" type="text"	value="${mvo.email}" class="form-control" style="width: 250px">
+											</td>
+										</tr>
+										<tr id="auth-menu" style="display:none;">
+											<td class="tdl" style="width: 15%;">메뉴 권한 설정</td>
+											<td colspan="3">
+												<div class="form-group">
+													<ul class="menu-chk">
+														<li style="list-style: none"><input type="checkbox" name="menu01" id="menu01" <c:if test="${mvo.menu01 eq 'Y'}">checked</c:if> value="Y"><label for="menu01">컨텐츠 관리</label></li>
+														<li style="list-style: none"><input type="checkbox" name="menu02" id="menu02" <c:if test="${mvo.menu02 eq 'Y'}">checked</c:if> value="Y"><label for="menu02">운영 관리</label></li>
+														<li style="list-style: none"><input type="checkbox" name="menu03" id="menu03" <c:if test="${mvo.menu03 eq 'Y'}">checked</c:if> value="Y"><label for="menu03">크롤링 관리</label></li>
+														<li style="list-style: none"><input type="checkbox" name="menu04" id="menu04" <c:if test="${mvo.menu04 eq 'Y'}">checked</c:if> value="Y"><label for="menu04">프로젝트 관리</label></li>
+													</ul>
+												</div>
+											</td>
+										</tr>
+										</table>
+									</div>
+								</div>
 
 
 <c:if test="${mvo.imgfile ne ''}">
 <div><img src="/images/${mvo.imgfile}"></div>
-</c:if>					
+</c:if>
 
 
+								<div class="form-group" style="margin-top:20px">
 
-
-										<div class="form-group" style="margin-top:20px">
-
-											<button type="button" class="btn btn-gray"
-												onclick="fn_formRtn()">목록</button>
-											<button type="button" class="btn btn-orange"
-												onclick="fn_formSv()">저장</button>
-										</div>
-
-									
-							
-							
+									<button type="button" class="btn btn-gray"
+										onclick="fn_formRtn()">목록</button>
+									<button type="button" class="btn btn-orange"s
+										onclick="fn_formSv()">저장</button>
+								</div>
 							</form>
 					<header class="panel_header">
 						<h2 class="title pull-left">관리 프로젝트 </h2>
@@ -234,5 +235,10 @@
                 $("input[type='password']").prop("disabled",true);
             }
         });
-    });
+
+
+        <c:if test="${mvo.usertype eq 'CP'}">
+		$("#auth-menu").show();
+		</c:if>
+});
 </script>

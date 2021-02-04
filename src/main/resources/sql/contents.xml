@@ -128,5 +128,12 @@
 		SELECT code2,title from tcode where code1 = 'CONT'
 	</select>
 
+	<insert id="insertrsscontentsOne"
+			parameterType="main.java.admin.satelite.kr.ContentsVO">
+		insert into tbl_contents (project,
+		category01,category02, type, imageUrl, videoUrl, ctSource, title, sText )
+		select  #{project}, #{category01}, #{category02}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title},#{sText}  from dual WHERE NOT EXISTS  (SELECT sn FROM tbl_contents WHERE videoUrl = #{videoUrl} )
+	</insert>
+
 </mapper>
 

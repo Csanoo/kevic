@@ -47,7 +47,10 @@
 		SELECT COUNT(*) FROM tbl_rss where url = #{url}
 	</select>
 
-
+	<select id="selectRss" resultType="main.java.admin.satelite.kr.RssVO">
+		SELECT url
+		from tbl_rss
+	</select>
 
 	<select id="selectRssOne"
 			parameterType="main.java.admin.satelite.kr.RssVO"
@@ -62,5 +65,7 @@
 		title = #{title}, url = #{url}
 		where sn=#{sn}
 	</update>
+
+
 </mapper>
 

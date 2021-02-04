@@ -110,7 +110,7 @@ public class ContentsCtr {
     public String contentsSave(SearchVO searchVO,
                               HttpServletRequest request, ContentsVO contentsInfo,
                               ModelMap modelMap) {
-        ;
+
         contentsSvc.insertContentsOne(contentsInfo);
 
         searchVO.pageCalculate( contentsSvc.selectContentsCount(searchVO) ); // startRow, endRow

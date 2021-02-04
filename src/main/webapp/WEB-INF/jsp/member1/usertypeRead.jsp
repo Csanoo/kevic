@@ -136,7 +136,7 @@
 		</div>
 
 
-<form name="formList" action="codeList" method="post">
+<form name="formList" action="usertypeList" method="post">
 		<input type="hidden" name="searchType"
 			value="<c:out value="${searchVO.searchType}"/>"> <input
 			type="hidden" name="searchKeyword"
