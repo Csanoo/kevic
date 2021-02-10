@@ -3700,6 +3700,7 @@ function fn_scInit2(){
     $("input[name='state']:radio[value='']").prop("checked","true");
     $("#form2 input[type='number']").val('');
     $("select[name='snsType']").val('').prop("selected","true");
+    $("input[type='checkbox']").prop("checked","false");
 }
 
 function validateEmail(email) {

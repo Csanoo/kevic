@@ -57,7 +57,7 @@
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
 													<input type="number" name="CountCt" class="form-control" placeholder="50건 단위로 입력해주세요." step="50" min="0" max="1000" style="width:170px;display:inline-block">
-													<br><span>*"크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다."</span>
+													<br><span>*. 크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다.</span>
 												</td>
 											</tr>
 
@@ -126,6 +126,27 @@
 									<h2 class="title pull-left">콘텐츠 </h2>
 									<div class="pull-right" style="padding-top: 10px">
 										<ul class="list-unstyled">
+											<!--
+											<li style="float: left;"><input type="checkbox"
+																			name="searchType" value="title"
+																			<c:if test="${fn:indexOf(searchVO.searchType, 'title')!= -1}">checked="checked"</c:if> />
+												<label class="chkselect" for="searchType1">이름</label>&nbsp;&nbsp;
+
+												<input type="checkbox" name="searchType" value="snsType"
+													   <c:if test="${fn:indexOf(searchVO.searchType, 'snsType')!=-1}">checked="checked"</c:if> />
+												<label class="chkselect" for="searchType2">출처</label>&nbsp;&nbsp;
+											</li>
+											<li style="float: left;"><input type="text"
+																			style="width: 150px; height: 28px" name="searchKeyword"
+																			value='<c:out value="${searchVO.searchKeyword}"/>'
+																			onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
+											</li>
+											<li style="float: left;">&nbsp;&nbsp;
+												<button type="button" class="btn btn-primary "
+														onclick="fn_formSubmit()">검색</button>
+
+											</li>
+											-->
 											<li style="float: left;">
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
@@ -208,7 +229,10 @@
 
 		<jsp:include page="/WEB-INF/jsp/common/Footer2.jsp" />
 <script type="text/javascript">
+    function fn_formSubmit() {
+        document.form1.submit();
 
+    }
     function publishPost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();

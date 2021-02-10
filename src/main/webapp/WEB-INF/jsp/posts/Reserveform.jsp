@@ -34,6 +34,7 @@
 							<form name="form2" id="form2" action="ytbPost" method="post" >
 								<input type="hidden" name="sn" id="sn" value="" />
 								<input type="hidden" name="srch" id="srch" value="SRCH" />
+								<input type="hidden" id="chkVal" value="1" />
 								<div class="row">
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<table id="customers">
@@ -51,20 +52,20 @@
 													</c:forEach>
 												</select>
 												</td>
-											</tr>
+											</tr>"
 											-->
 											<tr>
 												<td class="tdl" style="width: 25%">검색할 컨텐츠 수</td>
 												<td style="width: 75%">
 													<input type="number" name="searchNum" class="form-control" placeholder="50건 단위로 입력해주세요." step="50" min="0" max="1000" style="width:170px;display:inline-block">
-													<br><span>*"크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다."</span>
+													<br><span>*. 크롤링 매체의 API 정책 및 제공 데이터량에 따라 입력한 숫자 만큼 컨텐츠가 크롤링되지 않을 수 있습니다.</span>
 												</td>
 											</tr>
 
 											<tr>
 												<td class="tdl" style="width: 25%">출처</td>
 												<td style="width: 75%">
-													<div style="width:200px;display: inline-block">
+													<div style="width:600px;display: inline-block">
 													<select name="ctSource" id="snsType" class="form-control" >
 														<option value="">출처를 선택해주세요.</option>
 														<option value="ytb">유튜브</option>
@@ -72,7 +73,6 @@
 														<!--
 														<option value="insta">인스타</option>
 														<option value="fb">페이스북</option>
-
 														-->
 													</select>
 													</div>
@@ -82,9 +82,9 @@
 											<tr>
 												<td class="tdl" style="width: 25%">예약 정보</td>
 												<td style="width: 75%">
-													<input type="radio" value="N" name="state" id="state2"><label for="state2" checked>사용안함</label>
-													<input type="radio" value="Y" name="state" id="state1"><label for="state1">사용</label>
-													<select name="day">
+
+													<input type="hidden" value="Y" name="state" id="state1">
+													<select name="day" id="days">
 														<option value="0">매일</option>
 														<option value="2">월</option>
 														<option value="3">화</option>
@@ -97,13 +97,15 @@
 													<input type="number" maxlength="2" name="time" style="width: 50px" min="0" max="23">
 													<input type="hidden" name="use" value="N">
 													<label>시</label>
-													<input type="checkbox" value="Y" name="repeat">
-													<label>반복</label>
+													<div class="repeat-c" style="display:none">
+														<input type="checkbox" value="Y" name="repeat" checked>
+														<label>반복</label>
+													</div>
 												</td>
 											</tr>
 										</table>
 										<div class="form-group" style="margin-top: 20px">
-											<button type="button" class="btn btn-gray" onclick="fn_scInit2()">초기화</button>
+											<button type="button" class="btn btn-gray" onclick="fn_scInit3()">초기화</button>
 											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
 										</div>
 									</div>
@@ -164,19 +166,28 @@
 
 														<th>No</th>
 														<th>등록일자</th>
+														<th>키워드</th>
+														<th>출처</th>
+														<th>건수</th>
 														<th>크롤링 정보</th>
 														<th>반복여부</th>
 														<th>등록ID</th>
 														<th>운영상태</th>
+														<th>관리</th>
 													</tr>
 													</thead>
 													<tbody>
 
 													<c:forEach var="listview" items="${listview}" varStatus="status">
 														<tr>
-
 															<td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
 															<td>${listview.regDate}</td>
+															<td>${listview.keyword}</td>
+															<td>
+																<c:if test="${listview.ctSource eq 'ytb'}">유튜브</c:if>
+																<c:if test="${listview.ctSource eq 'twi'}">트위터</c:if>
+															</td>
+															<td>${listview.searchNum}</td>
 															<td>
 																<c:if test="${listview.day eq '0'}">매일</c:if>
 																<c:if test="${listview.day eq '2'}">월</c:if>
@@ -187,7 +198,7 @@
 																<c:if test="${listview.day eq '7'}">토</c:if>
 																<c:if test="${listview.day eq '1'}">알</c:if>
 																<br>${listview.time}시</td>
-															<td><c:if test="${listview.repeat eq 'N'}">
+															<td><c:if test="${listview.repeat ne 'Y'}">
 																사용안함
 																</c:if>
 																<c:if test="${listview.repeat eq 'Y'}">
@@ -200,8 +211,14 @@
 																<button type="button" class="btn btn-orange" onclick="delContents(${listview.sn});">중단</button>
 																</c:if>
 																<c:if test="${listview.use eq 'Y'}">
-																	크롤링 완료
+																	크롤링 완료<br>
+																	${listview.edUser}<br>
+																	${listview.edDate}
 																</c:if>
+															</td>
+															<td>
+																<button type="button" class="btn btn-gray" onclick="delReserve(${listview.sn});">삭제</button>
+																<button type="button" class="btn btn-orange" onclick="modReserve(${listview.sn});">수정</button>
 															</td>
 														</tr>
 													</c:forEach>
@@ -272,7 +289,43 @@
 				}
 			});
 		});
+        $("select[name='ctSource']").on("change",function(){
 
+            var valType = $("select[name='ctSource'] option:selected").val();
+
+            if(valType=='ytb'){
+                $("input[name='searchNum']").attr("placeholder","50건 단위로 입력해주세요.(1000건 초과 검색이 불가합니다.)");
+                $("input[name='searchNum']").attr("step","50");
+                $("input[name='searchNum']").val();
+
+            }else{
+                $("input[name='searchNum']").attr("placeholder","1000건 초과 검색이 불가합니다.");
+                $("input[name='searchNum']").attr("step","1");
+                $("input[name='searchNum']").val();
+
+            }
+        });
+        $("select[name='day']").on("change",function(){
+            var val = $("select[name='day'] option:selected").val();
+
+            if(val=='0') {
+                //$("input[name='repeat']").attr("readonly", "true");
+                $("input[name='repeat']").prop("checked", "true");
+                $(".repeat-c").css("display","none");
+            }else{
+               // $("input[name='repeat']").attr("readonly", "false");
+                $(".repeat-c").css("display","inline-block");
+			}
+        });
+        $("input[name='repeat']").on("click",function(){
+            var val = $("select[name='day'] option:selected").val();
+            if(val=='0') {
+                $("input[name='repeat']").attr("checked", "true");
+                return false;
+            }else{
+                return true;
+            }
+		});
 	});
     function fn_formSv() {
 
@@ -306,7 +359,12 @@
         }
 
 		var iTime = document.form2.time.value;
-		if(iTime > 23 && iTime < 0 ){
+		if(iTime == ''){
+            alert("0시부터 23시까지 입력가능합니다.");
+            document.form2.time.focus();
+            return false;
+		}
+		if(iTime > 23 || iTime < 0 ){
 		    alert("0시부터 23시까지 입력가능합니다.");
             document.form2.time.focus();
 		    return false;
@@ -317,20 +375,53 @@
             return false;
         }
 
-        $("#loading").show();
         $.ajax({
             type: "POST",
-            url: "/admin/reserveSave",
+            url: "/admin/reserveChk",
             data: $("form[name=form2]").serialize(),
-            success: function(jdata){
-                if(jdata != 'TRUE') {
-                    alert("저장 오류");
+            success: function (jdata) {
+                if(jdata<1){
+                    $("#loading").show();
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/reserveSave",
+                        data: $("form[name=form2]").serialize(),
+                        success: function(jdata){
+                            if(jdata != 'TRUE') {
+                                alert("저장 오류");
+                            }else{
+                                alert("저장 성공");
+                                location.href = "/admin/reserveForm";
+                            }
+                        },
+                        error: function(data){alert("저장 오류");}
+                    });
                 }else{
-                    alert("저장 성공");
-                    location.href = "/admin/reserveForm";
+                    if (confirm("해당 컨텐츠로 예약한 항목이 이미 있습니다. 등록하시겠습니까?")){
+
+                        $("#loading").show();
+                        $.ajax({
+                            type: "POST",
+                            url: "/admin/reserveSave",
+                            data: $("form[name=form2]").serialize(),
+                            success: function(jdata){
+                                if(jdata != 'TRUE') {
+                                    alert("저장 오류");
+                                }else{
+                                    alert("저장 성공");
+                                    location.href = "/admin/reserveForm";
+                                }
+                            },
+                            error: function(data){alert("저장 오류");}
+                        });
+					}else{
+                        return false;
+					}
                 }
             },
-            error: function(data){alert("저장 오류");}
+            error: function (data) {
+                alert("오류 관리자에게 문의해주세요");
+            }
         });
     }
 
@@ -343,20 +434,8 @@
             }
         });
 
-        $("select[name='snsType']").on("change",function(){
-			var valType = $("select[name='snsType'] option:selected").val();
-			if(valType=='ytb'){
-                $("input[name='CountCt']").attr("placeholder","50건 단위로 입력해주세요.(1000건 초과 검색이 불가합니다.)");
-                $("input[name='CountCt']").attr("step","50");
-                $("input[name='CountCt']").val();
-				$("#ytbQua").css('display','inline-block');
-			}else{
-				$("input[name='CountCt']").attr("placeholder","1000건 초과 검색이 불가합니다.");
-				$("input[name='CountCt']").attr("step","1");
-                $("input[name='CountCt']").val();
-                $("#ytbQua").css('display','none');
-			}
-        });
+
+
 	});
     function excelDownload() {
         document.form1.action='ExcelDownloadC';
@@ -382,6 +461,28 @@
         });
     }
 
+    function modReserve(sn){
+        location.href="/admin/reserveRead?sn="+sn;
+	}
+    function delReserve(sn){
+        if(confirm('삭제 시 삭제한 데이터는 복구가 불가능합니다. 삭제하시겠습니까?')){
+			$.ajax({
+				type: "POST",
+				url: "/admin/delReserve",
+				data: "sn=" + sn ,
+				success: function(jdata){
+					if(jdata != 'TRUE') {
+						alert("삭제 오류");
+					}else{
+						alert("삭제 성공");
+						location.href = "/admin/reserveForm";
+					}
+				},
+				error: function(data){alert(data);location.href = "/admin/reserveForm";}
+			});
+        }
+    }
+
     function deletePost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();
@@ -399,9 +500,9 @@
                 data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
                 success: function(jdata){
                     if(jdata != 'TRUE') {
-                        alert("삭제 오류");
+                        alert("오류");
                     }else{
-                        alert("삭제 성공");
+                        alert("중지 완료");
                         location.href = "/admin/ytbForm";
                     }
                 },
@@ -409,7 +510,15 @@
             });
         }
     }
-
+    function fn_scInit3(){
+        $("#form2 input[type='text']").val('');
+        $("table select option").eq(0).prop("selected","true");
+        $("input[name='state']:radio[value='']").prop("checked","true");
+        $("#form2 input[type='number']").val('');
+        $("select[name='ctSource']").val('').prop("selected","true");
+        $("input[type='checkbox']").prop("checked","false");
+        $("select[name='day']").val('0').prop("selected","true");
+    }
 </script>
 <div class="loader" id ="loading"></div>
 <style>

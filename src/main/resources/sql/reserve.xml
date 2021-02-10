@@ -25,7 +25,7 @@
 
 
 	<select id="selectReserveList"	resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser
+		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser, edUser, edDate
 		FROM tbl_reserve
 		<include refid="includeReserve" />
 		<if test="rowStart > 0">
@@ -43,6 +43,10 @@
 	</select>
 
 
+	<select id="reserveChk" resultType="Integer" parameterType="main.java.common.satelite.kr.ScheduleVO">
+		SELECT COUNT(*) FROM tbl_reserve WHERE keyword = #{keyword} and ctSource = #{ctSource} and `use` = 'N'
+	</select>
+
 	<select id="selectReserve"	resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="main.java.common.satelite.kr.ScheduleVO">
 		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser
 		FROM tbl_reserve
@@ -51,8 +55,34 @@
 
 	<update id="updateUse" parameterType="Integer">
 		update tbl_reserve set
-		`use` = 'Y'
+		`use` = 'Y',
+		edUser = #{regUser},
+		edDate = now()
 		where sn=#{sn}
 	</update>
+
+	<delete id="delReserve" parameterType="Integer">
+		delete from tbl_reserve
+		where sn=#{sn}
+	</delete>
+	<select id="selectReserveOne" resultType="main.java.common.satelite.kr.ScheduleVO" parameterType="Integer">
+		SELECT sn, keyword,	searchNum, 	ctSource, day, time, state,  `use`, `repeat`, regDate, regUser FROM tbl_reserve WHERE sn=#{sn}
+	</select>
+
+	<update id="updateReserve" parameterType="main.java.common.satelite.kr.ScheduleVO">
+		update tbl_reserve set
+		keyword = #{keyword},
+		searchNum = #{searchNum},
+		ctSource = #{ctSource},
+		day = #{day},
+		time = #{time},
+		state = #{state},
+		`repeat` = #{repeat},
+		uptDate	= NOW(),
+		uptUser = #{regUser}
+		where sn=#{sn}
+	</update>
+
+
 </mapper>
 

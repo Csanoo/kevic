@@ -71,9 +71,6 @@ public class LeftMenuUtil {
 		}
 
 
-
-
-
 	}
 
 	
@@ -100,7 +97,7 @@ public class LeftMenuUtil {
 
 	
 	
-	public void setUserProgram(String _h) {
+	public void setUserProgram2(String _h) {
 		
 		Connection con = null;
 		java.sql.Statement stmt = null;

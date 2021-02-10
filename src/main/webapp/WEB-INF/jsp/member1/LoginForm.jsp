@@ -92,13 +92,21 @@
                                     alert("승인되지 않은 아이디이거나, 잘못된 비밀번호입니다.");
                                     return false;
                                 } else {
-                                    location.href= '/admin/project';
+                                    console.log(jdata);
+                                    if(jdata == '01'){
+                                        location.href= '/admin/project';
+                                    }else if(jdata == '02'){
+                                        location.href= '/admin/AppMain1';
+                                    }else if(jdata == '03'){
+                                        location.href= '/admin/ytbForm';
+                                    }else if(jdata == '04'){
+                                        location.href= '/admin/projectList';
+                                    }
                                 }
                             },
                             error: function (data) {
-                               // alert('오류');
-                                //return false;
-                                location.href = "/admin/project";
+                                alert("승인되지 않은 아이디이거나, 잘못된 비밀번호입니다.");
+                                return false;
                             }
                         });
                 	}

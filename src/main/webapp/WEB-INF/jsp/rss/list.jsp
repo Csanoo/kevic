@@ -103,8 +103,8 @@
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
-                                        <th>제목</th>
-                                        <th>URL</th>
+                                        <th>RSS 제목</th>
+                                        <th>RSS 주소</th>
                                         <th >등록일</th>
 
                                     </tr>
@@ -116,7 +116,7 @@
                                             <td ><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.title}</td>
                                             <td>${listview.url}</td>
-                                            <td>${listview.regDate}</td>
+                                            <td>${listview.regDate}<br>${listview.regUser}</td>
                                             <td>
                                                 <button type="button" class="btn btn-orange" data-toggle="modal" data-target="#myModal"  onclick="fn_modify(${listview.sn})">수정</button>
                                             </td>
@@ -145,8 +145,14 @@
 
 <script>
     function fn_formSubmit() {
+        if(frm.title.value == ''){
+            alert('RSS 제목을 확인해주세요.');
+            frm.title.focus();
+            return false;
+        }
+
         if(frm.urlChk.value == '0'){
-            alert('주소 확인해주세요.');
+            alert('RSS 주소 확인해주세요.');
             frm.url.focus();
             return false;
         }
@@ -176,24 +182,27 @@
             arr.push($(this).attr('value'));
         });
         if(cnt == 0){
-            alert("선택된 글이 없습니다.");
-        }
-        else{
-            $.ajax({
-                type: "POST",
-                url: "/admin/rssChkDelete",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
-                success: function(jdata){
+            alert("선택된 항목이 없습니다.");
+        }else{
+            if(confirm("선택된 항목들을 삭제하시겠습니까?")) {
+                $.ajax({
+                    type: "POST",
+                    url: "/admin/rssChkDelete",
+                    data: "RPRT_ODR=" + arr + "&CNT=" + cnt,
+                    success: function (jdata) {
 
-                    if(jdata != 'TRUE') {
-                        alert("삭제 오류");
-                    }else{
-                        alert("삭제 성공");
+                        if (jdata != 'TRUE') {
+                            alert("삭제 오류");
+                        } else {
+                            alert("삭제 성공");
+                            location.href = "/admin/rssReg";
+                        }
+                    },
+                    error: function (data) {
                         location.href = "/admin/rssReg";
                     }
-                },
-                error: function(data){location.href = "/admin/rssReg";}
-            });
+                });
+            }
         }
     }
 
@@ -251,6 +260,11 @@
                 alert("주소를 입력해주세요");
                 return false;
             }
+            if(!regUrlType(url)){
+                alert("RSS 주소형식을 확인해주세요.")
+                return false;
+            }
+
             $.ajax({
                 type: "POST",
                 url: "/admin/selUrlCt",
@@ -293,7 +307,13 @@
             $( "#msgList" ).html( data );
         });
     }
+    function regUrlType(data) {
 
+        var regex = /^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?/;
+
+        return regex.test(data);
+
+    }
 </script>
 <style>
     .dragRow{

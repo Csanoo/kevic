@@ -109,7 +109,7 @@
 												<td><c:out value="${listview.userid}" /></td>
 												<td><a href="javascript:fn_readGo('${listview.userid}')">${listview.username}</a></td>
 												<td>${listview.projectct}</td>
-												<td data-toggle="modal" data-target="#myModal" onclick="fn_history('${listview.userid}');"><a>${listview.mxwdt}</a></td>
+												<td  data="${listview.userid}" class="openLoginHis"><a>${listview.mxwdt}</a></td>
 												<td><c:out value="${listview.uptDate}" /></td>
 												<td><c:out value="${listview.uptuser}" /></td>
 											</tr>
@@ -156,15 +156,34 @@
 
 
     function fn_history(userid, page) {
-
+        $('#myModal').modal('show');
         if(page =='' || page == undefined){
             page = 1;
-		}
+        }
         var ppage = page;
         $.get("/admin/loginList?userid="+userid+"&page="+ppage , function(data){
             $( "#loginlist" ).html( data );
         });
     }
+
+	$(function(){
+		$(".openLoginHis").on("click",function(){
+            $('#myModal').modal('show');
+            if(page =='' || page == undefined){
+                page = 1;
+            }
+            var userid = $(this).attr('data');
+
+            var ppage = page;
+            $.get("/admin/loginList?userid="+userid+"&page=1" , function(data){
+                $( "#loginlist" ).html( data );
+            });
+		});
+	    $("#btnClose").on("click",function(){
+	        $("#myModal").modal('hide');
+		});
+	});
+
 
 </script>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
@@ -176,10 +195,9 @@
 			</div>
 			<div class="modal-body" id="loginlist">
 
-
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+				<button type="button" class="btn btn-default" id="btnClose">닫기</button>
 			</div>
 		</div>
 	</div>

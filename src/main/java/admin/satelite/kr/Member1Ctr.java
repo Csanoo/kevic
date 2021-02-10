@@ -473,9 +473,13 @@ public class Member1Ctr {
 		param.setMenu04(menu04);
 
 		member1Svc.updateMember1One(param);
+		String userIng = "";
+		userIng = (String)request.getSession().getAttribute("USERID");
 
-
-		searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
+		if(userid.equals(userIng)){
+			return "redirect:logout";
+		}
+			searchVO.pageCalculate( member1Svc.selectMember1Count(searchVO) ); // startRow, endRow
 
 		List<?> listview  = member1Svc.selectMember1List(searchVO);
 
@@ -483,6 +487,7 @@ public class Member1Ctr {
 		searchVO.setAction("memberList");
 		modelMap.addAttribute("listview", listview);
 		modelMap.addAttribute("searchVO", searchVO);
+
 
 
 
@@ -511,20 +516,19 @@ public class Member1Ctr {
 		mvo = member1Svc.selectMember1One(param);
 
 		if (mvo != null) {
-			if ( ( mvo.getUsertype().equals("SA") && !mvo.getUsername().equals("") ) ||	( mvo.getUsertype().equals("CP") && !mvo.getUsername().equals("") )) {
-
+				String menuval ="00";
+				String menu01 = mvo.getMenu01();
+				String menu02 = mvo.getMenu02();
+				String menu03 = mvo.getMenu03();
+				String menu04 = mvo.getMenu04();
 				session.setAttribute("USERNAME", mvo.getUsername());
 				session.setAttribute("USERTYPE", mvo.getUsertype());
 				session.setAttribute("USERID", mvo.getUserid());
-				session.setAttribute("menu01", mvo.getMenu01());
-				session.setAttribute("menu02", mvo.getMenu02());
-				session.setAttribute("menu03", mvo.getMenu03());
-				session.setAttribute("menu04", mvo.getMenu04());
+
 				modelMap.addAttribute("mvo", mvo);
 
 				LeftMenuUtil lmu = new LeftMenuUtil();
-
-				lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
+				//lmu.setUserProgram("ADMINLOGIN", mvo.getUserid());
 
 
 				String USERID = "";
@@ -538,17 +542,38 @@ public class Member1Ctr {
 
 				if ( USERTYPE.equals("SA") ) {USERID="";
 					mvo = member1Svc.selectMainStat(USERID);
+					modelMap.addAttribute("mvo", mvo);
+					session.setAttribute("menu01", "Y");
+					session.setAttribute("menu02", "Y");
+					session.setAttribute("menu03", "Y");
+					session.setAttribute("menu04", "Y");
+					return "01";
 				}else {
+					session.setAttribute("menu01", menu01);
+					session.setAttribute("menu02", menu02);
+					session.setAttribute("menu03", menu03);
+					session.setAttribute("menu04", menu04);
 					mvo = member1Svc.selectMainStat2(USERID);
+					modelMap.addAttribute("mvo", mvo);
+
+					System.out.println(menu04);
+					System.out.println(menu03);
+					System.out.println(menu02);
+					System.out.println(menu01);
+					if(menu04.equals("Y")){
+						menuval = "04";
+					}
+					if(menu03.equals("Y")){
+						menuval = "03";
+					}
+					if(menu02.equals("Y")){
+						menuval = "02";
+					}
+					if(menu01.equals("Y")){
+						menuval = "01";
+					}
+					return menuval;
 				}
-
-				modelMap.addAttribute("mvo", mvo);
-
-				return "True";
-
-			} else {
-				return "FALSE";
-			}
 
 		} else {
 			return "FALSE";

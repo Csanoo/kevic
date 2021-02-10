@@ -24,6 +24,11 @@ public class ScheduleSvc {
         return sqlSession.selectOne("selectReserveListCount", param);
     }
 
+    public Integer reserveChk(ScheduleVO param) {
+        return sqlSession.selectOne("reserveChk", param);
+    }
+
+
     public List<ScheduleVO> selectReserveList(SearchVO param) {
 
         return sqlSession.selectList("selectReserveList", param);
@@ -40,4 +45,18 @@ public class ScheduleSvc {
         sqlSession.insert("insertSchedule", param);
     }
 
+    public void delReserve(ScheduleVO param) {
+        sqlSession.delete("delReserve", param);
+    }
+
+    public ScheduleVO selectReserveOne(Integer param) {
+        return sqlSession.selectOne("selectReserveOne", param);
+    }
+
+    public void updateReserve(ScheduleVO param) {
+        sqlSession.update("updateReserve", param);
+    }
 }
+
+
+

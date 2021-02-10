@@ -38,7 +38,7 @@
                                                 <td class="tdl" style="width: 15%">등급 *</td>
 
                                                 <td style="width: 35%">
-                                                    <select name="usertype">
+                                                    <select name="usertype" id="usertype">
                                                         <c:forEach var="listsel" items="${listsel}"   varStatus="status">
                                                             <option value='${listsel.code2}' >${listsel.title}</option>
                                                         </c:forEach>
@@ -78,6 +78,19 @@
                                                 <td class="tdl" style="width: 15%">비밀번호 확인</td>
                                                 <td style="width: 35%" >
                                                     <input type="password" name="userpw1" id="userpw1" class="input" value="" size="20" />
+                                                </td>
+                                            </tr>
+                                            <tr id="auth-menu" style="display:none;">
+                                                <td class="tdl" style="width: 15%;">메뉴 권한 설정</td>
+                                                <td colspan="3">
+                                                    <div class="form-group">
+                                                        <ul class="menu-chk">
+                                                            <li style="list-style: none"><input type="checkbox" name="menu01" id="menu01" <c:if test="${mvo.menu01 eq 'Y'}">checked</c:if> value="Y"><label for="menu01">컨텐츠 관리</label></li>
+                                                            <li style="list-style: none"><input type="checkbox" name="menu02" id="menu02" <c:if test="${mvo.menu02 eq 'Y'}">checked</c:if> value="Y"><label for="menu02">운영 관리</label></li>
+                                                            <li style="list-style: none"><input type="checkbox" name="menu03" id="menu03" <c:if test="${mvo.menu03 eq 'Y'}">checked</c:if> value="Y"><label for="menu03">크롤링 관리</label></li>
+                                                            <li style="list-style: none"><input type="checkbox" name="menu04" id="menu04" <c:if test="${mvo.menu04 eq 'Y'}">checked</c:if> value="Y"><label for="menu04">프로젝트 관리</label></li>
+                                                        </ul>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         </table>
@@ -128,7 +141,20 @@
 
         });
 
+        $("#usertype").on("change",function(){
+            var sn = $("#usertype option:selected").val();
+           if(sn !='SA'){
+               $("#auth-menu").show();
+           }else{
+               $("#auth-menu").hide();
+           }
+        });
+
+        if( $("#usertype option:selected").val() != 'SA'){
+            $("#auth-menu").show();
+        }
     })
+
 
     $("#dupUserid").on("click",function(){
         var userid = $("#userid").val();

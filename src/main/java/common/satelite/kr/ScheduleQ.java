@@ -107,7 +107,7 @@ public class ScheduleQ {
             String title = "";
             String stype = "";
             Integer CountCt = 0;
-            String USERID = "reserve";
+            String USERID = "";
             String sdate = "";
             String edate = "";
             String repeat = "";
@@ -120,6 +120,7 @@ public class ScheduleQ {
                 title = list.getKeyword();
                 CountCt = list.getSearchNum();
                 repeat = list.getRepeat();
+                USERID = list.getRegUser();
                 if (snsType.equals("ytb")) {
                     try {
                         //srch.execute(title);

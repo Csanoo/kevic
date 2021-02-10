@@ -32,6 +32,7 @@ public class RssCtr {
     @RequestMapping(value = "/rssReg")
     public String rssReg(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
+
         searchVO.setDisplayRowCount(searchVO.getPageNo());
         searchVO.pageCalculate( rssSvc.selectrssCount(searchVO) ); // startRow, endRow
 
@@ -45,7 +46,12 @@ public class RssCtr {
     }
 
     @RequestMapping(value = "/rssSave")
-    public String projectSave(RssVO rssVO) {
+    public String projectSave(HttpServletRequest request,RssVO rssVO) {
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+        rssVO.setRegUser(USERID);
         rssSvc.inserrss(rssVO);
         return "redirect:rssReg";
     }
@@ -100,7 +106,11 @@ public class RssCtr {
 
     @RequestMapping(value = "/rssModify")
     public String projectUp(SearchVO searchVO, HttpServletRequest request, RssVO rssVO, ModelMap modelMap) {
-
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+        rssVO.setRegUser(USERID);
         Integer sn = Integer.parseInt(request.getParameter("sn"));
         String title = request.getParameter("title");
         String url = request.getParameter("url");

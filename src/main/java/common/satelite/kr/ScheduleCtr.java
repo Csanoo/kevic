@@ -45,6 +45,24 @@ public class ScheduleCtr {
     }
 
 
+
+    @ResponseBody
+    @RequestMapping(value = "/reserveChk")
+    public Integer reserveChk(HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap, HttpSession session) throws Exception {
+
+        return scheduleSvc.reserveChk(scheduleVO);
+
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/delReserve")
+    public String delReserve(HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap, HttpSession session) throws Exception {
+
+        scheduleSvc.delReserve(scheduleVO);
+        return "TRUE";
+
+    }
+
     @ResponseBody
     @RequestMapping(value = "/reserveSave")
     public String ytb1Post(HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap, HttpSession session) throws Exception {
@@ -75,7 +93,50 @@ public class ScheduleCtr {
     @ResponseBody
     @RequestMapping(value = "/reserveUse")
     public String reserveUse(HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap, HttpSession session) throws Exception {
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+        scheduleVO.setRegUser(USERID);
         scheduleSvc.updateUse(scheduleVO);
         return "TRUE";
+    }
+
+    @RequestMapping(value = "/reserveRead")
+    public String banner1Read(HttpServletRequest request, ScheduleVO reserveInfo,SearchVO searchVO, ModelMap modelMap) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        reserveInfo = scheduleSvc.selectReserveOne(sn);
+        modelMap.addAttribute("reserveInfo", reserveInfo);
+        return "posts/ReserveRead";
+    }
+
+    @RequestMapping(value = "/reserveModify")
+    public String projectUp(SearchVO searchVO, HttpServletRequest request, ScheduleVO scheduleVO, ModelMap modelMap) {
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        String keyword = request.getParameter("keyword");
+        Integer searchNum = Integer.parseInt(request.getParameter("searchNum"));
+        String ctSource = request.getParameter("ctSource");
+        String day = request.getParameter("day");
+        Integer time = Integer.parseInt(request.getParameter("time"));
+        String repeat = request.getParameter("repeat");
+
+
+        scheduleVO.setRegUser(USERID);
+        scheduleVO.setKeyword(keyword);
+        scheduleVO.setSearchNum(searchNum);
+        scheduleVO.setCtSource(ctSource);
+        scheduleVO.setDay(day);
+        scheduleVO.setTime(time);
+        scheduleVO.setRepeat(repeat);
+        scheduleVO.setSn(sn);
+
+        scheduleSvc.updateReserve(scheduleVO);
+
+        return "redirect:reserveForm";
     }
 }

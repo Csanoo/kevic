@@ -23,7 +23,7 @@
         <div class="col-lg-12">
             <section class="box ">
                 <header class="panel_header">
-                    <h2 class="title pull-left">수</h2>
+                    <h2 class="title pull-left">수정</h2>
                 </header>
                 <div class="content-body">
                     <div class="row">
@@ -43,7 +43,7 @@
                                             <tr>
                                                 <td class="tdl" style="width: 25%">RSS 주소</td>
                                                 <td style="width: 75%;">
-                                                    <input name="urlChk" id="urlChk" type="hidden"	value="1" >
+                                                    <input name="urlChk" id="urlChk" type="hidden"	value="3" >
                                                     <input name="url" type="text"	id="url" value="${rssInfo.url}" class="form-control">
                                                     <button type="button" class="btn btn-gray" id="dupUrl">중복 확인</button>
                                                 </td>
@@ -70,13 +70,13 @@
                                     var frm =document.form1;
 
                                     if(frm.title.value == ''){
-                                        alert('타이틀을 확인해주세요.');
+                                        alert('RSS 제목을 확인해주세요.');
                                         frm.title.focus();
                                         return false;
                                     }
 
                                     if(frm.urlChk.value == '0'){
-                                        alert('주소 확인해주세요.');
+                                        alert('Rss 주소 확인해주세요.');
                                         frm.url.focus();
                                         return false;
                                     }
@@ -138,8 +138,16 @@
 
         $("#dupUrl").on("click",function(){
             var url = $("#url").val();
+            if( $("#urlChk").val()=='3'){
+                alert('주소를 변경 후 확인해 주세요.');
+                return false;
+            }
+            if(!regUrlType(url)){
+                alert("RSS 주소형식을 확인해주세요.")
+                return false;
+            }
             if(url==""){
-                alert("주소를 입력해주세요");
+                alert("RSS 주소를 입력해주세요");
                 return false;
             }
             $.ajax({
@@ -161,5 +169,11 @@
             });
         });
     })
+    function regUrlType(data) {
 
+        var regex = /^(((http(s?))\:\/\/)?)([0-9a-zA-Z\-]+\.)+[a-zA-Z]{2,6}(\:[0-9]+)?(\/\S*)?/;
+
+        return regex.test(data);
+
+    }
 </script>

@@ -99,4 +99,37 @@ public class ScheduleVO {
         this.regUser = regUser;
     }
 
+    private String uptDate="";
+    public String getUptDate() {
+        return uptDate;
+    }
+    public void setUptDate(String uptDate) {
+        this.uptDate = uptDate;
+    }
+
+    private String uptUser="";
+    public String getUptUser() {
+        return uptUser;
+    }
+    public void setUptUser(String uptUser) {
+        this.uptUser = uptUser;
+    }
+
+    private String edDate="";
+    public String getEdDate() {
+        return edDate;
+    }
+    public void setEdDate(String edDate) {
+        this.edDate = edDate;
+    }
+
+    private String edUser="";
+    public String getEdUser() {
+        return edUser;
+    }
+    public void setEdUser(String edUser) {
+        this.edUser = edUser;
+    }
+
+
 }

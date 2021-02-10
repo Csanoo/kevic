@@ -5,8 +5,8 @@
 
 	<insert id="insertRss" parameterType="main.java.admin.satelite.kr.RssVO" >
 
-		insert into tbl_rss (title, url )
-		values ( #{title}, #{url})
+		insert into tbl_rss (title, url, regUser)
+		values ( TRIM(#{title}), TRIM(#{url}), #{regUser})
 	</insert>
 
 	<sql id="includerss">
@@ -30,7 +30,7 @@
 	</select>
 
 	<select id="selectrssList" resultType="main.java.admin.satelite.kr.RssVO" parameterType="main.java.common.satelite.kr.SearchVO">
-		select sn, title, url, regDate from tbl_rss
+		select sn, title, url, regDate, regUser from tbl_rss
 		<include refid="includerss" />
 		<if test="rowStart > 0">
 			LIMIT ${rowStart-1}, #{pageNo}
@@ -44,7 +44,7 @@
 
 
 	<select id="selUrlCt"  resultType="Integer" parameterType="main.java.admin.satelite.kr.RssVO">
-		SELECT COUNT(*) FROM tbl_rss where url = #{url}
+		SELECT COUNT(*) FROM tbl_rss where url = TRIM(#{url})
 	</select>
 
 	<select id="selectRss" resultType="main.java.admin.satelite.kr.RssVO">
@@ -62,7 +62,7 @@
 
 	<update id="updateRss" parameterType="main.java.admin.satelite.kr.RssVO">
 		update tbl_rss set
-		title = #{title}, url = #{url}
+		title = TRIM(#{title}), url = TRIM(#{url}), uptDate = now(), uptUser = #{regUser}
 		where sn=#{sn}
 	</update>
 
