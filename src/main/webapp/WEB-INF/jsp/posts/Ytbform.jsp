@@ -126,19 +126,24 @@
 									<h2 class="title pull-left">콘텐츠 </h2>
 									<div class="pull-right" style="padding-top: 10px">
 										<ul class="list-unstyled">
-											<!--
-											<li style="float: left;"><input type="checkbox"
-																			name="searchType" value="title"
-																			<c:if test="${fn:indexOf(searchVO.searchType, 'title')!= -1}">checked="checked"</c:if> />
-												<label class="chkselect" for="searchType1">이름</label>&nbsp;&nbsp;
 
-												<input type="checkbox" name="searchType" value="snsType"
-													   <c:if test="${fn:indexOf(searchVO.searchType, 'snsType')!=-1}">checked="checked"</c:if> />
-												<label class="chkselect" for="searchType2">출처</label>&nbsp;&nbsp;
+											<li style="float: left;margin-right:5px;">
+												<select name="ctSource" class="form-control" >
+													<option value="">출처를 선택해주세요.</option>
+													<option value="YTB" <c:if test="${searchVO.ctSource eq 'YTB'}">selected</c:if>>유튜브</option>
+													<option value="TWT" <c:if test="${searchVO.ctSource eq 'TWT'}">selected</c:if>>트위터</option>
+													<option value="RSS" <c:if test="${searchVO.ctSource eq 'RSS'}">selected</c:if>>RSS</option>
+													<!--
+                                                    <option value="insta">인스타</option>
+                                                    <option value="fb">페이스북</option>
+
+                                                    -->
+												</select>
+
 											</li>
 											<li style="float: left;"><input type="text"
-																			style="width: 150px; height: 28px" name="searchKeyword"
-																			value='<c:out value="${searchVO.searchKeyword}"/>'
+																			style="width: 150px; height: 28px" name="stitle"
+																			value='<c:out value="${searchVO.stitle}"/>'
 																			onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">
 											</li>
 											<li style="float: left;">&nbsp;&nbsp;
@@ -146,7 +151,6 @@
 														onclick="fn_formSubmit()">검색</button>
 
 											</li>
-											-->
 											<li style="float: left;">
 												<!--<button type="button" class="btn btn-primary " onclick="fn_formSubmit()">기본컨텐츠 등록</button>-->
 												<button type="button" class="btn btn-orange" onclick="publishPost();">컨텐츠 등록</button>
