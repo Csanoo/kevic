@@ -23,7 +23,7 @@
 		<div class="col-lg-12">
 			<section class="box ">
 				<header class="panel_header">
-					<h2 class="title pull-left">컨텐츠 직접등록</h2>
+					<h2 class="title pull-left">컨텐츠 수동 등록</h2>
 					<div class="actions panel_actions pull-right">
 						<i class="box_toggle fa fa-chevron-down"></i> <i
 							class="box_setting fa fa-cog" data-toggle="modal"
@@ -91,7 +91,7 @@
 												<td style="width: 35%" colspan="3"><input name="imageUrl" type="text"  class="form-control"></td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">원 URL</td>
+												<td class="tdl" style="width: 15%">원본 URL</td>
 
 												<td style="width: 35%" colspan="3"><input name="videoUrl" type="text"  class="form-control"></td>
 											</tr>

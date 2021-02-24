@@ -126,7 +126,7 @@
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
-                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">직접저장</button>
+                                    <button type="button" class="btn btn-orange" onclick="fn_formGo()">수동 등록</button>
                                     <button type="button" class="btn btn-gray"   onclick="publishNotPost()">노출중지</button>
                                     <button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
                                     <!--<button type="button" class="btn btn-orange" onclick="fn_postsortConfirm()">순서 저장</button>-->
