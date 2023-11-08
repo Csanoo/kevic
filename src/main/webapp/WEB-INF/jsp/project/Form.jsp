@@ -23,7 +23,7 @@
 		<div class="col-lg-12">
 			<section class="box ">
 				<header class="panel_header">
-					<h2 class="title pull-left">컨텐츠 수동 등록</h2>
+					<h2 class="title pull-left">프로젝트 등록</h2>
 					<div class="actions panel_actions pull-right">
 						<i class="box_toggle fa fa-chevron-down"></i> <i
 							class="box_setting fa fa-cog" data-toggle="modal"
@@ -39,80 +39,147 @@
 									<div class="col-md-12 col-sm-12 col-xs-12">
 										<table id="customers">
 											<tr>
-												<input value="1" name="appkind" type="hidden" class="form-control">
-												<input value="200" name="state" type="hidden" class="form-control">
-												<td class="tdl" style="width: 15%">프로트젝트명 </td>
 
-												<td style="width: 35%" colspan="3">
-													<select name="project"  id="project" class="form-control">
-
-														<c:forEach var="projectview" items="${projectview}"   varStatus="status">
-															<option value="${projectview.sn}" <c:if test="${projectInfo.project eq projectview.sn}">selected</c:if>>${projectview.title}</option>
-														</c:forEach>
-													</select>
+												<td class="tdl" style="width: 15%">부서 </td>
+												<td style="width: 35%" >
+													<input type="text" class="form-control" name="department" id="department">
 												</td>
-											
-											</tr>
-											<tr>
-												<td class="tdl" style="width: 15%">컨텐츠 타입</td>
-												<td style="width: 35%" colspan="3">
-													<select name="type"  class="form-control" >
-														<c:forEach var="cateview" items="${cateview}"   varStatus="status">
-															<option value="${cateview.code2}" <c:if test="${projectInfo.type eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-														</c:forEach>
-
-													</select>
+												<td class="tdl" style="width: 15%">이름 </td>
+												<td style="width: 35%" >
+													<input type="text" class="form-control" name="hName" id="hName">
 												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">전시 카테고리</td>
+												<td class="tdl" style="width: 15%">업체명 </td>
 												<td style="width: 35%" colspan="3">
-													<div id="category01">
-													<select name="category01" id="category1" class="form-control" >
-														<option value="">카테고리</option>
-														<c:forEach var="cateview" items="${cateview1}"   varStatus="status">
-															<option value="${cateview1.code2}" <c:if test="${projectInfo.catesn eq cateview1.sn}">selected</c:if>>${cateview1.title}</option>
-														</c:forEach>
+													<input type="text" class="form-control" name="corpName" id="corpName">
+												</td>
+											</tr>
 
+
+											<tr>
+												<td class="tdl" style="width: 15%">구분</td>
+												<td style="width: 35%" colspan="3">
+													<select name="ctType">
+														<option value="10">마스</option>
+														<option value="20">마스</option>
+														<option value="30">마스</option>
 													</select>
-													</div>
-													<div id="category02">
-														<select name="category02" id="category2" class="form-control" >
-															<option value="">카테고리</option>
 
-														</select>
-													</div>
 												</td>
 											</tr>
 											<tr>
-
-												<td class="tdl" style="width: 15%">출처 이미지 URL</td>
-
-												<td style="width: 35%" colspan="3"><input name="imageUrl" type="text"  class="form-control"></td>
+												<td class="tdl" style="width: 15%">실수요기관 </td>
+												<td style="width: 35%">
+													<input type="text" class="form-control" name="cAgency" id="cAgncy">
+												</td>
+												<td class="tdl" style="width: 15%">공사명 </td>
+												<td style="width: 35%">
+													<input type="text" class="form-control" name="ctName" id="ctName">
+												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">원본 URL</td>
-
-												<td style="width: 35%" colspan="3"><input name="videoUrl" type="text"  class="form-control"></td>
-											</tr>
-											<tr>
-												<td class="tdl" style="width: 15%">출처</td>
-												<td style="width: 35%" colspan="3">
-													<select name="ctSource" id="ctSource" class="form-control" >
-														<c:forEach var="sourceview" items="${sourceview}"   varStatus="status">
-															<option value="${sourceview.code2}">${sourceview.title}</option>
-														</c:forEach>
-
+												<td class="tdl" style="width: 15%">납품요구번호 </td>
+												<td style="width: 35%">
+													<input type="text" class="form-control" name="dNumber" id="dNumber">
+												</td>
+												<td class="tdl" style="width: 15%">지급방법 </td>
+												<td style="width: 35%">
+													<select name="dType">
+														<option value="10">마스</option>
+														<option value="20">마스</option>
+														<option value="30">마스</option>
 													</select>
 												</td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">타이틀</td>
-												<td style="width: 35%"  colspan="3"><input name="title" type="text"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">품대계 </td>
+												<td style="width: 35%">
+													<input type="text" class="form-control" name="gdPrice" id="gdPrice">
+												</td>
+												<td colspan="2"></td>
 											</tr>
 											<tr>
-												<td class="tdl" style="width: 15%">키워드</td>
-												<td style="width: 35%"  colspan="3"><input name="keyword" type="text"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">남품요구</td>
+												<td style="width: 35%"  colspan="1"><input name="dwDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">남품기한</td>
+												<td style="width: 35%"  colspan="1"><input name="ddDate" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">검사요청</td>
+												<td style="width: 35%"  colspan="1"><input name="chkDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">검수요청</td>
+												<td style="width: 35%"  colspan="1"><input name="chkDate2" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">검사완료</td>
+												<td style="width: 35%"  colspan="1"><input name="chkfDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">검수완료</td>
+												<td style="width: 35%"  colspan="1"><input name="chkfDate2" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">검사요청</td>
+												<td style="width: 35%"  colspan="1"><input name="chkDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">검수요청</td>
+												<td style="width: 35%"  colspan="1"><input name="chkDate2" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">검사완료</td>
+												<td style="width: 35%"  colspan="1"><input name="chkfDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">검수완료</td>
+												<td style="width: 35%"  colspan="1"><input name="chkfDate2" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">변경납기</td>
+												<td style="width: 35%"  colspan="1"><input name="chgPriceDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">대금청구</td>
+												<td style="width: 35%"  colspan="1"><input name="" type="date"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">증권발행</td>
+												<td style="width: 35%"  colspan="1"><input name="stockDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">발주요청</td>
+												<td style="width: 35%"  colspan="1"><input name="reqDate" type="date"	class="form-control"></td>
+											</tr>
+
+											<tr>
+												<td class="tdl" style="width: 15%">선금요청</td>
+												<td style="width: 35%"  colspan="1"><input name="fmdate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">선금액</td>
+												<td style="width: 35%"  colspan="1"><input name="firPrice" type="number"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">수금일</td>
+												<td style="width: 35%"  colspan="1"><input name="getmDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">수금액</td>
+												<td style="width: 35%"  colspan="1"><input name="reqPrice" type="number"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">정산일</td>
+												<td style="width: 35%"  colspan="1"><input name="accDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">정산액</td>
+												<td style="width: 35%"  colspan="1"><input name="accPrice" type="number"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">기안일</td>
+												<td style="width: 35%"  colspan="1"><input name="draftDate" type="date"	class="form-control"></td>
+												<td class="tdl" style="width: 15%">지급액</td>
+												<td style="width: 35%"  colspan="1"><input name="payPrice" type="number"	class="form-control"></td>
+											</tr>
+											<tr>
+												<td class="tdl" style="width: 15%">확인사항</td>
+												<td style="width: 35%"  colspan="3"><textarea name="confirmMemo" class="form-control"></td>
+											</tr>
+												<tr>
+												<td class="tdl" style="width: 15%">완료여부</td>
+												<td style="width: 35%"  colspan="1">
+													<select name="state">
+														<option value="10">진행중</option>
+														<option value="20">완료</option>
+													</select>
+													</td>
+												<td class="tdl" style="width: 15%">종결여부</td>
+												<td style="width: 35%"  colspan="1"><input name="finishChk" type="checkbox"	class="form-control"></td>
 											</tr>
 										</table>
 

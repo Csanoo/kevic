@@ -31,114 +31,191 @@
                     <div style="display:flex">
                         <div style="display:flex">
                             <a class="btn btn-orange" href="/admin/projectDetail?sn=${projectInfo.sn}">기본정보</a>
-                            <a class="btn btn-gray"href="/admin/categoryDetail?sn=${projectInfo.sn}">카테고리</a>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12 col-sm-12 col-xs-12">
-
                             <form name="form1" action="projectRegUp" method="post"	enctype="multipart/form-data">
                                 <input type="hidden" name="sn" id="sn" value="${projectInfo.sn}">
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <table id="customers">
                                             <tr>
-                                                <td class="tdl" style="width: 15%">프로트젝트명 *</td>
 
-                                                <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="title" id="title" value="${projectInfo.title}">
-                                                    <button type="button" class="btn btn-gray" id="dupTit">중복 확인</button>( ex : KPOP 걸 그룹)
-                                                    <input type="hidden" name="titleCk" id="titleCk" value="3">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">프로트젝트 코드</td>
-
-                                                <td style="width: 35%" colspan="3">
-                                                    <!--
-                                                    <input type="text" name="projectcd"  id="projectcd" value="${projectInfo.projectcd}">
-                                                    <button type="button" class="btn btn-gray" id="dupCd">중복 확인</button>(영문숫자만 입력 ex : PJTKGIRL001)
-                                                    <input type="hidden" name="projectcdCk" id="projectcdCk" value="3">
-                                                    -->
-                                                    ${projectInfo.sn}
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">설명</td>
-
-                                                <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="comment" value="${projectInfo.comment}">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">사용여부</td>
-                                                <td style="width: 35%" colspan="3">
-                                                    <input type="radio" name="state" value="100" <c:if test="${projectInfo.state eq '100'}">checked</c:if> ><label>사용</label>
-                                                    <input type="radio" name="state" value="200" <c:if test="${projectInfo.state eq '200'}">checked</c:if>><label>사용안함</label>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">기본 로고*</td>
-                                                <td style="width: 35%" colspan="3">
-                                                    <div class="form-group" style="display:block">
-                                                        <div class="controls">
-                                                            <!--<input type="checkbox" name="modi" value="Y"/>-->
-                                                            <input type="file" name="uploadfile"  id="uploadfile" multiple="" accept="image/jpeg, image/png" style="display:inline-block"/> <label>가로 200px,2Mbyte이내,png,jpg</label>
-                                                            <div id="imgcon" class="controls">
-                                                                <img src="/upload/images/${projectInfo.logoimg}" width="110" id="oldImg">
-                                                            </div>
-                                                            <br />
-
-                                                            <br>
-                                                            <c:out value="${projectInfo.logoimg}" />
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">기본페이지 타이틀</td>
-                                                <td style="width: 35%" colspan="3"><input name="basicTitle" type="text" value="${projectInfo.basictitle}" class="form-control"></td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">프로젝트 등록자</td>
-                                                <td style="width: 35%">
-                                                  ${projectInfo.regUser}
-                                                </td>
-                                                <td class="tdl" style="width: 15%">프로젝트 운영자</td>
+                                                <td class="tdl" style="width: 15%">부서 </td>
                                                 <td style="width: 35%" >
-                                                    <c:forEach var="mlist" items="${mlist}" varStatus="status">
-                                                        <c:if test="${mlist.puse eq '1'}">
-                                                        <span>${mlist.username}<a style="cursor:pointer;margin-left:5px;" onClick="mDel('${mlist.userid}')">X</a></span>
-                                                        </c:if>
-                                                    </c:forEach>
-                                                    <button type="button" class="btn btn-gray pull-right" data-toggle="modal" onclick="memberList(${projectInfo.sn});" data-target="#myModal">추가</button>
+                                                    <input type="text" class="form-control" name="department" id="department" value="${projectInfo.department}">
+                                                </td>
+                                                <td class="tdl" style="width: 15%">이름 </td>
+                                                <td style="width: 35%" >
+                                                    <input type="text" class="form-control" name="hName" id="hName" value="${projectInfo.hName}">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">업체명 </td>
+                                                <td style="width: 35%" colspan="3">
+                                                    <input type="text" class="form-control" name="corpName" id="corpName" value="${projectInfo.corpName}">
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">구분</td>
+                                                <td style="width: 35%" colspan="3">
+                                                    <select name="ctType">
+                                                        <option value="10" <c:if test="${projectInfo.ctType eq '10'}">selected</c:if>>마스</option>
+                                                        <option value="20" <c:if test="${projectInfo.ctType eq '20'}">selected</c:if>>3자</option>
+                                                        <option value="30" <c:if test="${projectInfo.ctType eq '30'}">selected</c:if>>우수총액</option>
+                                                        <option value="40" <c:if test="${projectInfo.ctType eq '40'}">selected</c:if>>수의</option>
+                                                    </select>
 
                                                 </td>
                                             </tr>
-                                        </table>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">실수요기관 </td>
+                                                <td style="width: 35%">
+                                                    <input type="text" class="form-control" name="cAgency" id="cAgency" value="${projectInfo.cAgency}">
+                                                </td>
+                                                <td class="tdl" style="width: 15%">공사명 </td>
+                                                <td style="width: 35%">
+                                                    <input type="text" class="form-control" name="ctName" id="ctName" value="${projectInfo.ctName}">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">납품요구번호 </td>
+                                                <td style="width: 35%">
+                                                    <input type="text" class="form-control" name="dNumber" id="dNumber" value="${projectInfo.dNumber}">
+                                                </td>
+                                                <td class="tdl" style="width: 15%">지급방법 </td>
+                                                <td style="width: 35%">
+                                                    <select name="dType">
+                                                        <option value="10" <c:if test="${projectInfo.dType eq '10'}">selected</c:if>>직불</option>
+                                                        <option value="20" <c:if test="${projectInfo.dType eq '20'}">selected</c:if>>대지급</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">품대계 </td>
+                                                <td style="width: 35%">
+                                                    <input type="text" class="form-control" name="gdPrice" id="gdPrice" value="${projectInfo.gdPrice}" >
+                                                </td>
+                                                <td colspan="2"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">남품요구</td>
+                                                <td style="width: 35%"  colspan="1"><input name="dwDate" type="date"	class="form-control" value="${projectInfo.dwDate}"></td>
+                                                <td class="tdl" style="width: 15%">남품기한</td>
+                                                <td style="width: 35%"  colspan="1"><input name="ddDate" type="date"	class="form-control" value="${projectInfo.ddDate}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">검사요청</td>
+                                                <td style="width: 35%"  colspan="1"><input name="chkDate" type="date"	class="form-control" value="${projectInfo.chkDate}"></td>
+                                                <td class="tdl" style="width: 15%">검수요청</td>
+                                                <td style="width: 35%"  colspan="1"><input name="chkDate2" type="date"	class="form-control" value="${projectInfo.chkDate2}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">검사완료</td>
+                                                <td style="width: 35%"  colspan="1"><input name="chkfDate" type="date"	class="form-control" value="${projectInfo.chkfDate}"></td>
+                                                <td class="tdl" style="width: 15%">검수완료</td>
+                                                <td style="width: 35%"  colspan="1"><input name="chkfDate2" type="date"	class="form-control" value="${projectInfo.chkfDate2}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">전문기관</td>
+                                                <td style="width: 35%"  colspan="1"><input name="proDate" type="date"	class="form-control" value="${projectInfo.proDate}"></td>
 
-                                        <div class="form-group" style="margin-top: 10px">
-                                            <button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
-                                            <button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
-                                        </div>
+                                            </tr>
 
-                                    </div>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">변경납기</td>
+                                                <td style="width: 35%"  colspan="1"><input name="chgPriceDate" type="date"	class="form-control" value="${projectInfo.chgPriceDate}"></td>
+                                                <td class="tdl" style="width: 15%">대금청구</td>
+                                                <td style="width: 35%"  colspan="1"><input name="paydate" type="date"	class="form-control" value="${projectInfo.payDate}"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">증권발행</td>
+                                                <td style="width: 35%"  colspan="1"><input name="stockDate" type="date" class="form-control" value="${projectInfo.stockDate}"></td>
+                                                <td class="tdl" style="width: 15%">발주요청</td>
+                                                <td style="width: 35%"  colspan="1"><input name="reqDate" type="date" class="form-control" value="${projectInfo.reqDate}"></td>
+                                            </tr>
 
-                                </div>
-                            </form>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">선금요청</td>
+                                                <td style="width: 35%"  colspan="1"><input name="fmDate" type="date"	class="form-control" value="${projectInfo.fmDate}"></td>
+                                                <td class="tdl" style="width: 15%">선금액</td>
+                                                <td style="width: 35%"  colspan="1"><input name="firPrice" type="number"	class="form-control" value="${projectInfo.firPrice}" > </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">수금일</td>
+                                                <td style="width: 35%"  colspan="1"><input name="getmDate" type="date"	class="form-control" value="${projectInfo.getmDate}"></td>
+                                                <td class="tdl" style="width: 15%">수금액</td>
+                                                <td style="width: 35%"  colspan="1"><input name="reqPrice" type="number"	class="form-control" value="${projectInfo.reqPrice}" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">정산일</td>
+                                                <td style="width: 35%"  colspan="1"><input name="accDate" type="date"	class="form-control" value="${projectInfo.accDate}"></td>
+                                                <td class="tdl" style="width: 15%">정산액</td>
+                                                <td style="width: 35%"  colspan="1"><input name="accPrice" type="number"	class="form-control" value="${projectInfo.accPrice}" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl" style="width: 15%">기안일</td>
+                                                <td style="width: 35%"  colspan="1"><input name="draftDate" type="date"	class="form-control" value="${projectInfo.draftDate}"></td>
+                                                <td class="tdl" style="width: 15%">지급액</td>
+                                                <td style="width: 35%"  colspan="1"><input name="payPrice" type="number"	class="form-control" value="${projectInfo.payPrice}" ></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="tdl">확인사항</td>
+                                                <td style="width: 35%"  colspan="3"><textarea name="confirmMemo" class="form-control">${projectInfo.confirmMemo}</textarea></td>
+											</tr>
+												<tr>
+												<td class="tdl" style="width: 15%">완료여부</td>
+												<td style="width: 35%"  colspan="1">
+													<select name="state">
+                                                        <option value="10" <c:if test="${projectInfo.state eq '10'}">selected</c:if>>계약</option>
+                                                        <option value="20" <c:if test="${projectInfo.state eq '20'}">selected</c:if>>발주</option>
+                                                        <option value="30" <c:if test="${projectInfo.state eq '30'}">selected</c:if>>검수</option>
+                                                        <option value="40" <c:if test="${projectInfo.state eq '40'}">selected</c:if>>대청</option>
+                                                        <option value="50" <c:if test="${projectInfo.state eq '50'}">selected</c:if>>수금</option>
+                                                        <option value="60" <c:if test="${projectInfo.state eq '60'}">selected</c:if>>정산</option>
+                                                        <option value="70" <c:if test="${projectInfo.state eq '70'}">selected</c:if>>보류</option>
+                                                        <option value="80" <c:if test="${projectInfo.state eq '80'}">selected</c:if>>완료</option>
+                                                        <option value="90" <c:if test="${projectInfo.state eq '90'}">selected</c:if>>취소</option>
+													</select>
+													</td>
+												<td class="tdl" style="width: 15%">종결여부</td>
+												<td style="width: 35%"  colspan="1"><input name="finishChk" type="checkbox"	class="form-control" <c:if test="${projectInfo.finishChk eq 'Y'}">checked</c:if> ></td>
+											</tr>
+                                            <tr>
+                                                <td class="tdl">파일업로드</td>
+                                                <td colspan="3">
+                                                    <input type="file" name="uploadfile"  id="uploadfile" multiple="3" style="display:inline-block"/>
+                                                    <ul>
+<c:forEach var="filelist" items="${filelist}" varStatus="status">
+    <li><a href="/upload/${filelist.realname}">${filelist.filename}</a><span data="${filelist.sn}" class="btn_delfile">X</span></li>
+</c:forEach>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+
+										</table>
+
+
+										<div class="form-group" style="margin-top: 10px">
+											<button type="button" class="btn btn-gray"	onclick="fn_formRtn()">목록</button>
+                                            <button type="button" class="btn btn-gray"	onclick="fn_dvlrdown()">계약서다운</button>
+											<button type="button" class="btn btn-orange" onclick="fn_formSv()">저장</button>
+										</div>
+
+									</div>
+
+								</div>
+
+							</form>
+
+
                             <script>
                                 function fn_formSv() {
                                     var frm =document.form1;
-                                    if(frm.titleCk.value == '0'){
-                                        alert('프로젝트명을 확인해주세요.');
-                                        frm.title.focus();
-                                        return false;
-                                    }
-                                 //   if(frm.projectcdCk.value == '0'){
-                                //        alert('프로젝트코드를 확인해주세요.');
-                                  //      frm.projectcd.focus();
-                                  //      return false;
-                                 //   }
+
 
                                     document.form1.submit();
 
@@ -148,75 +225,7 @@
 
                                 }
                             </script>
-                            <form name="form2" id="form2" action="projectSave" method="post"	enctype="multipart/form-data">
 
-                                <input type="hidden" name="sn" id="tableSn" value="${projectInfo.sn}">
-
-                                <div class="row">
-                                    <div class="col-md-12 col-sm-12 col-xs-12">
-                                        <table id="customers">
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">제목</td>
-
-                                                <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="title"  id="mtitle" value="" class="form-control">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="tdl" style="width: 15%">내용</td>
-
-                                                <td style="width: 35%" colspan="3">
-                                                    <input type="text" name="memo" id="mmemo"  value="" class="form-control">
-                                                </td>
-                                            </tr>
-                                        </table>
-
-                                        <div class="form-group" style="margin-top: 10px">
-                                            <button type="button" class="btn btn-orange" id="saveMemo">저장</button>
-                                            <button type="button" class="btn btn-orange" id="updateMemo" style="display: none">수정</button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </form>
-                            <table class="table" id="dTable">
-                                <thead>
-                                <colgroup>
-                                    <col width="5%">
-                                    <col width="5%">
-                                    <col width="10%">
-                                    <col width="15%">
-                                    <col width="15%">
-                                    <col width="20%">
-                                    <col width="15%">
-                                    <col width="10%">
-                                </colgroup>
-                                <tr>
-                                    <th>No</th>
-                                    <th>제목</th>
-                                    <th>내용</th>
-                                    <th>등록자</th>
-                                    <th>등록일</th>
-                                    <th>관리</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <c:forEach var="memolist" items="${memolist}" varStatus="status">
-                                    <tr>
-                                        <td id="tblSn">${memolist.sn}</td>
-                                        <td id="tblTitle">${memolist.title}</td>
-                                        <td id="tblMemo">${memolist.memo}</td>
-                                        <td>${memolist.userid}</td>
-                                        <td>${memolist.regDate}</td>
-                                        <td>
-                                            <button type="button" class="btn btn-gray modifyMemo" >수정</button>
-                                            <button type="button" class="btn btn-orange" onclick="delMemo('${memolist.sn}')">X</button>
-                                        </td>
-                                    </tr>
-                                </c:forEach>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -228,8 +237,7 @@
                    value="<c:out value="${searchVO.searchType}"/>"> <input
                 type="hidden" name="searchKeyword"
                 value="<c:out value="${searchVO.searchKeyword}"/>"> <input
-                type="hidden" name="orderKeyword"
-                value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
+                type="hidden" name="orderKeyword"  value="<c:out value="${fn:trim(searchVO.orderKeyword)}"/>"> <input
                 type="hidden" name="page" value="<c:out value="${pageVO.page}"/>">
         </form>
     </section>
@@ -310,52 +318,9 @@
                 }
             });
         });
-        $("#saveMemo").on("click",function(){
-            var $frm = $("#form2");
-            if(document.form2.title.value == ''){
-                alert("메모 제목을 입력해주세요");
-                return false;
-            }
-            if(document.form2.memo.value == ''){
-                alert("메모 내용을 입력해주세요");
-                return false;return false;
-            }
-             $.ajax({
-                type: "POST",
-                url: "/admin/saveMemo",
-                data: $frm.serialize(),
-                success: function (data) {
-                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
-                },
-                error: function (data) {
-                    alert("오류 관리자에게 문의해주세요");
-                }
-            });
 
-        });
-        $("#updateMemo").on("click",function(){
-            var $frm = $("#form2");
-            if(document.form2.title.value == ''){
-                alert("메모 제목을 입력해주세요");
-                return false;
-            }
-            if(document.form2.memo.value == ''){
-                alert("메모 내용을 입력해주세요");
-                return false;return false;
-            }
-            $.ajax({
-                type: "POST",
-                url: "/admin/updateMemo",
-                data: $frm.serialize(),
-                success: function (data) {
-                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
-                },
-                error: function (data) {
-                    alert("오류 관리자에게 문의해주세요");
-                }
-            });
 
-        });
+
         $("#allChk").on("click",function(){
             if ($(this).is(':checked')) {
                 $("input[name='chkSn']").prop('checked', true);
@@ -373,6 +338,23 @@
             var offset = $("#dTable").offset();
             $('html, body').animate({scrollTop : offset.top}, 400);
         });
+
+        $(".btn_delfile").on("click",function(){
+            if(confirm("메모를 삭제하겠습니까?")){
+            $.ajax({
+                type: "POST",
+                url: "/admin/delFile",
+                data: "sn="+$(this).attr("data"),
+                success: function (data) {
+                    location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
+                },
+                error: function (data) {
+                    alert("오류 관리자에게 문의해주세요");
+                }
+            });
+            }
+        });
+
     })
 
 
@@ -425,6 +407,9 @@
             alert("정상 처리되었습니다.");
             location.href = "/admin/projectDetail?sn=${projectInfo.sn}";
         });
+    }
+    function fn_dvlrdown(){
+        location.href = "/admin/dlvrform?sn=${projectInfo.sn}";
     }
     function ckTitle(){
 
@@ -536,141 +521,27 @@
 
         return check;
     }
-    document.getElementById("uploadfile").onchange = function () {
-        if(this.value != "") {
-            var extPlan = "JPG, PNG";
-            var checkSize = 1024*1024*2; // 2MB
-            if(!checkImgSize($('#uploadfile'), checkSize)) {
-                this.value = "";
-                return;
-            }
-        }
-    };
-    $(document).on('change', 'input[type=file]', function(){
 
-        var $width = 200;
-        var $target = $(this);
-        if($target.val()==''){
-            $('#imgcon').children('#temp_img').attr('src', '');
-            $("#oldImg").show();
-            return false;
+    function comma(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+    }
 
-        }
-        var ext = $target.val().match(/\.(.+)$/)[1];
-        if(ext != 'jpg' && ext != 'png' && ext != 'jpeg'){
-            alert('jpg,png 파일을 입력해주세요.');
-            $target.val('');
-            return false;
-        }
-        if(window.FileReader){ //FileReader를 지원하는 브라우저의 경우 IE 10이상, 크롬..
+    function uncomma(str) {
+        str = String(str);
+        return str.replace(/[^\d]+/g, '');
+    }
 
-            var reader = new FileReader();
+    function inputNumberFormat(obj) {
+        obj.value = comma(uncomma(obj.value));
+    }
 
-            reader.onload = function (e) {
+    function inputOnlyNumberFormat(obj) {
+        obj.value = onlynumber(uncomma(obj.value));
+    }
 
-                $('#imgcon').append('<img src="" id="temp_img" style="display:inline-block" />');  //보이지 않는 임시 img 태그를 생성.
-                $("#oldImg").hide();
-                $img = $('#temp_img').attr('src', e.target.result);                          //파일을 선택했을 경우 정보를 $img 객체에 저장
-                $("#temp_img").load(function(){
-                    //$(document).on('change', '#temp_img', function(){
-                    //  alert($('#temp_img').width());
-                    if($img.width() != $width ){                  //가로 세로 사이즈 비교 후 반환
-
-                        alert('지정된 크기와 맞지 않습니다.('+$width + 'px)');
-
-                        $target.val('');
-
-                        $('#temp_img').remove(); //위에서 생성한 임시 img 태그 삭제
-                        $("#oldImg").show();
-                        return;
-
-                    }
-                });
-
-            };
-
-            reader.readAsDataURL($(this)[0].files[0]);  //파일을 img 태그에 보여줄 수 있도록 base64로 url을 생성합니다.
-
-        } else {                                               //FileReader를 지원하지 않는 브라우저의 경우 IE 9 이하
-
-            $(this)[0].select();
-
-            var src = document.selection.createRange().text;
-
-            $('#imgcon').append('<img src="" id="temp_img" style="display:none;" />');
-            $("#oldImg").hide();
-            $img = $('#temp_img').attr('src', src);
-
-            $('#temp_img').remove();
-
-            if($img.width() != $width){
-
-                alert('지정된 크기와 맞지 않습니다.('+$width + 'px)');
-
-                $(this).val('');
-
-                return;
-
-            }
-
-        }
-        $('#temp_img').remove();
-        $("#oldImg").show();
-
-    });
+    function onlynumber(str) {
+        str = String(str);
+        return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g,'$1');
+    }
 </script>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            </div>
-            <div class="modal-body" id="memberList">
-                <button type="button" class="btn btn-orange pull-right" onclick="fn_mngChkSave()">선택등록</button>
-                <table class="table">
-                    <thead>
-                    <colgroup>
-                        <col width="5%">
-                        <col width="20%">
-                        <col width="25%">
-                        <col width="20%">
-                        <col width="15%">
-                        <col width="15%">
-
-                    </colgroup>
-                    <tr>
-                        <th><input type="checkbox" id="allChk" ></th>
-                        <th>등급</th>
-                        <th>사용여부</th>
-                        <th>ID</th>
-                        <th>이름</th>
-                        <th>운영권한</th>
-                    </tr>
-                    </thead>
-                    <tbody  style="height:600px">
-                    <c:forEach var="mlist" items="${mlist}" varStatus="status">
-                        <tr>
-                            <td><input type="checkbox" value="${mlist.userid}" name="chkSn"></td>
-                            <td><c:if test="${mlist.userType eq 'SA'}">최고관리자</c:if>
-                                <c:if test="${mlist.userType eq ''}">일반관리자</c:if>
-                            </td>
-                            <td><c:if test="${mlist.state eq 'Y'}">최고관리자</c:if>
-                                <c:if test="${mlist.state eq 'N'}">일반관리자</c:if></td>
-                            <td>${mlist.userid}</td>
-                            <td>${mlist.username}</td>
-                            <td><c:if test="${mlist.puse eq 0}" >
-                                <button id="projectMember" onClick="fn_mngSave('${mlist.userid}');">등록</button>
-                            </c:if> </td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-gray pull-right" data-dismiss="modal"  >닫기</button>
-            </div>
-        </div>
-    </div>
-</div>

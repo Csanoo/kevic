@@ -30,7 +30,7 @@
         <property name="maxUploadSize" value="10000000" />
         <property name="maxInMemorySize" value="100000000" />
     </bean>
-	<mvc:resources mapping="/upload/**" location="/upload/" />
+	<mvc:resources mapping="/upload/**" location="/data/upload" />
 
 	<!--bean id="AuthLoginInterceptor" class="main.java.common.satelite.kr.AuthLoginInterceptor">
 	</bean>-->

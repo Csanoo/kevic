@@ -161,6 +161,20 @@ public class FileVO {
     private String t5 = "";
     private String t6 = "";
     private String t7 = "";
-    
-    
+
+
+	private Integer sn;
+	public Integer getSn() {
+		return sn;
+	}
+	public void setSn(Integer sn) {
+		this.sn = sn;
+	}
+    private Integer psn;
+	public Integer getPsn() {
+		return psn;
+	}
+	public void setPsn(Integer psn) {
+		this.psn = psn;
+	}
 }

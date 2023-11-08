@@ -3558,7 +3558,8 @@ blockquote.orange{ border-color: rgba(250,133,100,1.0); }
 }
 .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
     border-color: #eaeaea;
-    padding: 10px;
+    padding: 5px;
+    white-space: nowrap;
 }
 /*---------------------------------------------
     Data Tables
@@ -7397,3 +7398,7 @@ border-left: 3px solid transparent;
     background-color: rgba(153, 114, 181, .7);
 }
 */
+
+.mwidth1850{
+    min-width: 1850px !important;
+}

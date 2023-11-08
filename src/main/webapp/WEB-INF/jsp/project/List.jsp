@@ -1,7 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <jsp:include page="/WEB-INF/jsp/common/LeftMenu2.jsp" />
 
@@ -27,50 +27,11 @@
                             <div class="row">
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">프로젝트</td>
-                                            <td style="width: 75%">
-                                                <select name="sproject"  class="form-control" id="pubproject">
-                                                    <option value="">프로젝트</option>
-                                                    <c:forEach var="projectview" items="${projectview}"   varStatus="status">
-                                                        <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
-                                                    </c:forEach>
-                                                </select>
-                                                <div id="category01">
-                                                    <select name="category01" id="category1" class="form-control" >
-                                                        <option value="0">카테고리</option>
 
-                                                    </select>
-                                                </div>
-                                                <div id="category02">
-                                                    <select name="category02" id="category2" class="form-control" >
-                                                        <option value="0">카테고리</option>
-
-                                                    </select>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">컨텐츠 타입</td>
-                                            <td style="width: 75%">
-                                                <select name="stype"  class="form-control" >
-                                                    <option value="">전체</option>
-                                                    <c:forEach var="cateview" items="${cateview}"   varStatus="status">
-                                                        <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td class="tdl" style="width: 25%">타이틀</td>
                                             <td style="width: 75%">
                                                 <input name="searchTitle" type="text"	value="${searchVO.searchTitle}" class="form-control">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">키워드</td>
-                                            <td style="width: 75%">
-                                                <input name="searchKeyword" type="text"	value="${searchVO.searchKeyword}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -121,25 +82,22 @@
             <div class="clearfix"></div>
             <div class="col-lg-12">
                 <section class="box ">
-                    <header class="panel_header">
+                    <header class="panel_header mwidth1850" style="min-width:1850px;">
                         <h2 class="title pull-left"> <div style="font-size:14px">총 ${searchVO.totRow}건</div> </h2>
                         <div class="pull-right" style="padding-top: 10px">
                             <ul class="list-unstyled">
                                 <li style="float: left;">
                                     <button type="button" class="btn btn-orange" onclick="fn_formGo()">수동 등록</button>
-                                    <button type="button" class="btn btn-gray"   onclick="publishNotPost()">노출중지</button>
+                                    <button type="button" class="btn btn-red" onclick="fn_api()">자동 등록</button>
                                     <button type="button" class="btn btn-gray"  onclick="excelDownload()">엑셀다운로드</button>
-                                    <!--<button type="button" class="btn btn-orange" onclick="fn_postsortConfirm()">순서 저장</button>-->
 
                                 </li>
                                 <li style="float: left;">
                                     <select name="orderKeyword" id="orderKeyword"  >
                                         <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">등록일 내림차순</option>
                                         <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">등록일 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">타이틀 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">타이틀 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">키워드 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">키워드 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">프로젝트명 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">프로젝트명 오름차순</option>
                                     </select>
                                     <select name="pageNo" id="pageNo"  >
                                         <option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
@@ -153,58 +111,63 @@
                         </div>
                     </header>
 
-                    <div class="content-body">
+                    <div class="content-body mwidth1850" style="min-width:1850px;">
                         <div class="row">
                             <div class="col-md-12 col-sm-12 col-xs-12">
                                 <table class="table" id="dTable">
                                     <thead>
 
                                     <tr>
-                                        <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
-                                        <th>컨텐츠타입</th>
-                                        <th>노출위치</th>
-                                        <th >이미지</th>
-                                        <th style="200px">출처이미지URL</th>
-                                        <th style="150px">원본 URL</th>
-                                        <th>타이틀</th>
-                                        <th>키워드</th>
-                                        <th>등록일</th>
-                                        <th>메시지</th>
-                                        <th>좋아요</th>
-                                        <th>추천</th>
-                                      <!--  <th>순서</th>-->
-                                        <th>노출</th>
+                                        <th>일시</th>
+                                        <th>부서</th>
+                                        <th>담당자</th>
+                                        <th>업체명</th>
+                                        <th>실수요기관</th>
+                                        <th>공사명</th>
+                                        <th>계약금액</th>
+                                        <th>납품요구</th>
+                                        <th>납품기한</th>
+                                        <th>전문기관검사</th>
+                                        <th>검수요청</th>
+                                        <th>전문기관</th>
+                                        <th>대금청구</th>
+                                        <th>발주일자</th>
+                                        <!--<th>수금일</th>
+                                        <th>수금액</th>
+                                        <th>정산일</th>
+                                        <th>지급일</th>-->
+                                        <th>완료여부</th>
                                     </tr>
                                     </thead>
                                     <tbody id="cList">
                                     <c:forEach var="listview" items="${listview}" varStatus="status">
                                         <tr>
-                                            <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td ><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
-                                            <td>${listview.type}</td>
-                                            <td style="width:150px;">${listview.projectTitle}<br>${listview.category01Title}<br>${listview.category02Title}</td>
-                                            <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
-                                            <td><div style="width:150px;word-break:break-all;"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
-                                            <td>${listview.title}</td>
-                                            <td>${listview.keyword}</td>
-                                            <td>${listview.regDate}<br>${listview.userid}</td>
-                                            <td onClick="javascript:fn_list('${listview.sn}',1)" id="msg_${listview.sn}" data-toggle="modal" data-target="#myModal" ><a>${listview.msgCt}</a></td>
-                                            <td >${listview.like}</td>
-                                            <td ><input type="checkbox" name="suggest" value="${listview.sn}" <c:if test="${listview.suggest eq 'Y'}" >checked </c:if></td>
-                                           <!-- <td>
-                                                이동
-                                                <input type="hidden" value="${listview.sn}" name="sort">
-                                            </td>-->
-                                            <td>
-                                                <button type="button" class="btn btn-orange"  onclick="fn_notPublish(${listview.sn})">X</button>
-                                            </td>
+                                            <td>${listview.regDate}</td>
+                                            <td>${listview.department}</td>
+                                            <td>${listview.hName}</td>
+                                            <td>${listview.corpName}</td>
+                                            <td>${listview.cAgency}</td>
+                                            <td><a href="/admin/projectDetail?sn=${listview.sn}">${listview.ctName}</a></td>
+                                            <td><fmt:formatNumber type="currency" value="${listview.gdPrice}" /></td>
+                                            <td>${listview.dwDate}</td>
+                                            <td>${listview.ddDate}</td>
+                                            <td></td>
+                                            <td>${listview.chkDate}</td>
+                                            <td>${listview.proDate}</td>
+                                            <td>${listview.payDate}</td>
+                                            <td>${listview.reqDate}</td>
+                                                <%--                                            <td>${listview.getmDate}</td>--%>
+                                                <%--                                            <td>${listview.payPrice}</td>--%>
+                                                <%--                                            <td>${listview.accDate}</td>--%>
+                                                <%--                                            <td>${listview.draftDate}</td>--%>
+                                            <td>${listview.finishChk}</td>
                                         </tr>
                                     </c:forEach>
                                     <c:if test="${searchVO.totRow <= 0}">
                                         <tr>
-                                            <td colspan="11">검색결과가 없습니다.</td>
+                                            <td colspan="20">검색결과가 없습니다.</td>
                                         </tr>
                                     </c:if>
                                     </tbody>
@@ -248,6 +211,25 @@
         document.form1.sn.value = _a;
         document.form1.action = "projectRead";
         document.form1.submit();
+    }
+
+    function fn_api() {
+
+        $("#loading").show();
+        $.ajax({
+            type: "POST",
+            url: "/admin/apiCall",
+            data: $("form[name=form2]").serialize(),
+            success: function(jdata){
+                if(jdata != 'TRUE') {
+                    alert("수집 오류");
+                }else{
+                    alert("수집 성공");
+                    location.href = "/admin/project";
+                }
+            },
+            error: function(data){alert("수집 오류");}
+        });
     }
 
 
@@ -387,7 +369,7 @@
 
             var arr = new Array();
             $("input[name='sort']").each(function () {
-               // alert($(this).attr('value'));
+                // alert($(this).attr('value'));
                 arr.push($(this).attr('value'));
             });
 
@@ -444,8 +426,8 @@
             }
         });
 
-     //   $("#dTable").tableDnD({
-       //     onDragClass: "dragRow"
+        //   $("#dTable").tableDnD({
+        //     onDragClass: "dragRow"
         //});
         $("#pubproject").on("change",function(){
             var sn = $("#pubproject option:selected").val();

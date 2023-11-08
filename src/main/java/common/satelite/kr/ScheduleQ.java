@@ -163,7 +163,7 @@ public class ScheduleQ {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
-            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "crdb", "admin123");
+            con = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/motiva?serverTimezone=UTC", "root", "1024Csw!@");
 
             List<RssVO> listview = selectRssFeedSave();
             for (RssVO list : listview) {

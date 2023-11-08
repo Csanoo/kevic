@@ -1,4 +1,5 @@
 <Context crossContext="true" sessionCookiePath="/">
+
 	<Resource
 			auth="Container"
 			driverClassName="com.mysql.jdbc.Driver"
@@ -6,13 +7,14 @@
 			maxIdle="30"
 
 			name="jdbc/mdvsds"
-			username="crdb"
-			password="admin123"
+			username="kevic"
+			password="Kevic10!)"
 			type="javax.sql.DataSource"
 
 			removeAbandonedTimeout="60"
 			logAbandoned="true"
 			factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
-			url="jdbc:mysql://localhost:3306/motiva?serverTimezone=UTC"
+			url="jdbc:mysql://localhost:3306/motiva?serverTimezone=UTC&amp;useSSL=false&amp;autoReconnect=true&amp;validationQuery=select 1;"
 	/>
+
 </Context>

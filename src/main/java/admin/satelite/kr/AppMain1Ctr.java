@@ -50,7 +50,7 @@ public class AppMain1Ctr {
 
 	}
 	
-	@RequestMapping(value = "/AppMain2")
+		@RequestMapping(value = "/AppMain2")
 	public String AppMain2(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) {
 
 				

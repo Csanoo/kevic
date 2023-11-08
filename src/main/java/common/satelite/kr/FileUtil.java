@@ -6,13 +6,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+import javax.net.ssl.HandshakeCompletedEvent;
+import javax.servlet.http.HttpServletRequest;
 
+import main.java.admin.satelite.kr.AppMain1Svc;
 import org.springframework.web.multipart.MultipartFile;
 
 
 public class FileUtil {
-	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles) {
-		String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+
+
+	public List<FileVO> saveAllFilesBB(List<MultipartFile> upfiles)  {
+
+		String filePath = "/data/upload";
+		//String filePath = servletRequest.getServletContext().getRealPath("/");
 		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
 		List<FileVO> filelist = new ArrayList<FileVO>();
 
@@ -21,12 +31,12 @@ public class FileUtil {
 				continue;
 			}
 
-			String newName = uploadfile.getOriginalFilename();
+			String newName = getNewName()+getFileExtension(uploadfile.getOriginalFilename());
 			saveFile2(uploadfile, filePath + "/" , newName);
 
 			FileVO filedo = new FileVO();
 			filedo.setFilename(uploadfile.getOriginalFilename());
-			filedo.setRealname(uploadfile.getOriginalFilename());
+			filedo.setRealname(newName);
 			filedo.setFilesize(uploadfile.getSize());
 			filelist.add(filedo);
 		}
@@ -34,7 +44,7 @@ public class FileUtil {
 	}
 
 	public List<FileVO> saveAllFileslogo(List<MultipartFile> upfiles) {
-		String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+		String filePath = "/data/upload";
 		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
 		List<FileVO> filelist = new ArrayList<FileVO>();
 
@@ -54,7 +64,7 @@ public class FileUtil {
 		return filelist;
 	}
 	public List<FileVO> saveAllFiles(List<MultipartFile> upfiles) {
-		String filePath = "/server/apache-tomcat-8.5.59/webapps/upload/images/";
+		String filePath = "/data/upload";
 		//String filePath = request.getSession().getServletContext().getRealPath("/upload/");
 		List<FileVO> filelist = new ArrayList<FileVO>();
 
@@ -85,7 +95,7 @@ public class FileUtil {
 
 		makeBasePath(basePath);
 		String serverFullPath = basePath + fileName;
-
+		System.out.println("saveFileFullPath="+serverFullPath);
 		File file1 = new File(serverFullPath);
 		try {
 			file.transferTo(file1);

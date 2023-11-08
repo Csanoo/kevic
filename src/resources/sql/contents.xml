@@ -17,22 +17,21 @@
 	<select id="selectcontentsOne"
 		parameterType="String"
 		resultType="main.java.admin.satelite.kr.ContentsVO">
-		SELECT sn, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
+		SELECT sn, title, regDate from tbl_contents
 		where sn=#{sn} 
 	</select>
 
 	<insert id="insertcontentsOne"
 		parameterType="main.java.admin.satelite.kr.ContentsVO">
-		insert into tbl_contents (project,
-		category, type, imageUrl, videoUrl, ctSource, title )
-		values ( #{project}, #{category}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title} )
+		insert into tbl_contents (
+		 title )
+		values ( #{title} )
 	</insert>
 
 	<update id="updatecontents"
 		parameterType="main.java.admin.satelite.kr.ContentsVO">
 		update tbl_contents set
-		project = #{project}, category=#{category},type=#{type},imageUrl=#{imageUrl}
-		,videoUrl=#{videoUrl},ctSource=#{ctSource},title=#{title}
+		title=#{title}
 		where sn=#{sn}
 		
 	</update>
@@ -71,7 +70,7 @@
 	<select id="selectcontentsList"
 		resultType="main.java.admin.satelite.kr.ContentsVO"
 		parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title, pubDate as 'regDate',userid as 'regid', keyword  from tbl_contents
+		SELECT sn, title from tbl_contents
 		<include refid="includecontents" />
 
 		LIMIT ${rowStart-1}, #{pageNo}
@@ -79,7 +78,7 @@
 	<select id="selectexcelList"
 			resultType="main.java.admin.satelite.kr.ContentsVO"
 			parameterType="main.java.common.satelite.kr.SearchVO">
-		SELECT sn, category,  (select title from tcode where code1='TYPE' and code2=tbl_contents.type) as 'type', imageUrl, videoUrl, (select title from tcode where code1='CONT' and code2=tbl_contents.ctSource) as 'ctSource', title,  pubDate as 'regDate',userid as 'regid', keyword from tbl_contents
+		SELECT sn,title from tbl_contents
 		<include refid="includecontents" />
 
 	</select>

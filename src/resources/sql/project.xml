@@ -1,0 +1,568 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="satelite.kr">
+
+	<delete id="projectDelete"
+			parameterType="String">
+		delete from tbl_contents
+		where sn=#{sn}
+	</delete>
+
+	<select id="selectMsgDetailOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT m.sn, c.project, c.category, c.type, c.imageUrl, c.videoUrl, ctSource, c.title From tbl_contents c inner join tbl_mapping_contents m on c.sn = m.contentsSn
+		where m.sn=#{sn}
+	</select>
+
+	<select id="selectprojectOne" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT sn, project, category, type, imageUrl, videoUrl, ctSource, title, regDate from tbl_contents
+		where sn=#{sn}
+	</select>
+
+	<select id="selectProjectDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn, ctName, ctPrice, ctType
+			 ,department
+			 ,hName
+			 ,corpName
+			 ,cAgency
+			 ,gdPrice
+			 ,cGroup
+			 ,dNumber
+			 ,dType
+			 ,dwDate
+			 ,ddDate
+			 ,chkDate
+			 ,chkDate2
+			 ,chkfDate
+			 ,chkfDate2
+			 ,chgPriceDate
+			 ,reqDate
+			 ,proDate
+			 ,fmDate
+			 , getmDate
+			 ,accDate
+			 ,draftDate
+			 ,stockDate
+			 ,firPrice
+			 ,reqPrice
+			 ,accPrice
+			 ,payPrice
+			 ,confirmMemo
+			 ,state
+			 ,finishChk
+			 ,payDate
+		from tbl_contract
+		where sn=#{sn}
+	</select>
+
+
+
+
+	<select id="selectContGoodsList" parameterType="main.java.admin.satelite.kr.ProjectVO" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_goods
+		where sn=#{sn}
+	</select>
+	<select id="selectCategoryDetail" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime ,adTag ,regDate, pCate, depth, projectSn  from tbl_category
+		where sn=#{sn}
+	</select>
+
+
+	<select id="selectCategoryOne" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg ,iconImg ,adinfo ,adtime as 'adNum', adTag ,regDate, pCate, depth, projectSn  from tbl_category
+		where projectSn=#{sn} and depth=1 order by sort asc
+	</select>
+
+	<select id="selectCategoryTwo" parameterType="main.java.admin.satelite.kr.ProjectVO" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn,title,bannerImg,iconImg ,adinfo ,adtime as 'adNum',adTag ,regDate, pCate, depth, projectSn  from tbl_category
+		where projectSn=#{projectSn} and pCate =#{pCate} and depth=2 order by sort asc
+	</select>
+
+	<select id="category01" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn as category01,title from tbl_category
+		where projectSn=#{sn} and depth=1 order by sort asc
+	</select>
+
+	<select id="category02" parameterType="String" resultType="main.java.admin.satelite.kr.ProjectVO">
+		SELECT  sn as category02 ,title  from tbl_category
+		where pCate =#{sn} and depth=2 order by sort asc
+	</select>
+
+
+	<insert id="insertproject"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_contract (ctName, ctPrice, ctType ,department
+								 ,hName
+								 ,corpName
+								 ,cAgency
+								 ,gdPrice
+								 ,cGroup
+								 ,dNumber
+								 ,dType
+								 ,dwDate
+								 ,ddDate
+								 ,chkDate
+								 ,chkDate2
+								 ,chkfDate
+								 ,chkfDate2
+								 ,chgPriceDate
+								 ,reqDate
+								 ,proDate
+								 ,fmDate
+								 , getmDate
+								 ,accDate
+								 ,draftDate
+								 ,stockDate
+								 ,firPrice
+								 ,reqPrice
+								 ,accPrice
+								 ,payPrice
+								 ,confirmMemo
+								 ,state
+								 ,finishChk
+								 ,payDate)
+		values ( #{ctName}, #{ctPrice}, #{ctType} ,#{department}
+			   ,#{hName}
+			   ,#{corpName}
+			   ,#{cAgency}
+			   ,#{gdPrice}
+			   ,#{cGroup}
+			   ,#{dNumber}
+			   ,#{dType}
+			   ,#{dwDate}
+			   ,#{ddDate}
+			   ,#{chkDate}
+			   ,#{chkDate2}
+			   ,#{chkfDate}
+			   ,#{chkfDate2}
+			   ,#{chgPriceDate}
+			   ,#{reqDate}
+			   ,#{proDate}
+			   ,#{fmDate}
+			   , #{getmDate}
+			   ,#{accDate}
+			   ,#{draftDate}
+			   ,#{stockDate}
+			   ,#{firPrice}
+			   ,#{reqPrice}
+			   ,#{accPrice}
+			   ,#{payPrice}
+			   ,#{confirmMemo}
+			   ,#{state}
+			   ,#{finishChk}
+			   ,#{payDate})
+	</insert>
+
+	<insert id="insertprojectOne" parameterType="main.java.admin.satelite.kr.ProjectVO" >
+		insert into tbl_contents (project,
+		category01, category02, type, imageUrl, videoUrl, ctSource, title, state )
+		values ( #{project}, #{category01}, #{category02}, #{type} , #{imageUrl},#{videoUrl},#{ctSource},#{title},#{state} )
+		<selectKey keyProperty="sn" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID()
+		</selectKey>
+
+	</insert>
+	<insert id="insertPublish"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_mapping_contents (projectSn, category01, category02, contentsSn )
+		values ( #{project}, #{category01}, #{category02},#{sn});
+	</insert>
+	<update id="updateproject"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_contract set
+								ctName = #{ctName},
+								ctPrice =#{ctPrice},
+								ctType = #{ctType},
+								department = #{department},
+								hName = #{hName},
+								corpName = #{corpName},
+								cAgency = #{cAgency},
+								gdPrice = #{gdPrice},
+								cGroup = #{cGroup},
+								dNumber = #{dNumber},
+								dType = #{dType},
+								dwDate = #{dwDate},
+								ddDate = #{ddDate},
+								chkDate = #{chkDate},
+								chkDate2 = #{chkDate2},
+								chkfDate = #{chkfDate},
+								chkfDate2 = #{chkfDate2},
+								chgPriceDate = #{chgPriceDate},
+								reqDate = #{reqDate},
+								proDate = #{proDate},
+								fmDate = #{fmDate},
+								getmDate =  #{getmDate},
+								accDate = #{accDate},
+								draftDate = #{draftDate},
+								stockDate = #{stockDate},
+								firPrice = #{firPrice},
+								reqPrice = #{reqPrice},
+								accPrice = #{accPrice},
+								payPrice = #{payPrice},
+								confirmMemo = #{confirmMemo},
+								state = #{state},
+								finishChk = #{finishChk},
+								paydate = #{payDate}
+		where sn=#{sn}
+
+	</update>
+	<update id="updateprojectDetail" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_contract set
+		ctName = #{ctName},
+		ctPrice =#{ctPrice},
+		ctType = #{ctType},
+		department = #{department},
+		hName = #{hName},
+		corpName = #{corpName},
+		cAgency = #{cAgency},
+		gdPrice = #{gdPrice},
+		cGroup = #{cGroup},
+		dNumber = #{dNumber},
+		dType = #{dType},
+		<if test='dwDate != null and dwDate != "" and dwDate != "0" '><![CDATA[ dwDate = #{dwDate}, ]]></if>
+		<if test='ddDate != null and ddDate != "" and ddDate != "0" '><![CDATA[ ddDate = #{ddDate}, ]]></if>
+		<if test='chkDate != null and chkDate != "" and chkDate != "0" '><![CDATA[  chkDate = #{chkDate}, ]]></if>
+		<if test='chkDate2 != null and chkDate2 != "" and chkDate2 != "0" '><![CDATA[  chkDate2 = #{chkDate2}, ]]></if>
+		<if test='chkfDate != null and chkfDate != "" and chkfDate != "0" '><![CDATA[  	chkfDate = #{chkfDate}, ]]></if>
+		<if test='chkfDate2 != null and chkfDate2 != "" and chkfDate2 != "0" '><![CDATA[  chkfDate2 = #{chkfDate2}, ]]></if>
+		<if test='chgPriceDate != null and chgPriceDate != "" and chgPriceDate != "0" '><![CDATA[ chgPriceDate = #{chgPriceDate}, ]]></if>
+		<if test='reqDate != null and reqDate != "" and reqDate != "0" '><![CDATA[  reqDate = #{reqDate}, ]]></if>
+		<if test='proDate != null and proDate != "" and proDate != "0" '><![CDATA[  	proDate = #{proDate}, ]]></if>
+		<if test='fmDate != null and fmDate != "" and fmDate != "0" '><![CDATA[  fmDate = #{fmDate}, ]]></if>
+		<if test='getmDate != null and getmDate != "" and getmDate != "0" '><![CDATA[  getmDate =  #{getmDate}, ]]></if>
+		<if test='accDate != null and accDate != "" and accDate != "0" '><![CDATA[  accDate = #{accDate}, ]]></if>
+		<if test='draftDate != null and draftDate != "" and draftDate != "0" '><![CDATA[  draftDate = #{draftDate}, ]]></if>
+		<if test='stockDate != null and stockDate != "" and stockDate != "0" '><![CDATA[  stockDate = #{stockDate}, ]]></if>
+		firPrice = #{firPrice},
+		reqPrice = #{reqPrice},
+		accPrice = #{accPrice},
+		payPrice = #{payPrice},
+		confirmMemo = #{confirmMemo},
+		state = #{state},
+		finishChk = #{finishChk},
+		paydate = #{payDate}
+		where sn=#{sn}
+	</update>
+
+
+	<sql id="includeproject">
+		WHERE 1 = 1
+		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND ctName LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
+		<if test='(startDate != null and endDate != null ) and (startDate != "" and endDate != "" ) '><![CDATA[ AND regDate between date(#{startDate}) and date(#{endDate})+1]]></if>
+
+		<if test='orderKeyword == "1"'>
+			ORDER BY regDate Desc
+		</if>
+		<if test='orderKeyword == "2"'>
+			ORDER BY regDate Asc
+		</if>
+		<if test='orderKeyword == "3"'>
+			ORDER BY ctName Desc
+		</if>
+		<if test='orderKeyword == "4"'>
+			ORDER BY ctName Asc
+		</if>
+		<if test='orderKeyword=="" or orderKeyword==" " '>
+			ORDER BY m.sn Desc
+		</if>
+	</sql>
+
+	<sql id="includeproject2">
+		WHERE 1 = 1
+		<if test='searchTitle != null and searchTitle != "" '><![CDATA[  AND ctName LIKE CONCAT('%', #{searchTitle}, '%') ]]></if>
+
+		<if test='state != null and state != "" '><![CDATA[  AND c.state = #{state} ]]></if>
+
+		<if test='orderKeyword=="1"'>
+			ORDER BY regDate desc
+		</if>
+		<if test='orderKeyword=="2"'>
+			ORDER BY regDate asc
+		</if>
+		<if test="orderKeyword=='' or orderKeyword==' '">
+
+
+			ORDER BY sn desc
+		</if>
+	</sql>
+
+
+	<select id="selectprojectList"
+			resultType="main.java.admin.satelite.kr.ProjectVO"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, ctName, ctPrice, ctType
+		,department
+		,hName
+		,corpName
+		,cAgency
+		,gdPrice
+		,cGroup
+		,dNumber
+		,dType
+		,dwDate
+		,ddDate
+		,chkDate
+		,chkDate2
+		,chkfDate
+		,chkfDate2
+		,chgPriceDate,reqDate,proDate,fmDate, getmDate,accDate,draftDate,stockDate,firPrice,reqPrice,accPrice
+		,payPrice, confirmMemo, state, finishChk, payDate
+		From tbl_contract p
+		<include refid="includeproject" />
+		<if test="rowStart > 0">
+			LIMIT ${rowStart-1}, #{pageNo}
+		</if>
+
+	</select>
+
+
+
+	<select id="selectprojectCount" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbl_contract
+		<include refid="includeproject" />
+	</select>
+
+
+	<sql id="includeMsg">
+		WHERE c.contentSn = #{psn}
+	</sql>
+
+
+	<select id="selectMsgList"
+			resultType="main.java.admin.satelite.kr.ProjectVO"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT c.sn, m.projectSn, m.like, c.msg, c.regDate, c.regId
+		From tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
+		<include refid="includeMsg" />
+		ORDER BY c.sn desc
+
+		LIMIT ${rowStart-1}, 10
+	</select>
+
+
+
+	<select id="selectMsgCount" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) FROM tbl_msg c inner join tbl_mapping_contents m on c.contentSn = m.sn
+		<include refid="includeMsg" />
+	</select>
+
+
+
+	<select id="selectprojectList2"
+			resultType="main.java.admin.satelite.kr.ProjectVO"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, ctName, ctPrice, ctType
+		,department
+		,hName
+		,corpName
+		,cAgency
+		,gdPrice
+		,cGroup
+		,dNumber
+		,dType
+		,dwDate
+		,ddDate
+		,chkDate
+		,chkDate2
+		,chkfDate
+		,chkfDate2
+		,chgPriceDate,reqDate,proDate,fmDate, getmDate,accDate,draftDate,stockDate,firPrice,reqPrice,accPrice
+		,payPrice, confirmMemo, state, finishChk,regDate from (
+		SELECT sn, ctName, ctPrice, ctType
+		,department
+		,hName
+		,corpName
+		,cAgency
+		,gdPrice
+		,cGroup
+		,dNumber
+		,dType
+		,dwDate
+		,ddDate
+		,chkDate
+		,chkDate2
+		,chkfDate
+		,chkfDate2
+		,chgPriceDate,reqDate,proDate,fmDate, getmDate,accDate,draftDate,stockDate,firPrice,reqPrice,accPrice
+		,payPrice, confirmMemo, state, finishChk,regDate from tbl_contract
+		) A
+		<include refid="includeproject2" />
+
+		LIMIT ${rowStart-1}, #{pageNo}
+	</select>
+
+
+
+
+	<select id="selectprojectCount2" resultType="Integer"
+			parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT COUNT(*) as 'ct' FROM tbl_contract
+		<include refid="includeproject2" />
+	</select>
+
+
+	<select id="selPrjTitCt" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM tbl_project where title = #{title}
+	</select>
+
+	<select id="selPrjCd" resultType="Integer" parameterType="String">
+		SELECT COUNT(*) FROM tbl_project where projectcd = #{title}
+	</select>
+
+
+	<select id="selectCateSelList" resultType="main.java.admin.satelite.kr.ProjectVO" parameterType="String">
+		SELECT code2,title from tcode where code1 = 'TYPE'
+	</select>
+	<select id="selectMemoSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		SELECT sn, title, memo, regDate, userId from tbl_project_memo where projectSn = #{sn} order by sn Desc
+	</select>
+
+
+	<select id="selectSourceSelList" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		SELECT code2,title from tcode where code1 = 'CONT'
+	</select>
+
+
+	<select id="categoryMember" parameterType="Integer" resultType="main.java.admin.satelite.kr.ProjectVO" >
+		select userType, username, userid, state, (select count(*) from tbl_member_project p where userid=tuser.userid and projectSn = #{sn}) as puse from tuser
+	</select>
+
+	<delete id="chkProjectDelete"	parameterType="String">
+		delete from tbl_contents
+		where sn=#{sn}
+	</delete>
+
+	<delete id="categoryDelete"	parameterType="Integer">
+		delete from tbl_category
+		where sn=#{sn} or pCate = #{sn}
+	</delete>
+
+
+	<delete id="notProjectPublish" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		delete from tbl_mapping_contents where sn=#{sn}
+	</delete>
+
+
+	<update id="prtChkSuggest" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_mapping_contents set
+			suggest = #{state}
+		where sn=#{sn}
+	</update>
+
+	<select id="suggetsCt" resultType="Integer"	parameterType="main.java.admin.satelite.kr.ProjectVO">
+		select count(*) from tbl_mapping_contents c inner join
+							 (select projectSn, category01, category02 from tbl_mapping_contents where  sn = #{sn} ) A
+							 on c.projectSn = A.projectSn and c.category01 = A.category01 and c.category02 = A.category02
+		where c.suggest = 'Y'
+		group by c.projectSn, c.category01, c.category02
+	</select>
+
+
+	<insert id="insertProjectMemo"
+			parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_project_memo (title, projectSn, memo, userid )
+		values ( #{title}, #{sn}, #{memo}, #{userid} )
+	</insert>
+
+
+	<select id="selectBoxproject"
+			resultType="main.java.admin.satelite.kr.ProjectVO"	parameterType="main.java.common.satelite.kr.SearchVO">
+		SELECT sn, title  from tbl_project WHERE state = '100' order by sn asc
+	</select>
+
+	<update id="prtConfirm" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_mapping_contents set
+			sort = #{sort}
+		where sn=#{sn}
+	</update>
+	<update id="cateSort" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_category set
+			sort = #{sort}
+		where sn=#{sn}
+	</update>
+
+	<insert id="insertCategory"	parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_category (title,bannerImg,iconImg,adinfo,adtime,adTag,depth,pCate,projectSn,sort )
+		values ( #{title}, #{bannerImg}, #{iconImg} , #{adinfo},#{adtime},#{adTag},#{depth},#{pCate},#{projectSn},#{sort} )
+	</insert>
+
+
+	<update id="updateCategory" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_category set
+			title = #{title}, bannerImg=#{bannerImg},iconImg=#{iconImg},adinfo=#{adinfo}
+							  ,adtime=#{adtime},adTag=#{adTag}
+		where sn=#{sn}
+	</update>
+	<update id="updateProjectMemo" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		update tbl_project_memo set
+									title = #{title}, memo = #{memo}
+		where sn=#{sn}
+	</update>
+
+
+	<delete id="projectMemoDelete"	parameterType="Integer">
+		delete from tbl_project_memo
+		where sn=#{sn}
+	</delete>
+
+	<delete id="delMember"	parameterType="main.java.admin.satelite.kr.ProjectVO">
+		delete from tbl_member_project
+		where projectSn=#{sn} and userid=#{userid}
+	</delete>
+
+
+	<insert id="cmInsert" parameterType="main.java.admin.satelite.kr.ProjectVO">
+		insert into tbl_member_project (userid, projectSn)
+		values ( #{userid}, #{sn} )
+	</insert>
+
+	<delete id="msgDelete"	parameterType="Integer">
+		delete from tbl_msg
+		where sn=#{sn}
+	</delete>
+
+	<delete id="prtDelete"	parameterType="Integer">
+		delete from tbl_project
+		where sn=#{sn}
+	</delete>
+	<delete id="prtManDelete"	parameterType="Integer">
+		delete from tbl_member_project
+		where projectSn=#{sn}
+	</delete>
+
+
+	<select id="selectPrdList" resultType="main.java.admin.satelite.kr.PrdVO" parameterType="String">
+		SELECT * FROM (
+						  SELECT dlvrReqNo,dlvrReqChgOrd,dlvrReqRcptDate,prdctClsfcNo,prdctClsfcNoNm,dtilPrdctClsfcNo,dtilPrdctClsfcNoNm,prdctIdntNo,prdctIdntNoNm,prdctUprc,prdctUnit,prdctQty,dlvrTmlmtDate,cntrctCnclsStleNm,exclcProdctYn,optnDivCdNm,dminsttCd,dminsttNm,dminsttRgnNm,corpNm,fnlDlvrReqYn,incdecQty,incdecAmt,cntrctCorpBizno,dlvrReqNm,cntrctNo,cntrctChgOrd,masYn,cnstwkMtrlDrctPurchsObjYn,IntlCntrctDlvrReqDate,dlvrReqQty,dlvrReqAmt,smetprCmptProdctYn,corpEntrprsDivNmNm,brnofceNm
+						  from tbl_prd
+						  where dlvrReqNo = #{dlvrReqNo} and dlvrReqChgOrd = (select max(dlvrReqChgOrd) from tbl_prd where dlvrReqNo = #{dlvrReqNo})
+						  union  all
+						  SELECT sno as dlvrReqNo, '00' as dlvrReqChgOrd, '' as dlvrReqRcptDate, '',goodsName as prdctClsfcNoNm,'','',g2bcode as prdctIdntNo,CONCAT(goodsName,',',',',goodscode) as prdctIdntNoNm,'',unit as prdctUnit,ea as prdctQty,'','','','','','','','','','','','','','','','','','',0,0,'','','' FROM tbl_tgoods_detail where g2bcode in (
+							  SELECT prdctIdntNo
+							  from tbl_prd
+							  where dlvrReqNo = #{dlvrReqNo} and exclcProdctYn ='Y'
+								and dlvrReqChgOrd = (select max(dlvrReqChgOrd) from tbl_prd where dlvrReqNo = #{dlvrReqNo})
+						  ) ) A order by  prdctIdntNo, exclcProdctYn desc
+	</select>
+
+
+
+	<insert id="insertAttach"
+			parameterType="main.java.common.satelite.kr.FileVO">
+		insert into tbl_attach (psn,filename,realname  )
+		values ( #{psn} ,#{filename},#{realname} )
+	</insert>
+
+	<select id="selectAttach" resultType="main.java.common.satelite.kr.FileVO" parameterType="Integer">
+		select * from tbl_attach where psn = #{psn}
+	</select>
+
+
+	<delete id="deleteAttach" parameterType="Integer">
+		delete from tbl_attach
+		where sn=#{sn}
+	</delete>
+</mapper>
+

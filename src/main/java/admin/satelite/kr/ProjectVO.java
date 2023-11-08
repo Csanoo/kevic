@@ -48,62 +48,233 @@ public class ProjectVO {
         return category;
     }
 
-    private String type="";
-    public String type() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
-    public String getType() {
-        return type;
-    }
-
-    private String imageUrl="";
-    public String imageUrl() {
-        return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-
-    private String videoUrl="";
-    public String videoUrl() {
-        return videoUrl;
-    }
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-
-    private String title="";
-    public String title() {
+    private String title ="";
+    public String getTitle() {
         return title;
     }
     public void setTitle(String title) {
         this.title = title;
     }
-    public String getTitle() {
-        return title;
+
+    private String ctName;
+    private Integer ctPrice;
+    private String ctType;
+    private String department;
+    private String hName;
+    private String corpName;
+    private String cAgency;
+    private Integer gdPrice;
+    private String cGroup;
+    private String dNumber;
+    private String dType;
+    private String dwDate;
+    private String ddDate;
+    private String chkDate;
+
+    public String gethName() {
+        return hName;
     }
 
-    private String ctSource="";
-    public String ctSource() {
-        return ctSource;
+    public void sethName(String hName) {
+        this.hName = hName;
     }
-    public void setCtSource(String ctSource) {
-        this.ctSource = ctSource;
+
+    public String getcAgency() {
+        return cAgency;
     }
-    public String getCtSource() {
-        return ctSource;
+
+    public void setcAgency(String cAgency) {
+        this.cAgency = cAgency;
     }
+
+    public String getcGroup() {
+        return cGroup;
+    }
+
+    public void setcGroup(String cGroup) {
+        this.cGroup = cGroup;
+    }
+
+    public String getdNumber() {
+        return dNumber;
+    }
+
+    public void setdNumber(String dNumber) {
+        this.dNumber = dNumber;
+    }
+
+    public String getdType() {
+        return dType;
+    }
+
+    public void setdType(String dType) {
+        this.dType = dType;
+    }
+
+    public String getChkDate2() {
+        return chkDate2;
+    }
+
+    public void setChkDate2(String chkDate2) {
+        this.chkDate2 = chkDate2;
+    }
+
+    public String getChkfDate() {
+        return chkfDate;
+    }
+
+    public void setChkfDate(String chkfDate) {
+        this.chkfDate = chkfDate;
+    }
+
+    public String getChkfDate2() {
+        return chkfDate2;
+    }
+
+    public void setChkfDate2(String chkfDate2) {
+        this.chkfDate2 = chkfDate2;
+    }
+
+    public String getChgPriceDate() {
+        return chgPriceDate;
+    }
+
+    public void setChgPriceDate(String chgPriceDate) {
+        this.chgPriceDate = chgPriceDate;
+    }
+
+    public String getReqDate() {
+        return reqDate;
+    }
+
+    public void setReqDate(String reqDate) {
+        this.reqDate = reqDate;
+    }
+
+    public String getProDate() {
+        return proDate;
+    }
+
+    public void setProDate(String proDate) {
+        this.proDate = proDate;
+    }
+
+    public String getFmDate() {
+        return fmDate;
+    }
+
+    public void setFmDate(String fmDate) {
+        this.fmDate = fmDate;
+    }
+
+    public String getGetmDate() {
+        return getmDate;
+    }
+
+    public void setGetmDate(String getmDate) {
+        this.getmDate = getmDate;
+    }
+
+    public String getAccDate() {
+        return accDate;
+    }
+
+    public void setAccDate(String accDate) {
+        this.accDate = accDate;
+    }
+
+    public String getDraftDate() {
+        return draftDate;
+    }
+
+    public void setDraftDate(String draftDate) {
+        this.draftDate = draftDate;
+    }
+
+    public String getStockDate() {
+        return stockDate;
+    }
+
+    public void setStockDate(String stockDate) {
+        this.stockDate = stockDate;
+    }
+
+    public Integer getFirPrice() {
+        return firPrice;
+    }
+
+    public void setFirPrice(Integer firPrice) {
+        this.firPrice = firPrice;
+    }
+
+    public Integer getReqPrice() {
+        return reqPrice;
+    }
+
+    public void setReqPrice(Integer reqPrice) {
+        this.reqPrice = reqPrice;
+    }
+
+    public Integer getAccPrice() {
+        return accPrice;
+    }
+
+    public void setAccPrice(Integer accPrice) {
+        this.accPrice = accPrice;
+    }
+
+    public Integer getPayPrice() {
+        return payPrice;
+    }
+
+    public void setPayPrice(Integer payPrice) {
+        this.payPrice = payPrice;
+    }
+
+    public String getConfirmMemo() {
+        return confirmMemo;
+    }
+
+    public void setConfirmMemo(String confirmMemo) {
+        this.confirmMemo = confirmMemo;
+    }
+
+    public String getFinishChk() {
+        return finishChk;
+    }
+
+    public void setFinishChk(String finishChk) {
+        this.finishChk = finishChk;
+    }
+
+    private String chkDate2;
+    private String chkfDate;
+    private String chkfDate2;
+    private String chgPriceDate;
+    private String reqDate;
+    private String proDate;
+    private String fmDate;
+    private String getmDate;
+    private String accDate;
+    private String draftDate;
+    private String stockDate;
+    private Integer firPrice;
+    private Integer reqPrice;
+    private Integer accPrice;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    private Integer payPrice;
+    private String confirmMemo;
+    private String state;
+    private String finishChk;
+
 
     private String regDate="";
     public String getRegDate() {
@@ -186,14 +357,6 @@ public class ProjectVO {
     private String email="";
     private String wdate="";
 
-
-    private String state="";
-    public String getState() {
-        return state;
-    }
-    public void setState(String state) {
-        this.state = state;
-    }
 
     private String project="";
     public String getProject() { return project;}
@@ -432,4 +595,287 @@ public class ProjectVO {
     public String getSuggest(){return suggest;}
     public void setSuggest(String suggest){this.suggest = suggest;}
 
+
+
+
+    /**
+     * get field
+     *
+     * @return ctName
+     */
+    public String getCtName() {
+        return this.ctName;
+    }
+
+    /**
+     * set field
+     *
+     * @param ctName
+     */
+    public void setCtName(String ctName) {
+        this.ctName = ctName;
+    }
+
+    /**
+     * get field
+     *
+     * @return ctPrice
+     */
+    public Integer getCtPrice() {
+        return this.ctPrice;
+    }
+
+    /**
+     * set field
+     *
+     * @param ctPrice
+     */
+    public void setCtPrice(Integer ctPrice) {
+        this.ctPrice = ctPrice;
+    }
+
+    /**
+     * get field
+     *
+     * @return ctType
+     */
+    public String getCtType() {
+        return this.ctType;
+    }
+
+    /**
+     * set field
+     *
+     * @param ctType
+     */
+    public void setCtType(String ctType) {
+        this.ctType = ctType;
+    }
+
+    /**
+     * get field
+     *
+     * @return department
+     */
+    public String getDepartment() {
+        return this.department;
+    }
+
+    /**
+     * set field
+     *
+     * @param department
+     */
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    /**
+     * get field
+     *
+     * @return hName
+     */
+    public String getHName() {
+        return this.hName;
+    }
+
+    /**
+     * set field
+     *
+     * @param hName
+     */
+    public void setHName(String hName) {
+        this.hName = hName;
+    }
+
+    /**
+     * get field
+     *
+     * @return corpName
+     */
+    public String getCorpName() {
+        return this.corpName;
+    }
+
+    /**
+     * set field
+     *
+     * @param corpName
+     */
+    public void setCorpName(String corpName) {
+        this.corpName = corpName;
+    }
+
+    /**
+     * get field
+     *
+     * @return cAgency
+     */
+    public String getCAgency() {
+        return this.cAgency;
+    }
+
+    /**
+     * set field
+     *
+     * @param cAgency
+     */
+    public void setCAgency(String cAgency) {
+        this.cAgency = cAgency;
+    }
+
+    /**
+     * get field
+     *
+     * @return gdPrice
+     */
+    public Integer getGdPrice() {
+        return this.gdPrice;
+    }
+
+    /**
+     * set field
+     *
+     * @param gdPrice
+     */
+    public void setGdPrice(Integer gdPrice) {
+        this.gdPrice = gdPrice;
+    }
+
+    /**
+     * get field
+     *
+     * @return cGroup
+     */
+    public String getCGroup() {
+        return this.cGroup;
+    }
+
+    /**
+     * set field
+     *
+     * @param cGroup
+     */
+    public void setCGroup(String cGroup) {
+        this.cGroup = cGroup;
+    }
+
+    /**
+     * get field
+     *
+     * @return dNumber
+     */
+    public String getDNumber() {
+        return this.dNumber;
+    }
+
+    /**
+     * set field
+     *
+     * @param dNumber
+     */
+    public void setDNumber(String dNumber) {
+        this.dNumber = dNumber;
+    }
+
+    /**
+     * get field
+     *
+     * @return dType
+     */
+    public String getDType() {
+        return this.dType;
+    }
+
+    /**
+     * set field
+     *
+     * @param dType
+     */
+    public void setDType(String dType) {
+        this.dType = dType;
+    }
+
+    /**
+     * get field
+     *
+     * @return dwDate
+     */
+    public String getDwDate() {
+        return this.dwDate;
+    }
+
+    /**
+     * set field
+     *
+     * @param dwDate
+     */
+    public void setDwDate(String dwDate) {
+        this.dwDate = dwDate;
+    }
+
+    /**
+     * get field
+     *
+     * @return ddDate
+     */
+    public String getDdDate() {
+        return this.ddDate;
+    }
+
+    /**
+     * set field
+     *
+     * @param ddDate
+     */
+    public void setDdDate(String ddDate) {
+        this.ddDate = ddDate;
+    }
+
+    /**
+     * get field
+     *
+     * @return chkDate
+     */
+    public String getChkDate() {
+        return this.chkDate;
+    }
+
+    /**
+     * set field
+     *
+     * @param chkDate
+     */
+    public void setChkDate(String chkDate) {
+        this.chkDate = chkDate;
+    }
+
+    /**
+     * get field
+     *
+     * @return pCate
+     */
+    public Integer getPCate() {
+        return this.pCate;
+    }
+
+    /**
+     * set field
+     *
+     * @param pCate
+     */
+    public void setPCate(Integer pCate) {
+        this.pCate = pCate;
+    }
+
+    private String payDate;
+
+    public String getPayDate() {
+        return payDate;
+    }
+
+    public void setPayDate(String payDate) {
+        this.payDate = payDate;
+    }
 }
+

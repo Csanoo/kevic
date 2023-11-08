@@ -30,37 +30,9 @@
                                 <div class="col-md-12 col-sm-12 col-xs-12">
                                     <table id="customers">
                                         <tr>
-                                            <td class="tdl" style="width: 25%">출처</td>
-                                            <td style="width: 75%">
-                                                <select name="ctSource">
-                                                    <option value="" >출처</option>
-                                                    <option value="YTB">유튜브</option>
-                                                    <option value="RSS">RSS</option>
-                                                    <option value="TWT">트위터</option>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">컨텐츠 타입</td>
-                                            <td style="width: 75%">
-                                                <select name="stype"  class="form-control" >
-                                                    <option value="">전체</option>
-                                                    <c:forEach var="cateview" items="${cateview}"   varStatus="status">
-                                                        <option value="${cateview.code2}" <c:if test="${searchVO.stype eq cateview.code2}">selected</c:if>>${cateview.title}</option>
-                                                    </c:forEach>
-                                                </select>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">타이틀</td>
+                                            <td class="tdl" style="width: 25%">프로젝트명</td>
                                             <td style="width: 75%">
                                                 <input name="stitle" type="text"	value="${searchVO.stitle}" class="form-control">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="tdl" style="width: 25%">키워드</td>
-                                            <td style="width: 75%">
-                                                <input name="skeyword" type="text"	value="${searchVO.skeyword}" class="form-control">
                                             </td>
                                         </tr>
                                         <tr>
@@ -111,7 +83,7 @@
                 <div class="page-title">
 
                     <div class="pull-left">
-                        <h1 class="title">컨텐츠 목록</h1>
+                        <h1 class="title">내역서 목록</h1>
                     </div>
                 </div>
             </div>
@@ -124,18 +96,15 @@
                             <ul class="list-unstyled">
                                 <li style="float: left;">
                                     <button type="button" class="btn btn-orange" id="updatemPost">선택수정</button>
-                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal" onclick="ctNum()">  컨텐츠 전시</button>
+                                    <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#myModal" onclick="ctNum()">신규 내역서</button>
                                     <button type="button" class="btn btn-gray" onclick="deletePost()">일괄 삭제</button>
-                                    <button type="button" class="btn btn-gray" onclick="excelDownload()">엑셀 다운로드</button>
                                 </li>
                                 <li style="float: left;">
                                     <select name="orderKeyword" id="orderKeyword"  >
                                         <option <c:if test="${searchVO.orderKeyword eq '1'}">selected</c:if> value="1">등록일 내림차순</option>
                                         <option <c:if test="${searchVO.orderKeyword eq '2'}">selected</c:if> value="2">등록일 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">타이틀 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">타이틀 오름차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '5'}">selected</c:if> value="5">키워드 내림차순</option>
-                                        <option <c:if test="${searchVO.orderKeyword eq '6'}">selected</c:if> value="6">키워드 오름차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '3'}">selected</c:if> value="3">내역서명 내림차순</option>
+                                        <option <c:if test="${searchVO.orderKeyword eq '4'}">selected</c:if> value="4">내역서명 오름차순</option>
                                     </select>
                                     <select name="pageNo" id="pageNo"  >
                                         <option <c:if test="${searchVO.pageNo eq '50'}">selected</c:if> value="50">50개</option>
@@ -158,13 +127,7 @@
                                     <tr>
                                         <th><input type="checkbox" id="allChk" ></th>
                                         <th>No</th>
-                                        <th>컨텐츠타입</th>
-                                        <th>이미지</th>
-                                        <th>출처이미지URL</th>
-                                        <th>원본URL</th>
-                                        <th>출처</th>
-                                        <th>타이틀</th>
-                                        <th>키워드</th>
+                                        <th>내역서명</th>
                                         <th>등록일</th>
                                         <th>관리</th>
                                     </tr>
@@ -176,15 +139,8 @@
                                             <td><input type="checkbox" value="${listview.sn}" name="chkSn" ></td>
                                             <td><c:out value="${searchVO.totRow-((searchVO.page-1)*searchVO.displayRowCount + status.index)}" /></td>
                                             <td>${listview.type}</td>
-                                            <td><img src="${listview.imageUrl}" width="110"></td>
-                                            <td><div style="width:150px;word-break:break-all;">${listview.imageUrl}</div></td>
-                                            <td><div style="width:150px;word-break:break-all;"><a href="${listview.videoUrl}" target="_blank">${listview.videoUrl}</a></div></td>
-                                            <td>${listview.ctSource}</td>
-                                            <td class="title" style="display: flex"><input type="text" value="${listview.title}" name="title" readonly style="width:100%"> <button type="button" class="btn btn-modify"  data="${listview.sn}" style="display: none">수정</button></td>
-                                            <td>${listview.keyword}</td>
                                             <td>
                                                     ${listview.regDate}<br>
-                                                            ${listview.userid}
                                             </td>
                                             <td>
                                                 <button type="button"  class="btn btn-orange" onclick="delContent(${listview.sn});">삭제</button>
@@ -269,42 +225,36 @@
     function publishPost(){
         var cnt = $("input[name='chkSn']:checked").length;
         var arr = new Array();
-        var pubcate01 = $("#category1").val();
-        var pubcate02 = $("#category2").val();
-        var pubproject = $("#pubproject").val();
-        $("input[name='chkSn']:checked").each(function () {
-            arr.push($(this).attr('value'));
-        });
-        if (cnt == 0) {
-            alert("컨텐츠를 선택해주세요.");
-        }
-        else {
-            $.ajax({
-                type: "POST",
-                url: "/admin/contentsChkPublish",
-                data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&category1="+pubcate01+"&project="+pubproject+"&category2="+pubcate02,
 
-                success: function (jdata) {
-                    if (jdata != 'TRUE') {
-                        alert("삭제 오류");
-                    } else {
-                        alert("노출 성공");
-                        $.ajax({
-                            type: "POST",
-                            url: "/admin/listLoad",
-                            data: $("#form1").serialize(),
-                            success: function(data){
-                                $("#cList").html(data);
-                            },
-                            error: function(data){alert(data);}
-                        });
-                    }
-                },
-                error: function (data) {
-                    location.href = "/admin/project";
+        var title = $("input[name='title']").val();
+
+
+        $.ajax({
+            type: "POST",
+            url: "/admin/contentsSave",
+            data: "RPRT_ODR=" + arr + "&CNT=" + cnt +"&category1="+pubcate01+"&project="+pubproject+"&category2="+pubcate02,
+
+            success: function (jdata) {
+                if (jdata != 'TRUE') {
+                    alert("삭제 오류");
+                } else {
+                    alert("노출 성공");
+                    $.ajax({
+                        type: "POST",
+                        url: "/admin/listLoad",
+                        data: $("#form1").serialize(),
+                        success: function(data){
+                            $("#cList").html(data);
+                        },
+                        error: function(data){alert(data);}
+                    });
                 }
-            });
-        }
+            },
+            error: function (data) {
+                location.href = "/admin/project";
+            }
+        });
+
     }
     function excelDownload() {
         document.form1.action='ExcelDownload';
@@ -446,43 +396,20 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">컨텐츠 전시</h4>
+                <h4 class="modal-title" id="myModalLabel">내역서 등록</h4>
             </div>
             <div class="modal-body">
                 <form name="publish">
                 <table id="customers">
                     <tr>
-                        <td class="tdl" style="width: 25%">프로젝트</td>
+                        <td class="tdl" style="width: 25%">내역서 </td>
                         <td style="width: 75%">
-                            <select name="project" id="pubproject">
-                                <option value="">프로젝트</option>
-                                <c:forEach var="projectview" items="${projectview}"   varStatus="status">
-                                    <option value="${projectview.sn}" <c:if test="${searchVO.sproject eq projectview.sn}">selected</c:if>>${projectview.title}</option>
-                                </c:forEach>
-                            </select>
+                            <input type="text" name="title">
                         </td>
                     </tr>
-                    <tr>
-                        <td class="tdl" style="width: 25%">카테고리</td>
-                        <td style="width: 75%">
-                            <div id="category01">
-                                <select name="category01" id="category1" class="form-control" >
-                                    <option value="0">카테고리</option>
 
-                                </select>
-                            </div>
-                            <div id="category02">
-                                <select name="category02" id="category2" class="form-control" >
-                                    <option value="0">카테고리</option>
-
-                                </select>
-                            </div>
-                        </td>
-                    </tr>
                 </table>
                 </form>
-                <p>카테고리를 2Depth까지 설정한 경우, 컨텐츠는 2Depth에 등록해 주세요.</p>
-                <p>선택한 (<span style="color:red;" id="ctNum"></span>)건의 컨텐츠를 카테고리에 추가합니다.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default"  onClick="publishPost();">등록</button>

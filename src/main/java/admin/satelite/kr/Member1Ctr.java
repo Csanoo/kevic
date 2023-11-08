@@ -516,6 +516,7 @@ public class Member1Ctr {
 		mvo = member1Svc.selectMember1One(param);
 
 		if (mvo != null) {
+
 				String menuval ="00";
 				String menu01 = mvo.getMenu01();
 				String menu02 = mvo.getMenu02();
@@ -540,9 +541,11 @@ public class Member1Ctr {
 					USERTYPE = (String)request.getSession().getAttribute("USERTYPE");
 				}
 
-				if ( USERTYPE.equals("SA") ) {USERID="";
-					mvo = member1Svc.selectMainStat(USERID);
-					modelMap.addAttribute("mvo", mvo);
+				if ( USERTYPE.equals("SA") ) {
+
+					//mvo = member1Svc.selectMainStat(USERID);
+					//modelMap.addAttribute("mvo", mvo);
+
 					session.setAttribute("menu01", "Y");
 					session.setAttribute("menu02", "Y");
 					session.setAttribute("menu03", "Y");

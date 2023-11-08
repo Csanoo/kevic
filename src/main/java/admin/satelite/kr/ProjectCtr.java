@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.io.File;
-import main.java.common.satelite.kr.FileUtil;
-import main.java.common.satelite.kr.FileVO;
+
+import main.java.common.satelite.kr.*;
 import org.apache.poi.hssf.usermodel.*;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +21,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
-import main.java.common.satelite.kr.SearchVO;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 @Controller
 public class ProjectCtr {
@@ -92,6 +92,24 @@ public class ProjectCtr {
         return "project/projectForm";
     }
 
+
+    @RequestMapping(value = "/contdoc")
+    public String contractDoc(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        ProjectVO pinfo = new ProjectVO();
+        String sn = request.getParameter("sn");
+        pinfo = projectSvc.selectProjectDetail(sn);
+
+        List<?> memolist  = projectSvc.selectMemoSelList(sn);
+        modelMap.addAttribute("memolist", memolist);
+        Integer psn = Integer.parseInt(request.getParameter("sn"));
+        List<?> glist  = projectSvc.selectContGoodsList(pinfo);
+
+        modelMap.addAttribute("projectInfo", pinfo);
+        modelMap.addAttribute("mlist", glist);
+        return "project/projectRead";
+    }
+
+
     @RequestMapping(value = "/cateReg")
     public String cateReg(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap, SearchVO searchVO) {
 
@@ -106,8 +124,12 @@ public class ProjectCtr {
     @RequestMapping(value = "/projectRead")
     public String projectRead(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
         String sn = request.getParameter("sn");
+        Integer psn = Integer.parseInt(request.getParameter("sn"));
         projectInfo = projectSvc.selectProjectOne(sn);
+
+        List<FileVO> fileList = projectSvc.selectFileList(psn);
         modelMap.addAttribute("projectInfo", projectInfo);
+        modelMap.addAttribute("filelist",fileList);
         return "project/Read";
     }
 
@@ -117,14 +139,28 @@ public class ProjectCtr {
         String sn = request.getParameter("sn");
         pinfo = projectSvc.selectProjectDetail(sn);
 
-        List<?> memolist  = projectSvc.selectMemoSelList(sn);
-        modelMap.addAttribute("memolist", memolist);
         Integer psn = Integer.parseInt(request.getParameter("sn"));
-        List<?> mlist  = projectSvc.categoryMember(psn);
-        modelMap.addAttribute("mlist", mlist);
+        List<FileVO> fileList = projectSvc.selectFileList(psn);
+        modelMap.addAttribute("filelist", fileList);
         modelMap.addAttribute("projectInfo", pinfo);
-
         return "project/projectRead";
+    }
+
+
+    @RequestMapping(value = "/dlvrform")
+    public String dlvrForm(HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
+        ProjectVO pinfo = new ProjectVO();
+        String sn = request.getParameter("sn");
+        pinfo = projectSvc.selectProjectDetail(sn);
+
+        modelMap.addAttribute("projectInfo", pinfo);
+        List<PrdVO> prdList = projectSvc.selectPrdList(pinfo.getDNumber());
+
+
+        modelMap.addAttribute("prdlist", prdList);
+
+        return "project/dlvrForm";
+
     }
 
     @RequestMapping(value = "/categoryDetail")
@@ -163,7 +199,7 @@ public class ProjectCtr {
         projectInfo.setUserid(USERID);
         String[] fileno = request.getParameterValues("fileno");
         FileUtil fs = new FileUtil();
-        List<FileVO> filelist = fs.saveAllFileslogo(projectInfo.getUploadfile());
+        List<FileVO> filelist = fs.saveAllFilesBB(projectInfo.getUploadfile());
 
         projectSvc.insertProject(projectInfo, filelist, fileno);
 
@@ -202,6 +238,14 @@ public class ProjectCtr {
     }
 
     @ResponseBody
+    @RequestMapping(value = "/delFile")
+    public String delFile(HttpServletRequest request) {
+        Integer sn = Integer.parseInt(request.getParameter("sn"));
+        projectSvc.delFile(sn);
+        return "True";
+    }
+
+    @ResponseBody
     @RequestMapping(value = "/delMemo")
     public String delMemo(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
         Integer sn = Integer.parseInt(request.getParameter("sn"));
@@ -229,9 +273,7 @@ public class ProjectCtr {
         String ctSource = request.getParameter("ctSource");
 
         projectInfo.setTitle(title);
-        projectInfo.setImageUrl(imageUrl);
-        projectInfo.setVideoUrl(videoUrl);
-        projectInfo.setCtSource(ctSource);
+
         projectInfo.setCategory(category);
         projectInfo.setSn(sn);
 
@@ -254,17 +296,98 @@ public class ProjectCtr {
     public String projectRegUp(SearchVO searchVO, HttpServletRequest request, ProjectVO projectInfo, ModelMap modelMap) {
 
         Integer sn = Integer.parseInt(request.getParameter("sn"));
-        String title = request.getParameter("title");
-        String projectcd = request.getParameter("projectcd");
-        String comment = request.getParameter("comment");
-        String state = request.getParameter("state");
-        String basicTitle = request.getParameter("basicTitle");
+        String ctName = request.getParameter("ctName");
+       // Integer ctPrice = Integer.parseInt(request.getParameter("ctPrice"));
+        String ctType = request.getParameter("ctType");
+        String department = request.getParameter("department");
+        String hName = request.getParameter("hName");
+        String corpName = request.getParameter("corpName");
+        String cAgency = request.getParameter("cAgency");
+        Integer gdPrice = Integer.parseInt(request.getParameter("gdPrice"));
+        String cGroup = request.getParameter("cGroup");
+        String dNumber = request.getParameter("dNumber");
+        String dType = request.getParameter("dType");
+        String dwDate = request.getParameter("dwDate");
+        String ddDate = request.getParameter("ddDate");
+        String chkDate = request.getParameter("chkDate");
+        String chkDate2 = request.getParameter("chkDate2");
+        String chkfDate = request.getParameter("chkfDate");
+        String chkfDate2 = request.getParameter("chkfDate2");
+        String chgPriceDate = request.getParameter("chgPriceDate");
+        String reqDate = request.getParameter("reqDate");
+        String proDate = request.getParameter("proDate");
+        String fmDate = request.getParameter("fmDate");
+        String getmDate = request.getParameter("getmDate");
+        String accDate = request.getParameter("accDate");
+        String draftDate = request.getParameter("draftDate");
+        String stockDate = request.getParameter("stockDate");
+        String payDate = request.getParameter("payDate");
+        Integer firPrice;
+        Integer reqPrice;
+        Integer accPrice;
+        Integer payPrice;
+        if(request.getParameter("firPrice")==null || request.getParameter("firPrice").trim().isEmpty()){
+            firPrice = 0;
+        }else{
+            System.out.println(request.getParameter("firPrice"));
+            firPrice = Integer.parseInt(request.getParameter("firPrice"));
+        }
+        if(request.getParameter("reqPrice")==null || request.getParameter("reqPrice").trim().isEmpty()){
+            reqPrice = 0;
+        }else{
+            reqPrice = Integer.parseInt(request.getParameter("reqPrice"));
+        }
+        if(request.getParameter("accPrice")==null || request.getParameter("accPrice").trim().isEmpty()){
+            accPrice = 0;
+        }else{
+            accPrice = Integer.parseInt(request.getParameter("accPrice"));
+        }
+        if(request.getParameter("payPrice")==null || request.getParameter("payPrice").trim().isEmpty()){
+            payPrice = 0;
+        }else{
+            payPrice = Integer.parseInt(request.getParameter("payPrice"));
+        }
 
-        projectInfo.setTitle(title);
-        projectInfo.setComment(comment);
-        projectInfo.setProjectcd(projectcd);
-        projectInfo.setBasicTitle(basicTitle);
+        String confirmMemo = request.getParameter("confirmMemo");
+        String state = request.getParameter("state");
+        String finishChk = request.getParameter("finishChk");
+        if(finishChk == null){
+            finishChk ="N";
+        }
+
+        projectInfo.setCtName(ctName);
+       // projectInfo.setCtPrice(ctPrice);
+        projectInfo.setCtType(ctType);
+        projectInfo.setDepartment(department);
+        projectInfo.setHName(hName);
+        projectInfo.setCorpName(corpName);
+        projectInfo.setCAgency(cAgency);
+        projectInfo.setGdPrice(gdPrice);
+        projectInfo.setCGroup(cGroup);
+        projectInfo.setDNumber(dNumber);
+        projectInfo.setDType(dType);
+        projectInfo.setDwDate(dwDate);
+        projectInfo.setDdDate(ddDate);
+        projectInfo.setChkDate(chkDate);
+        projectInfo.setChkDate2(chkDate2);
+        projectInfo.setChkfDate(chkfDate);
+        projectInfo.setChkfDate2(chkfDate2);
+        projectInfo.setChgPriceDate(chgPriceDate);
+        projectInfo.setReqDate(reqDate);
+        projectInfo.setProDate(proDate);
+        projectInfo.setFmDate(fmDate);
+        projectInfo.setGetmDate(getmDate);
+        projectInfo.setAccDate(accDate);
+        projectInfo.setDraftDate(draftDate);
+        projectInfo.setStockDate(stockDate);
+        projectInfo.setFirPrice(firPrice);
+        projectInfo.setReqPrice(reqPrice);
+        projectInfo.setAccPrice(accPrice);
+        projectInfo.setPayPrice(payPrice);
+        projectInfo.setConfirmMemo(confirmMemo);
+        projectInfo.setFinishChk(finishChk);
         projectInfo.setState(state);
+        projectInfo.setPayDate(payDate);
         projectInfo.setSn(sn);
 
         String[] fileno = request.getParameterValues("fileno");
@@ -278,7 +401,7 @@ public class ProjectCtr {
         modelMap.addAttribute("listview", listview);
         modelMap.addAttribute("searchVO", searchVO);
 
-        return "redirect:projectList";
+        return "redirect:project";
     }
 
 
@@ -727,48 +850,75 @@ throws Exception{
         objRow = objSheet.createRow(0);
         objRow.setHeight ((short) 0x150);
 
+
         objCell = objRow.createCell(0);
         objCell.setCellValue("No");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(1);
-        objCell.setCellValue("컨텐츠타입");
+        objCell.setCellValue("일시");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(2);
-        objCell.setCellValue("출처이미지URL");
+        objCell.setCellValue("부서");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(3);
-        objCell.setCellValue("원본URL");
+        objCell.setCellValue("담당자");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(4);
-        objCell.setCellValue("타이틀");
+        objCell.setCellValue("업체명");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(5);
-        objCell.setCellValue("키워드");
+        objCell.setCellValue("실수요기관");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(6);
-        objCell.setCellValue("등록일");
+        objCell.setCellValue("공사명");
         objCell.setCellStyle(styleHd);
 
 
         objCell = objRow.createCell(7);
-        objCell.setCellValue("등록자");
+        objCell.setCellValue("완료여부");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(8);
-        objCell.setCellValue("메시지");
+        objCell.setCellValue("계약금액");
         objCell.setCellStyle(styleHd);
 
         objCell = objRow.createCell(9);
-        objCell.setCellValue("좋아요");
+        objCell.setCellValue("남품요구");
         objCell.setCellStyle(styleHd);
 
-
+        objCell = objRow.createCell(10);
+        objCell.setCellValue("남품요구");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(11);
+        objCell.setCellValue("남품기한");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(12);
+        objCell.setCellValue("전문기관검사");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(13);
+        objCell.setCellValue("대금청구");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(14);
+        objCell.setCellValue("발주일자");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(15);
+        objCell.setCellValue("수금일");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(16);
+        objCell.setCellValue("수금액");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(17);
+        objCell.setCellValue("정산일");
+        objCell.setCellStyle(styleHd);
+        objCell = objRow.createCell(18);
+        objCell.setCellValue("지급일");
+        objCell.setCellStyle(styleHd);
         List<ProjectVO> listview  = projectSvc.selectexcelList(searchVO);
         // listview.forEach(s -> );
         int rowNo = 1;
@@ -790,42 +940,84 @@ throws Exception{
             objCell.setCellValue(rowNo-1);
             objCell.setCellStyle(styleHd);
 
+
+
+
             objCell = objRow.createCell(1);
-            objCell.setCellValue(""+list.getType());
-            objCell.setCellStyle(styleHd);
-
-
-            objCell = objRow.createCell(2);
-            objCell.setCellValue(""+list.getImageUrl());
-            objCell.setCellStyle(styleHd);
-
-            objCell = objRow.createCell(3);
-            objCell.setCellValue(""+list.getVideoUrl());
-            objCell.setCellStyle(styleHd);
-
-            objCell = objRow.createCell(4);
-            objCell.setCellValue(""+list.getTitle());
-            objCell.setCellStyle(styleHd);
-
-            objCell = objRow.createCell(5);
-            objCell.setCellValue(""+list.getKeyword());
-            objCell.setCellStyle(styleHd);
-
-            objCell = objRow.createCell(6);
             objCell.setCellValue(""+list.getRegDate());
             objCell.setCellStyle(styleHd);
 
+            objCell = objRow.createCell(2);
+            objCell.setCellValue(""+list.getDepartment());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(3);
+            objCell.setCellValue(""+list.getHName());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(4);
+            objCell.setCellValue(""+list.getCorpName());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(5);
+            objCell.setCellValue(""+list.getCAgency());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(6);
+            objCell.setCellValue(""+list.getCtName());
+            objCell.setCellStyle(styleHd);
+
             objCell = objRow.createCell(7);
-            objCell.setCellValue(""+list.getUserid());
+            objCell.setCellValue(""+list.getFinishChk());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(8);
-            objCell.setCellValue(""+list.getMsgCt());
+            objCell.setCellValue(""+list.getGdPrice());
             objCell.setCellStyle(styleHd);
 
             objCell = objRow.createCell(9);
-            objCell.setCellValue(""+list.getLike());
+            objCell.setCellValue(""+list.getCAgency());
             objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(10);
+            objCell.setCellValue(""+list.getDwDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(11);
+            objCell.setCellValue(""+list.getDdDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(12);
+            objCell.setCellValue(""+list.getProDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(13);
+            objCell.setCellValue(""+list.getChkDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(14);
+            objCell.setCellValue(""+list.getChgPriceDate());
+            objCell.setCellStyle(styleHd);
+            objCell = objRow.createCell(15);
+            objCell.setCellValue(""+list.getReqDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(16);
+            objCell.setCellValue(""+list.getGetmDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(17);
+            objCell.setCellValue(""+list.getPayPrice());
+            objCell.setCellStyle(styleHd);
+
+            objCell = objRow.createCell(18);
+            objCell.setCellValue(""+list.getAccDate());
+            objCell.setCellStyle(styleHd);
+
+            objCell.setCellStyle(styleHd);objCell = objRow.createCell(19);
+            objCell.setCellValue(""+list.getDraftDate());
+            objCell.setCellStyle(styleHd);
+
 
         }
 
@@ -844,6 +1036,8 @@ throws Exception{
         response.getOutputStream().flush();
         response.getOutputStream().close();
     }
+
+
 
     @RequestMapping(value = "/msgList")
     public String msgList(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, ProjectVO projectVO) {
@@ -881,4 +1075,25 @@ throws Exception{
     }
 
 
+
+    @ResponseBody
+    @RequestMapping(value = "/apiCall")
+    public String apiCall(HttpServletRequest request, SearchVO searchVO, ModelMap modelMap, HttpSession session) throws Exception {
+
+
+        String USERID = "";
+        if ( request.getSession().getAttribute("USERID") != null ) {
+            USERID = (String)request.getSession().getAttribute("USERID");
+        }
+
+        searchVO.setUserid(USERID);
+
+        SearchJ searchJ = new SearchJ();
+
+        searchJ.execute("002170138");
+        searchJ.execute("002282840");
+
+
+        return "TRUE";
+    }
 }

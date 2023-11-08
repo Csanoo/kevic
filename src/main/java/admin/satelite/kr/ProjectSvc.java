@@ -53,8 +53,7 @@ public class ProjectSvc {
         return sqlSession.selectList("selectCategoryTwo", param);
     }
 
-
-
+    public List<?> selectContGoodsList(ProjectVO param){ return sqlSession.selectList("selectContGoodsList", param); }
 
 
     public void insertProjectOne(ProjectVO param) {
@@ -119,11 +118,14 @@ public class ProjectSvc {
         DefaultTransactionDefinition def = new DefaultTransactionDefinition();
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
-        for (FileVO f : filelist) {
-            param.setLogoimg(f.getFilename());
-        }
+
         try {
             sqlSession.update("updateprojectDetail", param);
+            for (FileVO f : filelist) {
+                f.setPsn(param.getSn());
+                System.out.println(f);
+                sqlSession.insert("insertAttach", f);
+            }
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
@@ -229,13 +231,12 @@ public class ProjectSvc {
         def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = txManager.getTransaction(def);
 
-        for (FileVO f : filelist) {
-
-            param.setLogoimg(f.getFilename());
-        }
-
         try {
             sqlSession.insert("insertproject", param);
+            for (FileVO f : filelist) {
+                f.setPsn(param.getSn());
+                sqlSession.insert("insertAttach", f);
+            }
             txManager.commit(status);
         } catch (TransactionException ex) {
             txManager.rollback(status);
@@ -282,6 +283,10 @@ public class ProjectSvc {
         sqlSession.delete("delMember", param);
     }
 
+    public void delFile(Integer param) {
+
+        sqlSession.delete("deleteAttach", param);
+    }
 
     public Integer selPrjTitCt(String param) {
         return sqlSession.selectOne("selPrjTitCt", param);
@@ -391,5 +396,20 @@ public class ProjectSvc {
 
         return sqlSession.selectList("selectprojectList", param);
     }
+    public List<PrdVO> selectPrdList(String param) {
 
+        return sqlSession.selectList("selectPrdList", param);
+    }
+
+
+    public List<FileVO> selectFileList(Integer param) {
+
+        return sqlSession.selectList("selectAttach", param);
+    }
+
+
+
+    public void prtAttach(Integer param) {
+        sqlSession.delete("attachDelete", param);
+    }
 }
